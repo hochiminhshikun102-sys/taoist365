@@ -7,103 +7,10 @@ import { LivingAtmosphereVeil } from "@/components/ritual/LivingAtmosphereVeil";
 import { siteConfig } from "@/config/site";
 import { taoist365ObjectsCatalog } from "@/data/taoist365-objects-collection/system";
 import { useWorldRuntime } from "@/lib/use-world-runtime";
-import { resolveAirflowSilenceRuntime } from "@/runtime/airflow-silence-runtime";
-import { resolveAtmosphericHumanityRuntime } from "@/runtime/atmospheric-humanity-runtime";
-import { resolveAtmosphericCirculationRuntime } from "@/runtime/atmospheric-circulation-runtime";
-import { resolveAtmosphericFatigueRuntime } from "@/runtime/atmospheric-fatigue-runtime";
-import { resolveAntiAddictiveContinuityRuntime } from "@/runtime/anti-addictive-continuity-runtime";
-import { resolveAmbientGuidanceRuntime } from "@/runtime/ambient-guidance-runtime";
-import { resolveBrowserCoexistenceRuntime } from "@/runtime/browser-coexistence-runtime";
-import { resolveBackgroundCivilizationRuntime } from "@/runtime/background-civilization-runtime";
-import { resolveBackgroundWarmthRuntime } from "@/runtime/background-warmth-runtime";
-import { resolveBesideLifeRuntime } from "@/runtime/beside-life-runtime";
 import { browserRoomHomeSurface } from "@/runtime/browser-room-runtime";
-import { resolveBrowserPersistenceRuntime } from "@/runtime/browser-persistence-runtime";
-import { resolveCivilizationAntiAccelerationRuntime } from "@/runtime/civilization-anti-acceleration-runtime";
-import { resolveCivilizationBoundaryRuntime } from "@/runtime/civilization-boundary-runtime";
-import { resolveCivilizationFadingRuntime } from "@/runtime/civilization-fading-runtime";
-import { resolveCivilizationFamiliarityRuntime } from "@/runtime/civilization-familiarity-runtime";
-import { resolveCivilizationGravityRuntime } from "@/runtime/civilization-gravity-runtime";
-import { resolveCivilizationMapRuntime } from "@/runtime/civilization-map-runtime";
-import { resolveCivilizationMaturityRuntime } from "@/runtime/civilization-maturity-runtime";
-import { resolveCivilizationMetabolismRuntime } from "@/runtime/civilization-metabolism-runtime";
-import { resolveCivilizationRecoveryRuntime } from "@/runtime/civilization-recovery-runtime";
-import { resolveCivilizationRoomGovernanceRuntime } from "@/runtime/civilization-room-governance-runtime";
-import { resolveCivilizationSleepRuntime } from "@/runtime/civilization-sleep-runtime";
-import { resolveCivilizationSofteningRuntime } from "@/runtime/civilization-softening-runtime";
 import { resolveDriftboxRuntimeForDayKey } from "@/runtime/driftbox-runtime";
-import { resolveDigitalLightnessRuntime } from "@/runtime/digital-lightness-runtime";
-import { resolveDissolvedAtmosphereRuntime } from "@/runtime/dissolved-atmosphere-runtime";
-import { resolveEmotionalBalanceRuntime } from "@/runtime/emotional-balance-runtime";
-import { resolveExistentialWarmthRuntime } from "@/runtime/existential-warmth-runtime";
-import { resolveGentleRitualRuntime } from "@/runtime/gentle-ritual-runtime";
-import { resolveGentleSmileRuntime } from "@/runtime/gentle-smile-runtime";
-import { resolveGracefulTimeRuntime } from "@/runtime/graceful-time-runtime";
-import { resolveHallCrossPresenceRuntime } from "@/runtime/hall-cross-presence-runtime";
-import { resolveHiddenContinuityRuntime } from "@/runtime/hidden-continuity-runtime";
-import { resolveInvisibleCommerceRuntime } from "@/runtime/invisible-commerce-runtime";
-import { resolveDailySedimentRuntime } from "@/runtime/daily-sediment-runtime";
-import { resolveLivedInContinuityRuntime } from "@/runtime/lived-in-continuity-runtime";
-import { resolveLifeBesideRuntime } from "@/runtime/life-beside-runtime";
-import { resolveLongDurationPresenceRuntime } from "@/runtime/long-duration-presence-runtime";
-import { resolveLongTimeNoSeeRuntime } from "@/runtime/long-time-no-see-runtime";
-import { resolveLongStayRuntime } from "@/runtime/long-stay-runtime";
-import { resolveLowDramaHumanityRuntime } from "@/runtime/low-drama-humanity-runtime";
-import { resolveLowFrequencyExplorationRuntime } from "@/runtime/low-frequency-exploration-runtime";
-import { resolveMeaningDiscoveryRuntime } from "@/runtime/meaning-discovery-runtime";
-import { resolveNonExplanatoryMeaningRuntime } from "@/runtime/non-explanatory-meaning-runtime";
-import { resolveNonDependentCivilizationRuntime } from "@/runtime/non-dependent-civilization-runtime";
-import { resolveNonLonelyRuntime } from "@/runtime/non-lonely-runtime";
-import { resolveNonPossessiveMeaningRuntime } from "@/runtime/non-possessive-meaning-runtime";
-import { resolveNaturalReturnRuntime } from "@/runtime/natural-return-runtime";
-import { resolveObligationFreeReturnRuntime } from "@/runtime/obligation-free-return-runtime";
-import { resolveOrdinaryReturnRuntime } from "@/runtime/ordinary-return-runtime";
-import { resolveOrdinaryHumanRuntime } from "@/runtime/ordinary-human-runtime";
-import { resolveOrdinaryTimeRuntime } from "@/runtime/ordinary-time-runtime";
-import { resolveOrdinarySacrednessRuntime } from "@/runtime/ordinary-sacredness-runtime";
-import { resolveOpenAirRuntime } from "@/runtime/open-air-runtime";
-import { resolveOpenRoomRuntime } from "@/runtime/open-room-runtime";
-import { resolveOpenWarmthRuntime } from "@/runtime/open-warmth-runtime";
-import { resolveOutsideLifeRuntime } from "@/runtime/outside-life-runtime";
-import { resolveOutsideWorldRuntime } from "@/runtime/outside-world-runtime";
-import { resolvePartialAbsenceRuntime } from "@/runtime/partial-absence-runtime";
-import { resolvePassingPresenceRuntime } from "@/runtime/passing-presence-runtime";
 import { quietCivilizationRoomDirections, quietHallDirections } from "@/runtime/hall-runtime-map";
 import { homepagePrimaryEntries } from "@/runtime/homepage-runtime-map";
-import { resolvePocketBrowserRuntime } from "@/runtime/pocket-browser-runtime";
-import { resolveQuietContinuityRuntime } from "@/runtime/quiet-continuity-runtime";
-import { resolveQuietStayingRuntime } from "@/runtime/quiet-staying-runtime";
-import { resolveRealLifeRuntime } from "@/runtime/real-life-runtime";
-import { resolveRealitySilenceRuntime } from "@/runtime/reality-silence-runtime";
-import { resolveRoomDecayRuntime } from "@/runtime/room-decay-runtime";
-import { resolveRoomEmotionalClimateRuntime } from "@/runtime/room-emotional-climate-runtime";
-import { resolveRoomIdentityRuntime } from "@/runtime/room-identity-runtime";
-import { resolveRoomLongStayRuntime } from "@/runtime/room-long-stay-runtime";
-import { resolveRoomReturnRuntime } from "@/runtime/room-return-runtime";
-import { resolveRoomRitualRuntime } from "@/runtime/room-ritual-runtime";
-import { resolveSilenceDensityRuntime } from "@/runtime/silence-density-runtime";
-import { resolveSlowRelationshipRuntime } from "@/runtime/slow-relationship-runtime";
-import { resolveSmileWithoutPerformanceRuntime } from "@/runtime/smile-without-performance-runtime";
-import { resolveTemporalBreathingRuntime } from "@/runtime/temporal-breathing-runtime";
-import { resolveTinyDiscoveryRuntime } from "@/runtime/tiny-discovery-runtime";
-import { resolveLightnessProtectionRuntime } from "@/runtime/lightness-protection-runtime";
-import { resolveGentleOrientationRuntime } from "@/runtime/gentle-orientation-runtime";
-import { resolveInvisibleHumanityRuntime } from "@/runtime/invisible-humanity-runtime";
-import { resolveInvisiblePresenceRuntime } from "@/runtime/invisible-presence-runtime";
-import { resolveInvisibleSilenceRuntime } from "@/runtime/invisible-silence-runtime";
-import { resolveLightGuidanceRuntime } from "@/runtime/light-guidance-runtime";
-import { resolveEverydayPresenceRuntime } from "@/runtime/everyday-presence-runtime";
-import { resolveNonAnnouncedCivilizationRuntime } from "@/runtime/non-announced-civilization-runtime";
-import { resolveOrdinaryWisdomRuntime } from "@/runtime/ordinary-wisdom-runtime";
-import { resolvePracticalCalmRuntime } from "@/runtime/practical-calm-runtime";
-import { resolvePracticalRitualRuntime } from "@/runtime/practical-ritual-runtime";
-import { resolvePracticalSilenceRuntime } from "@/runtime/practical-silence-runtime";
-import { resolveReliefRuntime } from "@/runtime/relief-runtime";
-import { resolveSmallHelpRuntime } from "@/runtime/small-help-runtime";
-import { resolveUsefulHumanityRuntime } from "@/runtime/useful-humanity-runtime";
-import { resolveUnclaimedMeaningRuntime } from "@/runtime/unclaimed-meaning-runtime";
-import { resolveWeatherPassageRuntime } from "@/runtime/weather-passage-runtime";
-import { resolveWindPassageRuntime } from "@/runtime/wind-passage-runtime";
 import { windkeepHomeSurface } from "@/runtime/windkeep-runtime";
 
 const objectRooms = taoist365ObjectsCatalog.slice(0, 6);
@@ -112,10 +19,10 @@ const windkeepObjects = taoist365ObjectsCatalog.slice(2, 8);
 const roomEntries = [
   { label: "Daily Guidance", href: "/rituals/daily-guidance", air: "One line near the morning.", mark: "01" },
   { label: "Windkeep", href: "/objects", air: "Objects left where time can find them.", mark: "02" },
-  { label: "Quiet Mail", href: "/inquiry", air: "A letter that can wait.", mark: "04" },
-  { label: "Cloud Hall", href: "/rituals/home-harmony", air: "White air by the window.", mark: "05" },
-  { label: "Lantern Weather", href: "/rituals", air: "Night light kept low.", mark: "06" },
-  { label: "Daily Verse", href: "/rituals/daily-guidance", air: "A small sentence for the day.", mark: "07" },
+  { label: "Quiet Mail", href: "/inquiry", air: "A letter that can wait.", mark: "03" },
+  { label: "Cloud Hall", href: "/rituals/home-harmony", air: "White air by the window.", mark: "04" },
+  { label: "Lantern Weather", href: "/rituals", air: "Night light kept low.", mark: "05" },
+  { label: "Daily Verse", href: "/rituals/daily-guidance", air: "A small sentence for the day.", mark: "06" },
 ] as const;
 
 const seasonalRooms = [
@@ -146,257 +53,32 @@ const seasonalRooms = [
   },
 ] as const;
 
+const quietRoomNotes = [
+  "A room can stay useful without asking to be used.",
+  "Some doors are clearer when they do not announce themselves.",
+  "The browser keeps a little air around ordinary things.",
+  "Nothing here needs to become a queue.",
+] as const;
+
 export function HomepageBrowserRoom() {
   const { structuralSilence, worldAiNativeInfrastructure } = useWorldRuntime();
-  const antiAddictiveContinuity = resolveAntiAddictiveContinuityRuntime(structuralSilence.dayKey);
-  const ambientGuidance = resolveAmbientGuidanceRuntime(structuralSilence.dayKey);
-  const airflowSilence = resolveAirflowSilenceRuntime(structuralSilence.dayKey);
-  const atmosphericHumanity = resolveAtmosphericHumanityRuntime(structuralSilence.dayKey);
-  const atmosphericCirculation = resolveAtmosphericCirculationRuntime(structuralSilence.dayKey);
-  const atmosphericFatigue = resolveAtmosphericFatigueRuntime(structuralSilence.dayKey);
-  const backgroundCivilization = resolveBackgroundCivilizationRuntime(structuralSilence.dayKey);
-  const backgroundWarmth = resolveBackgroundWarmthRuntime(structuralSilence.dayKey);
-  const besideLife = resolveBesideLifeRuntime(structuralSilence.dayKey);
-  const browserCoexistence = resolveBrowserCoexistenceRuntime(structuralSilence.dayKey);
-  const browserPersistence = resolveBrowserPersistenceRuntime(structuralSilence.dayKey);
-  const civilizationAntiAcceleration = resolveCivilizationAntiAccelerationRuntime(structuralSilence.dayKey);
-  const civilizationBoundary = resolveCivilizationBoundaryRuntime(structuralSilence.dayKey);
-  const civilizationFamiliarity = resolveCivilizationFamiliarityRuntime(structuralSilence.dayKey);
-  const civilizationFading = resolveCivilizationFadingRuntime(structuralSilence.dayKey);
-  const civilizationGravity = resolveCivilizationGravityRuntime(structuralSilence.dayKey);
-  const civilizationMap = resolveCivilizationMapRuntime(structuralSilence.dayKey);
-  const civilizationMaturity = resolveCivilizationMaturityRuntime(structuralSilence.dayKey);
-  const civilizationMetabolism = resolveCivilizationMetabolismRuntime(structuralSilence.dayKey);
-  const civilizationRecovery = resolveCivilizationRecoveryRuntime(structuralSilence.dayKey);
-  const civilizationRoomGovernance = resolveCivilizationRoomGovernanceRuntime(structuralSilence.dayKey);
-  const civilizationSleep = resolveCivilizationSleepRuntime(structuralSilence.dayKey);
-  const civilizationSoftening = resolveCivilizationSofteningRuntime(structuralSilence.dayKey);
-  const dailySediment = resolveDailySedimentRuntime(structuralSilence.dayKey);
-  const digitalLightness = resolveDigitalLightnessRuntime(structuralSilence.dayKey);
-  const dissolvedAtmosphere = resolveDissolvedAtmosphereRuntime(structuralSilence.dayKey);
   const driftbox = resolveDriftboxRuntimeForDayKey(structuralSilence.dayKey);
-  const emotionalBalance = resolveEmotionalBalanceRuntime(structuralSilence.dayKey);
-  const existentialWarmth = resolveExistentialWarmthRuntime(structuralSilence.dayKey);
-  const gentleRitual = resolveGentleRitualRuntime(structuralSilence.dayKey);
-  const gentleOrientation = resolveGentleOrientationRuntime(structuralSilence.dayKey);
-  const gentleSmile = resolveGentleSmileRuntime(structuralSilence.dayKey);
-  const gracefulTime = resolveGracefulTimeRuntime(structuralSilence.dayKey);
-  const hallCrossPresence = resolveHallCrossPresenceRuntime(structuralSilence.dayKey);
-  const hiddenContinuity = resolveHiddenContinuityRuntime(structuralSilence.dayKey);
-  const invisibleCommerce = resolveInvisibleCommerceRuntime(structuralSilence.dayKey);
-  const invisibleHumanity = resolveInvisibleHumanityRuntime(structuralSilence.dayKey);
-  const invisiblePresence = resolveInvisiblePresenceRuntime(structuralSilence.dayKey);
-  const invisibleSilence = resolveInvisibleSilenceRuntime(structuralSilence.dayKey);
-  const livedInContinuity = resolveLivedInContinuityRuntime(structuralSilence.dayKey);
-  const lifeBeside = resolveLifeBesideRuntime(structuralSilence.dayKey);
-  const longDurationPresence = resolveLongDurationPresenceRuntime(structuralSilence.dayKey);
-  const longTimeNoSee = resolveLongTimeNoSeeRuntime(structuralSilence.dayKey);
-  const longStay = resolveLongStayRuntime(structuralSilence.dayKey);
-  const lowDramaHumanity = resolveLowDramaHumanityRuntime(structuralSilence.dayKey);
-  const lowFrequencyExploration = resolveLowFrequencyExplorationRuntime(structuralSilence.dayKey);
-  const meaningDiscovery = resolveMeaningDiscoveryRuntime(structuralSilence.dayKey);
-  const nonExplanatoryMeaning = resolveNonExplanatoryMeaningRuntime(structuralSilence.dayKey);
-  const nonAnnouncedCivilization = resolveNonAnnouncedCivilizationRuntime(structuralSilence.dayKey);
-  const nonDependentCivilization = resolveNonDependentCivilizationRuntime(structuralSilence.dayKey);
-  const nonLonely = resolveNonLonelyRuntime(structuralSilence.dayKey);
-  const nonPossessiveMeaning = resolveNonPossessiveMeaningRuntime(structuralSilence.dayKey);
-  const naturalReturn = resolveNaturalReturnRuntime(structuralSilence.dayKey);
-  const obligationFreeReturn = resolveObligationFreeReturnRuntime(structuralSilence.dayKey);
-  const ordinaryHuman = resolveOrdinaryHumanRuntime(structuralSilence.dayKey);
-  const ordinaryReturn = resolveOrdinaryReturnRuntime(structuralSilence.dayKey);
-  const ordinarySacredness = resolveOrdinarySacrednessRuntime(structuralSilence.dayKey);
-  const ordinaryTime = resolveOrdinaryTimeRuntime(structuralSilence.dayKey);
-  const ordinaryWisdom = resolveOrdinaryWisdomRuntime(structuralSilence.dayKey);
-  const everydayPresence = resolveEverydayPresenceRuntime(structuralSilence.dayKey);
-  const openAir = resolveOpenAirRuntime(structuralSilence.dayKey);
-  const openRoom = resolveOpenRoomRuntime(structuralSilence.dayKey);
-  const openWarmth = resolveOpenWarmthRuntime(structuralSilence.dayKey);
-  const outsideLife = resolveOutsideLifeRuntime(structuralSilence.dayKey);
-  const outsideWorld = resolveOutsideWorldRuntime(structuralSilence.dayKey);
-  const partialAbsence = resolvePartialAbsenceRuntime(structuralSilence.dayKey);
-  const passingPresence = resolvePassingPresenceRuntime(structuralSilence.dayKey);
-  const pocketBrowser = resolvePocketBrowserRuntime(structuralSilence.dayKey);
-  const practicalCalm = resolvePracticalCalmRuntime(structuralSilence.dayKey);
-  const practicalRitual = resolvePracticalRitualRuntime(structuralSilence.dayKey);
-  const practicalSilence = resolvePracticalSilenceRuntime(structuralSilence.dayKey);
-  const quietContinuity = resolveQuietContinuityRuntime(structuralSilence.dayKey);
-  const quietStaying = resolveQuietStayingRuntime(structuralSilence.dayKey);
-  const realLife = resolveRealLifeRuntime(structuralSilence.dayKey);
-  const realitySilence = resolveRealitySilenceRuntime(structuralSilence.dayKey);
-  const relief = resolveReliefRuntime(structuralSilence.dayKey);
-  const roomDecay = resolveRoomDecayRuntime(structuralSilence.dayKey);
-  const roomEmotionalClimate = resolveRoomEmotionalClimateRuntime(structuralSilence.dayKey);
-  const roomIdentity = resolveRoomIdentityRuntime(structuralSilence.dayKey);
-  const roomLongStay = resolveRoomLongStayRuntime(structuralSilence.dayKey);
-  const roomReturn = resolveRoomReturnRuntime(structuralSilence.dayKey);
-  const roomRitual = resolveRoomRitualRuntime(structuralSilence.dayKey);
-  const silenceDensity = resolveSilenceDensityRuntime(structuralSilence.dayKey);
-  const smileWithoutPerformance = resolveSmileWithoutPerformanceRuntime(structuralSilence.dayKey);
-  const slowRelationship = resolveSlowRelationshipRuntime(structuralSilence.dayKey);
-  const temporalBreathing = resolveTemporalBreathingRuntime(structuralSilence.dayKey);
-  const tinyDiscovery = resolveTinyDiscoveryRuntime(structuralSilence.dayKey);
-  const lightnessProtection = resolveLightnessProtectionRuntime(structuralSilence.dayKey);
-  const lightGuidance = resolveLightGuidanceRuntime(structuralSilence.dayKey);
-  const smallHelp = resolveSmallHelpRuntime(structuralSilence.dayKey);
-  const usefulHumanity = resolveUsefulHumanityRuntime(structuralSilence.dayKey);
-  const unclaimedMeaning = resolveUnclaimedMeaningRuntime(structuralSilence.dayKey);
-  const weatherPassage = resolveWeatherPassageRuntime(structuralSilence.dayKey);
-  const windPassage = resolveWindPassageRuntime(structuralSilence.dayKey);
   const st = worldAiNativeInfrastructure.invisibleInfrastructureStructuralThinning;
 
-  const commerceBelowSurface =
-    invisibleCommerce.keepCommerceInvisible ||
-    invisibleCommerce.suppressTransactionExcitement ||
-    civilizationGravity.suppressMonetizationDominance ||
-    civilizationBoundary.suppressCommerceGravity;
-  const gentleHumanityGuard =
-    atmosphericHumanity.avoidFeedbackSeeking ||
-    smileWithoutPerformance.preventEntertainmentGravity ||
-    nonLonely.avoidCompanionFeeling;
-  const quietMeaningGuard =
-    nonExplanatoryMeaning.suppressMeaningExplanation ||
-    existentialWarmth.preventTherapyTone ||
-    gentleRitual.suppressReligiousAuthority ||
-    meaningDiscovery.avoidDirectedMeaning ||
-    ordinarySacredness.preventSpiritualInflation ||
-    nonPossessiveMeaning.suppressSpiritualOwnership;
-  const roomExpansionGuard =
-    civilizationRoomGovernance.suppressFeatureRoomBehavior ||
-    lowFrequencyExploration.suppressRecommendationBehavior ||
-    civilizationMap.suppressMenuFeeling ||
-    roomRitual.suppressGameLoop ||
-    civilizationFamiliarity.preventAddictionLoop;
-  const continuityGuard =
-    quietContinuity.reduceStickinessLanguage ||
-    obligationFreeReturn.suppressWelcomeBackTone ||
-    longTimeNoSee.avoidWelcomePerformance ||
-    slowRelationship.avoidAiRelationship ||
-    ordinaryReturn.suppressDailyActiveSignal ||
-    browserCoexistence.suppressCompanionProductTone ||
-    lifeBeside.suppressLifeCentering ||
-    roomReturn.avoidPersonalizedMemory ||
-    antiAddictiveContinuity.suppressEngagementLoop ||
-    quietStaying.reducePerformanceTone;
-  const openAirGuard =
-    openAir.suppressEmotionalEnclosure ||
-    outsideWorld.suppressEscapeWorldFeeling ||
-    windPassage.preventSealedMood ||
-    partialAbsence.suppressAlwaysWaitingTone ||
-    outsideLife.suppressLifeReplacement ||
-    openWarmth.preventEmotionalWrapping ||
-    passingPresence.reducePermanentMood ||
-    openRoom.preventCocoonRoom ||
-    nonDependentCivilization.suppressDependencyClimate ||
-    airflowSilence.preventFrozenSilence ||
-    lightnessProtection.forceOpenAirThinning;
-  const realLifeGuard =
-    realLife.suppressEscapistAtmosphere ||
-    weatherPassage.suppressCinematicWeather ||
-    ordinaryTime.suppressEternalArtSpace ||
-    besideLife.suppressImmersiveMainSpace ||
-    naturalReturn.suppressReturnRitual ||
-    lowDramaHumanity.suppressCinematicHumanity ||
-    digitalLightness.reduceDigitalWeight ||
-    realitySilence.suppressSpiritualSilence ||
-    backgroundCivilization.suppressCenterStageFeeling;
-  const practicalHumanityGuard =
-    practicalCalm.suppressProblemSolvingTone ||
-    gentleOrientation.suppressAnswerTone ||
-    smallHelp.suppressToolProductTone ||
-    relief.suppressTherapyTone ||
-    practicalSilence.suppressAbstractSilence ||
-    usefulHumanity.suppressHighConceptValue ||
-    lightGuidance.suppressFateTone ||
-    practicalRitual.suppressSpiritualRoutine ||
-    ordinaryWisdom.suppressGrandWisdomTone;
-  const invisibleGuard =
-    invisiblePresence.reduceAttentionSeeking ||
-    unclaimedMeaning.suppressMeaningOwnership ||
-    invisibleHumanity.suppressWarmthDisplay ||
-    ambientGuidance.suppressResponseFeeling ||
-    invisibleSilence.suppressDesignedSilence ||
-    backgroundWarmth.reduceWarmthForeground ||
-    nonAnnouncedCivilization.suppressCivilizationPerformance ||
-    everydayPresence.suppressAttentionCapture ||
-    dissolvedAtmosphere.suppressSpecialSpaceFeeling;
-  const selfRegulatingThin =
-    civilizationMetabolism.reduceOverPresence ||
-    atmosphericFatigue.preventPoeticOverload ||
-    civilizationMaturity.preferLessProof ||
-    civilizationSoftening.reduceConceptualHeaviness ||
-    emotionalBalance.reduceEmotionalWeight ||
-    quietMeaningGuard ||
-    roomExpansionGuard ||
-    continuityGuard ||
-    openAirGuard ||
-    realLifeGuard ||
-    practicalHumanityGuard ||
-    invisibleGuard ||
-    longStay.reduceAttentionRequest;
-  const livingPresenceThin =
-    dailySediment.thinAestheticProps && ordinaryHuman.reduceLifestyleSignal && livedInContinuity.reduceShowroomFeeling;
-  const releaseResidue =
-    Boolean(st.suppressResidueAccumulation) ||
-    civilizationFading.reduceResidueDensity ||
-    atmosphericCirculation.reduceLocalDensity ||
-    civilizationRecovery.forceSimplerHomepage ||
-    civilizationMetabolism.reduceOverPresence ||
-    atmosphericFatigue.preventPoeticOverload ||
-    civilizationSoftening.reduceConceptualHeaviness ||
-    emotionalBalance.reduceEmotionalWeight ||
-    roomDecay.reduceFullState ||
-    silenceDensity.preferNearEmptySurface ||
-    (livingPresenceThin && dailySediment.preferSmallTrace);
-  const releaseAtmosphere =
-    Boolean(st.suppressAtmosphericHeaviness) ||
-    civilizationFading.reduceAtmosphericWeight ||
-    longDurationPresence.reduceStimulation ||
-    temporalBreathing.reduceSurfacePulse ||
-    civilizationSleep.nightLowFrequency ||
-    gracefulTime.reduceTimeAnxiety ||
-    roomLongStay.reduceRoomStimulation ||
-    civilizationRecovery.forceSimplerHomepage ||
-    lightnessProtection.forceOpenAirThinning ||
-    digitalLightness.reduceDigitalWeight ||
-    invisiblePresence.reduceAttentionSeeking ||
-    dissolvedAtmosphere.suppressSpecialSpaceFeeling;
-  const proseThin =
-    st.combinedProseBias > 0.52 ||
-    st.dailyPreferUltraThin ||
-    browserPersistence.reduceHomepageAtmosphere ||
-    releaseAtmosphere ||
-    selfRegulatingThin ||
-    pocketBrowser.reduceMobileDensity;
-  const roomThin = st.combinedProseBias > 0.66 || st.dailyForceCloseEchoes || releaseResidue;
+  const proseThin = st.combinedProseBias > 0.52 || st.dailyPreferUltraThin;
+  const roomThin = st.combinedProseBias > 0.66 || st.dailyForceCloseEchoes;
   const roomSettled =
     st.combinedProseBias > 0.74 ||
     st.dailyForceCloseSliceNarrative ||
-    civilizationBoundary.suppressFeatureTemptation ||
-    civilizationBoundary.suppressUxOverOptimization ||
-    civilizationAntiAcceleration.suppressContentVelocity ||
-    gentleHumanityGuard ||
-    quietMeaningGuard ||
-    roomExpansionGuard ||
-    civilizationGravity.suppressScalePressure;
+    Boolean(st.suppressFeatureTemptation) ||
+    Boolean(st.suppressAtmosphericHeaviness);
   const showDriftboxResidue =
     driftbox.continuity.showHomepageResidue &&
     driftbox.sparse.allowHomepageTrace &&
     !driftbox.lowEvent.suppressEventLanguage &&
-    commerceBelowSurface &&
     !roomSettled &&
     !st.dailyForceCloseSliceNarrative;
-  const showRoomResidue =
-    hallCrossPresence.showHomepageHallResidue &&
-    !roomThin &&
-    !releaseAtmosphere &&
-    hiddenContinuity.avoidExplanation;
-  const showGentleSmile =
-    gentleSmile.allowTinySmile &&
-    tinyDiscovery.allowSmallDiscovery &&
-    !proseThin &&
-    !roomSettled &&
-    !smileWithoutPerformance.preventEntertainmentGravity;
-  const visibleEntries = roomThin ? roomEntries.slice(0, 5) : roomEntries;
+  const visibleEntries = roomThin ? roomEntries.slice(0, 4) : roomEntries;
   const visibleSeasonRooms = roomSettled ? seasonalRooms.slice(0, 3) : seasonalRooms;
   const fallbackRooms = roomThin ? quietHallDirections : quietCivilizationRoomDirections.slice(0, 6);
 
@@ -406,7 +88,7 @@ export function HomepageBrowserRoom() {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(240,242,245,0.98)_0%,rgba(244,246,248,0.94)_38%,rgba(232,236,241,0.78)_100%)]" />
         <LivingAtmosphereVeil tone="default" />
         <div className="relative z-[1] mx-auto w-full max-w-[92rem] px-4 pb-16 sm:px-7 lg:px-10">
-          <section className="relative min-h-[88svh] overflow-hidden rounded-[0_0_1.4rem_1.15rem] border-x border-b border-white/52 bg-white/35 shadow-[0_22px_88px_rgba(29,42,56,0.055)] sm:min-h-[82svh]">
+          <section className="relative min-h-[84svh] overflow-hidden rounded-[0_0_1.1rem_1rem] border-x border-b border-white/46 bg-white/32 shadow-[0_18px_62px_rgba(29,42,56,0.035)] sm:min-h-[80svh]">
             <HomepageHeroAirRotation className="absolute inset-0 min-h-full rounded-none border-0 bg-transparent">
               <div className="hidden" />
             </HomepageHeroAirRotation>
@@ -432,7 +114,7 @@ export function HomepageBrowserRoom() {
                 ))}
               </nav>
               <p className="max-w-[10rem] text-right text-[0.68rem] leading-5 text-text-muted">
-                  {weatherPassage.weatherLine}
+                Keep it beside the day.
               </p>
             </header>
 
@@ -446,13 +128,13 @@ export function HomepageBrowserRoom() {
                 </h1>
                 {!proseThin ? (
                   <p className="mt-7 max-w-md text-sm leading-7 text-text-secondary">
-                    {invisiblePresence.homepageLine} {dissolvedAtmosphere.integrationLine}
+                    A quiet browser room beside ordinary life. Stay for a moment, or leave the tab open and return to the day.
                   </p>
                 ) : null}
                 <div className="mt-8 flex flex-wrap items-center gap-5 text-sm">
                   <Link
                     href="/rituals"
-                    className="rounded-[0.42rem] bg-[#172840] px-5 py-3 text-white shadow-[0_12px_34px_rgba(23,40,64,0.16)] transition hover:bg-[#203653]"
+                    className="rounded-[0.42rem] border border-foreground/18 bg-white/45 px-5 py-3 text-foreground/86 transition hover:bg-white/68"
                   >
                     Stay quietly
                   </Link>
@@ -463,23 +145,19 @@ export function HomepageBrowserRoom() {
               </div>
               <aside className="mt-10 hidden max-w-[18rem] border-l border-border-subtle/80 bg-white/28 px-6 py-5 text-sm leading-7 text-text-secondary backdrop-blur-[1px] lg:block lg:place-self-center">
                 <p className="mb-3 font-[var(--font-display-serif)] text-3xl text-foreground/82">&ldquo;</p>
-                <p>{showGentleSmile ? gentleSmile.roomTraceLine : backgroundWarmth.comfortLine}</p>
+                <p>The room keeps its warmth low enough to ignore.</p>
                 <p className="mt-4 text-[0.68rem] text-text-muted">Master Sandong, off-frame</p>
               </aside>
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 z-[2] px-5 pb-5 sm:px-8 lg:px-10">
-              <div className="grid gap-px overflow-hidden rounded-[0.84rem_1rem_0.92rem_0.88rem] border border-border-subtle/68 bg-border-subtle/60 shadow-[0_16px_54px_rgba(29,42,56,0.055)] sm:grid-cols-2 lg:grid-cols-7">
+              <div className="grid gap-px overflow-hidden rounded-[0.84rem_1rem_0.92rem_0.88rem] border border-border-subtle/68 bg-border-subtle/60 shadow-[0_16px_54px_rgba(29,42,56,0.055)] sm:grid-cols-2 lg:grid-cols-6">
                 {visibleEntries.map((entry, index) => (
                   <Link
                     key={entry.label}
                     href={entry.href}
                     className={`group bg-white/72 p-4 transition hover:bg-white/88 ${
-                      ordinaryHuman.allowIrregularity && index % 3 === 1
-                        ? "lg:translate-y-1"
-                        : ordinaryHuman.allowIrregularity && index % 3 === 2
-                          ? "lg:-translate-y-0.5"
-                          : ""
+                      index % 3 === 1 ? "lg:translate-y-1" : index % 3 === 2 ? "lg:-translate-y-0.5" : ""
                     }`}
                   >
                     <span className="block text-[0.62rem] text-text-muted">{entry.mark}</span>
@@ -500,7 +178,7 @@ export function HomepageBrowserRoom() {
               </h2>
               {!proseThin ? (
                 <p className="mt-5 max-w-xs text-sm leading-7 text-text-secondary">
-                  {invisibleSilence.restLine} {ambientGuidance.groundingLine}
+                  A few stable doors inside the same quiet URL.
                 </p>
               ) : null}
             </div>
@@ -532,7 +210,7 @@ export function HomepageBrowserRoom() {
               <div>
                 <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Objects resting nearby</h2>
                 <p className="mt-2 text-sm text-text-secondary">
-                  {livedInContinuity.preferObjectResting ? driftbox.invisibleMaterialLine : everydayPresence.everydayLine}
+                  Things that can sit in a real room before they become anything else.
                 </p>
               </div>
               <Link href="/objects" className="hidden text-sm text-foreground/76 hover:text-foreground sm:block">
@@ -560,12 +238,10 @@ export function HomepageBrowserRoom() {
             <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div>
                 <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">More ways to explore within</h2>
-                <p className="mt-2 text-sm text-text-secondary">
-                  {lowFrequencyExploration.wanderingLine} {everydayPresence.backgroundLine}
-                </p>
+                <p className="mt-2 text-sm text-text-secondary">Wandering stays sparse and unhurried.</p>
               </div>
               <p className="text-xs leading-6 text-text-muted sm:max-w-xs sm:text-right">
-                {showRoomResidue ? hiddenContinuity.hiddenContinuityLine : unclaimedMeaning.interpretationLine}
+                The map is small enough to forget.
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -580,7 +256,7 @@ export function HomepageBrowserRoom() {
                   <p className="text-sm text-foreground">{room}</p>
                   {!roomThin ? (
                     <p className="mt-3 text-xs leading-6 text-text-muted">
-                      {index % 2 === 0 ? roomIdentity.spatialMoodLine : roomEmotionalClimate.climateLine}
+                      {quietRoomNotes[index % quietRoomNotes.length]}
                     </p>
                   ) : null}
                 </Link>
@@ -597,7 +273,9 @@ export function HomepageBrowserRoom() {
                       {windkeepHomeSurface.kicker} . Objects in passage
                     </h2>
                     <p className="mt-2 text-sm text-text-secondary">
-                      {showDriftboxResidue ? invisibleCommerce.gentlePassageLine : nonAnnouncedCivilization.homepageLine}
+                      {showDriftboxResidue
+                        ? "A passed object may leave a low mark before becoming visible again."
+                        : "Objects remain placed, not presented."}
                     </p>
                   </div>
                   <Link href="/objects" className="text-sm text-foreground/76 hover:text-foreground">
@@ -624,7 +302,7 @@ export function HomepageBrowserRoom() {
                   <p className="text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">Inside Windkeep</p>
                   <h3 className="mt-3 max-w-xs text-xl leading-tight text-foreground">Driftbox, when something has moved on.</h3>
                   <p className="mt-4 text-sm leading-7 text-text-secondary">
-                    {driftbox.lowEvent.oceanicLine} {dissolvedAtmosphere.dissolveLine}
+                    {driftbox.lowEvent.oceanicLine}
                   </p>
                 </div>
               </Link>
@@ -636,7 +314,7 @@ export function HomepageBrowserRoom() {
               <p className="font-[var(--font-display-serif)] text-xl text-foreground">{siteConfig.brandEnName}</p>
               <p className="mt-2 text-xs uppercase tracking-[0.12em] text-text-muted">Taoist365</p>
               <p className="mt-5 max-w-sm leading-7">
-                {backgroundCivilization.footerLine} {invisibleHumanity.traceLine}
+                A long-open browser place. Useful only lightly, quiet enough to leave alone.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
@@ -645,10 +323,10 @@ export function HomepageBrowserRoom() {
                   <p className="text-foreground">{group}</p>
                   <p className="mt-3 text-xs leading-6 text-text-muted">
                     {index === 0
-                      ? civilizationRoomGovernance.protectionLine
+                      ? "A small pause, not an answer engine."
                       : index === 1
-                        ? invisibleHumanity.humanityLine
-                        : invisibleSilence.silenceLine}
+                        ? "Material continuity by mail."
+                        : "Mail can wait."}
                   </p>
                 </div>
               ))}

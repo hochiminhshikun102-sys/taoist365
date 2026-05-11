@@ -9,7 +9,6 @@ import { pickHumanSignalMemory } from "./human-signal-memory";
 import { pickMailThreadSediment } from "./mail-thread-sediment";
 import { objectBackgroundRuntimeByAge } from "./object-background-runtime";
 import { objectFamiliarityDecayByAge } from "./object-familiarity-decay";
-import { objectLanguageThinningByAge } from "./object-language-thinning";
 import { pickObjectRevisitSilence } from "./object-revisit-silence";
 import { pickObjectRoomPermanence } from "./object-room-permanence";
 import { pickQuietHumanReturn } from "./quiet-human-return";

@@ -2,7 +2,6 @@ import type { WorldAgeStateId } from "@/data/world-aging-runtime/system";
 import type { StructuralSilenceBundle } from "@/data/structural-silence-engine/system";
 import { taoist365ObjectsCatalog } from "@/data/taoist365-objects-collection/system";
 import { objectSilenceWindow } from "@/data/world-density-calibration/system";
-import { dailyIndex } from "@/lib/living-day-key";
 import type { CrossRuntimeSuppression } from "./cross-runtime-suppression";
 import { foregroundPressure } from "./foreground-pressure-runtime";
 import type { RuntimeFatigueBalance } from "./runtime-fatigue-balancer";
