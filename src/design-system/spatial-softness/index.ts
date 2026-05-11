@@ -1,0 +1,1 @@
+export { spatialWarmth } from "./system";

@@ -1,0 +1,1 @@
+export { ritualRecognitionLanguage } from "./system";

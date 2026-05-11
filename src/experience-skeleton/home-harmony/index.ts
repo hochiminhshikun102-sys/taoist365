@@ -1,0 +1,1 @@
+export { homeHarmonyStructuralSkeleton } from "./skeleton";

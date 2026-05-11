@@ -1,0 +1,1 @@
+export { drawLotInteractiveSurface } from "./surface";

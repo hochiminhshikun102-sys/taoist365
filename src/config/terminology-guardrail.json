@@ -1,0 +1,49 @@
+{
+  "naming": {
+    "product": "Taoist365",
+    "brandEn": "Reverent Inquiry",
+    "brandCn": "谒问"
+  },
+  "bannedTerminology": [
+    "fortune-telling",
+    "fortune telling",
+    "oracle assistant",
+    "ai assistant",
+    "chatbot",
+    "guru",
+    "prophecy",
+    "destiny guaranteed",
+    "guaranteed wealth",
+    "startup",
+    "growth hacking",
+    "conversion funnel",
+    "limited time offer",
+    "buy now",
+    "urgent",
+    "exclusive deal"
+  ],
+  "driftSignals": {
+    "assistantization": ["assistant", "chat with ai", "ask ai", "copilot"],
+    "fortuneTone": ["fortune", "fate", "destiny", "predict", "prophecy"],
+    "startupTone": ["optimize", "scale fast", "growth", "traction", "user acquisition"],
+    "marketingPressure": ["unlock now", "act now", "subscribe now", "limited offer", "sale"]
+  },
+  "calmVocabularyHints": [
+    "quiet",
+    "gentle",
+    "steady",
+    "calm",
+    "grounded",
+    "spacious",
+    "ritual",
+    "harmony"
+  ],
+  "scanScopes": [
+    "src/app",
+    "src/components/navigation",
+    "src/live-prototypes",
+    "src/config",
+    "src/language"
+  ],
+  "targetExtensions": [".ts", ".tsx", ".md"]
+}

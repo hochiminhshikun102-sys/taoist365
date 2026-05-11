@@ -1,0 +1,1 @@
+export { drawLotStructuralSkeleton } from "./skeleton";

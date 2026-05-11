@@ -16,13 +16,35 @@
 # next.js
 /.next/
 /out/
+/dist/
 
 # production
 /build
 
+# cache / temp
+/.cache/
+/cache/
+/.tmp*/
+/tmp/
+
+# local backups / duplicate source drops
+/manus-backup/
+/Taoist365-Brand-System/
+
+# local preview output
+.civilization-preview.log
+.preview-dev.*.log
+.preview-screenshots/
+screenshots-homepage-hero/
+
+# generated preview helpers
+.civilization-preview-server.mjs
+.start-civilization-preview.ps1
+
 # misc
 .DS_Store
 *.pem
+*.log
 
 # debug
 npm-debug.log*
@@ -39,3 +61,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# archived browser captures should not pollute lint or stable snapshots
+public/Taoist365-Civilization-Assets/**/*sdk*.js
+public/Taoist365-Civilization-Assets/**/*sdk*.map

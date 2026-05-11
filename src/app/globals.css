@@ -1,26 +1,338 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f0f2f5;
+  --surface: #ffffff;
+  --foreground: #1a1a1a;
+  --text-secondary: #4f5963;
+  --text-muted: #8a929b;
+  --brand-wood: #7d8d9b;
+  --brand-gold-soft: #b8a487;
+  --brand-cinnabar: #9aa6b1;
+  --border-subtle: #e5e5e5;
+  --border-default: #d6dbe1;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-brand-wood: var(--brand-wood);
+  --color-brand-gold-soft: var(--brand-gold-soft);
+  --color-brand-cinnabar: var(--brand-cinnabar);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-display-serif);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
+
+/* Lived-in micro-asymmetry: optical room frame, not mirrored gallery margins */
+.lived-room-frame {
+  padding-inline: clamp(0.85rem, 3.6vw, 1.55rem) clamp(0.95rem, 3.85vw, 1.72rem);
+}
+
+/* Runtime-absorbed vertical rhythm — numeric sync with `src/design-system/tokens/rhythm.ts` (`pauseSpacing` + `verticalBreathing`) */
+.marketing-runtime-shell,
+.runtime-room-shell {
+  --room-y-airy: clamp(3.5rem, 9vw, 8rem);
+  --room-y-standard: clamp(2.5rem, 6vw, 5.5rem);
+  --room-y-compact: clamp(1.5rem, 4vw, 3rem);
+  --room-pause-standard: clamp(1.5rem, 4vw, 3rem);
+  --room-pause-ritual: clamp(2rem, 5vw, 4rem);
+}
+
+.marketing-runtime-shell .room-section-y-standard,
+.runtime-room-shell .room-section-y-standard {
+  padding-top: var(--room-y-standard);
+  padding-bottom: var(--room-y-standard);
+}
+
+.marketing-runtime-shell .room-section-y-airy,
+.runtime-room-shell .room-section-y-airy {
+  padding-top: var(--room-y-airy);
+  padding-bottom: var(--room-y-airy);
+}
+
+.marketing-runtime-shell .room-section-y-compact,
+.runtime-room-shell .room-section-y-compact {
+  padding-top: var(--room-y-compact);
+  padding-bottom: var(--room-y-compact);
+}
+
+.marketing-runtime-shell .room-opening-y,
+.runtime-room-shell .room-opening-y {
+  padding-top: var(--room-y-airy);
+  padding-bottom: var(--room-y-airy);
+}
+
+.marketing-runtime-shell .room-pad-bottom-standard,
+.runtime-room-shell .room-pad-bottom-standard {
+  padding-bottom: var(--room-y-standard);
+}
+
+.marketing-runtime-shell .room-pad-bottom-airy,
+.runtime-room-shell .room-pad-bottom-airy {
+  padding-bottom: var(--room-y-airy);
+}
+
+.marketing-runtime-shell .room-inner-y-tight,
+.runtime-room-shell .room-inner-y-tight {
+  padding-top: var(--room-pause-standard);
+  padding-bottom: var(--room-pause-standard);
+}
+
+.marketing-runtime-shell .room-object-stack,
+.runtime-room-shell .room-object-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--room-y-standard);
+}
+
+.marketing-runtime-shell .room-mt-standard,
+.runtime-room-shell .room-mt-standard {
+  margin-top: var(--room-y-standard);
+}
+
+.marketing-runtime-shell .room-mb-pause,
+.runtime-room-shell .room-mb-pause {
+  margin-bottom: var(--room-pause-standard);
+}
+
+.marketing-runtime-shell .room-my-standard,
+.runtime-room-shell .room-my-standard {
+  margin-top: var(--room-y-standard);
+  margin-bottom: var(--room-y-standard);
+}
+
+.marketing-runtime-shell .object-resting-surface.taoist-ritual-shell,
+.runtime-room-shell .object-resting-surface.taoist-ritual-shell {
+  box-shadow: none;
+  border-radius: 1rem 1.07rem 1.03rem 1.09rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display-serif), "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+}
+
+/* --- Living world: atmosphere, tactility, silence (no interaction) --- */
+.living-atmosphere-veil {
+  z-index: 0;
+  mix-blend-mode: normal;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255, 255, 255, 0.24), transparent 55%),
+    radial-gradient(ellipse 90% 70% at 100% 40%, rgba(210, 216, 224, 0.18), transparent 50%);
+  background-size: 180px 180px, 100% 100%, 100% 100%;
+  animation: living-veil-breath 78s ease-in-out infinite;
+}
+
+.living-atmosphere-veil--default {
+  animation-duration: 82s;
+}
+
+.living-atmosphere-veil--evening {
+  animation-duration: 88s;
+}
+
+.living-atmosphere-veil--morning {
+  animation-duration: 74s;
+}
+
+.living-atmosphere-veil--afternoon {
+  animation-duration: 80s;
+}
+
+/* Temporal drift: breath speed & edge warmth (no clock, no theme swap) */
+html[data-temporal-band="morning"] .living-atmosphere-veil {
+  animation-duration: 74s !important;
+}
+
+html[data-temporal-band="midday"] .living-atmosphere-veil {
+  animation-duration: 78s !important;
+}
+
+html[data-temporal-band="afternoon"] .living-atmosphere-veil {
+  animation-duration: 82s !important;
+}
+
+html[data-temporal-band="evening"] .living-atmosphere-veil {
+  animation-duration: 90s !important;
+}
+
+html[data-temporal-band="night"] .living-atmosphere-veil {
+  animation-duration: 98s !important;
+}
+
+html[data-temporal-band="morning"] .living-surface-inset {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.52),
+    inset 18px 0 36px -20px rgba(255, 255, 255, 0.28),
+    inset -18px 0 36px -20px rgba(214, 219, 225, 0.16);
+}
+
+html[data-temporal-band="evening"] .living-surface-inset,
+html[data-temporal-band="night"] .living-surface-inset {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 18px 0 40px -18px rgba(255, 255, 255, 0.2),
+    inset -18px 0 40px -18px rgba(188, 198, 208, 0.16);
+}
+
+@keyframes living-veil-breath {
+  0%,
+  100% {
+    opacity: 0.012;
+    background-position: 0 0, 0% 0%, 100% 40%;
+  }
+  50% {
+    opacity: 0.015;
+    background-position: 3px 3px, 0% 0.35%, 99.65% 40%;
+  }
+}
+
+.living-surface-inset {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.48),
+    inset 18px 0 36px -20px rgba(255, 255, 255, 0.24),
+    inset -18px 0 36px -20px rgba(214, 219, 225, 0.14);
+}
+
+.living-shelf article:nth-child(odd),
+.living-shelf li:nth-child(odd) {
+  margin-inline-start: 0.08rem;
+}
+
+.living-shelf article:nth-child(even),
+.living-shelf li:nth-child(even) {
+  margin-inline-start: 0.18rem;
+  margin-top: 0.12rem;
+}
+
+@media (min-width: 640px) {
+  .living-shelf article:nth-child(even),
+  .living-shelf li:nth-child(even) {
+    margin-top: 0.2rem;
+  }
+}
+
+/* Slightly uneven radii: reads as placed, not stamped from a kit */
+.taoist-ritual-shell.rounded-2xl {
+  border-radius: 1.04rem 1.12rem 1.06rem 1.08rem;
+}
+
+.taoist-quiet-field.rounded-xl {
+  border-radius: 0.78rem 0.85rem 0.8rem 0.83rem;
+}
+
+.living-shelf.rounded-xl {
+  border-radius: 0.8rem 0.88rem 0.84rem 0.86rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .living-atmosphere-veil {
+    animation: none !important;
+    opacity: 0.013 !important;
+  }
+}
+
+/* Invisible interface: actions and shells recede; atmosphere carries structure */
+.taoist-quiet-action {
+  transition:
+    background-color 400ms ease-out,
+    border-color 400ms ease-out,
+    color 400ms ease-out,
+    opacity 400ms ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .taoist-quiet-action:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.taoist-quiet-action:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(184, 164, 135, 0.24);
+}
+
+.taoist-quiet-field {
+  background-color: rgba(255, 255, 255, 0.64);
+  border-color: rgba(229, 229, 229, 0.72);
+  transition: background-color 420ms ease-out, border-color 420ms ease-out;
+}
+
+/* No hover lift on quiet fields—reads as unmaintained surface, not tended UI */
+
+.taoist-ritual-shell {
+  background-color: rgba(255, 255, 255, 0.82);
+  border-color: rgba(229, 229, 229, 0.78);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.74),
+    0 18px 58px rgba(26, 26, 26, 0.035);
+}
+
+/* Homepage hero air rotation — long-cycle crossfade only (no carousel UI).
+   Duration matches `homepageHeroAirCycleSeconds` in `src/runtime/homepage-runtime-map.ts`. */
+@keyframes homepage-hero-air-a {
+  0%,
+  41% {
+    opacity: 1;
+  }
+  47%,
+  93% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes homepage-hero-air-b {
+  0%,
+  41% {
+    opacity: 0;
+  }
+  47%,
+  93% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.homepage-hero-air-layer-a {
+  animation: homepage-hero-air-a 96s ease-in-out infinite;
+}
+
+.homepage-hero-air-layer-b {
+  animation: homepage-hero-air-b 96s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homepage-hero-air-layer-a,
+  .homepage-hero-air-layer-b {
+    animation: none !important;
+  }
+
+  .homepage-hero-air-layer-a {
+    opacity: 1 !important;
+  }
+
+  .homepage-hero-air-layer-b {
+    opacity: 0 !important;
+  }
 }

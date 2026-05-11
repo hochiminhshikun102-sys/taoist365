@@ -1,0 +1,58 @@
+import Link from "next/link";
+import { experienceRoutes } from "@/config/experience-routes";
+
+const navPaths = experienceRoutes.filter((route) => route.path !== "/rituals/homepage");
+
+export function CalmNavigation() {
+  return (
+    <header className="sticky top-0 z-20 border-b border-border-subtle/25 bg-background/92">
+      <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-3.5 sm:px-10">
+        <Link href="/" className="flex items-center gap-3">
+          <span aria-hidden className="h-6 w-6 rounded-full border border-brand-gold-soft/70 bg-white/55" />
+          <div className="leading-tight">
+            <p className="text-xs tracking-[0.12em] text-text-muted uppercase">
+              Taoist365
+            </p>
+            <p className="text-[10px] text-text-muted/80">Reverent Inquiry · 谒问</p>
+          </div>
+        </Link>
+
+        <div className="flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 sm:gap-3">
+          <Link
+            href="/objects"
+            className="taoist-quiet-action rounded-lg border border-border-subtle/22 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+          >
+            Objects
+          </Link>
+          <Link
+            href="/desk"
+            className="taoist-quiet-action rounded-lg border border-border-subtle/22 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+          >
+            Desk
+          </Link>
+          <Link
+            href="/inquiry"
+            className="taoist-quiet-action rounded-lg border border-border-subtle/22 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+          >
+            Mail
+          </Link>
+          <Link
+            href="/guidance"
+            className="taoist-quiet-action rounded-lg border border-border-subtle/22 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+          >
+            Pause
+          </Link>
+          {navPaths.map((item) => (
+            <Link
+              key={item.path}
+              href={item.path}
+              className="taoist-quiet-action rounded-lg border border-border-subtle/26 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+            >
+              {item.navLabel}
+            </Link>
+          ))}
+        </div>
+      </nav>
+    </header>
+  );
+}

@@ -1,0 +1,1 @@
+export { homepageStructuralSkeleton } from "./shells";
