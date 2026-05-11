@@ -16,7 +16,7 @@ export const siteConfig = {
     "This domain is kept as an ordinary website: pages stay linked, mail goes to people, not scripts.",
   /** Honest maintenance signal—no dates, no changelog theater. */
   maintenanceLine:
-    "Edited by hand when something needs fixing—no publishing calendar or activity feed.",
+    "Edited by hand when something needs fixing, slow enough for the room to stay ordinary.",
   /** Browser-held familiarity—explicitly not server-side “memory.” */
   browserSideLine:
     "Tabs, history, and bookmarks live in your browser—this site does not record visits or reload a special state for you.",
@@ -52,7 +52,7 @@ export const siteConfig = {
     "Reopening the same page is ordinary use—no streaks, reminders, or daily resets.",
   /** Objects: real obtainability via mail, not catalog-only browsing. */
   objectsObtainableIntroLine:
-    "These lines describe kinds of things that can quietly sit in a room—paper, vessels, linen, wood, traces after incense, corners for pause. Nothing below opens a cart; if one piece should live near you, mail names it like an old catalog site.",
+    "These lines describe kinds of things that can quietly sit in a room—paper, vessels, linen, wood, traces after incense, corners for pause. If one piece should live near you, mail names it plainly and a human replies.",
   /** Desk ↔ named things on Objects (soft bridge into real life). */
   deskObjectBridgeLine:
     "Scratch sometimes mentions paper, tea, linen, wood, incense, or a page stopped mid-read—the stable names for those presences live on Objects; when something physical should follow, mail is the quiet route—still no checkout.",
@@ -64,10 +64,10 @@ export const siteConfig = {
     "Notes about wanting one piece nearby are read like letters—humans answer in their own rhythm. No ticket bots, faux urgency, or ‘support queue’ theater.",
   /** Anti-funnel boundary for commerce tone. */
   gentleAcquisitionBoundaryLine:
-    "This domain does not run carts, coupons, bestseller grids, or countdowns—bringing something nearer stays an ordinary mail exchange.",
+    "Bringing something nearer stays an ordinary mail exchange, slow enough for the object to remain a thing in life.",
   /** Objects page: first physical batch, long-lived catalog framing. */
   objectsCommerceCatalogLine:
-    "Below is Taoist365’s first object batch—pieces described the way they sit in real American apartments: scuffed, uneven, already plausible. The list is maintained like an old catalog page, not a weekly new-arrivals wall.",
+    "Below is Taoist365’s first object batch—pieces described the way they sit in real American apartments: scuffed, uneven, already plausible. The list changes slowly and keeps its names stable.",
   /** Life moments when a slow site surfaces—user-led, not scheduled by the domain. */
   returnGravityHomeLine:
     "Late hours, pauses between tasks, idle rows of tabs, or the stretch before sleep are ordinary times a quiet URL resurfaces—through history, a tab left open, or memory of a named thing—not because anything here signaled you.",

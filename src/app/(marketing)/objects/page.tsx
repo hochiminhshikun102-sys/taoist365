@@ -13,10 +13,10 @@ import { taoist365ObjectsCatalog } from "@/data/taoist365-objects-collection/sys
 
 export const metadata: Metadata = {
   title: "Objects",
-  description: "Pieces on taoist365.com—mail if you want one nearer. No cart.",
+  description: "Pieces on taoist365.com; mail if one should come nearer.",
   openGraph: {
-    title: `Objects · ${siteConfig.siteName}`,
-    description: "Catalog on taoist365.com; humans reply by mail.",
+    title: `Objects - ${siteConfig.siteName}`,
+    description: "Objects on taoist365.com; humans reply by mail.",
     url: `${siteConfig.metadataBase}/objects`,
   },
 };
@@ -26,13 +26,13 @@ export default function ObjectsPage() {
     <main className="min-h-full bg-background">
       <div className="room-section-y-standard relative mx-auto w-full max-w-3xl px-6 sm:px-10">
         <p className="text-xs text-text-muted/85">Objects</p>
-        <h1 className="mt-3 max-w-2xl text-3xl leading-tight text-foreground sm:text-4xl">Catalog</h1>
+        <h1 className="mt-3 max-w-2xl text-3xl leading-tight text-foreground sm:text-4xl">Objects</h1>
         <p className="mt-5 max-w-2xl text-sm leading-8 text-text-secondary">{siteConfig.objectsObtainableIntroLine}</p>
         <p className="mt-4 max-w-2xl text-sm leading-8 text-text-secondary">
           <Link href="/inquiry" className="text-foreground underline-offset-4 hover:underline">
             Mail
           </Link>{" "}
-          to ask about a piece. No checkout.
+          to ask about a piece when one should come nearer.
         </p>
         <p className="mt-3 max-w-2xl text-xs leading-7 text-text-muted/72">{siteConfig.permanenceLine}</p>
 
@@ -43,8 +43,8 @@ export default function ObjectsPage() {
         >
           <p className="text-xs uppercase tracking-[0.14em] text-text-muted/72">Driftbox</p>
           <p className="mt-3 max-w-2xl text-sm leading-8 text-text-secondary">
-            A quiet continuation layer inside Windkeep. No bids, no countdown, no marketplace pressure; only an object
-            moving through ordinary hands when mail makes sense.
+            A quiet place inside Windkeep for things that have moved on. If something drifts close enough, mail can
+            receive it gently and let the object keep going through ordinary hands.
           </p>
         </section>
 
@@ -84,7 +84,7 @@ export default function ObjectsPage() {
           <Link href="/guidance" className="text-text-secondary underline-offset-4 hover:underline">
             Pause
           </Link>
-          {" · "}
+          {" / "}
           <Link href="/inquiry" className="text-text-secondary underline-offset-4 hover:underline">
             Mail
           </Link>

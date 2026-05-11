@@ -8,7 +8,7 @@ export const windkeepHomeSurface = {
   title: "A shelf for time objects.",
   body:
     "Windkeep stores object passage like room sediment: placement, keeper traces, and quiet continuity.",
-  driftboxRelation: "Driftbox sits deeper inside Windkeep: quiet claiming, object passage, and continuation after ownership.",
+  driftboxRelation: "Driftbox sits deeper inside Windkeep: quiet receiving, object passage, and continuation after keeping.",
   storageLine: "Browser Civilization Storage Layer: objects remain as room presence before they move again.",
 } as const;
 

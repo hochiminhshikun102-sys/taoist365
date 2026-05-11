@@ -88,7 +88,7 @@ export function HomepageBrowserRoom() {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(240,242,245,0.98)_0%,rgba(244,246,248,0.94)_38%,rgba(232,236,241,0.78)_100%)]" />
         <LivingAtmosphereVeil tone="default" />
         <div className="relative z-[1] mx-auto w-full max-w-[92rem] px-4 pb-16 sm:px-7 lg:px-10">
-          <section className="relative min-h-[84svh] overflow-hidden rounded-[0_0_1.1rem_1rem] border-x border-b border-white/46 bg-white/32 shadow-[0_18px_62px_rgba(29,42,56,0.035)] sm:min-h-[80svh]">
+          <section className="relative min-h-[74svh] overflow-hidden rounded-[0_0_1rem_0.92rem] border-x border-b border-white/46 bg-white/32 shadow-[0_14px_46px_rgba(29,42,56,0.03)] sm:min-h-[80svh]">
             <HomepageHeroAirRotation className="absolute inset-0 min-h-full rounded-none border-0 bg-transparent">
               <div className="hidden" />
             </HomepageHeroAirRotation>
@@ -113,17 +113,17 @@ export function HomepageBrowserRoom() {
                   </span>
                 ))}
               </nav>
-              <p className="max-w-[10rem] text-right text-[0.68rem] leading-5 text-text-muted">
+              <p className="hidden max-w-[10rem] text-right text-[0.68rem] leading-5 text-text-muted sm:block">
                 Keep it beside the day.
               </p>
             </header>
 
-            <div className="relative z-[2] grid min-h-[58svh] content-center px-5 pb-24 pt-10 sm:px-8 lg:grid-cols-[0.58fr_0.42fr] lg:px-10">
+            <div className="relative z-[2] grid min-h-[42svh] content-center px-5 pb-8 pt-8 sm:min-h-[56svh] sm:px-8 lg:grid-cols-[0.58fr_0.42fr] lg:px-10 lg:pb-24">
               <div className="max-w-xl">
                 <p className="mb-6 text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">
                   {browserRoomHomeSurface.airRoomLabel}
                 </p>
-                <h1 className="max-w-[38rem] text-[2.65rem] font-normal leading-[1.07] text-foreground sm:text-6xl lg:text-[4.85rem]">
+                <h1 className="max-w-[38rem] text-[2.25rem] font-normal leading-[1.09] text-foreground sm:text-6xl lg:text-[4.85rem]">
                   In the light of the East, return to your inner stillness.
                 </h1>
                 {!proseThin ? (
@@ -134,7 +134,7 @@ export function HomepageBrowserRoom() {
                 <div className="mt-8 flex flex-wrap items-center gap-5 text-sm">
                   <Link
                     href="/rituals"
-                    className="rounded-[0.42rem] border border-foreground/18 bg-white/45 px-5 py-3 text-foreground/86 transition hover:bg-white/68"
+                    className="rounded-[0.42rem] border border-foreground/14 bg-white/36 px-4 py-2.5 text-foreground/82 transition hover:bg-white/62"
                   >
                     Stay quietly
                   </Link>
@@ -150,8 +150,8 @@ export function HomepageBrowserRoom() {
               </aside>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 z-[2] px-5 pb-5 sm:px-8 lg:px-10">
-              <div className="grid gap-px overflow-hidden rounded-[0.84rem_1rem_0.92rem_0.88rem] border border-border-subtle/68 bg-border-subtle/60 shadow-[0_16px_54px_rgba(29,42,56,0.055)] sm:grid-cols-2 lg:grid-cols-6">
+            <div className="relative z-[2] px-5 pb-5 sm:px-8 lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:px-10">
+              <div className="grid gap-px overflow-hidden rounded-[0.76rem_0.86rem_0.8rem_0.82rem] border border-border-subtle/60 bg-border-subtle/48 shadow-[0_10px_34px_rgba(29,42,56,0.035)] sm:grid-cols-2 lg:grid-cols-6">
                 {visibleEntries.map((entry, index) => (
                   <Link
                     key={entry.label}

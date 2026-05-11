@@ -11,14 +11,14 @@ export type DriftboxContinuityRuntime = {
 
 const continuityLines = [
   "Driftbox keeps the object moving without making the movement loud.",
-  "A claim is only a handoff in the browser room, not a purchase performance.",
-  "The next owner enters as continuity; the object does not become a campaign.",
+  "Receiving is only a handoff in the browser room, not a performance.",
+  "The next keeper enters as continuity; the object does not become a campaign.",
   "Some things pass through Taoist365 slowly enough to keep their room air.",
 ] as const;
 
 const residueLines = [
   "Driftbox note: one object may have moved further through the shelf.",
-  "A quiet claim layer sits under Windkeep, almost below the page surface.",
+  "A quiet receiving layer sits under Windkeep, almost below the page surface.",
   "Some Windkeep objects keep a passage mark after they leave the room.",
   "Driftbox remains a low-frequency mailbox for object continuation.",
 ] as const;
@@ -42,8 +42,8 @@ export function resolveDriftboxContinuity(
       objectState.claimTone === "closed"
         ? "Passage closed without spectacle."
         : objectState.claimTone === "low"
-          ? "Quiet claiming stays available."
-          : "No claim pressure is present.",
+          ? "Quiet receiving stays available."
+          : "No receiving pressure is present.",
     showHomepageResidue:
       h % 5 === 0 ||
       objectState.state === "passedThroughHands" ||

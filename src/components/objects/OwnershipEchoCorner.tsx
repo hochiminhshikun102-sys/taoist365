@@ -6,7 +6,7 @@ type Props = {
   className?: string;
 };
 
-/** Slow repeat of the same coordinates — familiarity accumulates like a pinned URL, not a recommender. */
+/** Slow repeat of the same coordinates: familiarity accumulates like a pinned URL, not a recommender. */
 export function OwnershipEchoCorner({
   heading = "Coordinates that keep drifting back",
   className = "",
@@ -24,14 +24,14 @@ export function OwnershipEchoCorner({
               href={`/objects#${e.catalogId}`}
               className="text-text-secondary/90 underline-offset-[3px] hover:underline"
             >
-              catalog anchor
+              object anchor
             </Link>
             .
           </li>
         ))}
       </ul>
       <p className="mt-3 text-[0.62rem] leading-5 text-text-muted/48">
-        No cart—same phrases may appear elsewhere on the domain until they feel familiar, not urgent.
+        The same phrases may appear elsewhere on the domain until they feel familiar, not urgent.
       </p>
     </aside>
   );

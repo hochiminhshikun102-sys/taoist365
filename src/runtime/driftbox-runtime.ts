@@ -34,7 +34,7 @@ export function resolveDriftboxRuntimeForDayKey(dayKey: string): DriftboxRuntime
   return {
     layer: "windkeep-continuity",
     identityLine: "Driftbox is a time-object drift layer inside Windkeep.",
-    boundaryLine: "No bids, no countdown, no marketplace pressure; only quiet continuation.",
+    boundaryLine: "Quiet continuation stays slow, sparse, and mail-adjacent.",
     objectState,
     objectContinuity,
     sediment,
