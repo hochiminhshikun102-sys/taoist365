@@ -5,9 +5,9 @@ import { siteConfig } from "@/config/site";
 import { LastRitualEcho } from "@/components/rituals/LastRitualEcho";
 import { RitualsTemporalEcho } from "@/components/rituals/RitualsTemporalEcho";
 
-// Taoist365 / Reverent Inquiry: quiet route surface.
+// Reverent Inquiry: quiet route surface.
 export const metadata: Metadata = {
-  title: "Rituals - Taoist365",
+  title: "Rituals - Reverent Inquiry",
   description: "Static ritual URLs on taoist365.com—same nav as the rest of the site.",
 };
 

@@ -3,11 +3,11 @@ import { HomepageBrowserRoom } from "@/components/marketing/HomepageBrowserRoom"
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Taoist365 - Reverent Inquiry",
+  title: "Reverent Inquiry",
   description:
-    "A quiet browser room for Taoist365 / Reverent Inquiry, kept steady beside ordinary life.",
+    "A quiet browser room at taoist365.com, kept steady beside ordinary life.",
   openGraph: {
-    title: `${siteConfig.siteName} - ${siteConfig.brandEnName}`,
+    title: `${siteConfig.siteName} - ${siteConfig.domain}`,
     description: siteConfig.description,
     url: "https://taoist365.com/",
   },

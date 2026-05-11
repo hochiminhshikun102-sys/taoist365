@@ -11,9 +11,9 @@ export const colorTokens = {
     inverse: "#FDFBF7",
   },
   brand: {
-    wood: "#7D8D9B",
-    goldSoft: "#B8A487",
-    cinnabar: "#9AA6B1",
+    wind: "#7D8D9B",
+    warmResidue: "#CBB38A",
+    drift: "#9AA6B1",
   },
   border: {
     subtle: "#E5E5E5",

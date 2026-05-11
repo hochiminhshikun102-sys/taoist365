@@ -38,13 +38,13 @@ export const experienceRoutes: ExperienceRoute[] = [
 ];
 
 export const namingSystem = {
-  productName: "Taoist365",
+  productName: "Reverent Inquiry",
   brandEnName: "Reverent Inquiry",
   brandCnName: "\u8c12\u95ee",
   domain: "taoist365.com",
   rules: {
-    productUse: "site navigation, routes, product labels, metadata siteName",
+    productUse: "front-facing site navigation, product labels, metadata siteName",
     brandEnUse: "atmosphere and brand-expression language",
-    brandCnUse: "cultural signature and root context",
+    brandCnUse: "historical source layer and internal root context",
   },
 } as const;

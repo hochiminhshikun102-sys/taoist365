@@ -96,13 +96,14 @@ export function HomepageBrowserRoom() {
 
             <header className="relative z-[2] flex items-start justify-between gap-6 px-5 py-6 sm:px-8 lg:px-10">
               <Link href="/" className="flex items-center gap-3 text-foreground">
-                <span className="grid size-11 place-items-center rounded-full border border-foreground/35 font-[var(--font-display-serif)] text-lg">
-                  RI
-                </span>
+                <span
+                  aria-hidden
+                  className="h-8 w-14 shrink-0 bg-[url('/brand/reverent-inquiry-air-mark.svg')] bg-contain bg-center bg-no-repeat opacity-78"
+                />
                 <span>
                   <span className="block text-sm uppercase tracking-[0.12em]">{siteConfig.brandEnName}</span>
                   <span className="mt-1 block text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">
-                    Taoist365
+                    {siteConfig.domain}
                   </span>
                 </span>
               </Link>
@@ -312,7 +313,7 @@ export function HomepageBrowserRoom() {
           <footer className="mx-auto grid max-w-[86rem] gap-8 border-t border-border-subtle/70 py-10 text-sm text-text-secondary lg:grid-cols-[0.48fr_0.52fr]">
             <div>
               <p className="font-[var(--font-display-serif)] text-xl text-foreground">{siteConfig.brandEnName}</p>
-              <p className="mt-2 text-xs uppercase tracking-[0.12em] text-text-muted">Taoist365</p>
+              <p className="mt-2 text-xs uppercase tracking-[0.12em] text-text-muted">{siteConfig.domain}</p>
               <p className="mt-5 max-w-sm leading-7">
                 A page can stay open, or not. Mail still works.
               </p>

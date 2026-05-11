@@ -1,11 +1,11 @@
 export const siteConfig = {
-  siteName: "Taoist365",
+  siteName: "Reverent Inquiry",
   brandEnName: "Reverent Inquiry",
   brandCnName: "\u8c12\u95ee",
   domain: "taoist365.com",
   /** Plain-language discovery for search and link previews—stable site, not a funnel. */
   description:
-    "Taoist365 (Reverent Inquiry, 谒问) is a long-running site at taoist365.com—static routes under /rituals and /objects, mail via /inquiry, HTML adjusted slowly by people who keep the domain. Not auto-generated. No streaks, no timed previews, no chat-only gate.",
+    "Reverent Inquiry is a long-running browser place at taoist365.com—static routes under /rituals and /objects, mail via /inquiry, HTML adjusted slowly by people who keep the domain. Not auto-generated. No streaks, no timed previews, no chat-only gate.",
   locale: "en-US",
   timezone: "America/Los_Angeles",
   metadataBase: "https://taoist365.com",
@@ -29,7 +29,7 @@ export const siteConfig = {
   /** Homepage hint toward occasional real use without productivity framing. */
   deskInvitationLine:
     "If you want a few lines that stay on your device only—same domain, no account:",
-  /** Honest boundary: residue never hits Taoist365 servers. */
+  /** Honest boundary: residue never hits this domain's servers. */
   personalResidueScopeLine:
     "Desk margins and ritual echoes stay in your browser until you clear site data—nothing is uploaded or tied to an identity here.",
   /** Homepage stitch between Desk and Objects residue—no accounts implied. */
@@ -46,7 +46,7 @@ export const siteConfig = {
     "Opening one ritual page again is still just that URL in your browser—nothing scores it, schedules you, or frames a practice to improve.",
   /** Homepage: light real-life reopen without habit-product language. */
   lightReuseHomeLine:
-    "If Taoist365 becomes a page you reopen when life loops back, that is ordinary browsing—nothing here schedules your return or rewards repetition.",
+    "If Reverent Inquiry becomes a page you reopen when life loops back, that is ordinary browsing—nothing here schedules your return or rewards repetition.",
   /** Short trust line for footers and ritual shell—no streak-style mechanics. */
   lightDependencyFootLine:
     "Reopening the same page is ordinary use—no streaks, reminders, or daily resets.",
@@ -67,7 +67,7 @@ export const siteConfig = {
     "Bringing something nearer stays an ordinary mail exchange, slow enough for the object to remain a thing in life.",
   /** Objects page: first physical batch, long-lived catalog framing. */
   objectsCommerceCatalogLine:
-    "Below is Taoist365’s first object batch—pieces described the way they sit in real American apartments: scuffed, uneven, already plausible. The list changes slowly and keeps its names stable.",
+    "Below is Reverent Inquiry’s first object batch—pieces described the way they sit in real American apartments: scuffed, uneven, already plausible. The list changes slowly and keeps its names stable.",
   /** Life moments when a slow site surfaces—user-led, not scheduled by the domain. */
   returnGravityHomeLine:
     "Late hours, pauses between tasks, idle rows of tabs, or the stretch before sleep are ordinary times a quiet URL resurfaces—through history, a tab left open, or memory of a named thing—not because anything here signaled you.",
@@ -88,7 +88,7 @@ export const siteConfig = {
     "Landing on the same ritual when something is undecided or a line has not settled is ordinary re-reading—not falling behind, not a loop this page grades.",
   /** Browser continuity vocabulary—no “habit building” claim. */
   browserReturnGravityLine:
-    "Pinned tabs, typed URLs, and history trails carry continuity; Taoist365 does not train or tune your rhythm.",
+    "Pinned tabs, typed URLs, and history trails carry continuity; Reverent Inquiry does not train or tune your rhythm.",
   /** Contact: seasons of mail, not comeback campaigns. */
   contactReturnGravityLine:
     "The inbox stays the same whether you write once a season or after a long silence—no ‘we miss you,’ no recovery campaigns.",

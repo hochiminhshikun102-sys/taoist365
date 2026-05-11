@@ -28,15 +28,18 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.metadataBase),
   title: {
-    default: `${siteConfig.siteName} · ${siteConfig.brandEnName}`,
+    default: `${siteConfig.siteName} · ${siteConfig.domain}`,
     template: `%s · ${siteConfig.siteName}`,
   },
   description: siteConfig.description,
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: "/brand/reverent-inquiry-air-mark.svg",
+  },
   openGraph: {
-    title: `${siteConfig.siteName} · ${siteConfig.brandEnName}`,
+    title: `${siteConfig.siteName} · ${siteConfig.domain}`,
     description: siteConfig.description,
     url: siteConfig.metadataBase,
     siteName: siteConfig.siteName,

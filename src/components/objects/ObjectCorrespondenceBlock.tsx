@@ -13,7 +13,7 @@ type Props = {
 /** Imagining the letter — not checkout, not support category. */
 export function ObjectCorrespondenceBlock({ catalogId }: Props) {
   const mi = mailImaginationForCatalogId(catalogId);
-  const primarySubject = mi.exampleSubjects[0] ?? "Hello — Taoist365";
+  const primarySubject = mi.exampleSubjects[0] ?? "Hello — Reverent Inquiry";
 
   return (
     <div className="taoist-quiet-field mt-6 rounded-xl border border-border-subtle bg-surface px-4 py-4 sm:px-5 sm:py-5">

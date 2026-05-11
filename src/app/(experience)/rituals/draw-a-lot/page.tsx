@@ -4,7 +4,7 @@ import { DrawALotLiveExperience } from "@/live-prototypes/draw-a-lot/LiveExperie
 export const metadata: Metadata = {
   title: "Draw a lot",
   description:
-    "Stable Taoist365 ritual page—slow lines and pauses at taoist365.com; same site navigation as home.",
+    "Stable Reverent Inquiry page—slow lines and pauses at taoist365.com; same site navigation as home.",
 };
 
 export default function DrawALotRitualPage() {

@@ -61,7 +61,7 @@ export function DeskScratch() {
           className="taoist-ritual-shell mt-4 min-h-[16rem] w-full resize-y rounded-2xl border border-border-subtle/34 bg-background/85 p-5 font-mono text-sm leading-7 text-text-secondary shadow-none outline-none ring-0 transition placeholder:text-text-muted/45 focus:border-border-subtle/48 disabled:opacity-60 print:min-h-0 print:border-0 print:bg-white print:p-4 print:text-black"
           placeholder={
             ready
-              ? "Leave a fragment open—clears only if you erase Taoist365 site data in this browser."
+              ? "Leave a fragment open—clears only if you erase this site's data in this browser."
               : ""
           }
         />

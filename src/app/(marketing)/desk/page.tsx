@@ -26,7 +26,7 @@ export default function DeskPage() {
         <h1 className="mt-3 max-w-2xl text-3xl leading-tight text-foreground sm:text-4xl">Desk</h1>
         <p className="mt-5 max-w-2xl text-sm leading-8 text-text-secondary">
           A small corner that lingers in your browser—not a notes app, no folders, no sync. Scratch for longer drift and a
-          shorter phrases strip if you want it; same domain as the rest of Taoist365, still nothing transmitted when you
+          shorter phrases strip if you want it; same domain as the rest of Reverent Inquiry, still nothing transmitted when you
           type.
         </p>
         <p className="mt-4 max-w-2xl text-xs leading-7 text-text-muted/70">{siteConfig.deskDrawerGravityLine}</p>

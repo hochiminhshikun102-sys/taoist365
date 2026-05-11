@@ -6,9 +6,9 @@
   --foreground: #1a1a1a;
   --text-secondary: #4f5963;
   --text-muted: #8a929b;
-  --brand-wood: #7d8d9b;
-  --brand-gold-soft: #b8a487;
-  --brand-cinnabar: #9aa6b1;
+  --brand-wind: #7d8d9b;
+  --brand-warm-residue: #cbb38a;
+  --brand-drift: #9aa6b1;
   --border-subtle: #e5e5e5;
   --border-default: #d6dbe1;
 }
@@ -19,9 +19,9 @@
   --color-foreground: var(--foreground);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
-  --color-brand-wood: var(--brand-wood);
-  --color-brand-gold-soft: var(--brand-gold-soft);
-  --color-brand-cinnabar: var(--brand-cinnabar);
+  --color-brand-wind: var(--brand-wind);
+  --color-brand-warm-residue: var(--brand-warm-residue);
+  --color-brand-drift: var(--brand-drift);
   --color-border-subtle: var(--border-subtle);
   --color-border-default: var(--border-default);
   --font-sans: var(--font-inter);

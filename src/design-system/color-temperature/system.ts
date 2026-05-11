@@ -27,7 +27,7 @@ export const colorTemperatureSystem = {
 } as const;
 
 export const colorTemperatureAvoid = [
-  "black_gold_pressure",
+  "heavy_mystic_pressure",
   "high_saturation_display",
   "neon_contrast",
   "cyber_minimalism",
