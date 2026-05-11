@@ -41,7 +41,7 @@ const keeperLines: Record<ObjectContinuityState, string> = {
 
 const storageFeelingLines: Record<ObjectContinuityState, string> = {
   stillTraveling: "Storage feels like a shelf that has learned to stay quiet.",
-  restingTemporarily: "Storage is temporary rest, not inventory management.",
+  restingTemporarily: "Storage is temporary rest on the side.",
   passedQuietly: "Storage preserves the handoff without turning it into an event.",
   waitingForNextKeeper: "Storage keeps the object available without making it call out.",
   continuityPreserved: "Storage keeps placement and a small remaining trace.",
@@ -56,7 +56,7 @@ const longTermFamiliarityLines: Record<ObjectContinuityState, string> = {
 };
 
 const stewardshipTraceLines: Record<ObjectContinuityState, string> = {
-  stillTraveling: "Stewardship is a trace of passage, not ownership performance.",
+  stillTraveling: "Care is a trace of passage.",
   restingTemporarily: "The keeper leaves care in the object by letting it rest.",
   passedQuietly: "Passed hands stay below the surface as temporal stewardship.",
   waitingForNextKeeper: "The object waits for care, not acquisition.",
@@ -66,8 +66,8 @@ const stewardshipTraceLines: Record<ObjectContinuityState, string> = {
 const realLifeTraceLines: Record<ObjectContinuityState, string> = {
   stillTraveling: "The object carries real-life traces from rooms, counters, drawers, and ordinary hands.",
   restingTemporarily: "Temporary rest feels practical, like something put down during a normal day.",
-  passedQuietly: "Passing through daily life matters more than collector attention.",
-  waitingForNextKeeper: "The next person is part of ordinary use, not a collecting story.",
+  passedQuietly: "Passing through daily life matters more than attention.",
+  waitingForNextKeeper: "The next person is part of ordinary use.",
   continuityPreserved: "Continuity is preserved through material use, not display value.",
 };
 
@@ -76,7 +76,7 @@ const practicalContinuityLines: Record<ObjectContinuityState, string> = {
   restingTemporarily: "The object can rest because useful things also pause.",
   passedQuietly: "Used presence remains quieter than rarity.",
   waitingForNextKeeper: "Care stays practical before it becomes meaningful.",
-  continuityPreserved: "Ordinary material continuity resists collector atmosphere.",
+  continuityPreserved: "Ordinary material continuity stays close to use.",
 };
 
 const everydayPassageLines: Record<ObjectContinuityState, string> = {

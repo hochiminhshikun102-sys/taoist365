@@ -18,32 +18,32 @@ const windkeepObjects = taoist365ObjectsCatalog.slice(2, 8);
 
 const roomEntries = [
   { label: "Daily Note", href: "/rituals/daily-guidance", air: "One line near the morning.", mark: "01" },
-  { label: "Windkeep", href: "/objects", air: "Objects that can sit on a shelf.", mark: "02" },
-  { label: "Quiet Mail", href: "/inquiry", air: "A letter that can wait.", mark: "03" },
-  { label: "Home Notes", href: "/rituals/home-harmony", air: "A page for the room.", mark: "04" },
-  { label: "Evening Page", href: "/rituals", air: "Night light kept low.", mark: "05" },
-  { label: "Small Line", href: "/rituals/daily-guidance", air: "A small sentence for the day.", mark: "06" },
+  { label: "Windkeep", href: "/objects", air: "Objects that can sit on a shelf.", mark: "03" },
+  { label: "Quiet Mail", href: "/inquiry", air: "A letter that can wait.", mark: "04" },
+  { label: "Home Notes", href: "/rituals/home-harmony", air: "A page for the room.", mark: "07" },
+  { label: "Evening Page", href: "/rituals", air: "Night light kept low.", mark: "08" },
+  { label: "Small Line", href: "/rituals/daily-guidance", air: "A small sentence for the day.", mark: "11" },
 ] as const;
 
 const seasonalRooms = [
   {
-    label: "Relationship",
-    note: "Love & connection",
+    label: "Morning",
+    note: "Before work",
     image: taoist365ObjectsCatalog[1]?.photo.src,
   },
   {
-    label: "Home",
-    note: "Space & harmony",
+    label: "Kitchen",
+    note: "Counter light",
     image: taoist365ObjectsCatalog[2]?.photo.src,
   },
   {
-    label: "Timing",
-    note: "Right moment",
+    label: "Shelf",
+    note: "Put down",
     image: taoist365ObjectsCatalog[6]?.photo.src,
   },
   {
-    label: "Energy",
-    note: "Balance & flow",
+    label: "Window",
+    note: "Later",
     image: taoist365ObjectsCatalog[3]?.photo.src,
   },
   {
@@ -54,10 +54,10 @@ const seasonalRooms = [
 ] as const;
 
 const quietRoomNotes = [
-  "A room can stay useful without asking to be used.",
-  "Some doors are clearer when they do not announce themselves.",
-  "The browser keeps a little air around ordinary things.",
-  "Nothing here needs to become a queue.",
+  "This link can sit here without needing a reason.",
+  "Some pages are clearer when they stay partly unfinished.",
+  "The browser keeps ordinary things close enough.",
+  "Nothing here needs to become a list to complete.",
 ] as const;
 
 export function HomepageBrowserRoom() {
@@ -88,7 +88,7 @@ export function HomepageBrowserRoom() {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(240,242,245,0.98)_0%,rgba(244,246,248,0.94)_38%,rgba(232,236,241,0.78)_100%)]" />
         <LivingAtmosphereVeil tone="default" />
         <div className="relative z-[1] mx-auto w-full max-w-[92rem] px-4 pb-16 sm:px-7 lg:px-10">
-          <section className="relative min-h-[74svh] overflow-hidden rounded-[0_0_1rem_0.92rem] border-x border-b border-white/46 bg-white/32 shadow-[0_14px_46px_rgba(29,42,56,0.03)] sm:min-h-[80svh]">
+          <section className="relative min-h-[70svh] overflow-hidden rounded-[0_0_0.78rem_0.92rem] border-x border-b border-white/40 bg-white/28 shadow-[0_10px_32px_rgba(29,42,56,0.026)] sm:min-h-[78svh]">
             <HomepageHeroAirRotation className="absolute inset-0 min-h-full rounded-none border-0 bg-transparent">
               <div className="hidden" />
             </HomepageHeroAirRotation>
@@ -118,7 +118,7 @@ export function HomepageBrowserRoom() {
               </p>
             </header>
 
-            <div className="relative z-[2] grid min-h-[42svh] content-center px-5 pb-8 pt-8 sm:min-h-[56svh] sm:px-8 lg:grid-cols-[0.58fr_0.42fr] lg:px-10 lg:pb-24">
+            <div className="relative z-[2] grid min-h-[40svh] content-center px-5 pb-8 pt-7 sm:min-h-[54svh] sm:px-8 lg:grid-cols-[0.58fr_0.42fr] lg:px-10 lg:pb-24">
               <div className="max-w-xl">
                 <p className="mb-6 text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">
                   {browserRoomHomeSurface.airRoomLabel}
@@ -134,7 +134,7 @@ export function HomepageBrowserRoom() {
                 <div className="mt-8 flex flex-wrap items-center gap-5 text-sm">
                   <Link
                     href="/rituals"
-                    className="rounded-[0.42rem] border border-foreground/14 bg-white/36 px-4 py-2.5 text-foreground/82 transition hover:bg-white/62"
+                    className="rounded-[0.32rem] border border-foreground/12 bg-white/28 px-3.5 py-2 text-foreground/78 transition hover:bg-white/56"
                   >
                     Open a page
                   </Link>
@@ -151,13 +151,13 @@ export function HomepageBrowserRoom() {
             </div>
 
             <div className="relative z-[2] px-5 pb-5 sm:px-8 lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:px-10">
-              <div className="grid gap-px overflow-hidden rounded-[0.76rem_0.86rem_0.8rem_0.82rem] border border-border-subtle/60 bg-border-subtle/48 shadow-[0_10px_34px_rgba(29,42,56,0.035)] sm:grid-cols-2 lg:grid-cols-6">
+              <div className="grid gap-px overflow-hidden rounded-[0.56rem_0.82rem_0.7rem_0.74rem] border border-border-subtle/54 bg-border-subtle/42 shadow-[0_8px_24px_rgba(29,42,56,0.026)] sm:grid-cols-2 lg:grid-cols-6">
                 {visibleEntries.map((entry, index) => (
                   <Link
                     key={entry.label}
                     href={entry.href}
-                    className={`group bg-white/72 p-4 transition hover:bg-white/88 ${
-                      index % 3 === 1 ? "lg:translate-y-1" : index % 3 === 2 ? "lg:-translate-y-0.5" : ""
+                    className={`group bg-white/64 p-4 transition hover:bg-white/78 ${
+                      index % 3 === 1 ? "lg:translate-y-2" : index % 3 === 2 ? "lg:-translate-y-0.5" : ""
                     }`}
                   >
                     <span className="block text-[0.62rem] text-text-muted">{entry.mark}</span>
@@ -182,17 +182,17 @@ export function HomepageBrowserRoom() {
                 </p>
               ) : null}
             </div>
-            <div className="flex gap-4 overflow-x-auto pb-3 lg:grid lg:grid-cols-5 lg:overflow-visible">
+            <div className="flex gap-3 overflow-x-auto pb-3 lg:grid lg:grid-cols-5 lg:overflow-visible">
               {visibleSeasonRooms.map((room, index) => (
                 <article
                   key={room.label}
-                  className={`min-w-[12rem] overflow-hidden rounded-[0.72rem_0.88rem_0.78rem_0.84rem] border border-border-subtle/68 bg-white/64 shadow-[0_10px_32px_rgba(29,42,56,0.035)] ${
-                    index % 2 === 1 ? "lg:translate-y-4" : ""
+                  className={`min-w-[11.2rem] overflow-hidden rounded-[0.56rem_0.82rem_0.7rem_0.78rem] border border-border-subtle/60 bg-white/58 shadow-[0_8px_22px_rgba(29,42,56,0.026)] ${
+                    index % 2 === 1 ? "lg:translate-y-5" : index === 4 ? "lg:translate-y-2" : ""
                   }`}
                 >
                   <div className="relative aspect-[4/3] bg-white/60">
                     {room.image ? (
-                      <Image src={room.image} alt="" fill className="object-cover opacity-[0.86]" sizes="14rem" />
+                      <Image src={room.image} alt="" fill className="object-cover opacity-[0.8]" sizes="14rem" />
                     ) : null}
                     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.26))]" />
                   </div>
@@ -309,24 +309,24 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <footer className="mx-auto grid max-w-[86rem] gap-8 border-t border-border-subtle/80 py-10 text-sm text-text-secondary lg:grid-cols-[0.42fr_0.58fr]">
+          <footer className="mx-auto grid max-w-[86rem] gap-8 border-t border-border-subtle/70 py-10 text-sm text-text-secondary lg:grid-cols-[0.48fr_0.52fr]">
             <div>
               <p className="font-[var(--font-display-serif)] text-xl text-foreground">{siteConfig.brandEnName}</p>
               <p className="mt-2 text-xs uppercase tracking-[0.12em] text-text-muted">Taoist365</p>
               <p className="mt-5 max-w-sm leading-7">
-                A long-open browser place. Useful only lightly, quiet enough to leave alone.
+                A page can stay open, or not. Mail still works.
               </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {["Guidance", "Objects", "Letters"].map((group, index) => (
+            <div className="grid gap-4 sm:grid-cols-[1fr_0.8fr_1.15fr]">
+              {["Line", "Shelf", "Mail"].map((group, index) => (
                 <div key={group} className="border-b border-border-subtle/70 pb-4 sm:border-b-0">
                   <p className="text-foreground">{group}</p>
                   <p className="mt-3 text-xs leading-6 text-text-muted">
                     {index === 0
-                      ? "A small pause, not an answer engine."
+                      ? "A line, then the day continues."
                       : index === 1
-                        ? "Material continuity by mail."
-                        : "Mail can wait."}
+                        ? "Things can move by mail."
+                        : "A note can wait."}
                   </p>
                 </div>
               ))}

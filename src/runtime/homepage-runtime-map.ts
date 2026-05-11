@@ -24,25 +24,25 @@ export const homepagePrimaryEntries = [
   {
     label: "Windkeep",
     href: "/objects",
-    note: "Time objects resting in the browser room.",
+    note: "Objects resting on the page.",
     className: "sm:translate-y-3 lg:translate-y-5",
   },
   {
-    label: "The Daily Verse",
+    label: "Daily note",
     href: "/rituals/daily-guidance",
-    note: "One weather-like line for the day.",
+    note: "One line for the day.",
     className: "sm:-translate-y-1 lg:translate-y-0",
   },
   {
-    label: "Cloud Meditation Altar",
+    label: "Home note",
     href: "/rituals/home-harmony",
-    note: "A quiet surface for light, room, and breath.",
+    note: "A page for the room.",
     className: "sm:translate-y-5 lg:translate-y-8",
   },
   {
-    label: "Quiet Moments Subscription",
+    label: "Mail",
     href: "/inquiry",
-    note: "Mail only when the thread should continue.",
+    note: "Only when something should be sent.",
     className: "sm:translate-y-1 lg:translate-y-3",
   },
 ] as const;

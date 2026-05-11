@@ -17,17 +17,17 @@ export type DriftboxObjectRuntimeState = {
 const stateLines: Record<DriftboxObjectState, string> = {
   restingInRoom: "A passed object rests in the room before it moves again.",
   passedThroughHands: "The object has already crossed one life and keeps its quiet surface.",
-  waitingWithoutPressure: "It can be claimed without countdown, bid, or campaign rhythm.",
-  claimedQuietly: "A next owner is treated as continuation, not conversion.",
-  archivedAsResidue: "Some objects remain as residue after passage, still part of the shelf.",
+  waitingWithoutPressure: "It can wait without countdown, bid, or campaign rhythm.",
+  claimedQuietly: "The object continues off-page with another person.",
+  archivedAsResidue: "Some objects leave only a small shelf note after passage.",
 };
 
 const archiveLines: Record<DriftboxObjectState, string> = {
   restingInRoom: "Archive trace stays light: placement, wear, and the fact of being kept.",
-  passedThroughHands: "Previous touch is recorded as time residue, not sales proof.",
-  waitingWithoutPressure: "Claiming remains low-pressure and can stay unfinished.",
+  passedThroughHands: "Previous touch is recorded as wear, not sales proof.",
+  waitingWithoutPressure: "Receiving remains low-pressure and can stay unfinished.",
   claimedQuietly: "The passage closes softly; the object continues off-page.",
-  archivedAsResidue: "The archive is a room memory, not an inventory wall.",
+  archivedAsResidue: "The record stays small, like a shelf note.",
 };
 
 export function resolveDriftboxObjectState(dayKey: string): DriftboxObjectRuntimeState {

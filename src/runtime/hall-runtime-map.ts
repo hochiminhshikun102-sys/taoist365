@@ -5,12 +5,12 @@
 import { firstQuietCivilizationRoomSeeds } from "@/runtime/quiet-room-seeds";
 
 export const quietHallDirections = [
-  "Philosophy Hall",
-  "Five Elements Hall",
-  "Quiet Hall",
-  "Story Hall",
-  "Creation Hall",
-  "Windkeep Hall",
+  "A line for later",
+  "A page by the window",
+  "A quiet note",
+  "A small story",
+  "Something half-made",
+  "Windkeep shelf",
 ] as const;
 
 export const quietCivilizationRoomDirections = firstQuietCivilizationRoomSeeds.map((room) => room.name);
