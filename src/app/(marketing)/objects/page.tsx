@@ -43,8 +43,8 @@ export default function ObjectsPage() {
         >
           <p className="text-xs uppercase tracking-[0.14em] text-text-muted/72">Driftbox</p>
           <p className="mt-3 max-w-2xl text-sm leading-8 text-text-secondary">
-            A small place inside Windkeep for things that have moved on. If something should come nearer, mail can
-            receive the note and the object can keep going through ordinary hands.
+            A quiet shelf note for things that have moved on. If something should come nearer, mail can receive the
+            note and the object can keep going through ordinary hands.
           </p>
         </section>
 

@@ -17,12 +17,12 @@ const objectRooms = taoist365ObjectsCatalog.slice(0, 6);
 const windkeepObjects = taoist365ObjectsCatalog.slice(2, 8);
 
 const roomEntries = [
-  { label: "Daily Note", href: "/rituals/daily-guidance", air: "One line near the morning.", mark: "01" },
-  { label: "Windkeep", href: "/objects", air: "Objects that can sit on a shelf.", mark: "03" },
-  { label: "Quiet Mail", href: "/inquiry", air: "A letter that can wait.", mark: "04" },
-  { label: "Home Notes", href: "/rituals/home-harmony", air: "A page for the room.", mark: "07" },
-  { label: "Evening Page", href: "/rituals", air: "Night light kept low.", mark: "08" },
-  { label: "Small Line", href: "/rituals/daily-guidance", air: "A small sentence for the day.", mark: "11" },
+  { label: "Daily note", href: "/rituals/daily-guidance", air: "One line near the morning.", mark: "01" },
+  { label: "Shelf", href: "/objects", air: "Objects that can sit nearby.", mark: "03" },
+  { label: "Mail", href: "/inquiry", air: "A letter that can wait.", mark: "04" },
+  { label: "Room page", href: "/rituals/home-harmony", air: "A page for the room.", mark: "07" },
+  { label: "Evening", href: "/rituals", air: "Night light kept low.", mark: "08" },
+  { label: "Small line", href: "/rituals/daily-guidance", air: "A small sentence for the day.", mark: "11" },
 ] as const;
 
 const seasonalRooms = [
@@ -88,7 +88,7 @@ export function HomepageBrowserRoom() {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(240,242,245,0.98)_0%,rgba(244,246,248,0.94)_38%,rgba(232,236,241,0.78)_100%)]" />
         <LivingAtmosphereVeil tone="default" />
         <div className="relative z-[1] mx-auto w-full max-w-[92rem] px-4 pb-16 sm:px-7 lg:px-10">
-          <section className="relative min-h-[70svh] overflow-hidden rounded-[0_0_0.78rem_0.92rem] border-x border-b border-white/40 bg-white/28 shadow-[0_10px_32px_rgba(29,42,56,0.026)] sm:min-h-[78svh]">
+          <section className="long-open-browser-softness relative min-h-[70svh] overflow-hidden rounded-[0_0_0.78rem_0.92rem] border-x border-b border-white/40 bg-white/24 shadow-[0_10px_32px_rgba(29,42,56,0.02)] sm:min-h-[78svh]">
             <HomepageHeroAirRotation className="absolute inset-0 min-h-full rounded-none border-0 bg-transparent">
               <div className="hidden" />
             </HomepageHeroAirRotation>
@@ -135,29 +135,29 @@ export function HomepageBrowserRoom() {
                 <div className="mt-8 flex flex-wrap items-center gap-5 text-sm">
                   <Link
                     href="/rituals"
-                    className="rounded-[0.32rem] border border-foreground/12 bg-white/28 px-3.5 py-2 text-foreground/78 transition hover:bg-white/56"
+                    className="taoist-quiet-action rounded-[0.28rem_0.34rem_0.32rem_0.3rem] border border-foreground/8 bg-white/18 px-3 py-1.5 text-foreground/66 transition hover:bg-white/42"
                   >
-                    Open a page
+                    Pages
                   </Link>
-                  <Link href="/guidance" className="text-foreground/82 transition hover:text-foreground">
-                    Read a line {"->"}
+                  <Link href="/guidance" className="text-foreground/66 transition hover:text-foreground">
+                    A line
                   </Link>
                 </div>
               </div>
               <aside className="mt-10 hidden max-w-[18rem] border-l border-border-subtle/80 bg-white/28 px-6 py-5 text-sm leading-7 text-text-secondary backdrop-blur-[1px] lg:block lg:place-self-center">
                 <p className="mb-3 font-[var(--font-display-serif)] text-3xl text-foreground/82">&ldquo;</p>
                 <p>The page can stay open without asking much.</p>
-                <p className="mt-4 text-[0.68rem] text-text-muted">Master Sandong, off-frame</p>
+                <p className="mt-4 text-[0.68rem] text-text-muted">Still here after other tabs.</p>
               </aside>
             </div>
 
             <div className="relative z-[2] px-5 pb-5 sm:px-8 lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:px-10">
-              <div className="grid gap-px overflow-hidden rounded-[0.56rem_0.82rem_0.7rem_0.74rem] border border-border-subtle/54 bg-border-subtle/42 shadow-[0_8px_24px_rgba(29,42,56,0.026)] sm:grid-cols-2 lg:grid-cols-6">
+              <div className="grid gap-px overflow-hidden rounded-[0.56rem_0.82rem_0.7rem_0.74rem] border border-border-subtle/44 bg-border-subtle/34 shadow-[0_8px_24px_rgba(29,42,56,0.018)] sm:grid-cols-2 lg:grid-cols-6">
                 {visibleEntries.map((entry, index) => (
                   <Link
                     key={entry.label}
                     href={entry.href}
-                    className={`group bg-white/64 p-4 transition hover:bg-white/78 ${
+                    className={`group bg-white/52 p-4 transition hover:bg-white/66 ${
                       index % 3 === 1 ? "lg:translate-y-2" : index % 3 === 2 ? "lg:-translate-y-0.5" : ""
                     }`}
                   >
@@ -174,12 +174,10 @@ export function HomepageBrowserRoom() {
 
           <section className="mx-auto grid max-w-[86rem] gap-8 py-14 sm:py-16 lg:grid-cols-[0.24fr_0.76fr]">
             <div className="lg:pt-8">
-              <h2 className="max-w-sm text-2xl leading-tight text-foreground sm:text-3xl">
-                A few pages for different moments.
-              </h2>
+              <h2 className="max-w-sm text-2xl leading-tight text-foreground sm:text-3xl">A few pages nearby.</h2>
               {!proseThin ? (
                 <p className="mt-5 max-w-xs text-sm leading-7 text-text-secondary">
-                  Small pages, linked plainly, for when they are useful.
+                  Linked plainly, for when they are useful.
                 </p>
               ) : null}
             </div>
@@ -214,8 +212,8 @@ export function HomepageBrowserRoom() {
                   Things that can sit in a real room before they become anything else.
                 </p>
               </div>
-              <Link href="/objects" className="hidden text-sm text-foreground/76 hover:text-foreground sm:block">
-                View all objects {"->"}
+              <Link href="/objects" className="hidden text-sm text-foreground/62 hover:text-foreground sm:block">
+                Objects
               </Link>
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
@@ -279,8 +277,8 @@ export function HomepageBrowserRoom() {
                         : "Objects stay close to ordinary use."}
                     </p>
                   </div>
-                  <Link href="/objects" className="text-sm text-foreground/76 hover:text-foreground">
-                    View objects {"->"}
+                  <Link href="/objects" className="text-sm text-foreground/62 hover:text-foreground">
+                    Objects
                   </Link>
                 </div>
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
@@ -297,10 +295,10 @@ export function HomepageBrowserRoom() {
               </div>
               <Link
                 href="/objects#driftbox"
-                className="relative overflow-hidden rounded-[0.82rem_0.72rem_0.8rem_0.76rem] border border-border-subtle/55 bg-white/34 p-5 shadow-none"
+                className="relative overflow-hidden rounded-[0.82rem_0.72rem_0.8rem_0.76rem] border border-border-subtle/46 bg-white/24 p-5 shadow-none"
               >
                 <div className="relative z-[1] flex min-h-[12rem] flex-col justify-end border-l border-border-subtle/70 pl-5">
-                  <p className="text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">Inside Windkeep</p>
+                  <p className="text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">Inside the shelf</p>
                   <h3 className="mt-3 max-w-xs text-xl leading-tight text-foreground">Driftbox, after something moves on.</h3>
                   <p className="mt-4 text-sm leading-7 text-text-secondary">
                     {driftbox.lowEvent.oceanicLine}

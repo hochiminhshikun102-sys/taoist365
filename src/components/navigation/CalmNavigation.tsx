@@ -23,25 +23,25 @@ export function CalmNavigation() {
         <div className="flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 sm:gap-3">
           <Link
             href="/objects"
-            className="taoist-quiet-action rounded-lg border border-border-subtle/22 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+            className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
           >
             Objects
           </Link>
           <Link
             href="/desk"
-            className="taoist-quiet-action rounded-lg border border-border-subtle/22 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+            className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
           >
             Desk
           </Link>
           <Link
             href="/inquiry"
-            className="taoist-quiet-action rounded-lg border border-border-subtle/22 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+            className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
           >
             Mail
           </Link>
           <Link
             href="/guidance"
-            className="taoist-quiet-action rounded-lg border border-border-subtle/22 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+            className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
           >
             Pause
           </Link>
@@ -49,7 +49,7 @@ export function CalmNavigation() {
             <Link
               key={item.path}
               href={item.path}
-              className="taoist-quiet-action rounded-lg border border-border-subtle/26 px-3 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+              className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
             >
               {item.navLabel}
             </Link>

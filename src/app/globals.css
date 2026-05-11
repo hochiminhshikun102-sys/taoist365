@@ -210,6 +210,21 @@ html[data-temporal-band="night"] .living-surface-inset {
     inset -18px 0 36px -20px rgba(214, 219, 225, 0.14);
 }
 
+.long-open-browser-softness {
+  filter: saturate(0.98) contrast(0.995);
+}
+
+.long-open-browser-softness::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 34%),
+    linear-gradient(90deg, rgba(137, 147, 157, 0.035), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.04));
+  opacity: 0.72;
+}
+
 .living-shelf article:nth-child(odd),
 .living-shelf li:nth-child(odd) {
   margin-inline-start: 0.08rem;

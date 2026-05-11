@@ -444,6 +444,14 @@ Home (`src/app/(marketing)/page.tsx` and related living/guidance components) adj
 - **Homepage calibration**：homepage now says “Stay quietly” and “Continue quietly”; warmth, guidance, silence, objects, and meaning all move into background lines; no atmosphere showcase, no conceptual performance, no “look how calm this is.”
 - **Boundary**：Invisible Civilization means Taoist365 does not prove its own existence. It remains present, useful only lightly, and increasingly air-like.
 
+### 2026-05-12 — Long-term quiet existence pass
+
+- **Homepage low-consciousness**：primary actions, room entries, and Windkeep links were thinned toward plain browser links; no new homepage section, no new runtime, no organism expansion.
+- **Long-open softness**：the hero shell now carries a faint CSS-only browser softness layer, reducing fresh showroom polish without retro styling or nostalgia.
+- **Driftbox / Windkeep usability**：Driftbox copy moved from named-system explanation toward a quiet shelf note; Windkeep remains object passage, not marketplace, feed, or collector surface.
+- **Site copy cleanup**：`siteConfig` user-facing lines were converted to stable ASCII punctuation and plainer sentences so long-open pages do not surface encoding noise or overdesigned phrasing.
+- **Boundary**：This pass is stabilization only. Reverent Inquiry should keep feeling like an ordinary browser place beside life, not a new civilization layer or branded atmosphere showcase.
+
 ### Permanent boundaries
 
 - No chatbot-first UI or SaaS dashboard framing.
