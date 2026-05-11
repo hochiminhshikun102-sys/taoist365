@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   icons: {
-    icon: "/brand/reverent-inquiry-air-mark.svg",
+    icon: "/brand/production/favicon.svg",
   },
   openGraph: {
     title: `${siteConfig.siteName} · ${siteConfig.domain}`,

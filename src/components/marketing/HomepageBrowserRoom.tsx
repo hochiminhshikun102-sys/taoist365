@@ -98,7 +98,7 @@ export function HomepageBrowserRoom() {
               <Link href="/" className="flex items-center gap-3 text-foreground">
                 <span
                   aria-hidden
-                  className="h-8 w-14 shrink-0 bg-[url('/brand/reverent-inquiry-air-mark.svg')] bg-contain bg-center bg-no-repeat opacity-78"
+                  className="h-8 w-14 shrink-0 bg-[url('/brand/production/air-mark.svg')] bg-contain bg-center bg-no-repeat opacity-78"
                 />
                 <span>
                   <span className="block text-sm uppercase tracking-[0.12em]">{siteConfig.brandEnName}</span>

@@ -10,7 +10,7 @@ export function CalmNavigation() {
         <Link href="/" className="flex items-center gap-3">
           <span
             aria-hidden
-            className="h-6 w-10 shrink-0 bg-[url('/brand/reverent-inquiry-air-mark.svg')] bg-contain bg-center bg-no-repeat opacity-70"
+            className="h-6 w-10 shrink-0 bg-[url('/brand/production/air-mark.svg')] bg-contain bg-center bg-no-repeat opacity-70"
           />
           <div className="leading-tight">
             <p className="text-xs tracking-[0.12em] text-text-muted uppercase">
