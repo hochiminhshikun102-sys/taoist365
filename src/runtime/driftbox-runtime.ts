@@ -33,8 +33,8 @@ export function resolveDriftboxRuntimeForDayKey(dayKey: string): DriftboxRuntime
 
   return {
     layer: "windkeep-continuity",
-    identityLine: "Driftbox is a time-object drift layer inside Windkeep.",
-    boundaryLine: "Quiet continuation stays slow, sparse, and mail-adjacent.",
+    identityLine: "Driftbox is the part of Windkeep for things that have moved on.",
+    boundaryLine: "Continuation stays slow, sparse, and mail-adjacent.",
     objectState,
     objectContinuity,
     sediment,

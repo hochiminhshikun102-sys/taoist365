@@ -25,18 +25,18 @@ export type ObjectContinuityRuntime = {
 
 const stateLines: Record<ObjectContinuityState, string> = {
   stillTraveling: "The object is still traveling, even when the page barely mentions it.",
-  restingTemporarily: "The object rests for a while, held in room air rather than display pressure.",
+  restingTemporarily: "The object rests for a while, off to the side.",
   passedQuietly: "The object has passed quietly and keeps its surface calm.",
-  waitingForNextKeeper: "The object waits for a next keeper without urgency.",
+  waitingForNextKeeper: "The object waits for the next person without urgency.",
   continuityPreserved: "The object keeps continuity after leaving the visible shelf.",
 };
 
 const keeperLines: Record<ObjectContinuityState, string> = {
-  stillTraveling: "Keeper presence remains partial, like a name kept off the front of an envelope.",
-  restingTemporarily: "The current keeper is a pause in the drift, not the center of the story.",
-  passedQuietly: "The previous keeper leaves only a soft placement mark.",
-  waitingForNextKeeper: "The next keeper enters as long-term care, not acquisition noise.",
-  continuityPreserved: "Keeper changes stay below the surface; the room remembers continuity first.",
+  stillTraveling: "The person holding it stays mostly off the page.",
+  restingTemporarily: "The current holder is just part of the object's day.",
+  passedQuietly: "The previous holder leaves only a small placement mark.",
+  waitingForNextKeeper: "The next person enters as ordinary care, not acquisition noise.",
+  continuityPreserved: "Holder changes stay below the surface; use matters first.",
 };
 
 const storageFeelingLines: Record<ObjectContinuityState, string> = {
@@ -44,14 +44,14 @@ const storageFeelingLines: Record<ObjectContinuityState, string> = {
   restingTemporarily: "Storage is temporary rest, not inventory management.",
   passedQuietly: "Storage preserves the handoff without turning it into an event.",
   waitingForNextKeeper: "Storage keeps the object available without making it call out.",
-  continuityPreserved: "Storage becomes sediment: placement, air, and a small remaining trace.",
+  continuityPreserved: "Storage keeps placement and a small remaining trace.",
 };
 
 const longTermFamiliarityLines: Record<ObjectContinuityState, string> = {
   stillTraveling: "The object becomes familiar through distance, not through display.",
   restingTemporarily: "Rest makes recognition possible without turning the object into a product.",
   passedQuietly: "Recognition remains quiet after the handoff.",
-  waitingForNextKeeper: "The next keeper may recognize the object slowly, without claim pressure.",
+  waitingForNextKeeper: "The next person may recognize the object slowly, without claim pressure.",
   continuityPreserved: "Long-term familiarity survives as surface, placement, and care.",
 };
 
@@ -67,7 +67,7 @@ const realLifeTraceLines: Record<ObjectContinuityState, string> = {
   stillTraveling: "The object carries real-life traces from rooms, counters, drawers, and ordinary hands.",
   restingTemporarily: "Temporary rest feels practical, like something put down during a normal day.",
   passedQuietly: "Passing through daily life matters more than collector attention.",
-  waitingForNextKeeper: "The next keeper is part of ordinary use, not a collecting story.",
+  waitingForNextKeeper: "The next person is part of ordinary use, not a collecting story.",
   continuityPreserved: "Continuity is preserved through material use, not display value.",
 };
 
@@ -91,7 +91,7 @@ const usefulMaterialLines: Record<ObjectContinuityState, string> = {
   stillTraveling: "Material usefulness keeps the object human-sized.",
   restingTemporarily: "Useful things can pause without becoming collectibles.",
   passedQuietly: "Practical value passes quietly with the object.",
-  waitingForNextKeeper: "The next keeper receives usefulness, not a status signal.",
+  waitingForNextKeeper: "The next person receives usefulness, not a status signal.",
   continuityPreserved: "The material remembers use more honestly than story.",
 };
 

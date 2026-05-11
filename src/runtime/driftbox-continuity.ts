@@ -10,16 +10,16 @@ export type DriftboxContinuityRuntime = {
 };
 
 const continuityLines = [
-  "Driftbox keeps the object moving without making the movement loud.",
-  "Receiving is only a handoff in the browser room, not a performance.",
-  "The next keeper enters as continuity; the object does not become a campaign.",
-  "Some things pass through Taoist365 slowly enough to keep their room air.",
+  "Driftbox lets an object move on without making much of it.",
+  "Receiving is only a handoff, not a performance.",
+  "The next person enters as care; the object does not become a campaign.",
+  "Some things pass through Taoist365 slowly enough to stay ordinary.",
 ] as const;
 
 const residueLines = [
-  "Driftbox note: one object may have moved further through the shelf.",
-  "A quiet receiving layer sits under Windkeep, almost below the page surface.",
-  "Some Windkeep objects keep a passage mark after they leave the room.",
+  "Driftbox note: one object may have moved further along.",
+  "A quiet receiving note sits under Windkeep, almost below the page surface.",
+  "Some Windkeep objects keep a small mark after they leave.",
   "Driftbox remains a low-frequency mailbox for object continuation.",
 ] as const;
 

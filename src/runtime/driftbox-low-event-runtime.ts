@@ -44,12 +44,12 @@ export function resolveDriftboxLowEventRuntime(dayKey: string): DriftboxLowEvent
             : eventState === "quietDisappearance"
               ? "Disappearance stays quiet enough to keep the room intact."
               : eventState === "oceanicSilence"
-                ? "Driftbox becomes oceanic silence rather than content flow."
+                ? "Driftbox stays quiet instead of becoming content."
                 : eventState === "distantDrifting"
-                  ? "Objects drift at a distance, beyond foreground attention."
-                  : "Sparse object tides move through the atmosphere without feed behavior.",
+                  ? "Objects stay at a distance, away from foreground attention."
+                  : "A few object notes move through without feed behavior.",
     transitionLine: "Driftbox transitions are non-celebratory: no announcement, no pressure.",
-    oceanicLine: "Long-wave continuity carries unresolved object migration like a quiet current.",
+    oceanicLine: "An object may move on slowly, without needing a reply.",
     suppressEventLanguage: h > 36,
   };
 }

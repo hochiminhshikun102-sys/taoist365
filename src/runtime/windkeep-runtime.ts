@@ -5,11 +5,11 @@ import { resolveWindkeepDeepTimeRuntime, type WindkeepDeepTimeRuntime } from "@/
 
 export const windkeepHomeSurface = {
   kicker: "Windkeep",
-  title: "A shelf for time objects.",
+  title: "A shelf for ordinary things.",
   body:
-    "Windkeep stores object passage like room sediment: placement, keeper traces, and quiet continuity.",
-  driftboxRelation: "Driftbox sits deeper inside Windkeep: quiet receiving, object passage, and continuation after keeping.",
-  storageLine: "Browser Civilization Storage Layer: objects remain as room presence before they move again.",
+    "Windkeep keeps object passage plain: where a thing sits, how it was used, and whether mail should carry it on.",
+  driftboxRelation: "Driftbox sits inside Windkeep for quiet receiving and continuation after use.",
+  storageLine: "Objects remain as shelf presence before they move again.",
 } as const;
 
 export type WindkeepRuntime = {
