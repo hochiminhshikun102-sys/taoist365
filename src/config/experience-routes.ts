@@ -11,14 +11,14 @@ export const experienceRoutes: ExperienceRoute[] = [
     path: "/rituals/homepage",
     title: "Homepage layout",
     navLabel: "Scroll sketch",
-    purpose: "Earlier layout sketch—same site, alternate scroll.",
+    purpose: "Earlier layout sketch, same site, alternate scroll.",
     brandLayer: "brand-expression",
   },
   {
     path: "/rituals/draw-a-lot",
     title: "Draw a lot",
     navLabel: "Draw",
-    purpose: "Slow lines, optional pause—same page style as the rest.",
+    purpose: "Slow lines, optional pause, same page style as the rest.",
     brandLayer: "brand-expression",
   },
   {
@@ -44,7 +44,7 @@ export const namingSystem = {
   domain: "taoist365.com",
   rules: {
     productUse: "front-facing site navigation, product labels, metadata siteName",
-    brandEnUse: "atmosphere and brand-expression language",
+    brandEnUse: "brand-expression language",
     brandCnUse: "historical source layer and internal root context",
   },
 } as const;

@@ -17,7 +17,7 @@ interface RitualEntryLayerProps {
 const entryToneByPath: Record<string, string> = {
   "/rituals/draw-a-lot": "Hands can move slower here if they want to.",
   "/rituals/daily-guidance": "Enough room for one small part of the day.",
-  "/rituals/home-harmony": "Same air as home—nothing to get right first.",
+  "/rituals/home-harmony": "Same air as home. Nothing to get right first.",
 };
 
 export function RitualEntryLayer({ routes }: RitualEntryLayerProps) {
@@ -39,7 +39,7 @@ export function RitualEntryLayer({ routes }: RitualEntryLayerProps) {
       {!isSettled ? (
         <div className="taoist-quiet-field mt-8 rounded-xl border border-border-subtle bg-surface p-5 sm:p-6">
           <p className="text-sm leading-8 text-text-secondary">
-            Pause if you want, then tap when you are ready—no prep required.
+            Pause if you want, then tap when you are ready. No prep required.
           </p>
           <button
             type="button"
@@ -71,7 +71,7 @@ export function RitualEntryLayer({ routes }: RitualEntryLayerProps) {
                 <h3 className="text-lg text-foreground">{route.title}</h3>
                 <p className="mt-3 text-sm leading-8 text-text-secondary">{route.purpose}</p>
                 <p className="mt-5 text-xs leading-6 text-text-muted">
-                  {entryToneByPath[route.path] ?? "Open whenever—no right moment."}
+                  {entryToneByPath[route.path] ?? "Use it whenever. No right moment."}
                 </p>
               </button>
             );
@@ -91,7 +91,7 @@ export function RitualEntryLayer({ routes }: RitualEntryLayerProps) {
               className="taoist-quiet-action rounded-lg border border-border-subtle/26 px-4 py-2 text-xs text-text-muted transition hover:text-text-secondary"
               style={{ transitionDuration: `${calmInteractionStates.focusSoftness.durationMs}ms` }}
             >
-              Open
+              Go
             </Link>
             <button
               type="button"

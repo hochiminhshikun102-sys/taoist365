@@ -452,6 +452,14 @@ Home (`src/app/(marketing)/page.tsx` and related living/guidance components) adj
 - **Site copy cleanup**：`siteConfig` user-facing lines were converted to stable ASCII punctuation and plainer sentences so long-open pages do not surface encoding noise or overdesigned phrasing.
 - **Boundary**：This pass is stabilization only. Reverent Inquiry should keep feeling like an ordinary browser place beside life, not a new civilization layer or branded atmosphere showcase.
 
+### 2026-05-12 — Quiet browser persistence final pass
+
+- **Persistence cleanup**：remaining visible mojibake in route and ritual entry copy was removed so old tabs do not surface broken text.
+- **Low-expectation entry**：homepage and ritual entry actions were softened from opening / experience language toward plain passing-through links.
+- **Driftbox thinning**：homepage Driftbox presentation now reads as a shelf continuation rather than a named-system headline.
+- **Brand persistence check**：front-end brand calls remain on `/brand/production/*`; old Yewen-era marks stay out of production UI.
+- **Boundary**：Final pre-thread pass only. No runtime, organism, section, or atmosphere vocabulary was added.
+
 ### Permanent boundaries
 
 - No chatbot-first UI or SaaS dashboard framing.

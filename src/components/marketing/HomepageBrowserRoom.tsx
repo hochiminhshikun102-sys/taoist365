@@ -129,7 +129,7 @@ export function HomepageBrowserRoom() {
                 </h1>
                 {!proseThin ? (
                   <p className="mt-7 max-w-md text-sm leading-7 text-text-secondary">
-                    Open it for a minute, leave it in a tab, or come back after ordinary things.
+                    Keep it for a minute, leave it in a tab, or come back after ordinary things.
                   </p>
                 ) : null}
                 <div className="mt-8 flex flex-wrap items-center gap-5 text-sm">
@@ -299,7 +299,9 @@ export function HomepageBrowserRoom() {
               >
                 <div className="relative z-[1] flex min-h-[12rem] flex-col justify-end border-l border-border-subtle/70 pl-5">
                   <p className="text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">Inside the shelf</p>
-                  <h3 className="mt-3 max-w-xs text-xl leading-tight text-foreground">Driftbox, after something moves on.</h3>
+                  <h3 className="mt-3 max-w-xs text-xl leading-tight text-foreground">
+                    After something moves on.
+                  </h3>
                   <p className="mt-4 text-sm leading-7 text-text-secondary">
                     {driftbox.lowEvent.oceanicLine}
                   </p>
