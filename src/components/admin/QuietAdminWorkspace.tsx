@@ -25,7 +25,7 @@ import {
   quietMotionDirectionLines,
   quietObjectCollections,
   quietObjectFields,
-  quietUploadWorkflow,
+  quietUploadFlow,
 } from "@/config/quiet-cms";
 import {
   quietCommerceBoundaries,
@@ -46,8 +46,33 @@ type LocalMediaDraft = {
   kind: string;
   size: number;
 };
+type LocalObjectDraft = {
+  title: string;
+  collection: string;
+  price: string;
+  stock: string;
+  availability: string;
+  archiveState: string;
+  material: string;
+  dimensions: string;
+  placement: string;
+  atmosphereLine: string;
+};
 
 const draftKey = "reverent-inquiry-quiet-admin-drafts";
+const objectDraftKey = "taoist365-local-object-drafts";
+const emptyObjectDraft: LocalObjectDraft = {
+  title: "",
+  collection: "wind-objects",
+  price: "",
+  stock: "1",
+  availability: "available",
+  archiveState: "active",
+  material: "",
+  dimensions: "",
+  placement: "",
+  atmosphereLine: "",
+};
 
 function readDrafts(): DraftMap {
   if (typeof window === "undefined") {
@@ -70,9 +95,32 @@ function writeDrafts(drafts: DraftMap) {
   window.localStorage.setItem(draftKey, JSON.stringify(drafts));
 }
 
+function readObjectDrafts(): LocalObjectDraft[] {
+  if (typeof window === "undefined") {
+    return [];
+  }
+
+  try {
+    const stored = window.localStorage.getItem(objectDraftKey);
+    return stored ? (JSON.parse(stored) as LocalObjectDraft[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeObjectDrafts(drafts: readonly LocalObjectDraft[]) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.localStorage.setItem(objectDraftKey, JSON.stringify(drafts));
+}
+
 export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly SlowContentEntry[] }>) {
   const [drafts, setDrafts] = useState<DraftMap>(readDrafts);
   const [mediaDraft, setMediaDraft] = useState<LocalMediaDraft | null>(null);
+  const [objectDraft, setObjectDraft] = useState<LocalObjectDraft>(emptyObjectDraft);
+  const [savedObjects, setSavedObjects] = useState<LocalObjectDraft[]>(readObjectDrafts);
 
   useEffect(() => {
     writeDrafts(drafts);
@@ -80,6 +128,21 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
 
   function updateDraft(label: string, value: string) {
     setDrafts((current) => ({ ...current, [label]: value }));
+  }
+
+  function updateObjectDraft(key: keyof LocalObjectDraft, value: string) {
+    setObjectDraft((current) => ({ ...current, [key]: value }));
+  }
+
+  function saveObjectDraft() {
+    if (!objectDraft.title.trim()) {
+      return;
+    }
+
+    const next = [objectDraft, ...savedObjects].slice(0, 24);
+    setSavedObjects(next);
+    writeObjectDrafts(next);
+    setObjectDraft(emptyObjectDraft);
   }
 
   return (
@@ -138,10 +201,10 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="upload" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Upload workflow</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Upload flow</p>
         <div className="mt-4 grid gap-4 lg:grid-cols-[0.58fr_0.42fr]">
           <div className="space-y-3">
-            {quietUploadWorkflow.map((step) => (
+            {quietUploadFlow.map((step) => (
               <div key={step.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0">
                 <p className="text-xs text-foreground">{step.label}</p>
                 <p className="mt-2 text-xs leading-6 text-text-secondary">{step.action}</p>
@@ -173,6 +236,135 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
                 <p>{Math.max(1, Math.round(mediaDraft.size / 1024))} KB</p>
               </div>
             ) : null}
+          </div>
+        </div>
+      </section>
+
+      <section id="object-cms" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Object CMS</p>
+        <div className="mt-4 grid gap-4 lg:grid-cols-[0.56fr_0.44fr]">
+          <div className="grid gap-3">
+            <input
+              value={objectDraft.title}
+              onChange={(event) => updateObjectDraft("title", event.target.value)}
+              placeholder="Object title"
+              className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+            />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <select
+                value={objectDraft.collection}
+                onChange={(event) => updateObjectDraft("collection", event.target.value)}
+                className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+              >
+                {quietObjectCollections.map((collection) => (
+                  <option key={collection.id} value={collection.id}>
+                    {collection.name}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={objectDraft.availability}
+                onChange={(event) => updateObjectDraft("availability", event.target.value)}
+                className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+              >
+                <option value="available">available</option>
+                <option value="limited">limited</option>
+                <option value="made-to-order">made-to-order</option>
+                <option value="unavailable">unavailable</option>
+              </select>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <input
+                value={objectDraft.price}
+                onChange={(event) => updateObjectDraft("price", event.target.value)}
+                placeholder="Price"
+                className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+              />
+              <input
+                value={objectDraft.stock}
+                onChange={(event) => updateObjectDraft("stock", event.target.value)}
+                placeholder="Stock"
+                className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+              />
+              <select
+                value={objectDraft.archiveState}
+                onChange={(event) => updateObjectDraft("archiveState", event.target.value)}
+                className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+              >
+                <option value="active">active</option>
+                <option value="archived">archived</option>
+              </select>
+            </div>
+            <input
+              value={objectDraft.material}
+              onChange={(event) => updateObjectDraft("material", event.target.value)}
+              placeholder="Materials"
+              className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+            />
+            <input
+              value={objectDraft.dimensions}
+              onChange={(event) => updateObjectDraft("dimensions", event.target.value)}
+              placeholder="Dimensions"
+              className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+            />
+            <textarea
+              value={objectDraft.placement}
+              onChange={(event) => updateObjectDraft("placement", event.target.value)}
+              rows={3}
+              placeholder="Placement"
+              className="resize-y border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+            />
+            <textarea
+              value={objectDraft.atmosphereLine}
+              onChange={(event) => updateObjectDraft("atmosphereLine", event.target.value)}
+              rows={3}
+              placeholder="Atmosphere line"
+              className="resize-y border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
+            />
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={saveObjectDraft}
+                className="rounded-lg border border-foreground/12 bg-foreground px-4 py-2 text-sm text-white"
+              >
+                Save local object
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setObjectDraft((current) => ({
+                    ...current,
+                    atmosphereLine: current.atmosphereLine || "A quiet object that can sit near ordinary light.",
+                    placement: current.placement || "Desk, shelf, sill, or table where it can be reached without display pressure.",
+                  }))
+                }
+                className="rounded-lg border border-border-subtle bg-white/60 px-4 py-2 text-sm text-text-secondary"
+              >
+                AI suggest line
+              </button>
+            </div>
+          </div>
+          <div className="border-t border-border-subtle/70 pt-3 lg:border-l lg:border-t-0 lg:pl-4 lg:pt-0">
+            <p className="text-xs text-foreground">Saved local objects</p>
+            <div className="mt-3 space-y-3">
+              {savedObjects.length === 0 ? (
+                <p className="text-xs leading-6 text-text-muted">No local object drafts yet.</p>
+              ) : (
+                savedObjects.map((item, index) => (
+                  <button
+                    key={`${item.title}-${index}`}
+                    type="button"
+                    onClick={() => setObjectDraft(item)}
+                    className="block w-full border-t border-border-subtle/70 pt-3 text-left first:border-t-0 first:pt-0"
+                  >
+                    <span className="block text-xs text-foreground">{item.title}</span>
+                    <span className="mt-1 block text-[0.68rem] leading-5 text-text-muted">
+                      {item.collection} / {item.availability} / stock {item.stock}
+                    </span>
+                  </button>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </section>

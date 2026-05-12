@@ -160,7 +160,7 @@ export const quietMediaSlots: readonly QuietMediaSlot[] = [
   },
 ];
 
-export const quietUploadWorkflow: readonly QuietUploadStep[] = [
+export const quietUploadFlow: readonly QuietUploadStep[] = [
   {
     id: "media",
     label: "Choose media",

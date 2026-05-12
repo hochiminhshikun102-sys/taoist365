@@ -70,10 +70,16 @@ export function HomepageBrowserRoom() {
                 </span>
               </Link>
               <nav className="hidden items-center gap-7 text-[0.72rem] text-foreground/82 lg:flex">
-                {["Guidance", "Objects", "Desk", "Mail", "Pause"].map((item) => (
-                  <span key={item} className="after:ml-7 after:text-text-muted/45 after:content-['.'] last:after:hidden">
+                {[
+                  ["Collections", "/collections"],
+                  ["Objects", "/objects"],
+                  ["Draw", "/rituals/draw-a-lot"],
+                  ["Cart", "/cart"],
+                  ["Mail", "/inquiry"],
+                ].map(([item, href]) => (
+                  <Link key={item} href={href} className="after:ml-7 after:text-text-muted/45 after:content-['.'] last:after:hidden">
                     {item}
-                  </span>
+                  </Link>
                 ))}
               </nav>
               <p className="hidden max-w-[10rem] text-right text-[0.68rem] leading-5 text-text-muted sm:block">
@@ -91,18 +97,21 @@ export function HomepageBrowserRoom() {
                 </h1>
                 {!proseThin ? (
                   <p className="mt-7 max-w-md text-sm leading-7 text-text-secondary">
-                    Pages, objects, and mail on one small site.
+                    Quiet objects, a simple draw-a-lot ritual, and mail when a purchase needs a human reply.
                   </p>
                 ) : null}
                 <div className="mt-8 flex flex-wrap items-center gap-5 text-sm">
                   <Link
-                    href="/rituals"
+                    href="/collections"
                     className="taoist-quiet-action rounded-[0.28rem_0.34rem_0.32rem_0.3rem] border border-foreground/8 bg-white/18 px-3 py-1.5 text-foreground/66 transition hover:bg-white/42"
                   >
-                    Pages
+                    Shop objects
                   </Link>
-                  <Link href="/guidance" className="text-foreground/66 transition hover:text-foreground">
-                    A line
+                  <Link href="/rituals/draw-a-lot" className="text-foreground/66 transition hover:text-foreground">
+                    Draw a lot
+                  </Link>
+                  <Link href="/cart" className="text-foreground/66 transition hover:text-foreground">
+                    Cart
                   </Link>
                 </div>
               </div>

@@ -7,8 +7,10 @@ import { ObjectRuntimeGate } from "@/components/objects/ObjectRuntimeGate";
 import { ObjectSurvivedRhythmLine } from "@/components/objects/ObjectSurvivedRhythmLine";
 import { ObjectCorrespondenceBlock } from "@/components/objects/ObjectCorrespondenceBlock";
 import { ObjectPrivateMargin } from "@/components/objects/ObjectPrivateMargin";
+import { AddToCartButton } from "@/components/commerce/AddToCartButton";
 import { BrowserHostnameFoot } from "@/components/density/BrowserHostnameFoot";
 import { LivingQuietPhoto } from "@/components/living/LivingQuietPhoto";
+import { formatPrice, objectById } from "@/config/operational-commerce";
 import { ownershipPresenceForPiece } from "@/data/taoist365-objects-collection/ownership-presence";
 import { taoist365ObjectsCatalog } from "@/data/taoist365-objects-collection/system";
 
@@ -36,6 +38,14 @@ export default function ObjectsPage() {
           to ask about a piece when one should come nearer.
         </p>
         <p className="mt-3 max-w-2xl text-xs leading-7 text-text-muted/72">{siteConfig.permanenceLine}</p>
+        <div className="mt-6 flex flex-wrap gap-3 text-sm">
+          <Link href="/collections" className="rounded-lg border border-border-subtle bg-white/52 px-3 py-2 text-text-secondary hover:bg-white/70">
+            Collections
+          </Link>
+          <Link href="/cart" className="rounded-lg border border-border-subtle bg-white/52 px-3 py-2 text-text-secondary hover:bg-white/70">
+            Cart
+          </Link>
+        </div>
 
         <section
           id="driftbox"
@@ -55,6 +65,7 @@ export default function ObjectsPage() {
         <ul className="room-object-stack mt-10">
           {taoist365ObjectsCatalog.map((piece) => {
             const own = ownershipPresenceForPiece(piece);
+            const commerce = objectById(piece.id);
             return (
               <ObjectRuntimeGate catalogId={piece.id} key={piece.id}>
                 <li
@@ -67,6 +78,21 @@ export default function ObjectsPage() {
                   <ObjectTemporalAgingLine catalogPieceId={piece.id} />
                   <ObjectSurvivedRhythmLine catalogPieceId={piece.id} />
                   <p className="mt-5 text-sm leading-8 text-text-secondary">{piece.roomPlacement}</p>
+                  {commerce ? (
+                    <div className="mt-5 flex flex-wrap items-center gap-3">
+                      <Link href={`/objects/${piece.id}`} className="text-sm text-foreground underline-offset-4 hover:underline">
+                        Details
+                      </Link>
+                      <p className="text-sm text-text-secondary">{formatPrice(commerce.priceCents)}</p>
+                      <AddToCartButton
+                        id={commerce.id}
+                        title={commerce.title}
+                        priceCents={commerce.priceCents}
+                        image={commerce.media.hero}
+                        disabled={commerce.stock <= 0}
+                      />
+                    </div>
+                  ) : null}
                   <div className="mt-6">
                     <LivingQuietPhoto
                       photo={piece.photo}

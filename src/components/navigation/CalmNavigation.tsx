@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CartLink } from "@/components/commerce/CartLink";
 import { experienceRoutes } from "@/config/experience-routes";
 
 const navPaths = experienceRoutes.filter((route) => route.path !== "/rituals/homepage");
@@ -21,6 +22,12 @@ export function CalmNavigation() {
         </Link>
 
         <div className="flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 sm:gap-3">
+          <Link
+            href="/collections"
+            className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+          >
+            Collections
+          </Link>
           <Link
             href="/objects"
             className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
@@ -54,6 +61,7 @@ export function CalmNavigation() {
               {item.navLabel}
             </Link>
           ))}
+          <CartLink />
         </div>
       </nav>
     </header>

@@ -22,6 +22,7 @@ export function DrawALotLiveExperience() {
     "arrival" | "threshold" | "shake" | "moon-block" | "guidance" | "pause" | "continuation"
   >("arrival");
   const [revealedLayer, setRevealedLayer] = useState(0);
+  const [lotNumber, setLotNumber] = useState<number | null>(null);
 
   const onAdvance = () => {
     if (phase === "arrival") {
@@ -30,6 +31,7 @@ export function DrawALotLiveExperience() {
     }
 
     if (phase === "threshold") {
+      setLotNumber(Math.floor(Math.random() * 64) + 1);
       setPhase("shake");
       return;
     }
@@ -84,6 +86,7 @@ export function DrawALotLiveExperience() {
   const onReset = () => {
     setPhase("arrival");
     setRevealedLayer(0);
+    setLotNumber(null);
   };
 
   const drawShelfItems = pickInventory("folded-paper-note", "ceramic-window-bowl", "tea-cup-warmth");
@@ -92,7 +95,9 @@ export function DrawALotLiveExperience() {
     <main className="room-section-y-standard relative mx-auto w-full max-w-4xl px-5 sm:px-10">
       <section className="browser-air-presence human-residue-presence taoist-ritual-shell living-surface-inset relative min-h-[min(72svh,52rem)] rounded-2xl border border-border-subtle/38 bg-surface p-7 shadow-none sm:p-9">
         <h1 className="max-w-2xl text-3xl leading-[1.32] text-foreground sm:text-4xl">Draw a lot</h1>
-        <p className="mt-6 max-w-2xl text-base leading-9 text-text-secondary">Plain steps below. No score kept.</p>
+        <p className="mt-6 max-w-2xl text-base leading-9 text-text-secondary">
+          Tap through, receive one lot, stop anytime. No score kept.
+        </p>
         <RitualLivingSlice ritual="drawALot" />
 
         <div className="ritual-object-still-life mt-9 flex flex-wrap items-end justify-between gap-6 border-y border-border-subtle/18 py-6">
@@ -119,9 +124,9 @@ export function DrawALotLiveExperience() {
             {phase === "arrival"
               ? "Start whenever."
               : phase === "threshold"
-                ? "Next when ready."
+                ? "Think of one ordinary question, then draw."
                 : phase === "shake"
-                  ? drawGuidanceContent.shakeDescription
+                  ? `Lot ${lotNumber ?? ""}. ${drawGuidanceContent.shakeDescription}`
                   : phase === "moon-block"
                     ? drawGuidanceContent.moonBlockMessage
                     : phase === "guidance"

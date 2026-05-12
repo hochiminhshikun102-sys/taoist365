@@ -9,6 +9,7 @@ const navItems = [
   { label: "Collections", href: "#collections" },
   { label: "Schema", href: "#object-schema" },
   { label: "Upload", href: "#upload" },
+  { label: "Object CMS", href: "#object-cms" },
   { label: "Media", href: "#media-library" },
   { label: "Copy", href: "#drafts" },
   { label: "Objects", href: "#object-semantics" },
