@@ -10,6 +10,7 @@ const navItems = [
   { label: "Schema", href: "#object-schema" },
   { label: "Upload", href: "#upload" },
   { label: "AI Upload", href: "#ai-upload" },
+  { label: "Adapters", href: "#real-runtime" },
   { label: "Object CMS", href: "#object-cms" },
   { label: "Media", href: "#media-library" },
   { label: "Copy", href: "#drafts" },

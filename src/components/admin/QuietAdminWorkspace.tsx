@@ -49,6 +49,13 @@ import {
   quietPlacementReviewLines,
   quietPlacementSlots,
 } from "@/config/quiet-placement";
+import {
+  aiProviderReadiness,
+  commerceRuntimeLines,
+  mediaRuntimeReadiness,
+  operationalSuggestionRuntimeLines,
+  storageRuntimeLines,
+} from "@/config/real-runtime-readiness";
 
 type DraftMap = Record<string, string>;
 type LocalMediaDraft = {
@@ -356,6 +363,61 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
               Add media, write one instruction, then generate a product draft.
             </div>
           )}
+        </div>
+      </section>
+
+      <section id="real-runtime" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Real runtime adapters</p>
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <div className="rounded-md border border-border-subtle bg-white/54 p-4">
+            <p className="text-xs text-foreground">Model providers</p>
+            <div className="mt-3 space-y-3">
+              {aiProviderReadiness.map((item) => (
+                <div key={item.label} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0">
+                  <p className="text-[0.68rem] text-text-secondary">{item.label}</p>
+                  <p className="mt-1 text-[0.66rem] leading-5 text-text-muted">{item.state}</p>
+                  <p className="mt-1 text-[0.66rem] leading-5 text-text-muted/80">{item.needs}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-md border border-border-subtle bg-white/54 p-4">
+            <p className="text-xs text-foreground">Media runtime</p>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              {mediaRuntimeReadiness.map((item) => (
+                <p key={item.label} className="text-[0.66rem] leading-5 text-text-muted">
+                  {item.label} / {item.state}
+                </p>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-md border border-border-subtle bg-white/54 p-4">
+            <p className="text-xs text-foreground">Storage</p>
+            <div className="mt-3 space-y-2">
+              {storageRuntimeLines.map((line) => (
+                <p key={line} className="text-[0.66rem] leading-5 text-text-muted">
+                  {line}
+                </p>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-md border border-border-subtle bg-white/54 p-4">
+            <p className="text-xs text-foreground">Commerce</p>
+            <div className="mt-3 space-y-2">
+              {commerceRuntimeLines.map((line) => (
+                <p key={line} className="text-[0.66rem] leading-5 text-text-muted">
+                  {line}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-2 border-t border-border-subtle/70 pt-3 sm:grid-cols-2">
+          {operationalSuggestionRuntimeLines.map((line) => (
+            <p key={line} className="text-[0.66rem] leading-5 text-text-muted/80">
+              {line}
+            </p>
+          ))}
         </div>
       </section>
 
