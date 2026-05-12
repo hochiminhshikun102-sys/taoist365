@@ -1,10 +1,23 @@
 {
   "naming": {
-    "product": "Taoist365",
-    "brandEn": "Reverent Inquiry",
-    "brandCn": "谒问"
+    "primaryBrand": "Reverent Inquiry",
+    "ecosystemAnchor": "taoist365.com",
+    "archiveSource": "Yewen / 谒问"
   },
   "bannedTerminology": [
+    "AI assistant",
+    "AI companion",
+    "AI-powered",
+    "spiritual platform",
+    "dashboard",
+    "marketplace",
+    "companion AI",
+    "meditation app",
+    "productivity system",
+    "sanctuary",
+    "healing journey",
+    "emotional support",
+    "comfort engine",
     "fortune-telling",
     "fortune telling",
     "oracle assistant",
@@ -20,16 +33,105 @@
     "limited time offer",
     "buy now",
     "urgent",
-    "exclusive deal"
+    "exclusive deal",
+    "collectible drop",
+    "auction",
+    "inventory",
+    "checkout",
+    "feed",
+    "streak",
+    "retention hook",
+    "push notification"
   ],
   "driftSignals": {
-    "assistantization": ["assistant", "chat with ai", "ask ai", "copilot"],
-    "fortuneTone": ["fortune", "fate", "destiny", "predict", "prophecy"],
-    "startupTone": ["optimize", "scale fast", "growth", "traction", "user acquisition"],
-    "marketingPressure": ["unlock now", "act now", "subscribe now", "limited offer", "sale"]
+    "appDrift": [
+      "app shell",
+      "native app",
+      "install the app",
+      "mobile app"
+    ],
+    "dashboardDrift": [
+      "dashboard",
+      "admin panel",
+      "control center",
+      "workspace"
+    ],
+    "marketplaceDrift": [
+      "marketplace",
+      "seller",
+      "buyer",
+      "auction",
+      "inventory",
+      "checkout"
+    ],
+    "assistantization": [
+      "assistant",
+      "chat with ai",
+      "ask ai",
+      "copilot",
+      "chatbot"
+    ],
+    "spiritualPlatform": [
+      "spiritual platform",
+      "guru",
+      "prophecy",
+      "sanctuary",
+      "healing journey"
+    ],
+    "aiStartupTone": [
+      "ai-powered",
+      "scale fast",
+      "growth",
+      "traction",
+      "user acquisition"
+    ],
+    "atmosphereOverDesign": [
+      "immersive atmosphere",
+      "cinematic calm",
+      "luxury calm",
+      "premium calm"
+    ],
+    "emotionalDependency": [
+      "emotional support",
+      "comfort engine",
+      "daily companion",
+      "always here for you"
+    ],
+    "productivityBehavior": [
+      "optimize",
+      "workflow",
+      "task queue",
+      "habit stack",
+      "streak"
+    ],
+    "fortuneTone": [
+      "fortune",
+      "fate",
+      "destiny",
+      "predict",
+      "prophecy"
+    ],
+    "marketingPressure": [
+      "unlock now",
+      "act now",
+      "subscribe now",
+      "limited offer",
+      "sale"
+    ]
   },
+  "definitionOnlyPaths": [
+    "src/config/terminology-guardrail.json",
+    "src/language/",
+    "docs/terminology-tone-guardrail.md",
+    "docs/deployment/",
+    "docs/project-brain/",
+    "docs/brand-civilization/archive/"
+  ],
   "calmVocabularyHints": [
     "quiet",
+    "ordinary",
+    "browser",
+    "page",
     "gentle",
     "steady",
     "calm",
@@ -40,10 +142,181 @@
   ],
   "scanScopes": [
     "src/app",
-    "src/components/navigation",
-    "src/live-prototypes",
+    "src/components",
     "src/config",
-    "src/language"
+    "src/experience-skeleton",
+    "src/language",
+    "src/surfaces",
+    "docs/project-brain/civilization-freeze-notes.md",
+    "docs/terminology-tone-guardrail.md",
+    "public/brand/production/README.md"
   ],
-  "targetExtensions": [".ts", ".tsx", ".md"]
+  "productionPathScopes": [
+    "src/app",
+    "src/components",
+    "src/config",
+    "src/experience-skeleton",
+    "src/language",
+    "src/surfaces",
+    "public/brand/production"
+  ],
+  "targetExtensions": [
+    ".ts",
+    ".tsx",
+    ".md"
+  ],
+  "requiredAnchors": [
+    {
+      "filePath": "docs/project-brain/README.md",
+      "mustInclude": [
+        "Reverent Inquiry",
+        "taoist365.com"
+      ]
+    },
+    {
+      "filePath": "docs/deployment/README.md",
+      "mustInclude": [
+        "Cloudflare Pages build command",
+        "deployment breakage needs verification"
+      ]
+    },
+    {
+      "filePath": ".github/PULL_REQUEST_TEMPLATE.md",
+      "mustInclude": [
+        "Frontstage remains freeze-first.",
+        "deployment breakage needs verification"
+      ]
+    }
+  ],
+  "requiredPackageScripts": [
+    "build",
+    "lint",
+    "guardrail:terminology",
+    "guardrail:runtime",
+    "guardrail:operating",
+    "guardrail:continuity",
+    "guardrail:deployment",
+    "guardrail:kernel"
+  ],
+  "requiredProductionAssetFiles": [
+    "public/brand/production/air-mark.svg",
+    "public/brand/production/air-mark-monochrome.svg",
+    "public/brand/production/air-mark-dark.svg",
+    "public/brand/production/browser-mark.svg",
+    "public/brand/production/favicon.svg",
+    "public/brand/production/watermark.svg",
+    "public/brand/production/README.md"
+  ],
+  "publicRoot": {
+    "directory": "public",
+    "forbiddenDirectories": [
+      "Taoist365-Civilization-Assets",
+      "Taoist365-Brand-System",
+      "yewen-era",
+      "source-assets",
+      "archive"
+    ]
+  },
+  "productionReferences": {
+    "scanScopes": [
+      "src/app",
+      "src/components",
+      "src/config"
+    ],
+    "allowedBrandPrefix": "/brand/production/"
+  },
+  "productionAssets": {
+    "directory": "public/brand/production",
+    "forbiddenNameFragments": [
+      "yewen",
+      "taoist-gold",
+      "gold",
+      "seal",
+      "chinese-logo",
+      "source",
+      "exploration"
+    ],
+    "forbiddenContentTerms": [
+      "Yewen",
+      "Taoist365",
+      "谒问",
+      "gold",
+      "seal",
+      "guru",
+      "oracle"
+    ]
+  },
+  "quietInternetLanguage": {
+    "scanScopes": [
+      "src/app",
+      "src/components",
+      "src/config/site.ts",
+      "public/brand/production/README.md"
+    ],
+    "excludePaths": [
+      "src/app/api/",
+      "src/components/dev/"
+    ],
+    "forbiddenPublicTerms": [
+      "Browser Civilization",
+      "Continuity Kernel",
+      "Operating Layer",
+      "civilization",
+      "infrastructure",
+      "orchestration",
+      "architecture",
+      "residue",
+      "coordinates",
+      "fulfillment vocabulary",
+      "lookup continuity",
+      "carry continuity",
+      "Life rhythm layer",
+      "Human room trace",
+      "Time sediment",
+      "Six-month imagination",
+      "mindful persistence",
+      "signaled you",
+      "manifesto",
+      "philosophy",
+      "our philosophy",
+      "we believe",
+      "new way of",
+      "designed for",
+      "designed calm",
+      "internet civilization",
+      "future internet",
+      "this is a new",
+      "perfect system",
+      "curated calm",
+      "intentional stillness",
+      "intentional atmosphere",
+      "emotional architecture",
+      "contemplative interface",
+      "mindful interaction",
+      "sacred internet",
+      "digital sanctuary",
+      "ritualized browsing",
+      "curated silence",
+      "atmospheric guidance",
+      "immersive calm",
+      "browser spirituality",
+      "art direction",
+      "wellness staging",
+      "for the aesthetic",
+      "vintage cosplay",
+      "calming experience",
+      "intentional humanity",
+      "immersive stillness",
+      "reflective interface",
+      "ambient care",
+      "conscious calm",
+      "digital mindfulness",
+      "soft guidance system",
+      "living atmosphere platform",
+      "world climate",
+      "Same-day climate",
+      "Same Pacific-day climate",
+      "Same Pacific day"
+    ]
+  }
 }

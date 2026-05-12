@@ -12,8 +12,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    "public/Taoist365-Civilization-Assets/**/*sdk*.js",
-    "public/Taoist365-Civilization-Assets/**/*sdk*.map",
+    "docs/brand-civilization/archive/public-source-packs/**",
   ]),
 ]);
 

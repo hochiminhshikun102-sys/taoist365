@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "guardrail:terminology": "node scripts/terminology-guardrail.mjs"
+    "guardrail:terminology": "node scripts/terminology-guardrail.mjs",
+    "guardrail:runtime": "node scripts/runtime-infrastructure-guardrail.mjs",
+    "guardrail:operating": "node scripts/operating-layer-guardrail.mjs",
+    "guardrail:continuity": "node scripts/civilization-continuity-guardrail.mjs",
+    "guardrail:deployment": "node scripts/deployment-observation-guardrail.mjs",
+    "guardrail:kernel": "node scripts/continuity-kernel-guardrail.mjs"
   },
   "dependencies": {
     "next": "16.2.6",

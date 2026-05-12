@@ -63,5 +63,5 @@ yarn-error.log*
 next-env.d.ts
 
 # archived browser captures should not pollute lint or stable snapshots
-public/Taoist365-Civilization-Assets/**/*sdk*.js
-public/Taoist365-Civilization-Assets/**/*sdk*.map
+docs/brand-civilization/archive/public-source-packs/Taoist365-Civilization-Assets/**/*sdk*.js
+docs/brand-civilization/archive/public-source-packs/Taoist365-Civilization-Assets/**/*sdk*.map
