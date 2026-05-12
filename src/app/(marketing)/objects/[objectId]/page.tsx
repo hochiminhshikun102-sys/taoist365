@@ -164,6 +164,15 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
             </figure>
           </div>
 
+          <figure className="mt-5">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-border-subtle bg-white">
+              <Image src={object.media.package} alt={`${object.title} packaging reference`} fill className="object-cover opacity-[0.9]" sizes="(max-width: 1024px) 92vw, 56rem" />
+            </div>
+            <figcaption className="mt-3 text-xs leading-6 text-text-muted">
+              Packaging box reference for internal order preparation.
+            </figcaption>
+          </figure>
+
           <div className="mt-8 grid gap-5 lg:grid-cols-3">
             <section className="rounded-lg border border-border-subtle bg-white/54 p-5">
               <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Materials</p>

@@ -36,6 +36,7 @@ export type CommerceObject = {
     placement: string;
     detail: string;
     collection: string;
+    package: string;
   };
   relatedIds: readonly string[];
 };
@@ -738,7 +739,7 @@ const materialObjectSeeds: readonly MaterialObjectSeed[] = [
 ];
 
 const autoMaterialSourceStems = [
-  "1.1", "1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "2", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "3", "30", "31", "32", "33", "35", "36", "37", "38", "39", "4", "40", "41", "42", "43", "44", "45", "46", "47", "49.1", "49.2", "49.3", "49.4", "49", "5", "50", "51", "52", "53", "54", "55", "56", "57", "58", "6", "60", "63", "64", "65", "66", "67.1", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "8", "80", "83", "84", "85", "86", "87", "9", "91", "92", "93", "94", "95", "96", "97", "crystal-window-plant", "incense-box", "tea-gift-box", "风铃001",
+  "1.1", "1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "2", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "3", "30", "31", "32", "33", "35", "36", "37", "38", "39", "4", "40", "41", "42", "43", "44", "45", "46", "47", "49.1", "49.2", "49.3", "49.4", "49", "5", "50", "51", "52", "53", "54", "55", "56", "57", "58", "6", "60", "63", "64", "65", "66", "67.1", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "8", "80", "83", "84", "85", "86", "87", "9", "91", "92", "93", "94", "95", "96", "97", "131-2", "161", "162", "163", "165", "166", "167", "168", "crystal-window-plant", "incense-box", "tea-gift-box", "风铃001",
 ] as const;
 
 const splitMaterialSourceStems = [
@@ -764,6 +765,13 @@ function titleFromStem(stem: string) {
     "incense-box": "Still Water Incense Box",
     "tea-gift-box": "Tao Fruit Tea Gift Box",
     "风铃001": "Window Wind Bell",
+    "161": "Window Bell 161",
+    "162": "Window Bell 162",
+    "163": "Window Bell 163",
+    "165": "Window Bell 165",
+    "166": "Window Bell 166",
+    "167": "Window Bell 167",
+    "168": "Window Bell 168",
   };
 
   return named[stem] ?? `Material Object ${stem.toUpperCase()}`;
@@ -771,29 +779,76 @@ function titleFromStem(stem: string) {
 
 function autoMaterialSeed(stem: string, index: number, fromSplit = false): MaterialObjectSeed {
   const title = titleFromStem(stem);
-  const collection = fromSplit ? "ritual-objects" : collectionCycle[index % collectionCycle.length];
-  const slug = stem.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || `source-${index}`;
+  const isWindBell = title.includes("Wind Bell") || title.includes("Window Bell");
+  const collection = isWindBell ? "wind-objects" : fromSplit ? "ritual-objects" : collectionCycle[index % collectionCycle.length];
+  const namedSlugs: Record<string, string> = {
+    "风铃001": "window-wind-bell-001",
+  };
+  const normalizedSlug = stem.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const slug = namedSlugs[stem] ?? (normalizedSlug || `source-${index}`);
 
   return {
     id: `material-${slug}`,
     sourceStem: stem,
     title,
-    subtitle: fromSplit ? "Cropped product candidate from a multi-object source image." : "First-stage product link from the current Taoist365 material shelf.",
-    atmosphereLine: fromSplit
+    subtitle: isWindBell ? "Decorative room wind bell prepared from the current product shelf." : fromSplit ? "Cropped product candidate from a multi-object source image." : "First-stage product link from the current Taoist365 material shelf.",
+    atmosphereLine: isWindBell
+      ? "A hanging object for window air, small sound, and low-pressure room movement."
+      : fromSplit
       ? "A separated product surface prepared from a grouped material board for internal testing."
       : "A quiet product surface prepared for internal commerce testing.",
-    inspiration: fromSplit
+    inspiration: isWindBell
+      ? "The design direction comes from small bells, window light, and hanging room objects that move only when the air moves."
+      : fromSplit
       ? "This link comes from a grouped product board. The first pass isolates the object area, calms the background, and keeps the shape available for later model-level cleanup."
       : "This link keeps the product shape from the original material while resetting the surrounding field into a softer Taoist365 surface.",
     collection,
-    materials: ["Source material pending final receiving check", "cleaned high-resolution derivative", "soft room background"],
-    dimensions: "Final dimensions pending stock receiving check",
-    placement: fromSplit
+    materials: isWindBell
+      ? ["Metal bell body", "hanging cord or chain", "decorative charm components"]
+      : ["Source material pending final receiving check", "cleaned high-resolution derivative", "soft room background"],
+    dimensions: isWindBell ? "Approx. 10-18 in hanging length / final measurement confirmed before shipping" : "Final dimensions pending stock receiving check",
+    placement: isWindBell
+      ? "Window hook, entryway peg, balcony corner, or a shelf edge with moving air."
+      : fromSplit
       ? "Use as a test product card until the individual product photo is replaced."
       : "Shelf, desk, room corner, or product card surface depending on final receiving.",
-    priceCents: fromSplit ? 3200 + (index % 5) * 300 : 2800 + (index % 8) * 400,
+    priceCents: isWindBell ? 5800 + (index % 4) * 400 : fromSplit ? 3200 + (index % 5) * 300 : 2800 + (index % 8) * 400,
     stock: fromSplit ? 3 + (index % 4) : 4 + (index % 9),
   };
+}
+
+function marketAdjustedPriceCents(basePriceCents: number, title: string, source: string, index: number) {
+  const lower = `${title} ${source}`.toLowerCase();
+
+  if (lower.includes("wind bell") || lower.includes("window bell") || lower.includes("风铃")) {
+    return 5800 + (index % 5) * 500;
+  }
+
+  if (lower.includes("bracelet") || lower.includes("crystal")) {
+    return Math.max(basePriceCents, 4200);
+  }
+
+  if (lower.includes("plush") || lower.includes("jellyfish") || lower.includes("rabbit") || lower.includes("cat") || lower.includes("moon body")) {
+    return Math.max(basePriceCents, 4800 + (index % 6) * 400);
+  }
+
+  if (lower.includes("lamp") || lower.includes("light")) {
+    return Math.max(basePriceCents, 7800);
+  }
+
+  if (lower.includes("tea")) {
+    return Math.max(basePriceCents, 6200);
+  }
+
+  if (lower.includes("pendant") || lower.includes("ornament")) {
+    return Math.max(basePriceCents, 5200);
+  }
+
+  return Math.max(basePriceCents, 3600 + (index % 8) * 400);
+}
+
+function derivedStemFromAsset(assetName: string) {
+  return assetName.replace(/\.[^.]+$/, "").toLowerCase();
 }
 
 const autoMaterialObjectSeeds: readonly MaterialObjectSeed[] = [
@@ -823,7 +878,7 @@ const foundationalCommerceObjects: readonly CommerceObject[] = taoist365ObjectsC
     shippingState: details.stock <= 4 ? "limited" : "available",
     archiveState: "active",
     stock: details.stock,
-    priceCents: details.priceCents,
+    priceCents: marketAdjustedPriceCents(details.priceCents, details.title, piece.id, index),
     trustNotes: [
       "Ships after human stock confirmation.",
       "Photos are current material references from the Taoist365 asset shelf.",
@@ -839,6 +894,7 @@ const foundationalCommerceObjects: readonly CommerceObject[] = taoist365ObjectsC
       placement: `/objects-living/${details.media[1]}`,
       detail: `/objects-living/${details.media[2]}`,
       collection: `/objects-living/${details.media[0]}`,
+      package: `/objects-derived/${derivedStemFromAsset(details.media[0])}-package.webp`,
     },
     relatedIds: taoist365ObjectsCatalog
       .filter((candidate) => candidate.id !== piece.id)
@@ -875,7 +931,7 @@ const materialProductObjects: readonly CommerceObject[] = allMaterialObjectSeeds
     shippingState: seed.stock <= 5 ? "limited" : "available",
     archiveState: "active",
     stock: seed.stock,
-    priceCents: seed.priceCents,
+    priceCents: marketAdjustedPriceCents(seed.priceCents, seed.title, seed.sourceStem, index),
     trustNotes: [
       "Internal-test product link; final photo cleanup may replace the image set.",
       "Ships after human stock confirmation.",
@@ -891,6 +947,7 @@ const materialProductObjects: readonly CommerceObject[] = allMaterialObjectSeeds
       placement: `/objects-derived/${seed.sourceStem}-placement.webp`,
       detail: `/objects-derived/${seed.sourceStem}-detail.webp`,
       collection: `/objects-derived/${seed.sourceStem}-hero.webp`,
+      package: `/objects-derived/${seed.sourceStem}-package.webp`,
     },
     relatedIds: relatedSeeds.map((item) => item.id),
   };
