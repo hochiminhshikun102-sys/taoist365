@@ -9,11 +9,13 @@ const navItems = [
   { label: "Collections", href: "#collections" },
   { label: "Schema", href: "#object-schema" },
   { label: "Upload", href: "#upload" },
+  { label: "AI Upload", href: "#ai-upload" },
   { label: "Object CMS", href: "#object-cms" },
   { label: "Media", href: "#media-library" },
   { label: "Copy", href: "#drafts" },
   { label: "Objects", href: "#object-semantics" },
   { label: "Commerce", href: "#quiet-commerce" },
+  { label: "Runtime", href: "#commerce-runtime" },
   { label: "Text", href: "#text" },
 ] as const;
 

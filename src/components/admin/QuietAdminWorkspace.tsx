@@ -4,6 +4,16 @@ import { useEffect, useState } from "react";
 
 import type { SlowContentEntry } from "@/config/content-runtime";
 import {
+  commerceRuntimeReadiness,
+  generateAiMediaPlan,
+  generateAiProductDraft,
+  generateBrowserAirNormalization,
+  generateHomepageSuggestions,
+  type AiHomepageSuggestion,
+  type AiMediaSuggestion,
+  type AiProductDraft,
+} from "@/config/ai-commerce-runtime";
+import {
   aiMaintenanceReviewLines,
   aiOperationsBoundaries,
   aiReadableSiteProfile,
@@ -57,6 +67,12 @@ type LocalObjectDraft = {
   dimensions: string;
   placement: string;
   atmosphereLine: string;
+};
+type AiUploadResult = {
+  product: AiProductDraft;
+  normalization: readonly AiMediaSuggestion[];
+  mediaPlan: readonly AiMediaSuggestion[];
+  homepage: readonly AiHomepageSuggestion[];
 };
 
 const draftKey = "reverent-inquiry-quiet-admin-drafts";
@@ -121,6 +137,8 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
   const [mediaDraft, setMediaDraft] = useState<LocalMediaDraft | null>(null);
   const [objectDraft, setObjectDraft] = useState<LocalObjectDraft>(emptyObjectDraft);
   const [savedObjects, setSavedObjects] = useState<LocalObjectDraft[]>(readObjectDrafts);
+  const [aiPrompt, setAiPrompt] = useState("帮我上架这个产品，卖39美元");
+  const [aiResult, setAiResult] = useState<AiUploadResult | null>(null);
 
   useEffect(() => {
     writeDrafts(drafts);
@@ -143,6 +161,33 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
     setSavedObjects(next);
     writeObjectDrafts(next);
     setObjectDraft(emptyObjectDraft);
+  }
+
+  function runAiUploadHelper() {
+    const input = {
+      prompt: aiPrompt,
+      mediaName: mediaDraft?.name,
+      mediaKind: mediaDraft?.kind,
+    };
+    const product = generateAiProductDraft(input);
+
+    setAiResult({
+      product,
+      normalization: generateBrowserAirNormalization(input),
+      mediaPlan: generateAiMediaPlan(input),
+      homepage: generateHomepageSuggestions(input),
+    });
+    setObjectDraft((current) => ({
+      ...current,
+      title: product.title,
+      collection: product.collection,
+      price: product.shipping.match(/\$(\d+)/)?.[1] ?? current.price,
+      availability: "available",
+      material: product.materials,
+      dimensions: product.dimensions,
+      placement: product.placement,
+      atmosphereLine: product.atmosphereLine,
+    }));
   }
 
   return (
@@ -237,6 +282,80 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
               </div>
             ) : null}
           </div>
+        </div>
+      </section>
+
+      <section id="ai-upload" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">AI upload helper</p>
+        <div className="mt-4 grid gap-4 lg:grid-cols-[0.48fr_0.52fr]">
+          <div className="space-y-3">
+            <textarea
+              value={aiPrompt}
+              onChange={(event) => setAiPrompt(event.target.value)}
+              rows={4}
+              className="w-full resize-y border border-border-subtle bg-white/64 px-3 py-2 text-sm leading-6 text-text-secondary outline-none"
+              placeholder="帮我上架这个产品，卖39美元"
+            />
+            <button
+              type="button"
+              onClick={runAiUploadHelper}
+              className="rounded-lg border border-foreground/12 bg-foreground px-4 py-2 text-sm text-white"
+            >
+              Generate product draft
+            </button>
+            <p className="text-[0.68rem] leading-5 text-text-muted">
+              Uses local runtime now. Replace with model API when credentials and media storage are connected.
+            </p>
+          </div>
+          {aiResult ? (
+            <div className="space-y-4">
+              <div className="rounded-md border border-border-subtle bg-white/58 p-4">
+                <p className="text-xs text-foreground">{aiResult.product.title}</p>
+                <p className="mt-2 text-xs leading-6 text-text-secondary">{aiResult.product.subtitle}</p>
+                <p className="mt-2 text-[0.68rem] leading-5 text-text-muted">{aiResult.product.atmosphereLine}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {aiResult.product.tags.map((tag) => (
+                    <span key={tag} className="border border-border-subtle bg-white/62 px-2 py-1 text-[0.64rem] text-text-muted">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[
+                  ["Browser Air", aiResult.normalization],
+                  ["Media generation", aiResult.mediaPlan],
+                ].map(([title, lines]) => (
+                  <div key={title as string} className="rounded-md border border-border-subtle bg-white/54 p-4">
+                    <p className="text-xs text-foreground">{title as string}</p>
+                    <div className="mt-3 space-y-3">
+                      {(lines as readonly AiMediaSuggestion[]).map((line) => (
+                        <div key={line.label}>
+                          <p className="text-[0.68rem] text-text-secondary">{line.label}</p>
+                          <p className="mt-1 text-[0.66rem] leading-5 text-text-muted">{line.output}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-md border border-border-subtle bg-white/54 p-4">
+                <p className="text-xs text-foreground">Homepage placement</p>
+                <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                  {aiResult.homepage.map((item) => (
+                    <div key={item.surface}>
+                      <p className="text-[0.68rem] text-text-secondary">{item.surface}</p>
+                      <p className="mt-1 text-[0.66rem] leading-5 text-text-muted">{item.placement}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-md border border-border-subtle bg-white/54 p-4 text-xs leading-6 text-text-muted">
+              Add media, write one instruction, then generate a product draft.
+            </div>
+          )}
         </div>
       </section>
 
@@ -569,6 +688,17 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
                 ))}
               </div>
             </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="commerce-runtime" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Commerce runtime</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {commerceRuntimeReadiness.map((line) => (
+            <p key={line} className="border-l border-border-subtle/70 pl-3 text-xs leading-6 text-text-muted">
+              {line}
+            </p>
           ))}
         </div>
       </section>

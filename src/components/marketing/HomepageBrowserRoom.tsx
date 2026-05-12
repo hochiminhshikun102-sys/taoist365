@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomepageHeroAirRotation } from "@/components/marketing/HomepageHeroAirRotation";
 import { LivingAtmosphereVeil } from "@/components/ritual/LivingAtmosphereVeil";
+import { commerceCollections, commerceObjects, formatPrice } from "@/config/operational-commerce";
 import {
   homepageFallbackRooms,
   homepageObjectSlots,
@@ -37,9 +38,10 @@ export function HomepageBrowserRoom() {
     !st.dailyForceCloseSliceNarrative;
   const visibleEntries = roomThin ? homepagePresenceEntries.slice(0, 4) : homepagePresenceEntries;
   const visibleSeasonRooms = roomSettled ? homepageSeasonalRooms.slice(0, 3) : homepageSeasonalRooms;
-  const objectRooms = homepageObjectSlots.shelf;
   const windkeepObjects = homepageObjectSlots.secondaryShelf;
   const fallbackRooms = homepageFallbackRooms;
+  const featuredObjects = commerceObjects.slice(0, 4);
+  const seasonalObject = commerceObjects.find((object) => object.collection === "seasonal-collections") ?? commerceObjects[0];
 
   return (
     <main className="min-h-full bg-background text-foreground">
@@ -176,29 +178,77 @@ export function HomepageBrowserRoom() {
           <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
             <div className="mb-8 flex items-end justify-between gap-6">
               <div>
-                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">On the shelf</h2>
+                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Featured collections</h2>
+                <p className="mt-2 text-sm text-text-secondary">Clear entries into the object system.</p>
+              </div>
+              <Link href="/collections" className="hidden text-sm text-foreground/62 hover:text-foreground sm:block">
+                Collections
+              </Link>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {commerceCollections.map((collection) => (
+                <Link
+                  key={collection.id}
+                  href={`/collections/${collection.id}`}
+                  className="quiet-air-touch rounded-[0.72rem_0.92rem_0.78rem_0.86rem] border border-border-subtle/70 bg-white/50 p-5 transition hover:bg-white/70"
+                >
+                  <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">{collection.shortTitle}</p>
+                  <h3 className="mt-3 text-lg text-foreground">{collection.title}</h3>
+                  {!roomThin ? <p className="mt-3 text-xs leading-6 text-text-muted">{collection.summary}</p> : null}
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
+            <div className="mb-8 flex items-end justify-between gap-6">
+              <div>
+                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Featured objects</h2>
                 <p className="mt-2 text-sm text-text-secondary">
-                  A few objects.
+                  Objects with detail pages and order flow.
                 </p>
               </div>
               <Link href="/objects" className="hidden text-sm text-foreground/62 hover:text-foreground sm:block">
                 Objects
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-              {objectRooms.map((item, index) => (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              {featuredObjects.map((item, index) => (
                 <Link
                   key={item.id}
-                  href={`/objects#${item.id}`}
+                  href={`/objects/${item.id}`}
                   className={`quiet-air-touch group block ${index === 1 || index === 4 ? "lg:translate-y-4" : ""}`}
                 >
                   <div className="relative aspect-[1.18/1] overflow-hidden rounded-[0.64rem_0.78rem_0.7rem_0.74rem] border border-border-subtle/70 bg-white/62">
-                    <Image src={item.photo.src} alt={item.photo.alt} fill className="object-cover opacity-[0.88]" sizes="(max-width: 768px) 45vw, 13vw" />
+                    <Image src={item.media.hero} alt={item.media.alt} fill className="object-cover opacity-[0.88]" sizes="(max-width: 768px) 45vw, 22vw" />
                   </div>
                   <p className="mt-3 text-sm leading-5 text-foreground">{item.title}</p>
-                  <p className="mt-1 text-[0.72rem] leading-5 text-text-muted">{item.catalogLine}</p>
+                  <p className="mt-1 text-[0.72rem] leading-5 text-text-muted">{formatPrice(item.priceCents)}</p>
                 </Link>
               ))}
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
+            <div className="grid gap-6 lg:grid-cols-[0.36fr_0.64fr]">
+              <div>
+                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Seasonal rotation</h2>
+                <p className="mt-4 text-sm leading-7 text-text-secondary">
+                  A quiet operational surface for one object that can change without becoming a drop.
+                </p>
+              </div>
+              {seasonalObject ? (
+                <Link href={`/objects/${seasonalObject.id}`} className="quiet-air-touch grid gap-5 rounded-lg border border-border-subtle/70 bg-white/50 p-5 transition hover:bg-white/68 sm:grid-cols-[10rem_1fr]">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-border-subtle bg-white">
+                    <Image src={seasonalObject.media.hero} alt={seasonalObject.media.alt} fill className="object-cover opacity-[0.88]" sizes="10rem" />
+                  </div>
+                  <div>
+                    <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">{seasonalObject.collectionTitle}</p>
+                    <h3 className="mt-2 text-xl text-foreground">{seasonalObject.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-text-secondary">{seasonalObject.atmosphereLine}</p>
+                  </div>
+                </Link>
+              ) : null}
             </div>
           </section>
 
