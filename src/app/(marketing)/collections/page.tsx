@@ -22,26 +22,31 @@ export default function CollectionsPage() {
           {commerceCollections.map((collection) => {
             const objects = objectsForCollection(collection.id);
             const lead = objects[0];
+            const motionLead = objects.find((object) => object.title.includes("Wind Bell") || object.title.includes("Window Bell")) ?? lead;
 
             return (
               <Link
                 key={collection.id}
                 href={`/collections/${collection.id}`}
-                className="quiet-air-touch rounded-lg border border-border-subtle bg-white/52 p-5 transition hover:bg-white/68"
+                className="quiet-air-touch overflow-hidden rounded-[0.9rem_1.1rem_0.96rem_1rem] border border-border-subtle bg-white/52 transition hover:bg-white/68"
               >
-                {lead ? (
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-md border border-border-subtle bg-white">
-                    <Image src={lead.media.hero} alt={lead.media.alt} fill className="object-cover opacity-[0.88]" sizes="(max-width: 768px) 90vw, 40vw" />
+                {motionLead ? (
+                  <div className="product-motion-surface min-h-[18rem] overflow-hidden border-b border-border-subtle bg-white">
+                    <Image src={motionLead.media.motion} alt={motionLead.media.alt} fill unoptimized className="object-cover opacity-[0.86]" sizes="(max-width: 768px) 90vw, 40vw" />
+                    <div className="product-motion-surface__light" aria-hidden />
+                    <div className="product-motion-surface__shadow" aria-hidden />
                   </div>
                 ) : null}
-                <p className="mt-5 text-xs uppercase tracking-[0.12em] text-text-muted">{objects.length} objects</p>
-                <h2 className="mt-2 text-2xl text-foreground">{collection.title}</h2>
-                <p className="mt-3 text-sm leading-7 text-text-secondary">{collection.summary}</p>
-                {lead ? (
-                  <p className="mt-4 text-sm text-foreground">
-                    Featured: {lead.title} / {formatPrice(lead.priceCents)}
-                  </p>
-                ) : null}
+                <div className="p-5">
+                  <p className="text-xs uppercase tracking-[0.12em] text-text-muted">{objects.length} objects</p>
+                  <h2 className="mt-2 text-2xl text-foreground">{collection.title}</h2>
+                  <p className="mt-3 text-sm leading-7 text-text-secondary">{collection.summary}</p>
+                  {lead ? (
+                    <p className="mt-4 text-sm text-foreground">
+                      Featured: {lead.title} / {formatPrice(lead.priceCents)}
+                    </p>
+                  ) : null}
+                </div>
               </Link>
             );
           })}

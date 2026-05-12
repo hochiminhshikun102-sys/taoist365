@@ -40,7 +40,17 @@ export function HomepageBrowserRoom() {
   const visibleSeasonRooms = roomSettled ? homepageSeasonalRooms.slice(0, 3) : homepageSeasonalRooms;
   const windkeepObjects = homepageObjectSlots.secondaryShelf;
   const fallbackRooms = homepageFallbackRooms;
-  const featuredObjects = commerceObjects.slice(0, 4);
+  const heroProductTier = commerceObjects.filter(
+    (object) =>
+      object.title.includes("Wind Bell") ||
+      object.title.includes("Window Bell") ||
+      object.collection === "wind-objects",
+  );
+  const heroProduct = heroProductTier[0] ?? commerceObjects[0];
+  const featuredObjects = [...heroProductTier.slice(0, 4), ...commerceObjects].filter(
+    (object, index, list) => list.findIndex((item) => item.id === object.id) === index,
+  ).slice(0, 6);
+  const motionObjects = featuredObjects.slice(0, 3);
   const seasonalObject = commerceObjects.find((object) => object.collection === "seasonal-collections") ?? commerceObjects[0];
 
   return (
@@ -89,7 +99,7 @@ export function HomepageBrowserRoom() {
               </p>
             </header>
 
-            <div className="relative z-[2] grid px-5 pb-8 pt-10 sm:px-8 sm:pt-14 lg:grid-cols-[0.62fr_0.38fr] lg:px-10 lg:pb-20">
+            <div className="relative z-[2] grid gap-10 px-5 pb-8 pt-10 sm:px-8 sm:pt-14 lg:grid-cols-[0.52fr_0.48fr] lg:px-10 lg:pb-24">
               <div className="max-w-xl">
                 <p className="mb-6 text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">
                   {siteConfig.domain}
@@ -117,9 +127,32 @@ export function HomepageBrowserRoom() {
                   </Link>
                 </div>
               </div>
-              <aside className="mt-10 hidden max-w-[18rem] text-sm leading-7 text-text-secondary lg:block lg:place-self-center">
-                <p>hello@taoist365.com</p>
-              </aside>
+              {heroProduct ? (
+                <aside className="hero-product-cinema quiet-air-touch rounded-[0.92rem_1.2rem_0.96rem_1.04rem] border border-white/52 bg-white/42 p-4 shadow-[0_28px_80px_rgba(29,42,56,0.09)] backdrop-blur-[2px]">
+                  <Link href={`/objects/${heroProduct.id}`} className="block">
+                    <div className="product-motion-surface min-h-[18rem] overflow-hidden rounded-[0.75rem_0.94rem_0.82rem_0.9rem] border border-border-subtle/70 bg-white/62">
+                      <Image
+                        src={heroProduct.media.motion}
+                        alt={heroProduct.media.alt}
+                        fill
+                        unoptimized
+                        className="object-cover opacity-[0.86]"
+                        sizes="(max-width: 1024px) 92vw, 42vw"
+                      />
+                      <div className="product-motion-surface__light" aria-hidden />
+                      <div className="product-motion-surface__shadow" aria-hidden />
+                    </div>
+                    <div className="mt-5 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
+                      <div>
+                        <p className="text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">Hero object</p>
+                        <h2 className="mt-2 text-2xl leading-tight text-foreground">{heroProduct.title}</h2>
+                        <p className="mt-3 text-sm leading-7 text-text-secondary">{heroProduct.atmosphereLine}</p>
+                      </div>
+                      <p className="text-sm text-foreground">{formatPrice(heroProduct.priceCents)}</p>
+                    </div>
+                  </Link>
+                </aside>
+              ) : null}
             </div>
 
             <div className="relative z-[2] px-5 pb-5 sm:px-8 lg:absolute lg:bottom-0 lg:left-0 lg:right-0 lg:px-10">
@@ -140,6 +173,42 @@ export function HomepageBrowserRoom() {
                   </Link>
                 ))}
               </div>
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
+            <div className="mb-8 grid gap-5 lg:grid-cols-[0.34fr_0.66fr] lg:items-end">
+              <div>
+                <p className="text-xs uppercase tracking-[0.14em] text-text-muted">Object cinema</p>
+                <h2 className="mt-3 text-2xl leading-tight text-foreground sm:text-3xl">Wind, light, and shelf presence.</h2>
+              </div>
+              <p className="max-w-2xl text-sm leading-7 text-text-secondary lg:justify-self-end lg:text-right">
+                A first cinema layer for the hero product tier: slow motion, placement surfaces, and packaging references without ad rhythm.
+              </p>
+            </div>
+            <div className="grid gap-5 lg:grid-cols-3">
+              {motionObjects.map((item, index) => (
+                <Link
+                  key={item.id}
+                  href={`/objects/${item.id}`}
+                  className={`quiet-air-touch group rounded-[0.85rem_1.05rem_0.92rem_0.98rem] border border-border-subtle/70 bg-white/48 p-4 shadow-[0_18px_50px_rgba(29,42,56,0.045)] transition hover:bg-white/66 ${
+                    index === 1 ? "lg:translate-y-8" : index === 2 ? "lg:translate-y-3" : ""
+                  }`}
+                >
+                  <div className="product-motion-surface min-h-[15rem] overflow-hidden rounded-[0.68rem_0.84rem_0.72rem_0.8rem] border border-border-subtle/60 bg-white/60">
+                    <Image src={item.media.motion} alt={item.media.alt} fill unoptimized className="object-cover opacity-[0.86]" sizes="(max-width: 1024px) 92vw, 28vw" />
+                    <div className="product-motion-surface__light" aria-hidden />
+                    <div className="product-motion-surface__shadow" aria-hidden />
+                  </div>
+                  <div className="mt-4 flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">{item.collectionTitle}</p>
+                      <h3 className="mt-2 text-lg text-foreground">{item.title}</h3>
+                    </div>
+                    <p className="text-sm text-foreground">{formatPrice(item.priceCents)}</p>
+                  </div>
+                </Link>
+              ))}
             </div>
           </section>
 
@@ -185,18 +254,30 @@ export function HomepageBrowserRoom() {
                 Collections
               </Link>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {commerceCollections.map((collection) => (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {commerceCollections.map((collection, index) => {
+                const lead = commerceObjects.find((object) => object.collection === collection.id) ?? commerceObjects[index];
+
+                return (
                 <Link
                   key={collection.id}
                   href={`/collections/${collection.id}`}
-                  className="quiet-air-touch rounded-[0.72rem_0.92rem_0.78rem_0.86rem] border border-border-subtle/70 bg-white/50 p-5 transition hover:bg-white/70"
+                  className="quiet-air-touch overflow-hidden rounded-[0.72rem_0.92rem_0.78rem_0.86rem] border border-border-subtle/70 bg-white/50 transition hover:bg-white/70"
                 >
-                  <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">{collection.shortTitle}</p>
-                  <h3 className="mt-3 text-lg text-foreground">{collection.title}</h3>
-                  {!roomThin ? <p className="mt-3 text-xs leading-6 text-text-muted">{collection.summary}</p> : null}
+                  {lead ? (
+                    <div className="relative aspect-[4/3] bg-white/60">
+                      <Image src={lead.media.placement} alt={lead.media.alt} fill className="object-cover opacity-[0.84]" sizes="(max-width: 768px) 90vw, 22vw" />
+                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(245,245,240,0.28))]" />
+                    </div>
+                  ) : null}
+                  <div className="p-5">
+                    <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">{collection.shortTitle}</p>
+                    <h3 className="mt-3 text-lg text-foreground">{collection.title}</h3>
+                    {!roomThin ? <p className="mt-3 text-xs leading-6 text-text-muted">{collection.summary}</p> : null}
+                  </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </section>
 
@@ -212,12 +293,12 @@ export function HomepageBrowserRoom() {
                 Objects
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
               {featuredObjects.map((item, index) => (
                 <Link
                   key={item.id}
                   href={`/objects/${item.id}`}
-                  className={`quiet-air-touch group block ${index === 1 || index === 4 ? "lg:translate-y-4" : ""}`}
+                  className={`quiet-air-touch group block ${index === 1 || index === 4 ? "lg:translate-y-5" : ""}`}
                 >
                   <div className="relative aspect-[1.18/1] overflow-hidden rounded-[0.64rem_0.78rem_0.7rem_0.74rem] border border-border-subtle/70 bg-white/62">
                     <Image src={item.media.hero} alt={item.media.alt} fill className="object-cover opacity-[0.88]" sizes="(max-width: 768px) 45vw, 22vw" />
