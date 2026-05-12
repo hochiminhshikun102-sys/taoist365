@@ -152,8 +152,8 @@ Target:
   - no fantasy Taoist costume
   - no dark temple mood
 - Existing prompt references:
-  - `public/Taoist365-Civilization-Assets/02-Master-Sandong/Taoist365-Master-Sandong-World/writing/prompt.txt`
-  - `public/Taoist365-Civilization-Assets/02-Master-Sandong/Taoist365-Master-Sandong-World/seaside/prompt.txt`
+  - `docs/brand-civilization/archive/public-source-packs/Taoist365-Civilization-Assets/02-Master-Sandong/Taoist365-Master-Sandong-World/writing/prompt.txt`
+  - `docs/brand-civilization/archive/public-source-packs/Taoist365-Civilization-Assets/02-Master-Sandong/Taoist365-Master-Sandong-World/seaside/prompt.txt`
 
 Implementation requirement:
 
@@ -338,4 +338,3 @@ Start with **Homepage Visual Reset** only. It has the highest visual impact and 
 2. Convert palette to blue-white.
 3. Simplify first viewport.
 4. Keep build passing.
-
