@@ -1,0 +1,119 @@
+{
+  "name": "Reverent Inquiry",
+  "domain": "taoist365.com",
+  "summary": "A quiet long-running browser place with stable pages, ordinary object notes, a local-only desk, and human mail correspondence.",
+  "public_pages": [
+    {
+      "path": "/",
+      "role": "quiet home and long-open presence"
+    },
+    {
+      "path": "/objects",
+      "role": "ordinary objects with stable anchors and human mail"
+    },
+    {
+      "path": "/desk",
+      "role": "local-only scratch area in the visitor browser"
+    },
+    {
+      "path": "/inquiry",
+      "role": "plain mail route"
+    },
+    {
+      "path": "/rituals",
+      "role": "small reading pages kept as ordinary URLs"
+    }
+  ],
+  "boundaries": [
+    "not an assistant",
+    "not a social platform",
+    "not a checkout flow",
+    "not a productivity system",
+    "not emotional support"
+  ],
+  "infrastructure_continuity": {
+    "deployment_shape": "static export",
+    "cloudflare_pages": {
+      "status": "prepared for quiet observation deployment",
+      "build_command": "npm run build",
+      "output_directory": "out",
+      "headers_file": "/_headers",
+      "preview_policy": "Pages preview URLs should remain noindex"
+    },
+    "public_machine_files": [
+      "/llms.txt",
+      "/ai-readable.json"
+    ],
+    "change_control": "human-approved changes, guardrail-reviewed before deployment",
+    "not_for": [
+      "traffic optimization",
+      "ranking manipulation",
+      "growth analytics",
+      "content automation"
+    ]
+  },
+  "commerce_continuity": {
+    "commerce_shape": "mail-only object correspondence",
+    "object_identity": "stable object anchors, not SKU-first listings",
+    "ai_role": "semantic continuity and restraint review, not sales automation",
+    "human_review": "humans choose objects, placement, availability wording, and replies",
+    "not_for": [
+      "conversion optimization",
+      "recommendation engines",
+      "urgency mechanics",
+      "AI selling",
+      "funnel tracking",
+      "marketplace behavior"
+    ]
+  },
+  "object_semantics": [
+    {
+      "id": "taoist365-desk-mug-sand",
+      "name": "Sand stoneware desk mug",
+      "anchor": "/objects#taoist365-desk-mug-sand",
+      "kind": "Cup / desk and kitchen"
+    },
+    {
+      "id": "taoist365-linen-napkin-raw",
+      "name": "Raw-edge linen napkin (single)",
+      "anchor": "/objects#taoist365-linen-napkin-raw",
+      "kind": "Linen / table and hands"
+    },
+    {
+      "id": "taoist365-oak-tray-narrow",
+      "name": "Narrow white-oak catch tray",
+      "anchor": "/objects#taoist365-oak-tray-narrow",
+      "kind": "Wood / counter"
+    },
+    {
+      "id": "taoist365-stone-smoke-dish",
+      "name": "Flat river-stone smoke dish",
+      "anchor": "/objects#taoist365-stone-smoke-dish",
+      "kind": "Stone / corner and sill"
+    },
+    {
+      "id": "taoist365-layflat-notebook",
+      "name": "Layflat lined notebook (oat cover)",
+      "anchor": "/objects#taoist365-layflat-notebook",
+      "kind": "Paper / desk"
+    },
+    {
+      "id": "taoist365-cotton-letter-sheets",
+      "name": "Cotton letter sheets (half-fold, pack of twelve)",
+      "anchor": "/objects#taoist365-cotton-letter-sheets",
+      "kind": "Paper / mail and drawer"
+    },
+    {
+      "id": "taoist365-night-teacup",
+      "name": "Short-handle tea cup (crackle glaze)",
+      "anchor": "/objects#taoist365-night-teacup",
+      "kind": "Cup / night desk"
+    },
+    {
+      "id": "taoist365-maple-paperweight",
+      "name": "Maple block paperweight (hand-oiled)",
+      "anchor": "/objects#taoist365-maple-paperweight",
+      "kind": "Wood / sill and stack"
+    }
+  ]
+}
