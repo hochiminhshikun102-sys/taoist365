@@ -25,11 +25,17 @@ export type CommerceObject = {
   archiveState: "active" | "quiet-archive";
   stock: number;
   priceCents: number;
+  trustNotes: readonly string[];
+  shippingNote: string;
   media: {
     hero: string;
     alt: string;
     caption: string;
     videoPoster: string;
+    motion: string;
+    placement: string;
+    detail: string;
+    collection: string;
   };
   relatedIds: readonly string[];
 };
@@ -78,68 +84,92 @@ const collectionByIndex: readonly CommerceCollectionId[] = [
 
 const objectDetails = {
   "taoist365-desk-mug-sand": {
-    subtitle: "Stoneware for desk and kitchen.",
-    atmosphereLine: "A cup that can cool beside the keyboard without becoming a signal.",
-    materials: ["Stoneware", "clear glaze", "hand-thrown body"],
-    dimensions: "3.4 in tall / 3.1 in wide / about 10 oz",
-    priceCents: 4200,
+    title: "Still Water incense box",
+    subtitle: "Wooden incense box with small ceramic rest.",
+    atmosphereLine: "A table object for incense that reads as daily use, not ceremony staging.",
+    materials: ["Finished wood box", "ceramic rest", "paper sleeve"],
+    dimensions: "8.6 in x 2.1 in x 1.2 in",
+    placement: "Desk edge, tea table, or shelf where one stick can rest without becoming a display.",
+    priceCents: 3900,
     stock: 6,
+    media: ["incense-box.jpg", "57.jpg", "52.jpg"],
   },
   "taoist365-linen-napkin-raw": {
-    subtitle: "Single raw-edge linen cloth.",
-    atmosphereLine: "A cloth that accepts laundry and still comes back uneven.",
-    materials: ["Washed linen", "raw edge", "natural thread"],
-    dimensions: "18 in x 18 in, each edge varies slightly",
-    priceCents: 1800,
+    title: "Window crystal bracelet",
+    subtitle: "Mixed crystal bracelet with quiet metal charm.",
+    atmosphereLine: "A wrist object with enough color to catch light and enough restraint to stay ordinary.",
+    materials: ["Mixed crystal beads", "alloy charm", "elastic cord"],
+    dimensions: "6.7 in inner circumference, stretch fit",
+    placement: "Wrist, tray, bedside dish, or window ledge between uses.",
+    priceCents: 2800,
     stock: 18,
+    media: ["25.jpg", "23.jpg", "24.jpg"],
   },
   "taoist365-oak-tray-narrow": {
-    subtitle: "White-oak tray for counter or desk.",
-    atmosphereLine: "A small place for keys, receipts, and the screw saved for later.",
-    materials: ["White oak", "hand oil", "felt foot option"],
-    dimensions: "10.5 in x 4.2 in x 0.8 in",
+    title: "Lotus table light",
+    subtitle: "Small lotus lamp for shelf, desk, or night table.",
+    atmosphereLine: "A warm object that can hold light without turning the room theatrical.",
+    materials: ["Printed shade", "metal stem", "weighted base"],
+    dimensions: "10.2 in tall / 4.5 in shade diameter",
+    placement: "Side table, low shelf, tea corner, or desk back edge.",
     priceCents: 6400,
     stock: 4,
+    media: ["8.jpg", "5.jpg", "18.png"],
   },
   "taoist365-stone-smoke-dish": {
-    subtitle: "Flat river-stone dish.",
-    atmosphereLine: "A cool gray seat for ash, ember, or a finished pause.",
-    materials: ["River stone", "soft felt base option"],
-    dimensions: "about 4.5 in x 3.5 in, each stone differs",
+    title: "Round moon pendant",
+    subtitle: "Round metal pendant with cloud-mark face.",
+    atmosphereLine: "A small weight near the collarbone; readable up close, quiet from across the room.",
+    materials: ["Aged alloy", "cord", "small bead detail"],
+    dimensions: "Pendant about 1.1 in wide / adjustable cord",
+    placement: "Neck, wall peg, tray, or beside a mirror after use.",
     priceCents: 3200,
     stock: 5,
+    media: ["31.jpg", "50.jpg", "70.jpg"],
   },
   "taoist365-layflat-notebook": {
-    subtitle: "Oat cover notebook.",
-    atmosphereLine: "Paper that can stay open without becoming a work system.",
-    materials: ["Oat cover stock", "lined paper", "thread binding"],
-    dimensions: "5.8 in x 8.2 in / 96 pages",
-    priceCents: 2400,
+    title: "Tao fruit tea set",
+    subtitle: "Fruit tea gift set with cup and shelf-ready packaging.",
+    atmosphereLine: "A soft kitchen object for gifting without loud gift-box energy.",
+    materials: ["Dried fruit tea", "paper box", "ceramic cup reference"],
+    dimensions: "Gift box about 9.4 in x 6.1 in x 2.6 in",
+    placement: "Kitchen shelf, tea table, guest drawer, or morning counter.",
+    priceCents: 4600,
     stock: 12,
+    media: ["76.png", "77.png", "12.jpg"],
   },
   "taoist365-cotton-letter-sheets": {
-    subtitle: "Half-fold cotton letter sheets.",
-    atmosphereLine: "A small paper stack for sentences that should arrive softer.",
-    materials: ["Cotton paper", "half-fold sheets", "uncoated surface"],
-    dimensions: "12 sheets / 5.5 in x 8.5 in folded",
-    priceCents: 1600,
+    title: "Protective room charm",
+    subtitle: "Color charm with small hanging bell.",
+    atmosphereLine: "A small hanging object for doorway, lamp pull, or a shelf corner.",
+    materials: ["Printed charm face", "metal bell", "braided hanging cord"],
+    dimensions: "3.2 in body / 5.1 in hanging length",
+    placement: "Door hook, cabinet pull, lamp side, or window latch.",
+    priceCents: 2200,
     stock: 20,
+    media: ["49.jpg", "49.2.jpg", "49.4.jpg"],
   },
   "taoist365-night-teacup": {
-    subtitle: "Short-handle crackle glaze cup.",
-    atmosphereLine: "Night tea without the mug that wants to be a brand.",
-    materials: ["Stoneware", "crackle glaze", "small handle"],
-    dimensions: "2.7 in tall / about 6 oz",
-    priceCents: 3800,
+    title: "Quiet desk mug",
+    subtitle: "Ceramic mug with small Taoist365 graphic.",
+    atmosphereLine: "A working mug that can sit beside a laptop without becoming office merch.",
+    materials: ["Ceramic", "glazed print", "rounded handle"],
+    dimensions: "3.7 in tall / about 11 oz",
+    placement: "Desk, breakfast table, studio shelf, or beside paper notes.",
+    priceCents: 2400,
     stock: 3,
+    media: ["85.jpg", "84.jpg", "12.jpg"],
   },
   "taoist365-maple-paperweight": {
-    subtitle: "Hand-oiled maple block.",
-    atmosphereLine: "A small weight for drafts that should stop moving.",
-    materials: ["Maple", "hand oil", "softened corners"],
-    dimensions: "3.8 in x 2.3 in x 1.1 in",
-    priceCents: 3000,
+    title: "Moon standing ornament",
+    subtitle: "Small crescent standing ornament for table or shelf.",
+    atmosphereLine: "A standing curve for light and shadow, useful when a surface needs one quiet vertical line.",
+    materials: ["Metal crescent", "stone-like base", "small hanging form"],
+    dimensions: "9.8 in tall / 5.6 in wide",
+    placement: "Shelf, desk back edge, entry table, or windowsill.",
+    priceCents: 5200,
     stock: 7,
+    media: ["68.jpg", "35.jpg", "36.jpg"],
   },
 } as const;
 
@@ -153,24 +183,34 @@ export const commerceObjects: readonly CommerceObject[] = taoist365ObjectsCatalo
 
   return {
     id: piece.id,
-    title: piece.title,
+    title: details.title,
     subtitle: details.subtitle,
     atmosphereLine: details.atmosphereLine,
     collection,
     collectionTitle: collectionTitle(collection),
     materials: details.materials,
     dimensions: details.dimensions,
-    placement: piece.roomPlacement,
+    placement: details.placement,
     detailSurfaces: [piece.livedWithPresence, piece.roomTrace, piece.necessityNote],
     shippingState: details.stock <= 4 ? "limited" : "available",
     archiveState: "active",
     stock: details.stock,
     priceCents: details.priceCents,
+    trustNotes: [
+      "Ships after human stock confirmation.",
+      "Photos are current material references from the Taoist365 asset shelf.",
+      "Small visible variation is treated as ordinary, not defective.",
+    ],
+    shippingNote: "Ships from a small-stock shelf. Typical packing window is 3-5 business days after confirmation.",
     media: {
-      hero: piece.photo.src,
-      alt: piece.photo.alt,
-      caption: piece.photo.caption,
-      videoPoster: piece.photo.src,
+      hero: `/objects-living/${details.media[0]}`,
+      alt: `${details.title} photographed for Taoist365`,
+      caption: `${details.title} in a real product surface from the Taoist365 material shelf.`,
+      videoPoster: `/objects-living/${details.media[0]}`,
+      motion: `/objects-motion/${piece.id}.gif`,
+      placement: `/objects-living/${details.media[1]}`,
+      detail: `/objects-living/${details.media[2]}`,
+      collection: `/objects-living/${details.media[0]}`,
     },
     relatedIds: taoist365ObjectsCatalog
       .filter((candidate) => candidate.id !== piece.id)

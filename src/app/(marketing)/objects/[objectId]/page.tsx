@@ -51,6 +51,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
             <p className="mt-2 text-sm text-text-secondary">
               {object.stock} available / {object.shippingState}
             </p>
+            <p className="mt-3 text-xs leading-6 text-text-muted">{object.shippingNote}</p>
             <div className="mt-5">
               <AddToCartButton
                 id={object.id}
@@ -69,11 +70,12 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
               <Image src={object.media.hero} alt={object.media.alt} fill className="object-cover opacity-[0.9]" sizes="(max-width: 1024px) 92vw, 56vw" priority />
             </div>
             <p className="mt-3 text-xs leading-6 text-text-muted">{object.media.caption}</p>
-            <div className="mt-5 rounded-lg border border-border-subtle bg-white/46 p-5">
-              <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Video surface</p>
-              <p className="mt-3 text-sm leading-7 text-text-secondary">
-                Slow loop slot prepared for light, fabric, paper, or object shadow drift. Connect media storage to attach
-                an actual video file.
+            <div className="product-motion-surface mt-5 overflow-hidden rounded-lg border border-border-subtle bg-white/46">
+              <Image src={object.media.motion} alt="" fill unoptimized className="object-cover opacity-[0.82]" sizes="(max-width: 1024px) 92vw, 56vw" />
+              <div className="product-motion-surface__light" aria-hidden />
+              <div className="product-motion-surface__shadow" aria-hidden />
+              <p className="absolute bottom-4 left-4 right-4 z-[1] text-xs leading-6 text-white/86">
+                Slow placement motion surface from real product material.
               </p>
             </div>
           </div>
@@ -99,8 +101,22 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
               <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Placement</p>
               <p className="mt-4 text-sm leading-7 text-text-secondary">{object.placement}</p>
             </section>
+
+            <section className="rounded-lg border border-border-subtle bg-white/54 p-5">
+              <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Shipping</p>
+              <p className="mt-4 text-sm leading-7 text-text-secondary">{object.shippingNote}</p>
+            </section>
           </div>
         </div>
+
+        <section className="mt-10 grid gap-5 sm:grid-cols-2">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-border-subtle bg-white">
+            <Image src={object.media.placement} alt={`${object.title} placement photograph`} fill className="object-cover opacity-[0.9]" sizes="(max-width: 768px) 92vw, 44vw" />
+          </div>
+          <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-border-subtle bg-white">
+            <Image src={object.media.detail} alt={`${object.title} material detail`} fill className="object-cover opacity-[0.9]" sizes="(max-width: 768px) 92vw, 44vw" />
+          </div>
+        </section>
 
         <section className="mt-10 rounded-lg border border-border-subtle bg-white/48 p-5">
           <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Details</p>
@@ -108,6 +124,13 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
             {object.detailSurfaces.map((surface) => (
               <p key={surface} className="text-sm leading-7 text-text-secondary">
                 {surface}
+              </p>
+            ))}
+          </div>
+          <div className="mt-6 grid gap-3 border-t border-border-subtle pt-4 sm:grid-cols-3">
+            {object.trustNotes.map((note) => (
+              <p key={note} className="text-xs leading-6 text-text-muted">
+                {note}
               </p>
             ))}
           </div>

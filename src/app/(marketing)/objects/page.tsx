@@ -2,17 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
-import { ObjectTemporalAgingLine } from "@/components/objects/ObjectTemporalAgingLine";
-import { ObjectRuntimeGate } from "@/components/objects/ObjectRuntimeGate";
-import { ObjectSurvivedRhythmLine } from "@/components/objects/ObjectSurvivedRhythmLine";
-import { ObjectCorrespondenceBlock } from "@/components/objects/ObjectCorrespondenceBlock";
-import { ObjectPrivateMargin } from "@/components/objects/ObjectPrivateMargin";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
 import { BrowserHostnameFoot } from "@/components/density/BrowserHostnameFoot";
-import { LivingQuietPhoto } from "@/components/living/LivingQuietPhoto";
-import { formatPrice, objectById } from "@/config/operational-commerce";
-import { ownershipPresenceForPiece } from "@/data/taoist365-objects-collection/ownership-presence";
-import { taoist365ObjectsCatalog } from "@/data/taoist365-objects-collection/system";
+import { commerceObjects, formatPrice } from "@/config/operational-commerce";
 
 export const metadata: Metadata = {
   title: "Objects",
@@ -63,47 +55,38 @@ export default function ObjectsPage() {
         </section>
 
         <ul className="room-object-stack mt-10">
-          {taoist365ObjectsCatalog.map((piece) => {
-            const own = ownershipPresenceForPiece(piece);
-            const commerce = objectById(piece.id);
+          {commerceObjects.map((object) => {
             return (
-              <ObjectRuntimeGate catalogId={piece.id} key={piece.id}>
-                <li
-                  id={piece.id}
-                  className="browser-air-presence human-residue-presence taoist-ritual-shell object-resting-surface scroll-mt-28 rounded-2xl border border-border-subtle bg-surface p-6 sm:p-7"
-                >
-                  <p className="text-xs text-text-muted/80">{piece.catalogLine}</p>
-                  <h2 className="mt-2 text-xl text-foreground">{piece.title}</h2>
-                  <p className="mt-1 text-[0.65rem] leading-5 text-text-muted/52">{piece.editionNote}</p>
-                  <ObjectTemporalAgingLine catalogPieceId={piece.id} />
-                  <ObjectSurvivedRhythmLine catalogPieceId={piece.id} />
-                  <p className="mt-5 text-sm leading-8 text-text-secondary">{piece.roomPlacement}</p>
-                  {commerce ? (
-                    <div className="mt-5 flex flex-wrap items-center gap-3">
-                      <Link href={`/objects/${piece.id}`} className="text-sm text-foreground underline-offset-4 hover:underline">
-                        Details
-                      </Link>
-                      <p className="text-sm text-text-secondary">{formatPrice(commerce.priceCents)}</p>
-                      <AddToCartButton
-                        id={commerce.id}
-                        title={commerce.title}
-                        priceCents={commerce.priceCents}
-                        image={commerce.media.hero}
-                        disabled={commerce.stock <= 0}
-                      />
-                    </div>
-                  ) : null}
-                  <div className="mt-6">
-                    <LivingQuietPhoto
-                      photo={piece.photo}
-                      aspect="card"
-                      ownershipCaption={own.photoOwnershipNote}
-                    />
+              <li
+                key={object.id}
+                id={object.id}
+                className="browser-air-presence human-residue-presence taoist-ritual-shell object-resting-surface scroll-mt-28 rounded-2xl border border-border-subtle bg-surface p-6 sm:p-7"
+              >
+                <p className="text-xs text-text-muted/80">{object.collectionTitle}</p>
+                <h2 className="mt-2 text-xl text-foreground">{object.title}</h2>
+                <p className="mt-1 text-[0.65rem] leading-5 text-text-muted/52">
+                  {object.shippingState} / {object.stock} available
+                </p>
+                <p className="mt-5 text-sm leading-8 text-text-secondary">{object.atmosphereLine}</p>
+                <div className="mt-6">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-border-subtle bg-white">
+                    <Image src={object.media.hero} alt={object.media.alt} fill className="object-cover opacity-[0.9]" sizes="(max-width: 768px) 90vw, 42rem" />
                   </div>
-                  <ObjectCorrespondenceBlock catalogId={piece.id} />
-                  <ObjectPrivateMargin objectId={piece.id} />
-                </li>
-              </ObjectRuntimeGate>
+                </div>
+                <div className="mt-5 flex flex-wrap items-center gap-3">
+                  <Link href={`/objects/${object.id}`} className="text-sm text-foreground underline-offset-4 hover:underline">
+                    Details
+                  </Link>
+                  <p className="text-sm text-text-secondary">{formatPrice(object.priceCents)}</p>
+                  <AddToCartButton
+                    id={object.id}
+                    title={object.title}
+                    priceCents={object.priceCents}
+                    image={object.media.hero}
+                    disabled={object.stock <= 0}
+                  />
+                </div>
+              </li>
             );
           })}
         </ul>

@@ -564,6 +564,60 @@ html[data-open-duration="long"] .wind-residue-object {
   animation: homepage-hero-air-b 96s ease-in-out infinite;
 }
 
+.product-motion-surface {
+  position: relative;
+  min-height: clamp(14rem, 34vw, 26rem);
+  isolation: isolate;
+}
+
+.product-motion-surface img {
+  animation: product-motion-breath 28s ease-in-out infinite;
+  filter: saturate(0.86) contrast(0.94) brightness(1.03);
+}
+
+.product-motion-surface__light,
+.product-motion-surface__shadow {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.product-motion-surface__light {
+  z-index: 1;
+  background:
+    linear-gradient(112deg, rgba(255, 255, 255, 0.34), transparent 38%, rgba(255, 255, 255, 0.12)),
+    radial-gradient(ellipse 42% 34% at 28% 24%, rgba(255, 255, 255, 0.24), transparent 62%);
+  animation: product-motion-light 34s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+.product-motion-surface__shadow {
+  z-index: 1;
+  background: linear-gradient(180deg, transparent 45%, rgba(26, 26, 26, 0.28));
+}
+
+@keyframes product-motion-breath {
+  0%,
+  100% {
+    transform: scale(1.006) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.028) translate3d(-0.22rem, 0.08rem, 0);
+  }
+}
+
+@keyframes product-motion-light {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: translateX(-1.2%);
+  }
+  50% {
+    opacity: 0.58;
+    transform: translateX(1.4%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .homepage-hero-air-layer-a,
   .homepage-hero-air-layer-b {
@@ -576,5 +630,10 @@ html[data-open-duration="long"] .wind-residue-object {
 
   .homepage-hero-air-layer-b {
     opacity: 0 !important;
+  }
+
+  .product-motion-surface img,
+  .product-motion-surface__light {
+    animation: none !important;
   }
 }

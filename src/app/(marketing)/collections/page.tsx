@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { commerceCollections, objectsForCollection } from "@/config/operational-commerce";
+import { commerceCollections, formatPrice, objectsForCollection } from "@/config/operational-commerce";
 
 export const metadata: Metadata = {
   title: "Collections",
@@ -37,10 +37,21 @@ export default function CollectionsPage() {
                 <p className="mt-5 text-xs uppercase tracking-[0.12em] text-text-muted">{objects.length} objects</p>
                 <h2 className="mt-2 text-2xl text-foreground">{collection.title}</h2>
                 <p className="mt-3 text-sm leading-7 text-text-secondary">{collection.summary}</p>
+                {lead ? (
+                  <p className="mt-4 text-sm text-foreground">
+                    Featured: {lead.title} / {formatPrice(lead.priceCents)}
+                  </p>
+                ) : null}
               </Link>
             );
           })}
         </div>
+
+        <section className="mt-12 grid gap-4 border-t border-border-subtle pt-8 sm:grid-cols-3">
+          <p className="text-sm leading-7 text-text-secondary">Small-stock objects with current material photos.</p>
+          <p className="text-sm leading-7 text-text-secondary">Order requests are reviewed by a human before payment.</p>
+          <p className="text-sm leading-7 text-text-secondary">Shipping is confirmed plainly before anything is charged.</p>
+        </section>
       </div>
     </main>
   );

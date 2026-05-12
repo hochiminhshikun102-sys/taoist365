@@ -44,6 +44,19 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
         </Link>
         <h1 className="mt-4 max-w-2xl text-3xl leading-tight text-foreground sm:text-4xl">{collection.title}</h1>
         <p className="mt-5 max-w-2xl text-sm leading-8 text-text-secondary">{collection.entry}</p>
+        {objects[0] ? (
+          <section className="mt-10 grid gap-6 rounded-lg border border-border-subtle bg-white/50 p-5 lg:grid-cols-[0.48fr_0.52fr]">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-md border border-border-subtle bg-white">
+              <Image src={objects[0].media.collection} alt={objects[0].media.alt} fill className="object-cover opacity-[0.9]" sizes="(max-width: 1024px) 92vw, 44vw" />
+            </div>
+            <div className="flex flex-col justify-center">
+              <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Featured object</p>
+              <h2 className="mt-3 text-2xl text-foreground">{objects[0].title}</h2>
+              <p className="mt-3 text-sm leading-7 text-text-secondary">{objects[0].atmosphereLine}</p>
+              <p className="mt-4 text-sm text-foreground">{formatPrice(objects[0].priceCents)}</p>
+            </div>
+          </section>
+        ) : null}
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {objects.map((object) => (

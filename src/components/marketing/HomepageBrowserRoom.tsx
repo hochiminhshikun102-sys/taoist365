@@ -332,13 +332,41 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
+            <div className="grid gap-8 lg:grid-cols-[0.42fr_0.58fr]">
+              <div>
+                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">About Taoist365</h2>
+                <p className="mt-4 text-sm leading-7 text-text-secondary">
+                  A small object shop for quiet desk, ritual, seasonal, and room-use pieces. The site keeps ordering
+                  simple: browse, add an object, create an order request, then receive a human confirmation before payment.
+                </p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[
+                  ["Contact", "hello@taoist365.com"],
+                  ["Shipping", "Small-stock objects usually pack within 3-5 business days after confirmation."],
+                  ["FAQ", "Payment links are sent after stock and shipping are confirmed."],
+                  ["Policy", "Returns and damaged-package handling are confirmed by mail before payment provider setup is connected."],
+                ].map(([title, body]) => (
+                  <div key={title} className="rounded-lg border border-border-subtle/70 bg-white/50 p-5">
+                    <p className="text-xs uppercase tracking-[0.12em] text-text-muted">{title}</p>
+                    <p className="mt-3 text-sm leading-7 text-text-secondary">{body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
           <footer className="mx-auto flex max-w-[86rem] flex-wrap items-center justify-between gap-4 border-t border-border-subtle/70 py-7 text-sm text-text-secondary">
             <div>
               <p className="font-[var(--font-display-serif)] text-xl text-foreground">{siteConfig.brandEnName}</p>
               <p className="mt-2 text-xs uppercase tracking-[0.12em] text-text-muted">{siteConfig.domain}</p>
             </div>
             <div className="flex flex-wrap gap-5 text-xs text-text-muted">
+              <Link href="/collections" className="hover:text-text-secondary">Collections</Link>
               <Link href="/objects" className="hover:text-text-secondary">Objects</Link>
+              <Link href="/cart" className="hover:text-text-secondary">Cart</Link>
+              <Link href="/order" className="hover:text-text-secondary">Order</Link>
               <Link href="/desk" className="hover:text-text-secondary">Desk</Link>
               <Link href="/inquiry" className="hover:text-text-secondary">Mail</Link>
             </div>
