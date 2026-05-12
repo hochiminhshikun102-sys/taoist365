@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
 import { siteConfig } from "@/config/site";
+import { QuietSiteJsonLd } from "@/components/structured/QuietSiteJsonLd";
 import { TemporalBandRoot } from "@/components/ritual/TemporalBandRoot";
 import "./globals.css";
 
@@ -59,6 +60,7 @@ export default function RootLayout({
       className={`${inter.variable} ${geistMono.variable} ${displaySerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <QuietSiteJsonLd />
         <TemporalBandRoot>{children}</TemporalBandRoot>
       </body>
     </html>
