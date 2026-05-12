@@ -4,61 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomepageHeroAirRotation } from "@/components/marketing/HomepageHeroAirRotation";
 import { LivingAtmosphereVeil } from "@/components/ritual/LivingAtmosphereVeil";
+import {
+  homepageFallbackRooms,
+  homepageObjectSlots,
+  homepagePresenceEntries,
+  homepageRoomNotes,
+  homepageSeasonalRooms,
+  windResiduePlacement,
+} from "@/config/quiet-placement";
 import { siteConfig } from "@/config/site";
-import { taoist365ObjectsCatalog } from "@/data/taoist365-objects-collection/system";
 import { useWorldRuntime } from "@/lib/use-world-runtime";
-import { browserRoomHomeSurface } from "@/runtime/browser-room-runtime";
 import { resolveDriftboxRuntimeForDayKey } from "@/runtime/driftbox-runtime";
-import { quietCivilizationRoomDirections, quietHallDirections } from "@/runtime/hall-runtime-map";
 import { homepagePrimaryEntries } from "@/runtime/homepage-runtime-map";
-import { windkeepHomeSurface } from "@/runtime/windkeep-runtime";
-
-const objectRooms = taoist365ObjectsCatalog.slice(0, 6);
-const windkeepObjects = taoist365ObjectsCatalog.slice(2, 8);
-
-const roomEntries = [
-  { label: "Daily note", href: "/rituals/daily-guidance", air: "One line near the morning.", mark: "01" },
-  { label: "Shelf", href: "/objects", air: "Objects that can sit nearby.", mark: "03" },
-  { label: "Mail", href: "/inquiry", air: "A letter that can wait.", mark: "04" },
-  { label: "Room page", href: "/rituals/home-harmony", air: "A page for the room.", mark: "07" },
-  { label: "Evening", href: "/rituals", air: "Night light kept low.", mark: "08" },
-  { label: "Small line", href: "/rituals/daily-guidance", air: "A small sentence for the day.", mark: "11" },
-] as const;
-
-const seasonalRooms = [
-  {
-    label: "Morning",
-    note: "Before work",
-    image: taoist365ObjectsCatalog[1]?.photo.src,
-  },
-  {
-    label: "Kitchen",
-    note: "Counter light",
-    image: taoist365ObjectsCatalog[2]?.photo.src,
-  },
-  {
-    label: "Shelf",
-    note: "Put down",
-    image: taoist365ObjectsCatalog[6]?.photo.src,
-  },
-  {
-    label: "Window",
-    note: "Later",
-    image: taoist365ObjectsCatalog[3]?.photo.src,
-  },
-  {
-    label: "Return",
-    note: "Back later",
-    image: "/homepage-hero/windkeep-lantern-sea.png",
-  },
-] as const;
-
-const quietRoomNotes = [
-  "This link can sit here without needing a reason.",
-  "Some pages are clearer when they stay partly unfinished.",
-  "The browser keeps ordinary things close enough.",
-  "Nothing here needs to become a list to complete.",
-] as const;
 
 export function HomepageBrowserRoom() {
   const { structuralSilence, worldAiNativeInfrastructure } = useWorldRuntime();
@@ -78,9 +35,11 @@ export function HomepageBrowserRoom() {
     !driftbox.lowEvent.suppressEventLanguage &&
     !roomSettled &&
     !st.dailyForceCloseSliceNarrative;
-  const visibleEntries = roomThin ? roomEntries.slice(0, 4) : roomEntries;
-  const visibleSeasonRooms = roomSettled ? seasonalRooms.slice(0, 3) : seasonalRooms;
-  const fallbackRooms = roomThin ? quietHallDirections : quietCivilizationRoomDirections.slice(0, 6);
+  const visibleEntries = roomThin ? homepagePresenceEntries.slice(0, 4) : homepagePresenceEntries;
+  const visibleSeasonRooms = roomSettled ? homepageSeasonalRooms.slice(0, 3) : homepageSeasonalRooms;
+  const objectRooms = homepageObjectSlots.shelf;
+  const windkeepObjects = homepageObjectSlots.secondaryShelf;
+  const fallbackRooms = homepageFallbackRooms;
 
   return (
     <main className="min-h-full bg-background text-foreground">
@@ -88,11 +47,14 @@ export function HomepageBrowserRoom() {
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(240,242,245,0.98)_0%,rgba(244,246,248,0.94)_38%,rgba(232,236,241,0.78)_100%)]" />
         <LivingAtmosphereVeil tone="default" />
         <div className="relative z-[1] mx-auto w-full max-w-[92rem] px-4 pb-16 sm:px-7 lg:px-10">
-          <section className="long-open-browser-softness relative min-h-[70svh] overflow-hidden rounded-[0_0_0.78rem_0.92rem] border-x border-b border-white/40 bg-white/24 shadow-[0_10px_32px_rgba(29,42,56,0.02)] sm:min-h-[78svh]">
+          <section className="browser-air-presence human-residue-presence long-open-browser-softness relative overflow-hidden rounded-[0_0_0.78rem_0.92rem] border-x border-b border-white/40 bg-white/24 shadow-[0_10px_32px_rgba(29,42,56,0.02)]">
             <HomepageHeroAirRotation className="absolute inset-0 min-h-full rounded-none border-0 bg-transparent">
               <div className="hidden" />
             </HomepageHeroAirRotation>
             <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(240,242,245,0.92)_0%,rgba(240,242,245,0.72)_34%,rgba(240,242,245,0.12)_64%),linear-gradient(180deg,rgba(255,255,255,0.56)_0%,rgba(255,255,255,0.08)_72%,rgba(240,242,245,0.58)_100%)]" />
+            <div className="wind-residue-object wind-residue-object--faint pointer-events-none absolute right-4 top-[20%] z-[1] hidden aspect-[5/4] w-[7rem] rounded-[0.72rem_0.9rem_0.8rem_0.84rem] sm:block lg:right-10 lg:top-[18%] lg:w-[8.5rem]">
+              <Image src={windResiduePlacement.image} alt="" fill className="object-cover" sizes="9rem" />
+            </div>
 
             <header className="relative z-[2] flex items-start justify-between gap-6 px-5 py-6 sm:px-8 lg:px-10">
               <Link href="/" className="flex items-center gap-3 text-foreground">
@@ -119,17 +81,17 @@ export function HomepageBrowserRoom() {
               </p>
             </header>
 
-            <div className="relative z-[2] grid min-h-[40svh] content-center px-5 pb-8 pt-7 sm:min-h-[54svh] sm:px-8 lg:grid-cols-[0.58fr_0.42fr] lg:px-10 lg:pb-24">
+            <div className="relative z-[2] grid px-5 pb-8 pt-10 sm:px-8 sm:pt-14 lg:grid-cols-[0.62fr_0.38fr] lg:px-10 lg:pb-20">
               <div className="max-w-xl">
                 <p className="mb-6 text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">
-                  {browserRoomHomeSurface.airRoomLabel}
+                  {siteConfig.domain}
                 </p>
-                <h1 className="max-w-[38rem] text-[2.25rem] font-normal leading-[1.09] text-foreground sm:text-6xl lg:text-[4.85rem]">
-                  A quiet page to keep beside the day.
+                <h1 className="max-w-[32rem] text-[2rem] font-normal leading-[1.12] text-foreground sm:text-5xl lg:text-[3.7rem]">
+                  Reverent Inquiry
                 </h1>
                 {!proseThin ? (
                   <p className="mt-7 max-w-md text-sm leading-7 text-text-secondary">
-                    Keep it for a minute, leave it in a tab, or come back after ordinary things.
+                    Pages, objects, and mail on one small site.
                   </p>
                 ) : null}
                 <div className="mt-8 flex flex-wrap items-center gap-5 text-sm">
@@ -144,10 +106,8 @@ export function HomepageBrowserRoom() {
                   </Link>
                 </div>
               </div>
-              <aside className="mt-10 hidden max-w-[18rem] border-l border-border-subtle/80 bg-white/28 px-6 py-5 text-sm leading-7 text-text-secondary backdrop-blur-[1px] lg:block lg:place-self-center">
-                <p className="mb-3 font-[var(--font-display-serif)] text-3xl text-foreground/82">&ldquo;</p>
-                <p>The page can stay open without asking much.</p>
-                <p className="mt-4 text-[0.68rem] text-text-muted">Still here after other tabs.</p>
+              <aside className="mt-10 hidden max-w-[18rem] text-sm leading-7 text-text-secondary lg:block lg:place-self-center">
+                <p>hello@taoist365.com</p>
               </aside>
             </div>
 
@@ -157,7 +117,7 @@ export function HomepageBrowserRoom() {
                   <Link
                     key={entry.label}
                     href={entry.href}
-                    className={`group bg-white/52 p-4 transition hover:bg-white/66 ${
+                    className={`quiet-air-touch group bg-white/52 p-4 transition hover:bg-white/66 ${
                       index % 3 === 1 ? "lg:translate-y-2" : index % 3 === 2 ? "lg:-translate-y-0.5" : ""
                     }`}
                   >
@@ -172,9 +132,9 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto grid max-w-[86rem] gap-8 py-14 sm:py-16 lg:grid-cols-[0.24fr_0.76fr]">
+          <section className="mx-auto grid max-w-[86rem] gap-6 py-11 sm:py-12 lg:grid-cols-[0.24fr_0.76fr]">
             <div className="lg:pt-8">
-              <h2 className="max-w-sm text-2xl leading-tight text-foreground sm:text-3xl">A few pages nearby.</h2>
+              <h2 className="max-w-sm text-2xl leading-tight text-foreground sm:text-3xl">Nearby pages.</h2>
               {!proseThin ? (
                 <p className="mt-5 max-w-xs text-sm leading-7 text-text-secondary">
                   Linked plainly, for when they are useful.
@@ -185,7 +145,7 @@ export function HomepageBrowserRoom() {
               {visibleSeasonRooms.map((room, index) => (
                 <article
                   key={room.label}
-                  className={`min-w-[11.2rem] overflow-hidden rounded-[0.56rem_0.82rem_0.7rem_0.78rem] border border-border-subtle/60 bg-white/58 shadow-[0_8px_22px_rgba(29,42,56,0.026)] ${
+                  className={`browser-air-presence min-w-[11.2rem] overflow-hidden rounded-[0.56rem_0.82rem_0.7rem_0.78rem] border border-border-subtle/60 bg-white/58 shadow-[0_8px_22px_rgba(29,42,56,0.026)] ${
                     index % 2 === 1 ? "lg:translate-y-5" : index === 4 ? "lg:translate-y-2" : ""
                   }`}
                 >
@@ -204,12 +164,12 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-14 sm:py-16">
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
             <div className="mb-8 flex items-end justify-between gap-6">
               <div>
-                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Objects resting nearby</h2>
+                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">On the shelf</h2>
                 <p className="mt-2 text-sm text-text-secondary">
-                  Things that can sit in a real room before they become anything else.
+                  A few objects.
                 </p>
               </div>
               <Link href="/objects" className="hidden text-sm text-foreground/62 hover:text-foreground sm:block">
@@ -221,7 +181,7 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={item.id}
                   href={`/objects#${item.id}`}
-                  className={`group block ${index === 1 || index === 4 ? "lg:translate-y-4" : ""}`}
+                  className={`quiet-air-touch group block ${index === 1 || index === 4 ? "lg:translate-y-4" : ""}`}
                 >
                   <div className="relative aspect-[1.18/1] overflow-hidden rounded-[0.64rem_0.78rem_0.7rem_0.74rem] border border-border-subtle/70 bg-white/62">
                     <Image src={item.photo.src} alt={item.photo.alt} fill className="object-cover opacity-[0.88]" sizes="(max-width: 768px) 45vw, 13vw" />
@@ -233,14 +193,14 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-14 sm:py-16">
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
             <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
               <div>
-                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Other pages nearby</h2>
+                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Also here</h2>
                 <p className="mt-2 text-sm text-text-secondary">Nothing needs to be followed in order.</p>
               </div>
               <p className="text-xs leading-6 text-text-muted sm:max-w-xs sm:text-right">
-                The site can be left alone.
+                Same domain.
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -255,7 +215,7 @@ export function HomepageBrowserRoom() {
                   <p className="text-sm text-foreground">{room}</p>
                   {!roomThin ? (
                     <p className="mt-3 text-xs leading-6 text-text-muted">
-                      {quietRoomNotes[index % quietRoomNotes.length]}
+                      {homepageRoomNotes[index % homepageRoomNotes.length]}
                     </p>
                   ) : null}
                 </Link>
@@ -263,13 +223,13 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-14 sm:py-16">
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
             <div className="grid gap-8 lg:grid-cols-[0.68fr_0.32fr]">
               <div className="rounded-[0.95rem_1.12rem_1rem_1.05rem] border border-border-subtle/72 bg-white/48 p-5 sm:p-7">
                 <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
                   <div>
                     <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">
-                      {windkeepHomeSurface.kicker} . Objects in passage
+                      More objects
                     </h2>
                     <p className="mt-2 text-sm text-text-secondary">
                       {showDriftboxResidue
@@ -297,8 +257,11 @@ export function HomepageBrowserRoom() {
                 href="/objects#driftbox"
                 className="relative overflow-hidden rounded-[0.82rem_0.72rem_0.8rem_0.76rem] border border-border-subtle/46 bg-white/24 p-5 shadow-none"
               >
+                <div className="wind-residue-object wind-residue-object--faint pointer-events-none absolute right-3 top-3 aspect-[5/4] w-16 rounded-[0.55rem_0.7rem_0.62rem_0.66rem]">
+                  <Image src={windResiduePlacement.image} alt="" fill className="object-cover" sizes="5rem" />
+                </div>
                 <div className="relative z-[1] flex min-h-[12rem] flex-col justify-end border-l border-border-subtle/70 pl-5">
-                  <p className="text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">Inside the shelf</p>
+                  <p className="text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">Note</p>
                   <h3 className="mt-3 max-w-xs text-xl leading-tight text-foreground">
                     After something moves on.
                   </h3>
@@ -310,27 +273,15 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <footer className="mx-auto grid max-w-[86rem] gap-8 border-t border-border-subtle/70 py-10 text-sm text-text-secondary lg:grid-cols-[0.48fr_0.52fr]">
+          <footer className="mx-auto flex max-w-[86rem] flex-wrap items-center justify-between gap-4 border-t border-border-subtle/70 py-7 text-sm text-text-secondary">
             <div>
               <p className="font-[var(--font-display-serif)] text-xl text-foreground">{siteConfig.brandEnName}</p>
               <p className="mt-2 text-xs uppercase tracking-[0.12em] text-text-muted">{siteConfig.domain}</p>
-              <p className="mt-5 max-w-sm leading-7">
-                A page can stay open, or not. Mail still works.
-              </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-[1fr_0.8fr_1.15fr]">
-              {["Line", "Shelf", "Mail"].map((group, index) => (
-                <div key={group} className="border-b border-border-subtle/70 pb-4 sm:border-b-0">
-                  <p className="text-foreground">{group}</p>
-                  <p className="mt-3 text-xs leading-6 text-text-muted">
-                    {index === 0
-                      ? "A line, then the day continues."
-                      : index === 1
-                        ? "Things can move by mail."
-                        : "A note can wait."}
-                  </p>
-                </div>
-              ))}
+            <div className="flex flex-wrap gap-5 text-xs text-text-muted">
+              <Link href="/objects" className="hover:text-text-secondary">Objects</Link>
+              <Link href="/desk" className="hover:text-text-secondary">Desk</Link>
+              <Link href="/inquiry" className="hover:text-text-secondary">Mail</Link>
             </div>
           </footer>
         </div>

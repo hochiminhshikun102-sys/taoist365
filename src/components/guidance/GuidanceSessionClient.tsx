@@ -231,7 +231,7 @@ export function GuidanceSessionClient() {
               <p className="mt-3 text-[0.68rem] leading-6 text-text-muted/50">
                 {roomClimateNote}
                 <span className="block pt-1 text-[0.62rem] text-text-muted/40">
-                  Same Pacific day as Home—world climate, not memory of you.
+                  Same day as Home, not memory of you.
                 </span>
               </p>
             ) : null}
@@ -241,7 +241,7 @@ export function GuidanceSessionClient() {
               <p className="mt-3 text-[0.68rem] leading-6 text-text-muted/52">
                 {roomLifeRhythmNote}
                 <span className="block pt-1 text-[0.62rem] text-text-muted/40">
-                  Life rhythm layer · {rhythm.atmosphereSummary}
+                  Life nearby · {rhythm.atmosphereSummary}
                 </span>
               </p>
             ) : null}
@@ -329,7 +329,7 @@ export function GuidanceSessionClient() {
             ) : null}
             {objectLine ? (
               <p className="mt-8 text-sm leading-8 text-text-muted/78">
-                Objects on this domain sometimes read as coordinates—{objectLine}—not a cart prompt.
+                Objects on this domain sometimes answer plainly—{objectLine}—not a cart prompt.
               </p>
             ) : null}
           </div>

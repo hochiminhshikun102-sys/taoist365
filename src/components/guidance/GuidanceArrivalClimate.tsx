@@ -15,9 +15,9 @@ export function GuidanceArrivalClimate() {
   return (
     <div className="mt-6 space-y-4">
       <div className="rounded-xl border border-border-subtle/20 bg-background/38 px-5 py-4">
-        <p className="text-[0.65rem] uppercase tracking-[0.12em] text-text-muted/52">Same-day climate</p>
+        <p className="text-[0.65rem] uppercase tracking-[0.12em] text-text-muted/52">Same day here</p>
         <p className="mt-2 text-sm leading-7 text-text-secondary">
-          Today&apos;s shared room elsewhere here reads · {presence.worldLabel}.
+          Today elsewhere here reads · {presence.worldLabel}.
         </p>
         <p className="mt-2 text-[0.68rem] leading-6 text-text-muted/58">{presence.weatherDriftLine}</p>
       </div>

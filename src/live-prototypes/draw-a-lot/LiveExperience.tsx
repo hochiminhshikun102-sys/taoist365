@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { stepTimingTokens } from "@/design-system/tokens/step-timing";
 import { RitualContinuityFooter } from "@/components/ritual/RitualContinuityFooter";
@@ -18,13 +19,7 @@ import { pickInventory } from "@/data/ritual-inventory/system";
 
 export function DrawALotLiveExperience() {
   const [phase, setPhase] = useState<
-    | "arrival"
-    | "threshold"
-    | "shake"
-    | "moon-block"
-    | "guidance"
-    | "pause"
-    | "continuation"
+    "arrival" | "threshold" | "shake" | "moon-block" | "guidance" | "pause" | "continuation"
   >("arrival");
   const [revealedLayer, setRevealedLayer] = useState(0);
 
@@ -66,17 +61,23 @@ export function DrawALotLiveExperience() {
   };
 
   const buttonLabel =
-    phase === "guidance" && revealedLayer < drawGuidanceContent.guidanceLayers.length
-      ? "Next"
-      : phase === "pause"
+    phase === "arrival"
+      ? "Start"
+      : phase === "threshold"
         ? "Next"
-        : "Next";
+        : phase === "shake"
+          ? "Wait"
+          : phase === "moon-block"
+            ? "Next line"
+            : phase === "guidance" && revealedLayer < drawGuidanceContent.guidanceLayers.length
+              ? "Another line"
+              : phase === "pause"
+                ? "Enough for now"
+                : "Stay";
 
   const isActionDisabled = phase === "continuation";
-
   const showGuidance = phase === "guidance" || phase === "pause" || phase === "continuation";
   const showPauseStrip = phase === "pause" || phase === "continuation";
-
   const guidanceDelay = stepTimingTokens.revealCadenceMs.firstLayer;
   const betweenStepDelayMs = stepTimingTokens.betweenStepPauseMs;
 
@@ -84,16 +85,36 @@ export function DrawALotLiveExperience() {
     setPhase("arrival");
     setRevealedLayer(0);
   };
+
   const drawShelfItems = pickInventory("folded-paper-note", "ceramic-window-bowl", "tea-cup-warmth");
 
   return (
     <main className="room-section-y-standard relative mx-auto w-full max-w-4xl px-5 sm:px-10">
-      <section className="taoist-ritual-shell living-surface-inset relative min-h-[min(72svh,52rem)] rounded-2xl border border-border-subtle/38 bg-surface p-7 shadow-none sm:p-9">
+      <section className="browser-air-presence human-residue-presence taoist-ritual-shell living-surface-inset relative min-h-[min(72svh,52rem)] rounded-2xl border border-border-subtle/38 bg-surface p-7 shadow-none sm:p-9">
         <h1 className="max-w-2xl text-3xl leading-[1.32] text-foreground sm:text-4xl">Draw a lot</h1>
-        <p className="mt-6 max-w-2xl text-base leading-9 text-text-secondary">Plain steps below—no score kept.</p>
+        <p className="mt-6 max-w-2xl text-base leading-9 text-text-secondary">Plain steps below. No score kept.</p>
         <RitualLivingSlice ritual="drawALot" />
 
-        <div className="mt-11 rounded-xl border taoist-quiet-field border-border-subtle/24 bg-surface px-5 py-5 sm:px-5 sm:py-6">
+        <div className="ritual-object-still-life mt-9 flex flex-wrap items-end justify-between gap-6 border-y border-border-subtle/18 py-6">
+          <div className="flex min-h-[4.8rem] flex-col justify-center">
+            <div className="lot-cylinder-presence" aria-hidden />
+            <div className="lot-slip-presence" aria-hidden />
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="moon-block-presence" aria-hidden>
+              <span />
+              <span />
+            </div>
+            <p className="max-w-[10rem] text-xs leading-6 text-text-muted">A pause before the next line.</p>
+          </div>
+        </div>
+        <div className="mt-4 flex justify-end">
+          <div className="wind-residue-object wind-residue-object--faint pointer-events-none relative aspect-[5/4] w-[4.6rem] rounded-[0.52rem_0.68rem_0.58rem_0.62rem]">
+            <Image src="/objects-living/风铃001.jpg" alt="" fill className="object-cover" sizes="6rem" />
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-xl border taoist-quiet-field border-border-subtle/24 bg-surface px-5 py-5 sm:px-5 sm:py-6">
           <p className="text-sm leading-8 text-text-secondary">
             {phase === "arrival"
               ? "Start whenever."
@@ -112,16 +133,13 @@ export function DrawALotLiveExperience() {
         </div>
 
         <div className="mt-10 border-t border-border-subtle/30 pt-10">
-          <p className="text-xs text-text-muted/82">Things nearby</p>
+          <p className="text-xs text-text-muted/82">Objects</p>
           <p className="mt-3 text-sm leading-8 text-text-secondary">{ritualObjectLayer.drawALot.anchorLine}</p>
-          <RitualShelf items={drawShelfItems} />
+          <RitualShelf title="On the table" items={drawShelfItems} />
           <p className="mt-4 text-sm leading-8 text-text-secondary">{gentleCommercePresence.drawALot.line}</p>
           <div className="mt-2 space-y-1">
             {gentleCommercePresence.drawALot.bringIntoLife.map((line, index) => (
-              <p
-                key={line}
-                className={`text-xs leading-7 text-text-muted/90 ${index > 0 ? "hidden sm:block" : ""}`}
-              >
+              <p key={line} className={`text-xs leading-7 text-text-muted/90 ${index > 0 ? "hidden sm:block" : ""}`}>
                 {line}
               </p>
             ))}
@@ -135,7 +153,7 @@ export function DrawALotLiveExperience() {
             {drawGuidanceContent.guidanceLayers.slice(0, revealedLayer).map((layer, index) => (
               <p
                 key={layer}
-                className="rounded-lg border border-border-subtle/32 bg-surface px-4 py-3.5 text-sm leading-8 text-text-secondary"
+                className="quiet-lot-text rounded-lg border border-border-subtle/32 bg-surface px-4 py-3.5 text-sm leading-8 text-text-secondary"
                 style={{
                   transitionDuration: `${guidanceDelay + index * stepTimingTokens.revealCadenceMs.preReveal}ms`,
                 }}
@@ -174,7 +192,7 @@ export function DrawALotLiveExperience() {
             type="button"
             onClick={onAdvance}
             disabled={isActionDisabled}
-            className="taoist-quiet-action mt-10 rounded-lg border border-border-subtle/26 px-5 py-2.5 text-sm text-text-secondary transition hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+            className="taoist-quiet-action quiet-air-touch mt-10 rounded-lg border border-border-subtle/26 px-5 py-2.5 text-sm text-text-secondary transition hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
           >
             {buttonLabel}
           </button>

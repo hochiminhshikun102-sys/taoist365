@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useLayoutEffect, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, type ReactNode } from "react";
 import { type TemporalBand, useTemporalBand } from "@/lib/temporal-band";
 
 const TemporalBandContext = createContext<TemporalBand>("midday");
@@ -19,6 +19,23 @@ export function TemporalBandRoot({ children }: { children: ReactNode }) {
       document.documentElement.removeAttribute("data-temporal-band");
     };
   }, [band]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const timers = [
+      window.setTimeout(() => root.setAttribute("data-open-duration", "settled"), 8 * 60 * 1000),
+      window.setTimeout(() => root.setAttribute("data-open-duration", "long"), 36 * 60 * 1000),
+    ];
+
+    root.setAttribute("data-open-duration", "fresh");
+
+    return () => {
+      for (const timer of timers) {
+        window.clearTimeout(timer);
+      }
+      root.removeAttribute("data-open-duration");
+    };
+  }, []);
 
   return <TemporalBandContext.Provider value={band}>{children}</TemporalBandContext.Provider>;
 }

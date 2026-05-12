@@ -22,7 +22,7 @@ export function RitualsTemporalEcho() {
 
   return (
     <p className="mt-4 max-w-2xl text-xs leading-7 text-text-muted/58">
-      Same-day climate as Home right now - {presence.worldLabel}. {presence.ambientPresenceLine}{" "}
+      Same day as Home right now - {presence.worldLabel}. {presence.ambientPresenceLine}{" "}
       <span className="text-text-muted/50">Domestic rhythm leans - {rhythm.atmosphereSummary}</span>{" "}
       {!quietEcho ? <span className="text-text-muted/48">Ritual age - {aging.ritualAgingLine}</span> : null}{" "}
       {!retireDenseEcho ? <span className="text-text-muted/47">{inertia.ritualSilenceLine}</span> : null}{" "}

@@ -5,7 +5,7 @@ type Props = {
   photo: LivingPhotoRef;
   /** Short height for strips; tall for object cards */
   aspect?: "strip" | "card" | "banner";
-  /** Marks, fold, wear — “already lived with,” not launch polish */
+  /** Marks, fold, wear - already lived with, not display polish */
   ownershipCaption?: string;
   className?: string;
 };

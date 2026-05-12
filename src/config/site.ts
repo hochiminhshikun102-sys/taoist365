@@ -1,11 +1,11 @@
 export const siteConfig = {
   siteName: "Reverent Inquiry",
   brandEnName: "Reverent Inquiry",
-  brandCnName: "\u8c12\u95ee",
+  archiveSourceName: "Yewen / \u8c12\u95ee",
   domain: "taoist365.com",
   /** Plain-language discovery for search and link previews; stable site, not a funnel. */
   description:
-    "Reverent Inquiry is a long-running browser place at taoist365.com. Static routes sit under /rituals and /objects, mail works through /inquiry, and the HTML changes slowly by hand. No streaks, no timed previews, no chat-only gate.",
+    "A quiet long-running browser place at taoist365.com. Pages stay linked, mail stays human, and the site changes slowly by hand.",
   locale: "en-US",
   timezone: "America/Los_Angeles",
   metadataBase: "https://taoist365.com",
@@ -29,12 +29,12 @@ export const siteConfig = {
   /** Homepage hint toward occasional real use without productivity framing. */
   deskInvitationLine:
     "If you want a few lines that stay on your device only, same domain, no account:",
-  /** Honest boundary: residue never hits this domain's servers. */
+  /** Honest boundary: private browser notes never hit this domain's servers. */
   personalResidueScopeLine:
-    "Desk margins and ritual echoes stay in your browser until you clear site data. Nothing is uploaded or tied to an identity here.",
-  /** Homepage stitch between Desk and Objects residue; no accounts implied. */
+    "Desk notes and ritual echoes stay in your browser until you clear site data. Nothing is uploaded or tied to an identity here.",
+  /** Homepage stitch between Desk and Objects browser notes; no accounts implied. */
   personalResidueHomeLine:
-    "Browser-side residue only: optional private margins beside each catalog line on Objects, scratch and phrases on Desk, and a quiet local echo of which ritual page you opened last. Nothing uploads and there is no profile.",
+    "Private browser notes only: optional margins beside catalog lines on Objects, scratch and phrases on Desk, and a local echo of which ritual page you opened last. Nothing uploads and there is no profile.",
   /** Desk: tab can stay open; no pings, no overnight resets. */
   deskLightReuseLine:
     "Fine to leave this tab open or come back when you think of it. This site does not ping you, count days, or reset anything overnight.",
@@ -55,7 +55,7 @@ export const siteConfig = {
     "These lines describe kinds of things that can quietly sit in a room: paper, vessels, linen, wood, traces after incense, corners for pause. If one piece should live near you, mail names it plainly and a human replies.",
   /** Desk to named things on Objects; soft bridge into real life. */
   deskObjectBridgeLine:
-    "Scratch sometimes mentions paper, tea, linen, wood, incense, or a page stopped mid-read. The stable names for those presences live on Objects; when something physical should follow, mail is the quiet route. Still no checkout.",
+    "Scratch sometimes mentions paper, tea, linen, wood, incense, or a page stopped mid-read. The stable names for those things live on Objects; when something physical should follow, mail is the quiet route. Still no checkout.",
   /** Rituals index: reading to named things to mail. */
   ritualObjectCarryLine:
     "After a ritual, what lingered in mind often has a plain name on Objects. If one thing should stay beside you in real life, write mail; nothing turns the page into a shopping flow.",
@@ -70,7 +70,7 @@ export const siteConfig = {
     "Below is Reverent Inquiry's first object batch: pieces described the way they sit in real American apartments: scuffed, uneven, already plausible. The list changes slowly and keeps its names stable.",
   /** Life moments when a slow site surfaces; user-led, not scheduled by the domain. */
   returnGravityHomeLine:
-    "Late hours, pauses between tasks, idle rows of tabs, or the stretch before sleep are ordinary times a quiet URL resurfaces: through history, a tab left open, or memory of a named thing, not because anything here signaled you.",
+    "Late hours, pauses between tasks, idle rows of tabs, or the stretch before sleep are ordinary times a quiet URL resurfaces: through history, a tab left open, or memory of a named thing, not because this site called you back.",
   /** Explicit anti-manipulation boundary for moments framing. */
   returnGravityBoundaryLine:
     "Nothing on this domain watches the clock for your return; describing moments is plain language about life, not a routine this site runs.",
@@ -86,9 +86,9 @@ export const siteConfig = {
   /** Rituals: reopen without framing failure or urgency. */
   ritualReopenMomentLine:
     "Landing on the same ritual when something is undecided or a line has not settled is ordinary re-reading, not falling behind, not a loop this page grades.",
-  /** Browser continuity vocabulary; no habit-building claim. */
+  /** Browser return vocabulary; no habit-building claim. */
   browserReturnGravityLine:
-    "Pinned tabs, typed URLs, and history trails carry continuity; Reverent Inquiry does not train or tune your rhythm.",
+    "Pinned tabs, typed URLs, and history trails bring old pages back; Reverent Inquiry does not train or tune your rhythm.",
   /** Contact: seasons of mail, not comeback campaigns. */
   contactReturnGravityLine:
     "The inbox stays the same whether you write once a season or after a long silence. No we-miss-you notes, no recovery campaigns.",

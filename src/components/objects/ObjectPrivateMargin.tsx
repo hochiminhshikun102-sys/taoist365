@@ -72,7 +72,7 @@ export function ObjectPrivateMargin({ objectId }: { objectId: string }) {
         rows={2}
         aria-label={`Private margin for ${objectId}`}
         className="taoist-ritual-shell mt-3 w-full resize-y rounded-xl border border-border-subtle/26 bg-background/72 p-3 font-mono text-xs leading-6 text-text-secondary outline-none ring-0 placeholder:text-text-muted/40 focus:border-border-subtle/44 disabled:opacity-60"
-        placeholder={ready ? "Optional—real-world reminder, phrase, or quiet reference." : ""}
+        placeholder={ready ? "Optional—reminder, phrase, or quiet reference." : ""}
       />
     </div>
   );

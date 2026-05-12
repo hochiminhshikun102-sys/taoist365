@@ -5,7 +5,7 @@ type Props = {
   className?: string;
 };
 
-/** Faint human residue across pages — not personas, not wellness staging. */
+/** Faint human leftovers across pages — not personas, not staged mood. */
 export function HumanRoomEchoAside({ className = "" }: Props) {
   return (
     <aside

@@ -13,7 +13,7 @@ export function HumanRoomTemporalEcho() {
       <p className="mt-3 text-[0.7rem] leading-6 text-text-muted/64">{rhythm.unfinishedLine}</p>
       <p className="mt-2 text-[0.7rem] leading-6 text-text-muted/60">{rhythm.interruptionLine}</p>
       <p className="mt-3 text-[0.62rem] leading-5 text-text-muted/42">
-        Ordinary residue—chairs and lamps, not cast arcs.
+        Ordinary leftovers—chairs and lamps, not cast arcs.
       </p>
     </aside>
   );

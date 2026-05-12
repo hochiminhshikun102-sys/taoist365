@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { ObjectTemporalAgingLine } from "@/components/objects/ObjectTemporalAgingLine";
@@ -38,9 +39,12 @@ export default function ObjectsPage() {
 
         <section
           id="driftbox"
-          className="mt-10 scroll-mt-28 border-l border-border-subtle/70 pl-5"
+          className="relative mt-10 scroll-mt-28 border-l border-border-subtle/70 pl-5"
           aria-label="Driftbox inside Windkeep"
         >
+          <div className="wind-residue-object wind-residue-object--faint pointer-events-none absolute right-0 top-0 hidden aspect-[5/4] w-[5.4rem] rounded-[0.56rem_0.74rem_0.62rem_0.68rem] sm:block">
+            <Image src="/objects-living/风铃001.jpg" alt="" fill className="object-cover" sizes="7rem" />
+          </div>
           <p className="text-xs uppercase tracking-[0.14em] text-text-muted/72">Driftbox</p>
           <p className="mt-3 max-w-2xl text-sm leading-8 text-text-secondary">
             A quiet shelf note for things that have moved on. If something should come nearer, mail can receive the
@@ -55,7 +59,7 @@ export default function ObjectsPage() {
               <ObjectRuntimeGate catalogId={piece.id} key={piece.id}>
                 <li
                   id={piece.id}
-                  className="taoist-ritual-shell object-resting-surface scroll-mt-28 rounded-2xl border border-border-subtle bg-surface p-6 sm:p-7"
+                  className="browser-air-presence human-residue-presence taoist-ritual-shell object-resting-surface scroll-mt-28 rounded-2xl border border-border-subtle bg-surface p-6 sm:p-7"
                 >
                   <p className="text-xs text-text-muted/80">{piece.catalogLine}</p>
                   <h2 className="mt-2 text-xl text-foreground">{piece.title}</h2>

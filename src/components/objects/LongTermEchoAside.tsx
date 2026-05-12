@@ -25,7 +25,7 @@ export function LongTermEchoAside({ className = "" }: Props) {
         ))}
       </ul>
       <p className="mt-3 text-[0.62rem] leading-5 text-text-muted/44">
-        Not mindful routines—just things left where they always are now.
+        Not routines—just things left where they always are now.
       </p>
     </aside>
   );

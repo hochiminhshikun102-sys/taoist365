@@ -6,9 +6,9 @@ type Props = {
   className?: string;
 };
 
-/** Slow repeat of the same coordinates: familiarity accumulates like a pinned URL, not a recommender. */
+/** Slow repeat of the same object names: familiarity accumulates like a pinned URL, not a recommender. */
 export function OwnershipEchoCorner({
-  heading = "Coordinates that keep drifting back",
+  heading = "Object names that keep drifting back",
   className = "",
 }: Props) {
   return (

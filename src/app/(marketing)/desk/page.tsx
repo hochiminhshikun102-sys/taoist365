@@ -49,35 +49,34 @@ export default function DeskPage() {
         <p className="mt-3 max-w-2xl text-xs leading-7 text-text-muted/52">{siteConfig.deskObjectBridgeLine}</p>
         <p className="mt-4 max-w-2xl text-xs leading-7 text-text-muted/58">
           Desk nights often picture what stays beside the machine—a mug, a tray, linen—without needing to acquire anything.
-          The same catalog anchors can reappear here so imagination has a stable URL, not a cart.
+          The same object names can reappear here with a stable URL, not a cart.
         </p>
 
         <DeskScratch />
 
         <p className="mt-6 max-w-2xl text-xs leading-7 text-text-muted/56 print:hidden">
-          Slow commerce here means the same coordinates—sand mug by the trackpad, crackle cup in screen bloom—can echo until they feel like browser history, not a funnel.
+          Slow mail here means the same things—sand mug by the trackpad, crackle cup in screen bloom—can feel familiar without becoming a funnel.
         </p>
         <p className="mt-3 max-w-2xl text-xs leading-7 text-text-muted/52 print:hidden">
-          Arrival imagination belongs here too: brown paper, box beside the door through rain, opened after work—then the thing drifts to desk clutter without ceremony. No fulfillment vocabulary, just{" "}
+          Arrival can stay plain too: brown paper, box beside the door through rain, opened after work—then the thing drifts to desk clutter without ceremony. No shopping language, just{" "}
           <Link href="/inquiry" className="text-text-secondary underline-offset-4 hover:underline">
             Mail
           </Link>{" "}
-          and shelf lookup continuity on{" "}
+          and the same shelf on{" "}
           <Link href="/objects" className="text-text-secondary underline-offset-4 hover:underline">
             Objects
           </Link>
           .
         </p>
         <p className="mt-3 max-w-2xl text-xs leading-7 text-text-muted/50 print:hidden">
-          Human room trace: this tab is also where sentences stop mid-line, chair logic fails in text, and fatigue shows as
-          half-finished phrases—not wellness staging, just a browser corner where someone was recently tired.
+          This tab is also where sentences stop mid-line and fatigue shows as half-finished phrases—just a browser corner where someone was recently tired.
         </p>
         <p className="mt-3 max-w-2xl text-xs leading-7 text-text-muted/46 print:hidden">
-          Time sediment: tabs and phrases left in the same browser corner for months—sun on the real desk elsewhere still writes slow outlines on paper stacks nobody rotates for the aesthetic. Not vintage cosplay, not mindful persistence—just long ordinary use.
+          Tabs and phrases can stay in the same browser corner for months—sun on the real desk elsewhere still writes slow outlines on paper stacks nobody moves around. Just long ordinary use.
         </p>
         <p className="mt-3 max-w-2xl text-xs leading-7 text-text-muted/48 print:hidden">
-          Six-month imagination: things migrate less—mug left of glow, tray default for keys, linen that never went back to the drawer.
-          Not mindful habits or stacking routines—just surfaces that forgot to rearrange. Same anchors on{" "}
+          After months, things migrate less—mug left of glow, tray default for keys, linen that never went back to the drawer.
+          Not habits or stacking routines—just surfaces that forgot to rearrange. Same anchors on{" "}
           <Link href="/objects" className="text-text-secondary underline-offset-4 hover:underline">
             Objects
           </Link>
@@ -85,7 +84,7 @@ export default function DeskPage() {
         </p>
 
         <div className="mt-8 print:hidden">
-          <OwnershipEchoCorner heading="Quiet anchors if your desk already imagines them" />
+          <OwnershipEchoCorner heading="Object names already nearby" />
         </div>
 
         <p className="mt-10 text-xs leading-7 text-text-muted/72 print:hidden">

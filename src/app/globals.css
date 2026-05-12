@@ -194,11 +194,11 @@ html[data-temporal-band="night"] .living-surface-inset {
 @keyframes living-veil-breath {
   0%,
   100% {
-    opacity: 0.012;
+    opacity: 0.009;
     background-position: 0 0, 0% 0%, 100% 40%;
   }
   50% {
-    opacity: 0.015;
+    opacity: 0.011;
     background-position: 3px 3px, 0% 0.35%, 99.65% 40%;
   }
 }
@@ -223,6 +223,100 @@ html[data-temporal-band="night"] .living-surface-inset {
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 34%),
     linear-gradient(90deg, rgba(137, 147, 157, 0.035), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.04));
   opacity: 0.72;
+}
+
+html[data-open-duration="settled"] .long-open-browser-softness {
+  filter: saturate(0.975) contrast(0.992);
+}
+
+html[data-open-duration="long"] .long-open-browser-softness {
+  filter: saturate(0.97) contrast(0.99);
+}
+
+.browser-air-presence {
+  position: relative;
+}
+
+.browser-air-presence::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.13), transparent 42%),
+    radial-gradient(ellipse 72% 52% at 16% 8%, rgba(255, 255, 255, 0.18), transparent 58%),
+    radial-gradient(ellipse 58% 46% at 92% 78%, rgba(154, 166, 177, 0.05), transparent 62%);
+  opacity: 0.34;
+}
+
+.human-residue-presence {
+  border-radius: 1.04rem 1.12rem 1rem 1.08rem;
+}
+
+.human-residue-presence > * {
+  position: relative;
+  z-index: 1;
+}
+
+.quiet-air-touch {
+  transition:
+    background-color 520ms ease-out,
+    border-color 520ms ease-out,
+    color 520ms ease-out,
+    opacity 520ms ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .quiet-air-touch:hover {
+    opacity: 0.96;
+  }
+}
+
+html[data-open-duration="settled"] .living-atmosphere-veil {
+  animation-duration: 96s !important;
+  opacity: 0.009;
+}
+
+html[data-open-duration="long"] .living-atmosphere-veil {
+  animation-duration: 128s !important;
+  opacity: 0.008;
+}
+
+html[data-open-duration="settled"] .taoist-quiet-action,
+html[data-open-duration="settled"] .taoist-quiet-field,
+html[data-open-duration="settled"] .taoist-ritual-shell,
+html[data-open-duration="settled"] .quiet-air-touch {
+  transition-duration: 520ms;
+}
+
+html[data-open-duration="long"] .taoist-quiet-action,
+html[data-open-duration="long"] .taoist-quiet-field,
+html[data-open-duration="long"] .taoist-ritual-shell,
+html[data-open-duration="long"] .quiet-air-touch {
+  transition-duration: 580ms;
+}
+
+html[data-open-duration="settled"] .text-text-muted {
+  opacity: 0.995;
+}
+
+html[data-open-duration="long"] .text-text-muted {
+  opacity: 0.99;
+}
+
+html[data-open-duration="long"][data-temporal-band="night"] .taoist-ritual-shell,
+html[data-open-duration="long"][data-temporal-band="night"] .taoist-quiet-field {
+  background-color: rgba(255, 255, 255, 0.78);
+  border-color: rgba(229, 229, 229, 0.68);
+}
+
+html[data-open-duration="settled"] .browser-air-presence::before {
+  opacity: 0.28;
+}
+
+html[data-open-duration="long"] .browser-air-presence::before {
+  opacity: 0.22;
 }
 
 .living-shelf article:nth-child(odd),
@@ -261,6 +355,13 @@ html[data-temporal-band="night"] .living-surface-inset {
     animation: none !important;
     opacity: 0.013 !important;
   }
+
+html[data-open-duration] .taoist-quiet-action,
+  html[data-open-duration] .taoist-quiet-field,
+  html[data-open-duration] .taoist-ritual-shell,
+  html[data-open-duration] .quiet-air-touch {
+    transition-duration: 0ms;
+  }
 }
 
 /* Invisible interface: actions and shells recede; atmosphere carries structure */
@@ -297,6 +398,132 @@ html[data-temporal-band="night"] .living-surface-inset {
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.74),
     0 18px 58px rgba(26, 26, 26, 0.035);
+}
+
+.ritual-object-still-life {
+  isolation: isolate;
+  opacity: 0.76;
+}
+
+.lot-cylinder-presence {
+  width: min(8rem, 48vw);
+  height: 2.35rem;
+  border: 1px solid rgba(214, 219, 225, 0.62);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, rgba(126, 107, 82, 0.13), rgba(255, 255, 255, 0.58) 42%, rgba(126, 107, 82, 0.09)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(205, 190, 166, 0.13));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 0.8rem 2.8rem rgba(26, 26, 26, 0.035);
+}
+
+.lot-slip-presence {
+  width: min(5.8rem, 38vw);
+  height: 0.42rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(214, 219, 225, 0.7);
+  transform: translate(2.2rem, -0.72rem) rotate(-3deg);
+}
+
+.moon-block-presence {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 2.35rem));
+  gap: 0.5rem;
+  opacity: 0.72;
+}
+
+.moon-block-presence span {
+  height: 1.12rem;
+  border-radius: 999px 999px 0.75rem 0.75rem;
+  border: 1px solid rgba(214, 219, 225, 0.46);
+  background:
+    radial-gradient(ellipse at 52% 20%, rgba(255, 255, 255, 0.72), transparent 58%),
+    rgba(255, 255, 255, 0.52);
+  box-shadow: 0 0.42rem 1.2rem rgba(26, 26, 26, 0.012);
+}
+
+.wind-residue-object {
+  --wind-residue-opacity: 0.18;
+  overflow: hidden;
+  border: 1px solid rgba(229, 229, 229, 0.36);
+  background: rgba(255, 255, 255, 0.18);
+  opacity: var(--wind-residue-opacity);
+  transform-origin: 52% 6%;
+  animation: wind-residue-drift 184s ease-in-out infinite;
+}
+
+.wind-residue-object img {
+  filter: saturate(0.5) contrast(0.88) brightness(1.06);
+}
+
+.wind-residue-object::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(240, 242, 245, 0.42), transparent 34%, rgba(255, 255, 255, 0.3)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(240, 242, 245, 0.24));
+}
+
+html[data-open-duration="long"] .wind-residue-object {
+  --wind-residue-opacity: 0.12;
+  animation-duration: 240s;
+}
+
+.wind-residue-object--faint {
+  --wind-residue-opacity: 0.12;
+}
+
+.wind-residue-object--nearby {
+  --wind-residue-opacity: 0.15;
+}
+
+@keyframes wind-residue-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-0.04deg);
+  }
+  50% {
+    transform: translate3d(0.012rem, 0.004rem, 0) rotate(0.025deg);
+  }
+}
+
+.quiet-lot-text {
+  animation: quiet-lot-arrival 1160ms ease-out both;
+}
+
+@keyframes quiet-lot-arrival {
+  from {
+    opacity: 0;
+    transform: translateY(0.06rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .browser-air-presence::before {
+    opacity: 0.28;
+  }
+
+  .quiet-air-touch {
+    transition-duration: 460ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiet-lot-text {
+    animation: none !important;
+  }
+
+  .wind-residue-object {
+    animation: none !important;
+  }
 }
 
 /* Homepage hero air rotation — long-cycle crossfade only (no carousel UI).
