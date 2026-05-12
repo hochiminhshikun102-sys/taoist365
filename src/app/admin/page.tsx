@@ -4,7 +4,21 @@ import { quietAdminBoundaries, quietAdminSections } from "@/config/quiet-admin";
 import { contentRuntimeBoundaries, resolveSlowContentRuntime } from "@/config/content-runtime";
 import { siteConfig } from "@/config/site";
 
-const navItems = ["Copy", "QA", "Terms", "Drafts", "Updates", "Archive", "Review", "Text"] as const;
+const navItems = [
+  { label: "CMS", href: "#cms" },
+  { label: "Collections", href: "#collections" },
+  { label: "Schema", href: "#object-schema" },
+  { label: "Upload", href: "#upload" },
+  { label: "Media", href: "#media-library" },
+  { label: "Copy", href: "#drafts" },
+  { label: "Objects", href: "#object-semantics" },
+  { label: "Commerce", href: "#quiet-commerce" },
+  { label: "Text", href: "#text" },
+] as const;
+
+function adminSectionId(title: string) {
+  return `admin-${title.toLowerCase().replaceAll(" ", "-")}`;
+}
 
 export default function AdminPage() {
   const slowContent = resolveSlowContentRuntime();
@@ -30,8 +44,8 @@ export default function AdminPage() {
           </div>
           <nav className="mt-6 flex gap-4 overflow-x-auto text-xs text-text-muted" aria-label="Admin sections">
             {navItems.map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="shrink-0 hover:text-text-secondary">
-                {item}
+              <a key={item.href} href={item.href} className="shrink-0 hover:text-text-secondary">
+                {item.label}
               </a>
             ))}
           </nav>
@@ -47,10 +61,10 @@ export default function AdminPage() {
 
         <section className="grid gap-4 py-6 lg:grid-cols-[0.72fr_0.28fr]">
           <div className="grid gap-4 sm:grid-cols-2">
-            {quietAdminSections.map((section, index) => (
+            {quietAdminSections.map((section) => (
               <section
                 key={section.title}
-                id={navItems[index]?.toLowerCase()}
+                id={adminSectionId(section.title)}
                 className="rounded-lg border border-border-subtle/80 bg-white/58 px-4 py-4 shadow-none"
               >
                 <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">{section.title}</p>

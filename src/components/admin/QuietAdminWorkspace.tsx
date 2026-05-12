@@ -18,6 +18,16 @@ import {
   terminologyReviewGroups,
 } from "@/config/quiet-admin";
 import {
+  quietCmsBoundaries,
+  quietCmsSurfaces,
+  quietImageTreatmentLines,
+  quietMediaSlots,
+  quietMotionDirectionLines,
+  quietObjectCollections,
+  quietObjectFields,
+  quietUploadWorkflow,
+} from "@/config/quiet-cms";
+import {
   quietCommerceBoundaries,
   quietCommerceHumanReview,
   quietCommerceObservationChecks,
@@ -31,6 +41,11 @@ import {
 } from "@/config/quiet-placement";
 
 type DraftMap = Record<string, string>;
+type LocalMediaDraft = {
+  name: string;
+  kind: string;
+  size: number;
+};
 
 const draftKey = "reverent-inquiry-quiet-admin-drafts";
 
@@ -57,6 +72,7 @@ function writeDrafts(drafts: DraftMap) {
 
 export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly SlowContentEntry[] }>) {
   const [drafts, setDrafts] = useState<DraftMap>(readDrafts);
+  const [mediaDraft, setMediaDraft] = useState<LocalMediaDraft | null>(null);
 
   useEffect(() => {
     writeDrafts(drafts);
@@ -68,6 +84,137 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
 
   return (
     <div className="space-y-4">
+      <section id="cms" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">CMS system</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {quietCmsSurfaces.map((surface) => (
+            <div key={surface.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-xs text-foreground">{surface.label}</p>
+                <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">{surface.kind}</p>
+              </div>
+              <p className="mt-2 text-xs leading-6 text-text-secondary">{surface.use}</p>
+              <p className="mt-1 text-[0.68rem] leading-5 text-text-muted">{surface.pressureLimit}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-5 grid gap-2 border-t border-border-subtle/70 pt-3 sm:grid-cols-2">
+          {quietCmsBoundaries.map((line) => (
+            <p key={line} className="text-[0.66rem] leading-5 text-text-muted/80">
+              {line}
+            </p>
+          ))}
+        </div>
+      </section>
+
+      <section id="collections" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Object collections</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {quietObjectCollections.map((collection) => (
+            <div key={collection.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
+              <p className="text-xs text-foreground">{collection.name}</p>
+              <p className="mt-2 text-xs leading-6 text-text-secondary">{collection.presence}</p>
+              <p className="mt-1 text-[0.68rem] leading-5 text-text-muted">{collection.publicEnergy}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="object-schema" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Object schema</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {quietObjectFields.map((field) => (
+            <div key={field.key} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-xs text-foreground">{field.label}</p>
+                <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">
+                  {field.required ? "needed" : "optional"}
+                </p>
+              </div>
+              <p className="mt-2 text-xs leading-6 text-text-muted">{field.role}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="upload" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Upload workflow</p>
+        <div className="mt-4 grid gap-4 lg:grid-cols-[0.58fr_0.42fr]">
+          <div className="space-y-3">
+            {quietUploadWorkflow.map((step) => (
+              <div key={step.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0">
+                <p className="text-xs text-foreground">{step.label}</p>
+                <p className="mt-2 text-xs leading-6 text-text-secondary">{step.action}</p>
+                <p className="mt-1 text-[0.68rem] leading-5 text-text-muted">{step.check}</p>
+              </div>
+            ))}
+          </div>
+          <div className="border-t border-border-subtle/70 pt-3 lg:border-l lg:border-t-0 lg:pl-4 lg:pt-0">
+            <label htmlFor="quiet-media-draft" className="text-xs text-foreground">
+              Local media draft
+            </label>
+            <input
+              id="quiet-media-draft"
+              type="file"
+              accept="image/*,video/*"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                setMediaDraft(file ? { name: file.name, kind: file.type || "unknown", size: file.size } : null);
+              }}
+              className="mt-3 block w-full text-xs text-text-muted file:mr-3 file:border file:border-border-subtle file:bg-white/60 file:px-3 file:py-2 file:text-xs file:text-text-secondary"
+            />
+            <p className="mt-3 text-[0.68rem] leading-5 text-text-muted">
+              This only reads the local file name in this browser. It does not upload or publish.
+            </p>
+            {mediaDraft ? (
+              <div className="mt-4 border-t border-border-subtle/70 pt-3 text-[0.68rem] leading-5 text-text-muted">
+                <p>{mediaDraft.name}</p>
+                <p>{mediaDraft.kind}</p>
+                <p>{Math.max(1, Math.round(mediaDraft.size / 1024))} KB</p>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      <section id="media-library" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Media library</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {quietMediaSlots.map((slot) => (
+            <div key={slot.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-xs text-foreground">{slot.label}</p>
+                <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">{slot.accepts.join(" / ")}</p>
+              </div>
+              <p className="mt-2 text-xs leading-6 text-text-secondary">{slot.use}</p>
+              <p className="mt-1 text-[0.68rem] leading-5 text-text-muted">{slot.restraint}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-5 grid gap-4 border-t border-border-subtle/70 pt-4 sm:grid-cols-2">
+          <div>
+            <p className="text-xs text-foreground">Image treatment</p>
+            <div className="mt-3 space-y-2">
+              {quietImageTreatmentLines.map((line) => (
+                <p key={line} className="text-[0.68rem] leading-5 text-text-muted">
+                  {line}
+                </p>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs text-foreground">Motion surfaces</p>
+            <div className="mt-3 space-y-2">
+              {quietMotionDirectionLines.map((line) => (
+                <p key={line} className="text-[0.68rem] leading-5 text-text-muted">
+                  {line}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="drafts" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
         <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Slow text review</p>
         <div className="mt-4 space-y-4">

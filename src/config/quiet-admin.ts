@@ -6,6 +6,21 @@ export type AdminSection = {
 
 export const quietAdminSections: readonly AdminSection[] = [
   {
+    title: "CMS system",
+    note: "Low-pressure content structure for pages, objects, mail, and ritual surfaces.",
+    items: ["Page CMS", "Collection CMS", "Object CMS", "Media CMS", "Quiet upload flow"],
+  },
+  {
+    title: "Object architecture",
+    note: "Object records stay useful without turning into a SKU system.",
+    items: ["Wind Objects", "Quiet Desk Objects", "Ritual Objects", "Seasonal Objects", "Atmospheric Objects"],
+  },
+  {
+    title: "Media library",
+    note: "Images and video are prepared for coexistence before public placement.",
+    items: ["Image upload", "Video upload", "Hero media", "Placement media", "Material details"],
+  },
+  {
     title: "Presence copy",
     note: "Slow text upkeep for the parts people actually see.",
     items: ["Daily line", "Quiet fragments", "Desk copy", "Long-open copy", "Objects wording", "Windkeep wording", "Home wording"],
