@@ -3,8 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { HomepageHeroAirRotation } from "@/components/marketing/HomepageHeroAirRotation";
+import { QuietSubscription } from "@/components/marketing/QuietSubscription";
 import { LivingAtmosphereVeil } from "@/components/ritual/LivingAtmosphereVeil";
 import { commerceCollections, commerceObjects, formatPrice, globalCommerceRegions } from "@/config/operational-commerce";
+import {
+  brandStorySurface,
+  newArrivalObjects,
+  quietPopularObjects,
+  seasonalThemes,
+  socialContinuityLinks,
+} from "@/config/frontstage-operations";
 import {
   homepageFallbackRooms,
   homepageObjectSlots,
@@ -52,6 +60,8 @@ export function HomepageBrowserRoom() {
   ).slice(0, 6);
   const motionObjects = featuredObjects.slice(0, 3);
   const seasonalObject = commerceObjects.find((object) => object.collection === "seasonal-collections") ?? commerceObjects[0];
+  const newArrivals = newArrivalObjects(4);
+  const popularObjects = quietPopularObjects(4);
 
   return (
     <main className="min-h-full bg-background text-foreground">
@@ -84,6 +94,8 @@ export function HomepageBrowserRoom() {
               <nav className="hidden items-center gap-7 text-[0.72rem] text-foreground/82 lg:flex">
                 {[
                   ["Collections", "/collections"],
+                  ["Search", "/search"],
+                  ["New", "/new-arrivals"],
                   ["Objects", "/objects"],
                   ["Draw", "/rituals/draw-a-lot"],
                   ["Cart", "/cart"],
@@ -118,6 +130,9 @@ export function HomepageBrowserRoom() {
                     className="taoist-quiet-action rounded-[0.28rem_0.34rem_0.32rem_0.3rem] border border-foreground/8 bg-white/18 px-3 py-1.5 text-foreground/66 transition hover:bg-white/42"
                   >
                     Shop objects
+                  </Link>
+                  <Link href="/search" className="text-foreground/66 transition hover:text-foreground">
+                    Search
                   </Link>
                   <Link href="/rituals/draw-a-lot" className="text-foreground/66 transition hover:text-foreground">
                     Draw a lot
@@ -284,6 +299,30 @@ export function HomepageBrowserRoom() {
           <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
             <div className="mb-8 flex items-end justify-between gap-6">
               <div>
+                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">New arrivals</h2>
+                <p className="mt-2 text-sm text-text-secondary">Recently added product links, held without drop pressure.</p>
+              </div>
+              <Link href="/new-arrivals" className="hidden text-sm text-foreground/62 hover:text-foreground sm:block">
+                New arrivals
+              </Link>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {newArrivals.map((item) => (
+                <Link key={item.id} href={`/objects/${item.id}`} className="quiet-air-touch rounded-lg border border-border-subtle/70 bg-white/50 p-4 transition hover:bg-white/68">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-border-subtle bg-white">
+                    <Image src={item.media.hero} alt={item.media.alt} fill className="object-cover opacity-[0.88]" sizes="(max-width: 768px) 90vw, 22vw" />
+                  </div>
+                  <p className="mt-3 text-xs uppercase tracking-[0.12em] text-text-muted">{item.collectionTitle}</p>
+                  <h3 className="mt-2 text-base text-foreground">{item.title}</h3>
+                  <p className="mt-1 text-xs text-text-muted">{formatPrice(item.priceCents)}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
+            <div className="mb-8 flex items-end justify-between gap-6">
+              <div>
                 <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Featured objects</h2>
                 <p className="mt-2 text-sm text-text-secondary">
                   Objects with detail pages and order flow.
@@ -311,6 +350,29 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
+            <div className="mb-8 flex items-end justify-between gap-6">
+              <div>
+                <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Quiet popular objects</h2>
+                <p className="mt-2 text-sm text-text-secondary">Natural guideposts from the current object shelf.</p>
+              </div>
+              <Link href="/objects" className="hidden text-sm text-foreground/62 hover:text-foreground sm:block">
+                Objects
+              </Link>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {popularObjects.map((item) => (
+                <Link key={item.id} href={`/objects/${item.id}`} className="quiet-air-touch rounded-lg border border-border-subtle/70 bg-white/48 p-4 transition hover:bg-white/68">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-border-subtle bg-white">
+                    <Image src={item.media.placement} alt={item.media.alt} fill className="object-cover opacity-[0.88]" sizes="(max-width: 768px) 90vw, 22vw" />
+                  </div>
+                  <p className="mt-3 text-xs uppercase tracking-[0.12em] text-text-muted">{item.collectionTitle}</p>
+                  <h3 className="mt-2 text-base text-foreground">{item.title}</h3>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
             <div className="grid gap-6 lg:grid-cols-[0.36fr_0.64fr]">
               <div>
                 <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Seasonal rotation</h2>
@@ -330,6 +392,22 @@ export function HomepageBrowserRoom() {
                   </div>
                 </Link>
               ) : null}
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/80 py-11 sm:py-12">
+            <div className="mb-8">
+              <h2 className="text-2xl leading-tight text-foreground sm:text-3xl">Seasonal themes</h2>
+              <p className="mt-2 text-sm text-text-secondary">Atmosphere themes for browsing, not promotion zones.</p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {seasonalThemes.map((theme) => (
+                <Link key={theme.id} href={theme.href} className="quiet-air-touch rounded-lg border border-border-subtle/70 bg-white/46 p-5 transition hover:bg-white/68">
+                  <p className="text-xs uppercase tracking-[0.12em] text-text-muted">{theme.id.replaceAll("-", " ")}</p>
+                  <h3 className="mt-3 text-lg text-foreground">{theme.title}</h3>
+                  <p className="mt-3 text-xs leading-6 text-text-muted">{theme.summary}</p>
+                </Link>
+              ))}
             </div>
           </section>
 
@@ -445,6 +523,13 @@ export function HomepageBrowserRoom() {
                 </div>
               ))}
             </div>
+            <div className="mt-7 grid gap-5 lg:grid-cols-[0.46fr_0.54fr]">
+              <Link href={brandStorySurface.href} className="rounded-lg border border-border-subtle/70 bg-white/46 p-5 transition hover:bg-white/64">
+                <p className="text-xs uppercase tracking-[0.12em] text-text-muted">{brandStorySurface.title}</p>
+                <p className="mt-3 text-sm leading-7 text-text-secondary">{brandStorySurface.body}</p>
+              </Link>
+              <QuietSubscription />
+            </div>
           </section>
 
           <footer className="mx-auto flex max-w-[86rem] flex-wrap items-center justify-between gap-4 border-t border-border-subtle/70 py-7 text-sm text-text-secondary">
@@ -454,11 +539,16 @@ export function HomepageBrowserRoom() {
             </div>
             <div className="flex flex-wrap gap-5 text-xs text-text-muted">
               <Link href="/collections" className="hover:text-text-secondary">Collections</Link>
+              <Link href="/search" className="hover:text-text-secondary">Search</Link>
+              <Link href="/new-arrivals" className="hover:text-text-secondary">New</Link>
               <Link href="/objects" className="hover:text-text-secondary">Objects</Link>
               <Link href="/cart" className="hover:text-text-secondary">Cart</Link>
               <Link href="/order" className="hover:text-text-secondary">Order</Link>
               <Link href="/desk" className="hover:text-text-secondary">Desk</Link>
               <Link href="/inquiry" className="hover:text-text-secondary">Mail</Link>
+              {socialContinuityLinks.map((item) => (
+                <a key={item.label} href={item.href} className="hover:text-text-secondary">{item.label}</a>
+              ))}
             </div>
           </footer>
         </div>

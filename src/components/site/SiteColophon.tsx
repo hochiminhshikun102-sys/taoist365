@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { socialContinuityLinks } from "@/config/frontstage-operations";
 import { siteConfig } from "@/config/site";
 
 /** Boring footer utilities—ordinary long-lived website texture, not brand theater. */
@@ -11,6 +12,12 @@ export function SiteColophon() {
         <nav aria-label="Site" className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-text-muted/85">
           <Link href="/" className="transition hover:text-text-secondary">
             Home
+          </Link>
+          <Link href="/search" className="transition hover:text-text-secondary">
+            Search
+          </Link>
+          <Link href="/new-arrivals" className="transition hover:text-text-secondary">
+            New
           </Link>
           <Link href="/objects" className="transition hover:text-text-secondary">
             Objects
@@ -30,6 +37,11 @@ export function SiteColophon() {
           <a href="/sitemap.xml" className="transition hover:text-text-secondary">
             Sitemap
           </a>
+          {socialContinuityLinks.map((item) => (
+            <a key={item.label} href={item.href} className="transition hover:text-text-secondary">
+              {item.label}
+            </a>
+          ))}
         </nav>
         <p className="text-[0.68rem] leading-6 text-text-muted/55">
           © {year} {siteConfig.siteName} · {siteConfig.domain}

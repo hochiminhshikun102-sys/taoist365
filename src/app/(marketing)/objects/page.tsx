@@ -31,6 +31,12 @@ export default function ObjectsPage() {
         </p>
         <p className="mt-3 max-w-2xl text-xs leading-7 text-text-muted/72">{siteConfig.permanenceLine}</p>
         <div className="mt-6 flex flex-wrap gap-3 text-sm">
+          <Link href="/search" className="rounded-lg border border-border-subtle bg-white/52 px-3 py-2 text-text-secondary hover:bg-white/70">
+            Search
+          </Link>
+          <Link href="/new-arrivals" className="rounded-lg border border-border-subtle bg-white/52 px-3 py-2 text-text-secondary hover:bg-white/70">
+            New arrivals
+          </Link>
           <Link href="/collections" className="rounded-lg border border-border-subtle bg-white/52 px-3 py-2 text-text-secondary hover:bg-white/70">
             Collections
           </Link>

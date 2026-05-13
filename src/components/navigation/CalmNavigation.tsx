@@ -23,10 +23,22 @@ export function CalmNavigation() {
 
         <div className="flex max-w-[min(100%,42rem)] flex-wrap items-center justify-end gap-2 sm:gap-3">
           <Link
+            href="/search"
+            className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+          >
+            Search
+          </Link>
+          <Link
             href="/collections"
             className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
           >
             Collections
+          </Link>
+          <Link
+            href="/new-arrivals"
+            className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+          >
+            New
           </Link>
           <Link
             href="/objects"
