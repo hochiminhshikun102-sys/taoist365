@@ -16,6 +16,9 @@ export function SiteColophon() {
           <Link href="/search" className="transition hover:text-text-secondary">
             Search
           </Link>
+          <Link href="/healing" className="transition hover:text-text-secondary">
+            Healing
+          </Link>
           <Link href="/new-arrivals" className="transition hover:text-text-secondary">
             New
           </Link>

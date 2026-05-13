@@ -1,5 +1,6 @@
 import { commerceCollections, commerceObjects } from "@/config/operational-commerce";
 import { experienceRoutes } from "@/config/experience-routes";
+import { healingHalls, healingModules } from "@/config/healing-ecosystem";
 
 export const seasonalThemes = [
   {
@@ -98,5 +99,32 @@ export function frontstageSearchEntries() {
     image: undefined,
   }));
 
-  return [...productEntries, ...collectionEntries, ...ritualEntries];
+  const healingEntries = [
+    {
+      id: "healing-index",
+      type: "Healing",
+      title: "Healing",
+      summary: "Seven quiet halls and forty-five light browser modules.",
+      href: "/healing",
+      image: undefined,
+    },
+    ...healingHalls.map((hall) => ({
+      id: `healing-hall-${hall.id}`,
+      type: "Healing Hall",
+      title: hall.title,
+      summary: `${hall.hero} ${hall.summary}`,
+      href: hall.href,
+      image: undefined,
+    })),
+    ...healingModules.map((module) => ({
+      id: `healing-module-${module.id}`,
+      type: "Healing Module",
+      title: module.title,
+      summary: `${module.originalName} ${module.summary} ${module.climate}`,
+      href: `/healing/${module.hall}#${module.id}`,
+      image: undefined,
+    })),
+  ];
+
+  return [...productEntries, ...collectionEntries, ...ritualEntries, ...healingEntries];
 }
