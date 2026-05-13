@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
 import { siteConfig } from "@/config/site";
+import { localizedAlternates } from "@/config/locales";
 import { QuietSiteJsonLd } from "@/components/structured/QuietSiteJsonLd";
 import { TemporalBandRoot } from "@/components/ritual/TemporalBandRoot";
 import "./globals.css";
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   alternates: {
     canonical: "/",
+    languages: localizedAlternates(""),
   },
   icons: {
     icon: "/brand/production/favicon.svg",
