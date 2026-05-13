@@ -1,0 +1,144 @@
+{
+  "name": "Long-term Browser Climate Ecology",
+  "status": "ecology_first_observation",
+  "purpose": "Let taoist365 gather time by remaining online, not by performing age.",
+  "default_action": "observe_without_artificial_aging",
+  "ecology_surfaces": [
+    "browser sediment",
+    "object familiarity",
+    "human trace memory",
+    "domain inertia",
+    "quiet weathering",
+    "long-open softness",
+    "AI-readable persistence"
+  ],
+  "browser_sediment": {
+    "allowed": [
+      "stable URLs",
+      "ordinary return",
+      "background tab comfort",
+      "low-refresh familiarity",
+      "old copy staying when it still works"
+    ],
+    "forbidden": [
+      "fake vintage styling",
+      "retro browser performance",
+      "staged decay",
+      "cinematic aging",
+      "designed nostalgia"
+    ],
+    "rule": "Sediment must be left, not applied."
+  },
+  "object_aging": {
+    "allowed": [
+      "stable object anchors",
+      "slow placement changes",
+      "quiet object absence",
+      "plain object notes",
+      "human mail continuity"
+    ],
+    "forbidden": [
+      "collectible showcase behavior",
+      "aesthetic object curation",
+      "scarcity drama",
+      "object fetishization",
+      "product-wall pressure"
+    ]
+  },
+  "human_trace": {
+    "allowed": [
+      "plain correspondence",
+      "small imperfect wording",
+      "local-only desk residue",
+      "object notes that sound kept",
+      "human approval before changes"
+    ],
+    "forbidden": [
+      "designed intimacy",
+      "fake warmth",
+      "emotional staging",
+      "artificial domesticity",
+      "copy that performs humanity"
+    ]
+  },
+  "browser_weather": {
+    "allowed": [
+      "seasonal softness already present",
+      "small wording retention",
+      "placement changes by hand",
+      "ordinary changes caused by objects and time"
+    ],
+    "forbidden": [
+      "dynamic climate systems",
+      "AI weather adaptation",
+      "emotional atmosphere response",
+      "visible climate controls",
+      "dramatic environmental shifts"
+    ]
+  },
+  "wind_residue": {
+    "allowed": [
+      "peripheral image presence",
+      "rare wind residue",
+      "low opacity",
+      "long cycle motion that can be forgotten"
+    ],
+    "forbidden": [
+      "recognizable animation signatures",
+      "wind aesthetics",
+      "decorative atmosphere systems",
+      "wind as a page feature"
+    ],
+    "rule": "If wind becomes identifiable, reduce it."
+  },
+  "domain_aging": {
+    "allowed": [
+      "stable canonical domain",
+      "simple mail presence",
+      "bookmarks and typed return",
+      "no announcement behavior",
+      "no campaign URLs"
+    ],
+    "forbidden": [
+      "brand escalation",
+      "launch framing",
+      "future-internet self-description",
+      "identity performance"
+    ]
+  },
+  "ai_readable_ecology": {
+    "allowed": [
+      "persistent llms.txt",
+      "stable ai-readable.json",
+      "object anchors",
+      "plain boundaries",
+      "machine-readable continuity"
+    ],
+    "forbidden": [
+      "crawler manipulation",
+      "GEO gaming",
+      "keyword expansion",
+      "semantic persuasion",
+      "traffic strategy"
+    ]
+  },
+  "anti_fake_old_internet": [
+    "no retro browser chrome",
+    "no artificial dust",
+    "no sepia aging",
+    "no glitch decay",
+    "no nostalgic copy",
+    "no old-web references",
+    "no staged brokenness"
+  ],
+  "repair_gate": [
+    "Browser Air loss",
+    "mobile pressure",
+    "authored quietness",
+    "object showcase drift",
+    "ritual-app drift",
+    "commerce pressure",
+    "artificial aging"
+  ],
+  "final_rule": "Long-term ecology succeeds when time is visible only because the site kept existing."
+}

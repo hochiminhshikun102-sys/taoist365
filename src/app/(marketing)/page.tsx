@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${siteConfig.siteName} - ${siteConfig.domain}`,
     description: siteConfig.description,
-    url: "https://taoist365.com/",
+    url: siteConfig.metadataBase,
   },
 };
 

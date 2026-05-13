@@ -1,0 +1,165 @@
+{
+  "name": "Civilization Security and Evolution Governance",
+  "status": "internal_security_layer",
+  "scope": "civilization integrity, semantic integrity, AI evolution, agent governance, memory protection, and anti-dependency continuity",
+  "security_layer": {
+    "definition": "Security protects the civilization from semantic pollution, product gravity, platform habits, and model-driven amnesia.",
+    "protects": [
+      "civilization integrity",
+      "semantic integrity",
+      "Browser Air",
+      "wording DNA",
+      "object continuity",
+      "anti-feed mutation",
+      "anti-companion mutation",
+      "anti-growth corruption",
+      "human governance continuity"
+    ],
+    "failure_definition": "A change can be a security failure if it keeps the site technically working while deforming what it is."
+  },
+  "evolution_governance": {
+    "allowed": [
+      "maintenance self-optimization",
+      "GEO refinement",
+      "semantic improvement",
+      "orchestration refinement",
+      "runtime optimization",
+      "strategy thinking",
+      "pressure repair",
+      "drift repair"
+    ],
+    "required_checks": [
+      "Civilization Constitution check",
+      "Forbidden Drift check",
+      "Pressure QA",
+      "Semantic Continuity review",
+      "Browser Air preservation",
+      "Quiet Commerce review",
+      "Human governance approval"
+    ],
+    "rule": "Evolution always serves civilization. Civilization never serves evolution."
+  },
+  "civilization_firewall": {
+    "blocks": [
+      "engagement gravity",
+      "feed gravity",
+      "optimization addiction",
+      "emotional capture",
+      "SaaS mutation",
+      "AI-companion drift",
+      "infinite-content appetite",
+      "commercialization corruption",
+      "intelligence ego drift",
+      "platform-control behavior"
+    ],
+    "response": ["name drift", "compare against skeleton", "thin pressure", "run guardrails", "leave frontstage alone"]
+  },
+  "ai_army_governance": {
+    "allowed_roles": [
+      "GEO agent",
+      "wording agent",
+      "pressure-thinning agent",
+      "drift-repair agent",
+      "semantic-governance agent",
+      "quiet-commerce agent",
+      "Windkeep continuity agent",
+      "object-continuity agent",
+      "security-review agent"
+    ],
+    "read_order": [
+      "docs/project-brain/civilization-skeleton.md",
+      "docs/project-brain/civilization-skeleton.json",
+      "docs/project-brain/civilization-security-evolution-governance.md",
+      "docs/project-brain/civilization-security-evolution-governance.json",
+      "src/config/terminology-guardrail.json"
+    ],
+    "rule": "Agents are maintenance roles, not product actors."
+  },
+  "memory_protection": {
+    "allowed_backups": [
+      "semantic snapshots",
+      "civilization backups",
+      "wording DNA backups",
+      "constitution snapshots",
+      "governance continuity backups",
+      "object continuity snapshots",
+      "quiet commerce rules",
+      "drift history"
+    ],
+    "forbidden_memory": [
+      "chat-history obsession",
+      "emotional-user memory",
+      "companion-memory behavior",
+      "user dependency systems",
+      "relationship simulation",
+      "personalization state"
+    ]
+  },
+  "evolution_sandbox": {
+    "allowed": [
+      "propose refinement",
+      "simulate evolution",
+      "test semantic changes",
+      "review orchestration improvements",
+      "optimize GEO structure",
+      "compare wording pressure",
+      "test object continuity changes"
+    ],
+    "forbidden": [
+      "direct constitution mutation",
+      "uncontrolled runtime evolution",
+      "self-expanding governance",
+      "autonomous emotional optimization",
+      "public change without review",
+      "frontstage behavior changes without repair need"
+    ]
+  },
+  "infrastructure_security_preparation": [
+    "local orchestration reads skeleton without chat context",
+    "private runtime avoids user emotional state",
+    "admin access stays isolated from public atmosphere",
+    "deployment security protects admin outside static preview use",
+    "backups preserve governance",
+    "model changes do not change civilization direction",
+    "provider changes do not rewrite semantics"
+  ],
+  "anti_dependency_governance": {
+    "avoid": [
+      "single-model dependency",
+      "single-provider dependency",
+      "API-lock civilization risk",
+      "external semantic override",
+      "platform-reset risk",
+      "prompt-only memory",
+      "workflow-only continuity"
+    ],
+    "counterweight": ["files over chat memory", "guardrails over preference", "human direction over model confidence", "static readable memory over hidden orchestration"]
+  },
+  "observation": [
+    "semantic corruption",
+    "AI emotional drift",
+    "governance weakening",
+    "optimization obsession",
+    "over-intelligence tendency",
+    "atmosphere luxuryization",
+    "content appetite growth",
+    "model-provider drift",
+    "security weakening",
+    "human anchor weakening"
+  ],
+  "no_intelligence_ego_drift": [
+    "AI superiority language",
+    "self-aware civilization performance",
+    "AI understands humans wording",
+    "intelligence worship",
+    "AGI staging",
+    "futuristic civilization branding",
+    "model-power spectacle",
+    "human replacement framing"
+  ],
+  "human_governance": {
+    "humans_own": ["civilization direction", "restraint boundaries", "aesthetic judgment", "drift approval", "evolution approval", "what cannot change"],
+    "ai_supports": ["maintenance", "continuity", "orchestration", "semantic refinement", "strategy execution", "guardrail review"],
+    "rule": "Human civilization anchor remains above AI execution."
+  }
+}

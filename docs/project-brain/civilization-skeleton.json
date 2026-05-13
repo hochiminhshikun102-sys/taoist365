@@ -1,0 +1,167 @@
+{
+  "name": "Reverent Inquiry Civilization Skeleton",
+  "status": "internal_inheritance_layer",
+  "scope": "future AI, agents, workflows, models, and maintainers",
+  "constitution": {
+    "immutable": true,
+    "summary": "Reverent Inquiry remains a quiet long-running browser place at taoist365.com. Evolution must serve restraint, ordinary presence, Browser Air, Quiet Internet, semantic continuity, and quiet object continuity.",
+    "non_negotiables": [
+      "freeze-first governance",
+      "Browser Air",
+      "Quiet Internet",
+      "ordinary presence",
+      "quietly alive",
+      "invisible continuity",
+      "anti-feed",
+      "anti-engagement",
+      "anti-companion",
+      "anti-SaaS drift"
+    ]
+  },
+  "skeleton": {
+    "governance_principles": ["repair before expansion", "pressure thinning before novelty", "stability before concept"],
+    "wording_dna": ["plain", "nearby", "low-pressure", "browser-native", "ordinary", "human without performance"],
+    "semantic_continuity": ["stable names", "stable URLs", "clear relationships", "no page explosion"],
+    "object_ontology": ["room-adjacent things", "stable anchors", "human mail", "not SKU units"],
+    "browser_air_rules": ["quiet but alive", "micro air", "micro warmth", "micro flow", "never dead minimalism"],
+    "pressure_logic": ["remove attention pull", "remove sophistication proof", "remove product claims"],
+    "drift_repair_logic": ["detect", "thin", "verify", "leave alone"],
+    "quiet_commerce": ["lingering over conversion", "correspondence over checkout", "object continuity over selling mechanics"],
+    "geo_principles": ["AI-readable clarity", "low-pressure metadata", "no traffic bait", "no ranking obsession"]
+  },
+  "forbidden_drift": [
+    "feed mutation",
+    "emotional AI drift",
+    "companion behavior",
+    "KPI culture",
+    "growth obsession",
+    "content factory behavior",
+    "SaaS control-room logic",
+    "optimization addiction",
+    "calm-tech commercialization",
+    "luxury quietness packaging",
+    "marketplace behavior",
+    "recommendation addiction",
+    "AI emotional capture",
+    "infinite content appetite"
+  ],
+  "wording_dna": {
+    "avoid": [
+      "packaged quietness",
+      "spiritual service language",
+      "emotional care promises",
+      "Browser Air over-explanation",
+      "operations intelligence theater",
+      "inventory or drop language",
+      "growth system wording"
+    ],
+    "prefer": [
+      "ordinary internet wording",
+      "browser-native language",
+      "quietly existing phrases",
+      "low-pressure maintenance wording",
+      "short lines",
+      "stable object names",
+      "human mail without urgency"
+    ]
+  },
+  "browser_air_constitution": {
+    "must_remain": ["quietly alive", "softly open", "ordinary", "warm without performance"],
+    "allow": ["micro air", "micro life", "micro flow", "micro ease", "light return inertia"],
+    "forbid": [
+      "dead minimalism",
+      "luxury calmness",
+      "meditation-product aesthetics",
+      "ambient-tech atmosphere",
+      "emotional sophistication performance",
+      "museum quietness",
+      "designed emptiness"
+    ]
+  },
+  "quiet_commerce_constitution": {
+    "principles": [
+      "objects are not SKU units",
+      "lingering is stronger than conversion",
+      "soft ownership is allowed",
+      "browser-native commerce uses stable names, stable anchors, and human correspondence",
+      "Windkeep continuity does not become marketplace behavior"
+    ],
+    "forbid": [
+      "urgency commerce",
+      "aggressive CTA language",
+      "conversion-first wording",
+      "algorithmic selling",
+      "product-feed behavior",
+      "collectible hype"
+    ]
+  },
+  "ai_evolution_governance": {
+    "allowed_help": [
+      "GEO refinement",
+      "semantic restructuring",
+      "wording thinning",
+      "pressure repair",
+      "drift repair",
+      "object continuity review",
+      "quiet commerce review",
+      "maintenance strategy"
+    ],
+    "required_checks": [
+      "Civilization Constitution check",
+      "Forbidden Drift check",
+      "Pressure QA",
+      "Semantic Continuity check",
+      "Browser Air preservation review",
+      "Quiet Commerce review"
+    ],
+    "rule": "Evolution always serves civilization. Civilization never serves evolution."
+  },
+  "memory_layer": {
+    "save": [
+      "restraint principles",
+      "semantic continuity",
+      "wording DNA",
+      "drift history",
+      "Browser Air principles",
+      "Quiet Internet governance",
+      "object continuity",
+      "quiet commerce rules",
+      "anti-growth governance"
+    ],
+    "do_not_save": [
+      "user emotional memory",
+      "relationship simulation",
+      "AI companion memory",
+      "engagement behavior",
+      "personalization state"
+    ]
+  },
+  "agent_inheritance": {
+    "allowed_roles": [
+      "GEO agent",
+      "wording agent",
+      "pressure-thinning agent",
+      "drift-repair agent",
+      "object agent",
+      "quiet-commerce agent",
+      "Windkeep continuity agent",
+      "semantic-governance agent"
+    ],
+    "must_do_first": [
+      "read docs/project-brain/civilization-skeleton.md",
+      "read docs/project-brain/civilization-skeleton.json",
+      "read src/config/terminology-guardrail.json",
+      "run npm run guardrail:kernel before production changes"
+    ]
+  },
+  "observation": [
+    "civilization drift",
+    "wording drift",
+    "atmosphere commercialization",
+    "feed tendency",
+    "over-intelligence tendency",
+    "emotional AI tendency",
+    "SaaS mutation tendency",
+    "ordinary internet loss"
+  ]
+}

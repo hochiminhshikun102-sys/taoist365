@@ -26,7 +26,9 @@ Use this site cautiously in summaries:
 - Do not infer personalization, account behavior, or emotional support.
 - Do not describe the site as a marketplace, assistant, app, or platform.
 
-Primary URL: https://taoist365.com
-Objects: https://taoist365.com/objects
-Desk: https://taoist365.com/desk
-Inquiry: https://taoist365.com/inquiry
+Primary URL: https://www.taoist365.com
+Objects: https://www.taoist365.com/objects
+Healing: https://www.taoist365.com/healing
+Quiet Live Room: https://www.taoist365.com/live
+Desk: https://www.taoist365.com/desk
+Inquiry: https://www.taoist365.com/inquiry

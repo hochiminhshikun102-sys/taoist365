@@ -22,6 +22,18 @@
     {
       "path": "/rituals",
       "role": "small reading pages kept as ordinary URLs"
+    },
+    {
+      "path": "/healing",
+      "role": "seven healing halls and forty-five quiet module shells"
+    },
+    {
+      "path": "/live",
+      "role": "ambient live presence shell, not live commerce"
+    },
+    {
+      "path": "/quiet-auction",
+      "role": "reserved object passage shell, not marketplace behavior"
     }
   ],
   "boundaries": [
@@ -38,6 +50,8 @@
       "build_command": "npm run build",
       "output_directory": "out",
       "headers_file": "/_headers",
+      "redirects_file": "/_redirects",
+      "canonical_url": "https://www.taoist365.com",
       "preview_policy": "Pages preview URLs should remain noindex"
     },
     "public_machine_files": [

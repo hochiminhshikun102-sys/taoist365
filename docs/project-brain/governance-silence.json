@@ -1,0 +1,87 @@
+{
+  "name": "Governance Silence",
+  "status": "restraint_clarification_only",
+  "purpose": "Stop governance from becoming atmosphere, worldview, or self-importance.",
+  "do_not_expand_unless": [
+    "a new drift is observed",
+    "an existing rule failed",
+    "a future maintainer would be confused without it",
+    "a concrete boundary must be preserved"
+  ],
+  "stop_renaming": [
+    "quiet internet",
+    "browser air",
+    "restraint-first work",
+    "ordinary presence",
+    "anti-performance",
+    "observation before repair",
+    "stable anchors",
+    "mail as human contact",
+    "objects as things not products"
+  ],
+  "silent_governance_is": [
+    "applied during review",
+    "checked when drift appears",
+    "used to say no",
+    "kept in memory",
+    "not turned into more copy"
+  ],
+  "silent_governance_is_not": [
+    "a new layer",
+    "a new concept",
+    "a writing style",
+    "a public identity",
+    "a reason to produce more documents"
+  ],
+  "implicit_continuity": [
+    "quiet internet",
+    "browser air",
+    "restraint-first",
+    "ordinary presence",
+    "anti-performance",
+    "no feed",
+    "no companion behavior",
+    "no dashboard drift",
+    "no commerce pressure",
+    "no launch behavior"
+  ],
+  "documentation_should_prefer": [
+    "short records",
+    "named drift",
+    "concrete repair",
+    "checks that can be run",
+    "decisions that help future work"
+  ],
+  "documentation_should_avoid": [
+    "manifesto tone",
+    "emotional texture",
+    "sacred framing",
+    "philosophical exhibition",
+    "repeating identity language",
+    "writing that makes restraint feel authored"
+  ],
+  "civilization_performance_forbidden": [
+    "over-serious framing",
+    "repeated grand naming",
+    "sacred governance tone",
+    "conceptual self-importance",
+    "treating maintenance as ceremony"
+  ],
+  "governance_should_become": [
+    "a habit",
+    "a small check",
+    "a quiet refusal",
+    "a line in a review",
+    "a reason not to change something"
+  ],
+  "governance_visibility_observation": [
+    "documents explain themselves too much",
+    "rules keep receiving new names",
+    "restraint becomes a style",
+    "project sounds like a philosophy archive",
+    "maintenance language feels ceremonial",
+    "ordinary decisions are written as worldview"
+  ],
+  "repair_rule": "When governance becomes visible, remove framing before adding rules.",
+  "final_rule": "If governance is working, it should become less noticeable."
+}

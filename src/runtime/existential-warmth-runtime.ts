@@ -37,7 +37,7 @@ export function resolveExistentialWarmthRuntime(dayKey: string): ExistentialWarm
             : warmthState === "continuityComfort"
               ? "Small continuity comfort lets the browser room keep breathing."
               : "Gentle existence calmness stays below the level of doctrine.",
-    nonTherapyLine: "Taoist365 does not solve life; it only lets existence feel slightly less heavy.",
+    nonTherapyLine: "Reverent Inquiry does not solve life; it only lets existence feel slightly less heavy.",
     preventTherapyTone: h > 20,
   };
 }

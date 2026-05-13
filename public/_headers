@@ -2,6 +2,9 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Frame-Options: SAMEORIGIN
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
 
 https://:project.pages.dev/*
   X-Robots-Tag: noindex
@@ -11,3 +14,24 @@ https://:branch.:project.pages.dev/*
 
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
+
+/brand/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/home-hero/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/objects-living/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/objects-motion/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/objects-derived/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+/robots.txt
+  Cache-Control: public, max-age=3600

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   healingCoreEntries,
-  healingHallById,
   healingHalls,
   healingModuleById,
   healingModules,
@@ -13,7 +12,7 @@ import { HealingModuleCard } from "@/components/healing/HealingModuleCard";
 
 export const metadata: Metadata = {
   title: "Healing",
-  description: "Taoist365 quiet browser world: halls, modules, object stories, and light interactions.",
+  description: "Reverent Inquiry quiet browser world: halls, modules, object stories, and light interactions.",
 };
 
 export default function HealingIndexPage() {
@@ -61,8 +60,7 @@ export default function HealingIndexPage() {
           <div className="grid gap-5 lg:grid-cols-2">
             {coreModules.map((module) => {
               if (!module) return null;
-              const hall = healingHallById(module.hall);
-              return <HealingModuleCard key={module.id} module={module} hallHref={hall?.href ?? "/healing"} />;
+              return <HealingModuleCard key={module.id} module={module} />;
             })}
           </div>
         </section>
@@ -93,10 +91,9 @@ export default function HealingIndexPage() {
             </Link>
           </div>
           <div className="grid gap-5 lg:grid-cols-3">
-            {healingModules.slice(0, 12).map((module) => {
-              const hall = healingHallById(module.hall);
-              return <HealingModuleCard key={module.id} module={module} hallHref={hall?.href ?? "/healing"} />;
-            })}
+            {healingModules.map((module) => (
+              <HealingModuleCard key={module.id} module={module} />
+            ))}
           </div>
         </section>
       </div>

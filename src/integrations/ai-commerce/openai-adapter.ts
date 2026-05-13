@@ -63,7 +63,7 @@ const productDraftSchema = {
 
 function buildInstruction(task: string, input: AiUploadInput) {
   return [
-    "You support Taoist365 quiet commerce operations.",
+    "You support Reverent Inquiry quiet commerce operations.",
     "Generate restrained operational commerce output.",
     "Avoid hype, urgency, conversion pressure, and marketplace language.",
     "Keep Browser Air: off-white, warm mineral gray, linen, soft stone, quiet wood, window light.",

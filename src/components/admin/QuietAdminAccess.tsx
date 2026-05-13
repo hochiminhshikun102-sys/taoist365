@@ -21,13 +21,13 @@ export function QuietAdminAccess({ children }: Readonly<{ children: React.ReactN
     event.preventDefault();
 
     if (!quietAdminAccess.enabled) {
-      setNote("This static build needs a quiet phrase or host-level access.");
+      setNote("未设置后台短语 / Admin phrase is not set.");
       return;
     }
 
     if (phrase.trim() !== quietAdminAccess.phrase) {
       setPhrase("");
-      setNote("Still closed.");
+      setNote("密码不对 / Still closed.");
       return;
     }
 
@@ -42,15 +42,15 @@ export function QuietAdminAccess({ children }: Readonly<{ children: React.ReactN
   return (
     <main className="min-h-dvh bg-[#eef1f4] px-4 py-6 text-foreground sm:px-6">
       <section className="mx-auto flex min-h-[82dvh] w-full max-w-xl flex-col justify-center">
-        <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">Quiet access</p>
+        <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">安静访问 / Quiet access</p>
         <h1 className="mt-3 text-2xl font-normal leading-tight text-foreground">Reverent Inquiry</h1>
         <p className="mt-4 text-sm leading-7 text-text-secondary">
-          Access shell only. This room is for quiet maintenance and guardrail repair.
+          后台只用于安静维护、文案检查和边界修复。This room is for quiet maintenance and guardrail repair.
         </p>
 
         <form onSubmit={enterAdmin} className="mt-7 space-y-4 border-t border-border-subtle/70 pt-5">
           <label className="block text-xs leading-6 text-text-muted" htmlFor="quiet-admin-phrase">
-            Phrase
+            后台短语 / Phrase
           </label>
           <input
             id="quiet-admin-phrase"
@@ -59,13 +59,14 @@ export function QuietAdminAccess({ children }: Readonly<{ children: React.ReactN
             type="password"
             autoComplete="off"
             className="w-full border border-border-subtle bg-white/55 px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-border-default"
+            placeholder="输入后台短语 / Enter phrase"
           />
           <div className="flex items-center justify-between gap-3">
             <button
               type="submit"
               className="border border-border-subtle bg-white/60 px-3 py-2 text-xs text-text-secondary transition-colors hover:border-border-default hover:text-foreground"
             >
-              Enter quietly
+              安静进入 / Enter quietly
             </button>
             <p className="text-right text-[0.68rem] leading-5 text-text-muted">{note}</p>
           </div>

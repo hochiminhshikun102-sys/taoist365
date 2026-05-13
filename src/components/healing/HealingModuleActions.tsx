@@ -8,9 +8,11 @@ type HealingModuleActionsProps = {
 };
 
 export function HealingModuleActions({ moduleId, title }: HealingModuleActionsProps) {
+  const storageKey = `reverent-inquiry-healing-module-${moduleId}`;
+  const legacyStorageKey = `taoist365-healing-module-${moduleId}`;
   const [saved, setSaved] = useState(() => {
     if (typeof window === "undefined") return false;
-    return window.localStorage.getItem(`taoist365-healing-module-${moduleId}`) === "saved";
+    return window.localStorage.getItem(storageKey) === "saved" || window.localStorage.getItem(legacyStorageKey) === "saved";
   });
   const [shared, setShared] = useState(false);
 
@@ -18,9 +20,10 @@ export function HealingModuleActions({ moduleId, title }: HealingModuleActionsPr
     const next = !saved;
     setSaved(next);
     if (next) {
-      window.localStorage.setItem(`taoist365-healing-module-${moduleId}`, "saved");
+      window.localStorage.setItem(storageKey, "saved");
     } else {
-      window.localStorage.removeItem(`taoist365-healing-module-${moduleId}`);
+      window.localStorage.removeItem(storageKey);
+      window.localStorage.removeItem(legacyStorageKey);
     }
   }
 

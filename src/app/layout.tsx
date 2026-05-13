@@ -29,8 +29,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.metadataBase),
   title: {
-    default: `${siteConfig.siteName} · ${siteConfig.domain}`,
-    template: `%s · ${siteConfig.siteName}`,
+    default: `${siteConfig.siteName} - ${siteConfig.domain}`,
+    template: `%s - ${siteConfig.siteName}`,
   },
   description: siteConfig.description,
   alternates: {
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     icon: "/brand/production/favicon.svg",
   },
   openGraph: {
-    title: `${siteConfig.siteName} · ${siteConfig.domain}`,
+    title: `${siteConfig.siteName} - ${siteConfig.domain}`,
     description: siteConfig.description,
     url: siteConfig.metadataBase,
     siteName: siteConfig.siteName,

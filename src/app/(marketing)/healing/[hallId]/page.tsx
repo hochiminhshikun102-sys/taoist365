@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: HealingHallPageProps): Promis
 
   return {
     title: hall?.title ?? "Healing Hall",
-    description: hall?.summary ?? "Taoist365 healing hall.",
+    description: hall?.summary ?? "Reverent Inquiry healing hall.",
   };
 }
 
@@ -69,7 +69,7 @@ export default async function HealingHallPage({ params }: HealingHallPageProps) 
 
         <section className="mt-10 grid gap-5 lg:grid-cols-2" aria-label={`${hall.title} modules`}>
           {modules.map((module) => (
-            <HealingModuleCard key={module.id} module={module} hallHref={hall.href} />
+            <HealingModuleCard key={module.id} module={module} />
           ))}
         </section>
       </div>

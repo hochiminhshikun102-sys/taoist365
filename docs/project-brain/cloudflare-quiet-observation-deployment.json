@@ -1,0 +1,86 @@
+{
+  "name": "Cloudflare Quiet Observation Deployment",
+  "status": "prepared_not_bound",
+  "purpose": "Prepare taoist365.com for Cloudflare Pages static deployment and real browser observation without launch culture.",
+  "repository_binding": {
+    "current_state": "no remote binding detected locally",
+    "allowed": [
+      "private repository continuity",
+      "project-brain persistence",
+      "small commits",
+      "guardrail output before deployment changes",
+      "human review before public deployment"
+    ],
+    "forbidden": [
+      "issue-board expansion",
+      "contribution gamification",
+      "productivity culture",
+      "engineering-center identity"
+    ],
+    "rule": "Do not add a Git remote without human approval of the repository URL."
+  },
+  "cloudflare_pages": {
+    "binding_state": "prepared locally, not deployed",
+    "build_command": "npm run build",
+    "output_directory": "out",
+    "static_export": true,
+    "headers_file": "public/_headers",
+    "avoid": [
+      "Workers by default",
+      "Pages Functions by default",
+      "analytics by default",
+      "dynamic infrastructure by default",
+      "deployment hype"
+    ]
+  },
+  "domain_continuity": {
+    "canonical": "https://taoist365.com",
+    "www_policy": "optional plain redirect",
+    "avoid": [
+      "campaign paths",
+      "launch wording",
+      "release framing",
+      "branding rollout"
+    ]
+  },
+  "edge_observation": [
+    "DNS propagation without urgency",
+    "static asset delivery",
+    "_headers behavior",
+    "Pages preview noindex behavior",
+    "llms.txt availability",
+    "ai-readable.json availability",
+    "admin protection before public use"
+  ],
+  "admin_protection": {
+    "static_gate": "preview convenience only",
+    "public_requirement": "Cloudflare Access or equivalent platform protection",
+    "rule": "Admin remains a protected maintenance room, not an operator console."
+  },
+  "real_browser_observation": [
+    "homepage ordinary presence",
+    "mobile Browser Air",
+    "long-open comfort",
+    "Objects anti-commerce drift",
+    "Draw a Lot anti-app drift",
+    "wind residue periphery",
+    "footer ordinary ending"
+  ],
+  "ai_readable_observation": [
+    "/llms.txt",
+    "/ai-readable.json",
+    "JSON-LD output",
+    "object anchors",
+    "plain mail semantics",
+    "anti-marketplace boundaries"
+  ],
+  "human_priority": [
+    "repository binding",
+    "Cloudflare project creation",
+    "domain binding",
+    "admin exposure",
+    "first repair window",
+    "what must stay unchanged"
+  ],
+  "final_rule": "The deployment succeeds when taoist365 is reachable and nothing on the site starts acting like it has been launched."
+}

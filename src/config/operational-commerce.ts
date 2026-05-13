@@ -204,7 +204,7 @@ const objectDetails = {
   },
   "taoist365-night-teacup": {
     title: "Quiet desk mug",
-    subtitle: "Ceramic mug with small Taoist365 graphic.",
+    subtitle: "Ceramic mug with small Reverent Inquiry graphic.",
     atmosphereLine: "A working mug that can sit beside a laptop without becoming office merch.",
     materials: ["Ceramic", "glazed print", "rounded handle"],
     dimensions: "3.7 in tall / about 11 oz",
@@ -843,7 +843,7 @@ function autoMaterialSeed(stem: string, index: number, fromSplit = false): Mater
     id: `material-${slug}`,
     sourceStem: stem,
     title,
-    subtitle: isWindBell ? "Decorative room wind bell prepared from the current product shelf." : fromSplit ? "Cropped product candidate from a multi-object source image." : "First-stage product link from the current Taoist365 material shelf.",
+    subtitle: isWindBell ? "Decorative room wind bell prepared from the current product shelf." : fromSplit ? "Cropped product candidate from a multi-object source image." : "First-stage product link from the current Reverent Inquiry material shelf.",
     atmosphereLine: isWindBell
       ? "A hanging object for window air, small sound, and low-pressure room movement."
       : fromSplit
@@ -853,7 +853,7 @@ function autoMaterialSeed(stem: string, index: number, fromSplit = false): Mater
       ? "The design direction comes from small bells, window light, and hanging room objects that move only when the air moves."
       : fromSplit
       ? "This link comes from a grouped product board. The first pass isolates the object area, calms the background, and keeps the shape available for later model-level cleanup."
-      : "This link keeps the product shape from the original material while resetting the surrounding field into a softer Taoist365 surface.",
+      : "This link keeps the product shape from the original material while resetting the surrounding field into a softer Reverent Inquiry surface.",
     collection,
     materials: standardizedMaterials(title, stem, isWindBell),
     dimensions: standardizedDimensions(title, stem, isWindBell),
@@ -1029,14 +1029,14 @@ const foundationalCommerceObjects: readonly CommerceObject[] = taoist365ObjectsC
     priceCents: marketAdjustedPriceCents(details.priceCents, details.title, piece.id, index),
     trustNotes: [
       "Ships after human stock confirmation.",
-      "Photos are current material references from the Taoist365 asset shelf.",
+      "Photos are current material references from the Reverent Inquiry asset shelf.",
       "Small visible variation is treated as ordinary, not defective.",
     ],
     shippingNote: "Ships from a small-stock shelf. Typical packing window is 3-5 business days after confirmation.",
     media: {
       hero: `/objects-living/${details.media[0]}`,
-      alt: `${details.title} photographed for Taoist365`,
-      caption: `${details.title} in a real product surface from the Taoist365 material shelf.`,
+      alt: `${details.title} photographed for Reverent Inquiry`,
+      caption: `${details.title} in a real product surface from the Reverent Inquiry material shelf.`,
       videoPoster: `/objects-living/${details.media[0]}`,
       motion: `/objects-motion/${piece.id}.gif`,
       placement: `/objects-living/${details.media[1]}`,
@@ -1089,7 +1089,7 @@ const materialProductObjects: readonly CommerceObject[] = allMaterialObjectSeeds
     media: {
       hero: `/objects-derived/${seed.sourceStem}-hero.webp`,
       alt: `${seed.title} product image`,
-      caption: `${seed.title} staged from the current Taoist365 product material shelf.`,
+      caption: `${seed.title} staged from the current Reverent Inquiry product material shelf.`,
       videoPoster: `/objects-derived/${seed.sourceStem}-hero.webp`,
       motion: `/objects-derived/${seed.sourceStem}-placement.webp`,
       placement: `/objects-derived/${seed.sourceStem}-placement.webp`,

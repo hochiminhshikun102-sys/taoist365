@@ -1,6 +1,6 @@
 # Cloudflare Pages Quiet Observation
 
-This is a deployment observation note for taoist365.com. It is not a launch checklist.
+This is a deployment observation note for Reverent Inquiry at taoist365.com. It is not a launch checklist.
 
 ## Pages Settings
 
@@ -29,9 +29,9 @@ No repository ceremony is needed.
 
 When the Pages deployment is stable:
 
-- add `taoist365.com` as the production custom domain;
-- add `www.taoist365.com` only if a plain redirect is desired;
-- keep canonical identity on `https://taoist365.com`;
+- add `www.taoist365.com` as the production custom domain;
+- add `taoist365.com` as the apex domain and redirect it to `https://www.taoist365.com`;
+- keep canonical identity on `https://www.taoist365.com`;
 - avoid launch copy, announcement pages, or campaign URLs.
 
 The domain should appear as an address, not an event.
@@ -60,8 +60,8 @@ Avoid:
 
 After deployment, check:
 
-- `https://taoist365.com/llms.txt`;
-- `https://taoist365.com/ai-readable.json`;
+- `https://www.taoist365.com/llms.txt`;
+- `https://www.taoist365.com/ai-readable.json`;
 - object anchors under `/objects`;
 - page metadata;
 - no keyword-stuffed machine copy.

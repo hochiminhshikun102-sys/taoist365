@@ -1,0 +1,167 @@
+{
+  "name": "Stable Anchor Ecology",
+  "status": "governance_and_observation_only",
+  "purpose": "Define long-term stable anchors for taoist365 without adding features, atmosphere, or redesign.",
+  "definition": "A stable anchor is something that can remain in place for a long time even when nobody pays attention to it.",
+  "core_rule": "An anchor should not remind people that it is an anchor.",
+  "stable_anchors_may_be": [
+    "stable URL",
+    "object anchor",
+    "plain mail route",
+    "repeated page position",
+    "quiet footer link",
+    "durable object name",
+    "public AI-readable file",
+    "ordinary navigation",
+    "browser surface that does not tire over time"
+  ],
+  "stable_anchors_are_not": [
+    "CTA systems",
+    "retention hooks",
+    "emotional traps",
+    "atmosphere showcases",
+    "memory prompts",
+    "brand performance",
+    "navigation gimmicks",
+    "animated signatures",
+    "designed nostalgia"
+  ],
+  "self_reminder_forbidden": [
+    "remember me",
+    "still here",
+    "always waiting",
+    "still alive",
+    "still breathing",
+    "returning again"
+  ],
+  "permission_to_be_ignored": {
+    "rule": "An anchor can sit for months without being clicked.",
+    "forbidden": [
+      "requesting action",
+      "creating guilt",
+      "implying incompletion",
+      "asking for return",
+      "rewarding checking"
+    ]
+  },
+  "peripheral_repetition": [
+    "visible enough to be findable",
+    "quiet enough to be forgotten",
+    "stable enough to become familiar",
+    "ordinary enough not to become a performance"
+  ],
+  "low_frequency_change": {
+    "allowed": [
+      "small repair",
+      "broken link repair",
+      "mojibake repair",
+      "access repair",
+      "object replacement by human decision",
+      "wording thinning when self-awareness appears"
+    ],
+    "forbidden": [
+      "campaign rotation",
+      "daily freshness",
+      "novelty pressure",
+      "atmospheric reshuffling",
+      "optimization-based placement"
+    ]
+  },
+  "no_atmosphere_exhibition": [
+    "intentional poetic layering",
+    "over-curated quietness",
+    "cinematic slowness",
+    "ambient exhibition",
+    "aestheticized restraint"
+  ],
+  "object_anchor": {
+    "meaning": "room continuity, not product exposure",
+    "allowed": [
+      "stable object ids",
+      "stable object URLs",
+      "durable object names",
+      "plain room placement",
+      "long periods without change",
+      "mail-only correspondence"
+    ],
+    "forbidden": [
+      "SKU-first identity",
+      "product wall behavior",
+      "collectible showcase energy",
+      "scarcity pressure",
+      "ranking or popularity signals"
+    ]
+  },
+  "mail_anchor": {
+    "meaning": "background human continuity",
+    "allowed": [
+      "stable contact route",
+      "plain email presence",
+      "slow human reply",
+      "no promise of speed",
+      "no newsletter pressure"
+    ],
+    "forbidden": [
+      "engagement channel behavior",
+      "subscriber capture",
+      "automated nurture flow",
+      "support-desk energy",
+      "emotional dependency loop"
+    ]
+  },
+  "browser_anchor": {
+    "meaning": "a structure that remains tolerable in a long-open tab",
+    "allowed": [
+      "ordinary navigation",
+      "stable footer",
+      "low-motion surface",
+      "readable page structure",
+      "no exhaustion after long exposure"
+    ],
+    "forbidden": [
+      "visual centerpiece pressure",
+      "animated identity",
+      "high-awareness hero grammar",
+      "atmosphere performance",
+      "app-like persistence hooks"
+    ]
+  },
+  "ai_readable_anchor": {
+    "meaning": "civilization memory continuity",
+    "allowed": [
+      "stable llms.txt",
+      "stable ai-readable.json",
+      "object anchors",
+      "public page roles",
+      "boundaries against platform drift",
+      "plain machine-readable facts"
+    ],
+    "forbidden": [
+      "SEO or GEO farming",
+      "indexing strategy",
+      "crawler persuasion",
+      "keyword expansion",
+      "traffic thinking"
+    ]
+  },
+  "anchor_fatigue_observation": [
+    "element explains itself too much",
+    "quietness becomes performed",
+    "restraint becomes aestheticized",
+    "repeated structure feels like a digital installation",
+    "object starts acting like a display piece",
+    "mail route starts feeling like a channel",
+    "browser surface feels carefully atmospheric instead of ordinary"
+  ],
+  "repair_gate": [
+    "self-reminder",
+    "action pressure",
+    "atmosphere exhibition",
+    "object showcase drift",
+    "mail engagement drift",
+    "browser fatigue",
+    "AI-readable traffic drift",
+    "artificial continuity performance"
+  ],
+  "final_rule": "The strongest anchor is the one people can forget until they need it."
+}

@@ -35,7 +35,7 @@ export function resolveCivilizationMaturityRuntime(dayKey: string): Civilization
           : maturityState === "lowEgoInfrastructure"
             ? "Low-ego infrastructure supports the room without showing itself."
             : maturityState === "calmExistenceConfidence"
-              ? "Calm existence confidence lets Taoist365 remain quiet."
+              ? "Calm existence confidence lets Reverent Inquiry remain quiet."
               : "Depth stays non-demonstrative and does not perform maturity.",
     restraintLine: "The more mature the civilization becomes, the less it proves itself.",
     preferLessProof: h > 40,

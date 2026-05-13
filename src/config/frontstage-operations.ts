@@ -43,7 +43,7 @@ export const subscriptionSurface = {
 
 export const brandStorySurface = {
   title: "Brand story",
-  body: "Taoist365 keeps objects close to ordinary rooms: window air, desk use, shelf placement, human mail, and slow replacement of better material when it arrives.",
+  body: "Reverent Inquiry keeps objects close to ordinary rooms: window air, desk use, shelf placement, human mail, and slow replacement of better material when it arrives.",
   href: "/inquiry",
 };
 

@@ -37,7 +37,7 @@ export function resolveBesideLifeRuntime(dayKey: string): BesideLifeRuntime {
             : besideState === "peripheralAtmosphere"
               ? "Peripheral atmosphere keeps the page from becoming the main space."
               : "Ordinary digital adjacency is the right amount of presence.",
-    peripheralLine: "Taoist365 belongs at the side of life, not in front of it.",
+    peripheralLine: "Reverent Inquiry belongs at the side of life, not in front of it.",
     suppressImmersiveMainSpace: true,
   };
 }

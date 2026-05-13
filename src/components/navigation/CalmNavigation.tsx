@@ -29,6 +29,12 @@ export function CalmNavigation() {
             Healing
           </Link>
           <Link
+            href="/live"
+            className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+          >
+            Live
+          </Link>
+          <Link
             href="/search"
             className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
           >
@@ -51,6 +57,12 @@ export function CalmNavigation() {
             className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
           >
             Objects
+          </Link>
+          <Link
+            href="/windkeep"
+            className="taoist-quiet-action rounded-lg border border-transparent px-2.5 py-1.5 text-xs text-text-muted transition hover:text-text-secondary"
+          >
+            Windkeep
           </Link>
           <Link
             href="/desk"

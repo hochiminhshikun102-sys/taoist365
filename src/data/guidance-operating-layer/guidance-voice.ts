@@ -1,5 +1,5 @@
 /**
- * Taoist365 guidance voice — observant room-state, not GPT, coach, or wise master.
+ * Reverent Inquiry guidance voice - observant room-state, not GPT, coach, or wise master.
  */
 
 export const guidanceVoice = {

@@ -19,11 +19,17 @@ export function SiteColophon() {
           <Link href="/healing" className="transition hover:text-text-secondary">
             Healing
           </Link>
+          <Link href="/live" className="transition hover:text-text-secondary">
+            Live
+          </Link>
           <Link href="/new-arrivals" className="transition hover:text-text-secondary">
             New
           </Link>
           <Link href="/objects" className="transition hover:text-text-secondary">
             Objects
+          </Link>
+          <Link href="/windkeep" className="transition hover:text-text-secondary">
+            Windkeep
           </Link>
           <Link href="/desk" className="transition hover:text-text-secondary">
             Desk
@@ -47,7 +53,7 @@ export function SiteColophon() {
           ))}
         </nav>
         <p className="text-[0.68rem] leading-6 text-text-muted/55">
-          © {year} {siteConfig.siteName} · {siteConfig.domain}
+          &copy; {year} {siteConfig.siteName} - {siteConfig.domain}
         </p>
       </div>
       <div className="mx-auto max-w-3xl space-y-2 px-6 pb-8 pt-0 sm:px-10">

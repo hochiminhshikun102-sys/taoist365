@@ -16,7 +16,7 @@ export function resolveCivilizationGravityRuntime(dayKey: string): CivilizationG
     resistance,
     resistanceLine:
       resistance > 0.78
-        ? "Civilization gravity resistance is high; Taoist365 refuses to start optimizing itself."
+        ? "Civilization gravity resistance is high; Reverent Inquiry refuses to start optimizing itself."
         : "The room resists scale pressure by staying smaller than its systems.",
     suppressOptimizationGravity: resistance > 0.58,
     suppressScalePressure: resistance > 0.64,

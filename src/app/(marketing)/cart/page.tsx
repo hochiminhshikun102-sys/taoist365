@@ -3,7 +3,7 @@ import { CartClient } from "@/components/commerce/CartClient";
 
 export const metadata: Metadata = {
   title: "Cart",
-  description: "Taoist365 cart.",
+  description: "Reverent Inquiry cart.",
 };
 
 export default function CartPage() {

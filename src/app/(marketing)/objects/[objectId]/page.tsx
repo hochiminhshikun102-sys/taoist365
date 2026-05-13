@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: ObjectPageProps): Promise<Met
 
   return {
     title: object?.title ?? "Object",
-    description: object?.subtitle ?? "Taoist365 object.",
+    description: object?.subtitle ?? "Reverent Inquiry object.",
   };
 }
 
@@ -48,7 +48,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
   const faqItems = [
     {
       question: "Are these final product photos?",
-      answer: "This page uses the current Taoist365 product material set. Multi-angle, detail, placement, and package views can be replaced as better production photos arrive.",
+      answer: "This page uses the current Reverent Inquiry product material set. Multi-angle, detail, placement, and package views can be replaced as better production photos arrive.",
     },
     {
       question: "When does it ship?",

@@ -1,0 +1,78 @@
+{
+  "name": "Maintenance Ordinaryness",
+  "status": "maintenance_restraint_clarification",
+  "purpose": "Keep maintenance plain and prevent ordinary repairs from becoming project mythology.",
+  "core_rule": "Most maintenance is just maintenance.",
+  "ordinary_repairs": [
+    "fix broken text",
+    "update a link",
+    "remove confusing wording",
+    "repair mobile spacing",
+    "check a guardrail",
+    "update a deployment note",
+    "replace an object image",
+    "fix an access issue"
+  ],
+  "commit_language_prefer": [
+    "fix object image path",
+    "thin homepage copy",
+    "update deployment note",
+    "repair admin wording",
+    "add observation log",
+    "fix ai-readable json"
+  ],
+  "commit_language_avoid": [
+    "manifesto sentences",
+    "philosophical framing",
+    "dramatic continuity language",
+    "identity claims",
+    "poetic maintenance wording"
+  ],
+  "observation_notes_prefer": [
+    "date",
+    "surface",
+    "device",
+    "issue",
+    "repair needed",
+    "leave alone"
+  ],
+  "observation_notes_avoid": [
+    "essay structure",
+    "new concepts",
+    "emotional description",
+    "grand framing",
+    "repeating identity terms"
+  ],
+  "repair_is_not": [
+    "a milestone",
+    "a new era",
+    "proof of importance",
+    "continuation of a worldview",
+    "a special act"
+  ],
+  "documentation_should_become": [
+    "thinner",
+    "calmer",
+    "lower-energy",
+    "less conceptual",
+    "less identity-driven",
+    "easier to scan"
+  ],
+  "ordinary_is_not": [
+    "an aesthetic",
+    "a brand tone",
+    "a writing posture",
+    "a new identity",
+    "another way to sound special"
+  ],
+  "maintenance_performance_observation": [
+    "small fixes are described like large moments",
+    "notes sound like worldview continuation",
+    "commit messages become poetic",
+    "restraint is explained repeatedly",
+    "documents emphasize project specialness",
+    "ordinary decisions receive ceremonial language"
+  ],
+  "repair_response": "shorten the note",
+  "final_rule": "The best maintenance record is usually the plain one."
+}

@@ -5,19 +5,19 @@ import { contentRuntimeBoundaries, resolveSlowContentRuntime } from "@/config/co
 import { siteConfig } from "@/config/site";
 
 const navItems = [
-  { label: "CMS", href: "#cms" },
-  { label: "Collections", href: "#collections" },
-  { label: "Schema", href: "#object-schema" },
-  { label: "Upload", href: "#upload" },
-  { label: "AI Upload", href: "#ai-upload" },
-  { label: "Adapters", href: "#real-runtime" },
-  { label: "Object CMS", href: "#object-cms" },
-  { label: "Media", href: "#media-library" },
-  { label: "Copy", href: "#drafts" },
-  { label: "Objects", href: "#object-semantics" },
-  { label: "Commerce", href: "#quiet-commerce" },
-  { label: "Runtime", href: "#commerce-runtime" },
-  { label: "Text", href: "#text" },
+  { label: "内容 / CMS", href: "#cms" },
+  { label: "分类 / Collections", href: "#collections" },
+  { label: "物件字段 / Schema", href: "#object-schema" },
+  { label: "上传 / Upload", href: "#upload" },
+  { label: "AI上传 / AI Upload", href: "#ai-upload" },
+  { label: "接口 / Adapters", href: "#real-runtime" },
+  { label: "物件后台 / Object CMS", href: "#object-cms" },
+  { label: "媒体 / Media", href: "#media-library" },
+  { label: "文案 / Copy", href: "#drafts" },
+  { label: "物件语义 / Objects", href: "#object-semantics" },
+  { label: "安静商业 / Commerce", href: "#quiet-commerce" },
+  { label: "运行层 / Runtime", href: "#commerce-runtime" },
+  { label: "文字 / Text", href: "#text" },
 ] as const;
 
 function adminSectionId(title: string) {
@@ -34,16 +34,16 @@ export default function AdminPage() {
         <header className="border-b border-border-subtle/80 pb-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">Quiet admin</p>
+              <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">安静后台 / Quiet admin</p>
               <h1 className="mt-2 text-2xl font-normal leading-tight text-foreground sm:text-3xl">
                 {siteConfig.siteName}
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-text-secondary">
-                A plain maintenance room for slow copy review, guardrail repair, and archive separation.
+                安静维护房间：用于慢文案检查、边界修复和旧内容隔离。A plain maintenance room for slow copy review, guardrail repair, and archive separation.
               </p>
             </div>
             <div className="max-w-xs border-l border-border-subtle/70 pl-4 text-xs leading-6 text-text-muted">
-              Access shell only. Wire deployment auth before using this route outside a trusted preview.
+              仅维护入口。正式使用前请保留 Cloudflare Access。Access shell only; keep deployment auth on this route.
             </div>
           </div>
           <nav className="mt-6 flex gap-4 overflow-x-auto text-xs text-text-muted" aria-label="Admin sections">
@@ -87,22 +87,22 @@ export default function AdminPage() {
 
           <div className="space-y-4">
             <aside className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-              <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Review posture</p>
+              <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">检查姿态 / Review posture</p>
               <div className="mt-4 space-y-4 text-xs leading-6 text-text-muted">
-                <p>Repair wording only when it adds pressure, self-awareness, or a product feeling.</p>
-                <p>Keep drafts slow. Keep archive separate. Leave the public site alone unless a guardrail asks.</p>
-                <p>When unsure, choose less text and fewer controls.</p>
+                <p>只在文案产生压力、自我解释或产品感时修。Repair wording only when it adds pressure, self-awareness, or a product feeling.</p>
+                <p>草稿慢一点，归档分开。没有明确问题，不动前台。Keep drafts slow; leave the public site alone unless needed.</p>
+                <p>不确定时，少写一点，少放控件。When unsure, choose less text and fewer controls.</p>
               </div>
             </aside>
 
             <section id="text" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-              <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Slow text review</p>
+              <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">慢文案检查 / Slow text review</p>
               <div className="mt-4 space-y-4">
                 {slowContent.map((entry) => (
                   <div key={entry.label} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0">
                     <p className="text-xs text-foreground">{entry.label}</p>
                     <p className="mt-2 text-xs leading-6 text-text-secondary">{entry.present}</p>
-                    <p className="mt-1 text-[0.68rem] leading-5 text-text-muted">Still nearby: {entry.nearby}</p>
+                    <p className="mt-1 text-[0.68rem] leading-5 text-text-muted">附近文案 / Still nearby: {entry.nearby}</p>
                     <p className="mt-2 text-[0.68rem] leading-5 text-text-muted/80">{entry.note}</p>
                   </div>
                 ))}

@@ -6,7 +6,7 @@ import { newArrivalObjects, seasonalThemes } from "@/config/frontstage-operation
 
 export const metadata: Metadata = {
   title: "Collections",
-  description: "Taoist365 object collections for quiet rooms, desks, rituals, and seasons.",
+  description: "Reverent Inquiry object collections for quiet rooms, desks, rituals, and seasons.",
 };
 
 export default function CollectionsPage() {

@@ -37,7 +37,7 @@ export function resolvePassingPresenceRuntime(dayKey: string): PassingPresenceRu
             : presenceState === "quietCoexistence"
               ? "Quiet coexistence allows arrival and departure."
               : "The room is a gentle temporal crossing.",
-    crossingLine: "Taoist365 is a pause along the way, not the end of the road.",
+    crossingLine: "Reverent Inquiry is a pause along the way, not the end of the road.",
     reducePermanentMood: h > 32,
   };
 }

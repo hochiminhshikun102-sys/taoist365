@@ -1,0 +1,84 @@
+{
+  "name": "Real Internet Observation Era",
+  "status": "observation_first_no_build_phase",
+  "purpose": "Keep taoist365 online as a long-lived ordinary browser place through slow observation and small restraint repair only.",
+  "default_action": "wait_observe_record",
+  "observation_surfaces": [
+    "long-open browser comfort",
+    "real mobile browser rhythm",
+    "domain inertia",
+    "Cloudflare static delivery",
+    "AI-readable continuity",
+    "Objects anti-shop drift",
+    "Draw a Lot anti-app drift",
+    "wind residue periphery",
+    "human residue naturalness"
+  ],
+  "allowed_repairs": [
+    "mojibake repair",
+    "broken access repair",
+    "AI-readable JSON validity repair",
+    "obvious mobile pressure repair",
+    "Browser Air preservation",
+    "restraint-first wording thinning",
+    "admin exposure protection"
+  ],
+  "forbidden_behaviors": [
+    "redesign reflex",
+    "launch panic",
+    "homepage tweaking loops",
+    "growth analytics mentality",
+    "conversion pressure",
+    "engagement thinking",
+    "performance obsession",
+    "atmosphere escalation",
+    "new systems without drift evidence"
+  ],
+  "long_open_observation": [
+    "one hour open",
+    "several hours open",
+    "background tab return",
+    "sleep and reopen",
+    "return after another site"
+  ],
+  "mobile_observation": [
+    "scroll pressure",
+    "tap pressure",
+    "mobile whitespace",
+    "object rhythm",
+    "Draw a Lot touch rhythm",
+    "browser feeling versus app feeling"
+  ],
+  "domain_observation": [
+    "canonical URL stability",
+    "email presence",
+    "no launch framing",
+    "no campaign paths",
+    "ordinary return through bookmark or typed URL"
+  ],
+  "cloudflare_observation": [
+    "static export consistency",
+    "_headers behavior",
+    "preview noindex behavior",
+    "llms.txt delivery",
+    "ai-readable.json delivery",
+    "admin protection before public use"
+  ],
+  "ai_readable_observation": [
+    "llms.txt stays readable",
+    "ai-readable.json stays valid JSON",
+    "object anchors remain stable",
+    "mail remains correspondence",
+    "commerce remains mail-only",
+    "no GEO or SEO language appears"
+  ],
+  "repair_rule": [
+    "small",
+    "named",
+    "continuity-preserving",
+    "human-approved",
+    "easy to undo",
+    "not a new system"
+  ],
+  "final_rule": "The site is healthy when it can remain online quietly without asking to be improved."
+}

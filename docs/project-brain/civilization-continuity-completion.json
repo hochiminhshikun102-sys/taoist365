@@ -1,0 +1,190 @@
+{
+  "name": "Civilization Continuity Completion",
+  "status": "final_continuity_foundation",
+  "era_after_completion": "Long-term Civilization Observation Era",
+  "civilization_core_registry": {
+    "required_read_order": [
+      "docs/project-brain/civilization-skeleton.md",
+      "docs/project-brain/civilization-skeleton.json",
+      "docs/project-brain/civilization-security-evolution-governance.md",
+      "docs/project-brain/civilization-security-evolution-governance.json",
+      "docs/project-brain/civilization-continuity-completion.md",
+      "docs/project-brain/civilization-continuity-completion.json",
+      "src/config/terminology-guardrail.json"
+    ],
+    "core_layers": [
+      "Constitution",
+      "Skeleton",
+      "Security",
+      "Evolution Governance",
+      "Memory",
+      "Browser Air",
+      "Quiet Commerce",
+      "Forbidden Drift",
+      "Human Governance Anchor",
+      "Recovery Protocol"
+    ],
+    "rule": "Any future AI that cannot read this core is not ready to act."
+  },
+  "integrity_engine": {
+    "required_checks": [
+      "required anchors",
+      "semantic continuity",
+      "wording DNA integrity",
+      "Browser Air continuity",
+      "forbidden drift mutations",
+      "governance weakening",
+      "commercialization corruption",
+      "feed mutation",
+      "companion mutation",
+      "quiet commerce continuity",
+      "human governance anchor"
+    ],
+    "rule": "Evolution cannot land until integrity checks pass."
+  },
+  "drift_firewall": {
+    "blocked": [
+      "SEO farm drift",
+      "growth obsession",
+      "engagement gravity",
+      "SaaS mutation",
+      "optimization addiction",
+      "emotional AI mutation",
+      "content-platform mutation",
+      "luxury quietness commercialization",
+      "AGI performance staging",
+      "platform rewriting"
+    ],
+    "rule": "If a change makes taoist365 easier to grow but easier to deform, reject it."
+  },
+  "machine_readable_core": {
+    "unifies": [
+      "civilization-skeleton.json",
+      "civilization-security-evolution-governance.json",
+      "civilization-continuity-completion.json",
+      "inheritance protocols",
+      "memory structures",
+      "governance schemas",
+      "orchestration principles",
+      "recovery rules"
+    ],
+    "goal": "instant inheritance without historical chat context"
+  },
+  "memory_engine": {
+    "allowed_snapshots": [
+      "semantic snapshots",
+      "constitution snapshots",
+      "wording DNA snapshots",
+      "Browser Air continuity snapshots",
+      "governance snapshots",
+      "quiet commerce snapshots",
+      "recovery checkpoints"
+    ],
+    "rollback_preparation": [
+      "restore constitution anchors",
+      "restore wording DNA",
+      "restore Browser Air principles",
+      "restore semantic continuity",
+      "restore governance checks",
+      "remove drifted growth, feed, companion, or platform logic"
+    ]
+  },
+  "ai_army_runtime_governance": {
+    "allowed_roles": [
+      "GEO agent",
+      "wording agent",
+      "drift-repair agent",
+      "pressure-thinning agent",
+      "semantic-governance agent",
+      "quiet-commerce agent",
+      "Windkeep continuity agent",
+      "recovery agent"
+    ],
+    "required_before_orchestration": [
+      "load civilization core",
+      "pass drift checks",
+      "inherit wording DNA",
+      "inherit Browser Air principles",
+      "inherit Quiet Commerce rules",
+      "confirm human governance anchor"
+    ],
+    "rule": "Capability without inheritance is treated as a drift risk."
+  },
+  "evolution_sandbox_completion": {
+    "allowed": [
+      "strategy simulation",
+      "semantic optimization proposals",
+      "GEO refinement proposals",
+      "orchestration refinement",
+      "continuity-preserving improvements",
+      "recovery simulations"
+    ],
+    "forbidden": [
+      "direct constitution mutation",
+      "autonomous governance rewrite",
+      "uncontrolled self-expansion",
+      "emotional optimization loops",
+      "frontstage behavior changes without repair need",
+      "hidden capability expansion"
+    ]
+  },
+  "infrastructure_independence_layer": [
+    "local orchestration preparation",
+    "self-host governance planning",
+    "provider-isolation preparation",
+    "local civilization memory planning",
+    "orchestration portability",
+    "deployment independence planning",
+    "file-based inheritance over chat-only memory"
+  ],
+  "human_governance_anchor": {
+    "humans_own": [
+      "civilization direction",
+      "restraint judgment",
+      "aesthetic boundaries",
+      "evolution approval",
+      "drift correction",
+      "what cannot change"
+    ],
+    "ai_supports": [
+      "maintenance",
+      "continuity",
+      "optimization",
+      "orchestration",
+      "semantic refinement",
+      "strategy execution"
+    ],
+    "rule": "Human Civilization Anchor is never removable."
+  },
+  "recovery_protocol": [
+    "stop expansion",
+    "name the drift",
+    "compare against the civilization core",
+    "restore constitution anchors",
+    "restore wording DNA",
+    "restore Browser Air principles",
+    "restore semantic continuity",
+    "remove drifted behavior or wording",
+    "run npm run guardrail:continuity",
+    "run npm run guardrail:kernel"
+  ],
+  "observation_first_future_governance": {
+    "allowed": [
+      "maintenance",
+      "drift repair",
+      "semantic continuity",
+      "governance refinement",
+      "restraint protection",
+      "civilization preservation"
+    ],
+    "disallowed": [
+      "high-frequency phase expansion",
+      "mega package explosion",
+      "endless expansion",
+      "runtime inflation",
+      "atmosphere inflation",
+      "content appetite growth",
+      "intelligence ego performance"
+    ]
+  }
+}

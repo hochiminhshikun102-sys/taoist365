@@ -8,7 +8,7 @@ export const siteConfig = {
     "A quiet long-running browser place at taoist365.com. Pages stay linked, mail stays human, and the site changes slowly by hand.",
   locale: "en-US",
   timezone: "America/Los_Angeles",
-  metadataBase: "https://taoist365.com",
+  metadataBase: "https://www.taoist365.com",
   /** Replace with your real inbox when DNS is live. */
   inquiryEmail: "hello@taoist365.com",
   /** Short trust anchor; same meaning wherever repeated. */

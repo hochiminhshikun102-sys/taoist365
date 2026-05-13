@@ -14,10 +14,11 @@ const toneClass: Record<HealingModule["coverTone"], string> = {
 
 type HealingModuleCardProps = {
   module: HealingModule;
-  hallHref: string;
 };
 
-export function HealingModuleCard({ module, hallHref }: HealingModuleCardProps) {
+export function HealingModuleCard({ module }: HealingModuleCardProps) {
+  const moduleHref = `/healing/${module.hall}/${module.id}`;
+
   return (
     <article
       id={module.id}
@@ -31,8 +32,7 @@ export function HealingModuleCard({ module, hallHref }: HealingModuleCardProps) 
         </div>
       </div>
       <div className="p-5">
-        <p className="text-xs leading-6 text-text-muted">{module.originalName}</p>
-        <p className="mt-3 text-sm leading-7 text-text-secondary">{module.summary}</p>
+        <p className="text-sm leading-7 text-text-secondary">{module.summary}</p>
         <div className="mt-5 grid gap-3 text-xs leading-6 text-text-muted sm:grid-cols-2">
           <p>
             <span className="block text-foreground">Runtime</span>
@@ -52,8 +52,8 @@ export function HealingModuleCard({ module, hallHref }: HealingModuleCardProps) 
           </p>
         </div>
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-          <Link href={`${hallHref}#${module.id}`} className="text-sm text-foreground underline-offset-4 hover:underline">
-            Open shell
+          <Link href={moduleHref} className="text-sm text-foreground underline-offset-4 hover:underline">
+            Open
           </Link>
           <HealingModuleActions moduleId={module.id} title={module.title} />
         </div>

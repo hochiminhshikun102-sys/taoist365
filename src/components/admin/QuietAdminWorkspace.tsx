@@ -83,7 +83,7 @@ type AiUploadResult = {
 };
 
 const draftKey = "reverent-inquiry-quiet-admin-drafts";
-const objectDraftKey = "taoist365-local-object-drafts";
+const objectDraftKey = "reverent-inquiry-local-object-drafts";
 const emptyObjectDraft: LocalObjectDraft = {
   title: "",
   collection: "wind-objects",
@@ -144,7 +144,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
   const [mediaDraft, setMediaDraft] = useState<LocalMediaDraft | null>(null);
   const [objectDraft, setObjectDraft] = useState<LocalObjectDraft>(emptyObjectDraft);
   const [savedObjects, setSavedObjects] = useState<LocalObjectDraft[]>(readObjectDrafts);
-  const [aiPrompt, setAiPrompt] = useState("帮我上架这个产品，卖39美元");
+  const [aiPrompt, setAiPrompt] = useState("帮我整理这个物件，价格 39 美元 / Help me prepare this object, priced at $39");
   const [aiResult, setAiResult] = useState<AiUploadResult | null>(null);
 
   useEffect(() => {
@@ -200,7 +200,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
   return (
     <div className="space-y-4">
       <section id="cms" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">CMS system</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">内容系统 / CMS system</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {quietCmsSurfaces.map((surface) => (
             <div key={surface.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
@@ -223,7 +223,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="collections" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Object collections</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">物件分类 / Object collections</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {quietObjectCollections.map((collection) => (
             <div key={collection.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
@@ -236,14 +236,14 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="object-schema" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Object schema</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">物件字段 / Object schema</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {quietObjectFields.map((field) => (
             <div key={field.key} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-xs text-foreground">{field.label}</p>
                 <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">
-                  {field.required ? "needed" : "optional"}
+                  {field.required ? "必填 / needed" : "可选 / optional"}
                 </p>
               </div>
               <p className="mt-2 text-xs leading-6 text-text-muted">{field.role}</p>
@@ -253,7 +253,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="upload" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Upload flow</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">上传流程 / Upload flow</p>
         <div className="mt-4 grid gap-4 lg:grid-cols-[0.58fr_0.42fr]">
           <div className="space-y-3">
             {quietUploadFlow.map((step) => (
@@ -266,7 +266,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
           </div>
           <div className="border-t border-border-subtle/70 pt-3 lg:border-l lg:border-t-0 lg:pl-4 lg:pt-0">
             <label htmlFor="quiet-media-draft" className="text-xs text-foreground">
-              Local media draft
+              本地媒体草稿 / Local media draft
             </label>
             <input
               id="quiet-media-draft"
@@ -279,7 +279,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
               className="mt-3 block w-full text-xs text-text-muted file:mr-3 file:border file:border-border-subtle file:bg-white/60 file:px-3 file:py-2 file:text-xs file:text-text-secondary"
             />
             <p className="mt-3 text-[0.68rem] leading-5 text-text-muted">
-              This only reads the local file name in this browser. It does not upload or publish.
+              这里只读取本浏览器里的文件名，不会上传或发布。This only reads the local file name in this browser. It does not upload or publish.
             </p>
             {mediaDraft ? (
               <div className="mt-4 border-t border-border-subtle/70 pt-3 text-[0.68rem] leading-5 text-text-muted">
@@ -293,7 +293,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="ai-upload" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">AI upload helper</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">AI上传辅助 / AI upload helper</p>
         <div className="mt-4 grid gap-4 lg:grid-cols-[0.48fr_0.52fr]">
           <div className="space-y-3">
             <textarea
@@ -301,17 +301,17 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
               onChange={(event) => setAiPrompt(event.target.value)}
               rows={4}
               className="w-full resize-y border border-border-subtle bg-white/64 px-3 py-2 text-sm leading-6 text-text-secondary outline-none"
-              placeholder="帮我上架这个产品，卖39美元"
+              placeholder="帮我整理这个物件，价格 39 美元 / Help me prepare this object, priced at $39"
             />
             <button
               type="button"
               onClick={runAiUploadHelper}
               className="rounded-lg border border-foreground/12 bg-foreground px-4 py-2 text-sm text-white"
             >
-              Generate product draft
+              生成物件草稿 / Generate product draft
             </button>
             <p className="text-[0.68rem] leading-5 text-text-muted">
-              Uses local runtime now. Replace with model API when credentials and media storage are connected.
+              现在使用本地运行层。接入密钥和媒体存储后再替换为模型 API。Uses local runtime now. Replace with model API when credentials and media storage are connected.
             </p>
           </div>
           {aiResult ? (
@@ -347,7 +347,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
                 ))}
               </div>
               <div className="rounded-md border border-border-subtle bg-white/54 p-4">
-                <p className="text-xs text-foreground">Homepage placement</p>
+                <p className="text-xs text-foreground">首页放置 / Homepage placement</p>
                 <div className="mt-3 grid gap-3 sm:grid-cols-3">
                   {aiResult.homepage.map((item) => (
                     <div key={item.surface}>
@@ -360,17 +360,17 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
             </div>
           ) : (
             <div className="rounded-md border border-border-subtle bg-white/54 p-4 text-xs leading-6 text-text-muted">
-              Add media, write one instruction, then generate a product draft.
+              添加媒体，写一句说明，然后生成物件草稿。Add media, write one instruction, then generate a product draft.
             </div>
           )}
         </div>
       </section>
 
       <section id="real-runtime" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Real runtime adapters</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">真实运行接口 / Real runtime adapters</p>
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
           <div className="rounded-md border border-border-subtle bg-white/54 p-4">
-            <p className="text-xs text-foreground">Model providers</p>
+            <p className="text-xs text-foreground">模型服务 / Model providers</p>
             <div className="mt-3 space-y-3">
               {aiProviderReadiness.map((item) => (
                 <div key={item.label} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0">
@@ -382,7 +382,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
             </div>
           </div>
           <div className="rounded-md border border-border-subtle bg-white/54 p-4">
-            <p className="text-xs text-foreground">Media runtime</p>
+            <p className="text-xs text-foreground">媒体运行层 / Media runtime</p>
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               {mediaRuntimeReadiness.map((item) => (
                 <p key={item.label} className="text-[0.66rem] leading-5 text-text-muted">
@@ -392,7 +392,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
             </div>
           </div>
           <div className="rounded-md border border-border-subtle bg-white/54 p-4">
-            <p className="text-xs text-foreground">Storage</p>
+            <p className="text-xs text-foreground">存储 / Storage</p>
             <div className="mt-3 space-y-2">
               {storageRuntimeLines.map((line) => (
                 <p key={line} className="text-[0.66rem] leading-5 text-text-muted">
@@ -402,7 +402,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
             </div>
           </div>
           <div className="rounded-md border border-border-subtle bg-white/54 p-4">
-            <p className="text-xs text-foreground">Commerce</p>
+            <p className="text-xs text-foreground">商业层 / Commerce</p>
             <div className="mt-3 space-y-2">
               {commerceRuntimeLines.map((line) => (
                 <p key={line} className="text-[0.66rem] leading-5 text-text-muted">
@@ -422,13 +422,13 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="object-cms" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Object CMS</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">物件后台 / Object CMS</p>
         <div className="mt-4 grid gap-4 lg:grid-cols-[0.56fr_0.44fr]">
           <div className="grid gap-3">
             <input
               value={objectDraft.title}
               onChange={(event) => updateObjectDraft("title", event.target.value)}
-              placeholder="Object title"
+              placeholder="物件名称 / Object title"
               className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
             />
             <div className="grid gap-3 sm:grid-cols-2">
@@ -448,23 +448,23 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
                 onChange={(event) => updateObjectDraft("availability", event.target.value)}
                 className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
               >
-                <option value="available">available</option>
-                <option value="limited">limited</option>
-                <option value="made-to-order">made-to-order</option>
-                <option value="unavailable">unavailable</option>
+                <option value="available">可售 / available</option>
+                <option value="limited">少量 / limited</option>
+                <option value="made-to-order">预制 / made-to-order</option>
+                <option value="unavailable">不可售 / unavailable</option>
               </select>
             </div>
             <div className="grid gap-3 sm:grid-cols-3">
               <input
                 value={objectDraft.price}
                 onChange={(event) => updateObjectDraft("price", event.target.value)}
-                placeholder="Price"
+                placeholder="价格 / Price"
                 className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
               />
               <input
                 value={objectDraft.stock}
                 onChange={(event) => updateObjectDraft("stock", event.target.value)}
-                placeholder="Stock"
+                placeholder="库存 / Stock"
                 className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
               />
               <select
@@ -472,34 +472,34 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
                 onChange={(event) => updateObjectDraft("archiveState", event.target.value)}
                 className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
               >
-                <option value="active">active</option>
-                <option value="archived">archived</option>
+                <option value="active">当前 / active</option>
+                <option value="archived">归档 / archived</option>
               </select>
             </div>
             <input
               value={objectDraft.material}
               onChange={(event) => updateObjectDraft("material", event.target.value)}
-              placeholder="Materials"
+              placeholder="材质 / Materials"
               className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
             />
             <input
               value={objectDraft.dimensions}
               onChange={(event) => updateObjectDraft("dimensions", event.target.value)}
-              placeholder="Dimensions"
+              placeholder="尺寸 / Dimensions"
               className="border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
             />
             <textarea
               value={objectDraft.placement}
               onChange={(event) => updateObjectDraft("placement", event.target.value)}
               rows={3}
-              placeholder="Placement"
+              placeholder="摆放位置 / Placement"
               className="resize-y border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
             />
             <textarea
               value={objectDraft.atmosphereLine}
               onChange={(event) => updateObjectDraft("atmosphereLine", event.target.value)}
               rows={3}
-              placeholder="Atmosphere line"
+              placeholder="空气感文案 / Atmosphere line"
               className="resize-y border border-border-subtle bg-white/64 px-3 py-2 text-sm outline-none"
             />
             <div className="flex flex-wrap gap-3">
@@ -508,7 +508,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
                 onClick={saveObjectDraft}
                 className="rounded-lg border border-foreground/12 bg-foreground px-4 py-2 text-sm text-white"
               >
-                Save local object
+                保存本地物件 / Save local object
               </button>
               <button
                 type="button"
@@ -521,15 +521,15 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
                 }
                 className="rounded-lg border border-border-subtle bg-white/60 px-4 py-2 text-sm text-text-secondary"
               >
-                AI suggest line
+                AI建议一句 / AI suggest line
               </button>
             </div>
           </div>
           <div className="border-t border-border-subtle/70 pt-3 lg:border-l lg:border-t-0 lg:pl-4 lg:pt-0">
-            <p className="text-xs text-foreground">Saved local objects</p>
+            <p className="text-xs text-foreground">已保存本地物件 / Saved local objects</p>
             <div className="mt-3 space-y-3">
               {savedObjects.length === 0 ? (
-                <p className="text-xs leading-6 text-text-muted">No local object drafts yet.</p>
+                <p className="text-xs leading-6 text-text-muted">还没有本地物件草稿 / No local object drafts yet.</p>
               ) : (
                 savedObjects.map((item, index) => (
                   <button
@@ -551,7 +551,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="media-library" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Media library</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">媒体库 / Media library</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {quietMediaSlots.map((slot) => (
             <div key={slot.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
@@ -566,7 +566,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
         </div>
         <div className="mt-5 grid gap-4 border-t border-border-subtle/70 pt-4 sm:grid-cols-2">
           <div>
-            <p className="text-xs text-foreground">Image treatment</p>
+            <p className="text-xs text-foreground">图片处理 / Image treatment</p>
             <div className="mt-3 space-y-2">
               {quietImageTreatmentLines.map((line) => (
                 <p key={line} className="text-[0.68rem] leading-5 text-text-muted">
@@ -576,7 +576,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
             </div>
           </div>
           <div>
-            <p className="text-xs text-foreground">Motion surfaces</p>
+            <p className="text-xs text-foreground">动效表面 / Motion surfaces</p>
             <div className="mt-3 space-y-2">
               {quietMotionDirectionLines.map((line) => (
                 <p key={line} className="text-[0.68rem] leading-5 text-text-muted">
@@ -589,7 +589,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="drafts" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Slow text review</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">慢文案检查 / Slow text review</p>
         <div className="mt-4 space-y-4">
           {entries.map((entry) => {
             const value = drafts[entry.label] ?? entry.present;
@@ -606,7 +606,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
                     onClick={() => updateDraft(entry.label, entry.present)}
                     className="shrink-0 text-[0.68rem] leading-5 text-text-muted hover:text-text-secondary"
                   >
-                    Use present line
+                    使用当前文案 / Use present line
                   </button>
                 </div>
                 <textarea
@@ -615,8 +615,8 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
                   rows={3}
                   className="mt-3 w-full resize-y border border-border-subtle bg-white/52 px-3 py-2 text-sm leading-6 text-text-secondary outline-none transition-colors focus:border-border-default"
                 />
-                <p className="mt-2 text-[0.68rem] leading-5 text-text-muted">Still nearby: {entry.nearby}</p>
-                <p className="mt-1 text-[0.68rem] leading-5 text-text-muted/75">Left in this browser.</p>
+                <p className="mt-2 text-[0.68rem] leading-5 text-text-muted">附近文案 / Still nearby: {entry.nearby}</p>
+                <p className="mt-1 text-[0.68rem] leading-5 text-text-muted/75">只留在这个浏览器 / Left in this browser.</p>
               </div>
             );
           })}
@@ -624,7 +624,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="qa" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Pressure notes</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">压力备注 / Pressure notes</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {pressureReviewMarkers.map((marker) => (
             <p key={marker} className="border-l border-border-subtle/70 pl-3 text-xs leading-6 text-text-muted">
@@ -635,20 +635,20 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="terms" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Term groups</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">术语分组 / Term groups</p>
         <div className="mt-4 space-y-4">
           {terminologyReviewGroups.map((group) => (
             <div key={group.title} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0">
               <p className="text-xs text-foreground">{group.title}</p>
               <p className="mt-2 text-xs leading-6 text-text-muted">{group.risk}</p>
-              <p className="mt-1 text-[0.68rem] leading-5 text-text-muted/80">Nearby: {group.nearby}</p>
+              <p className="mt-1 text-[0.68rem] leading-5 text-text-muted/80">附近说法 / Nearby: {group.nearby}</p>
             </div>
           ))}
         </div>
       </section>
 
       <section id="archive" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Archive shelf</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">归档架 / Archive shelf</p>
         <div className="mt-4 space-y-3">
           {archiveQuietShelves.map((line) => (
             <p key={line} className="text-xs leading-6 text-text-muted">
@@ -659,7 +659,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="review" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Drift notes</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">漂移备注 / Drift notes</p>
         <div className="mt-4 space-y-3">
           {driftNoticeLines.map((line) => (
             <p key={line} className="text-xs leading-6 text-text-muted">
@@ -670,7 +670,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="placement" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Placement room</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">摆放房间 / Placement room</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {quietPlacementSlots.map((slot) => (
             <div key={slot.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
@@ -695,7 +695,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="ai-readable" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">AI-readable notes</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">AI可读备注 / AI-readable notes</p>
         <p className="mt-3 text-xs leading-6 text-text-secondary">{aiReadableSiteProfile.plainSummary}</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {aiOperationsBoundaries.map((line) => (
@@ -707,7 +707,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="readable-review" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Readable review</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">可读性检查 / Readable review</p>
         <div className="mt-4 space-y-3">
           {readableReviewLines.map((line) => (
             <p key={line} className="text-xs leading-6 text-text-muted">
@@ -718,7 +718,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="object-semantics" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Object semantics</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">物件语义 / Object semantics</p>
         <div className="mt-4 space-y-4">
           {objectSemanticEntries.slice(0, 5).map((entry) => (
             <div key={entry.id} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0">
@@ -731,7 +731,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="quiet-commerce" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Quiet commerce</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">安静商业 / Quiet commerce</p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           {[
             ["Boundaries", quietCommerceBoundaries],
@@ -755,7 +755,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="commerce-runtime" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Commerce runtime</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">商业运行层 / Commerce runtime</p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {commerceRuntimeReadiness.map((line) => (
             <p key={line} className="border-l border-border-subtle/70 pl-3 text-xs leading-6 text-text-muted">
@@ -766,7 +766,7 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
       </section>
 
       <section id="readable-references" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
-        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">Readable references</p>
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">可读参考 / Readable references</p>
         <div className="mt-4 space-y-3">
           {[...aiMaintenanceReviewLines, ...quietDistributionReviewLines].map((line) => (
             <p key={line} className="text-xs leading-6 text-text-muted">

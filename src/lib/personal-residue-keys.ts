@@ -1,4 +1,4 @@
-/** Browser-local keys only—no server reads. Namespaced for Taoist365. */
+/** Browser-local keys only; no server reads. Namespaced for Reverent Inquiry. */
 export const PERSONAL_RESIDUE_KEYS = {
   deskScratch: "taoist365-desk-scratch",
   deskPhrases: "taoist365-desk-phrases",

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 import { experienceRoutes } from "@/config/experience-routes";
-import { healingHalls } from "@/config/healing-ecosystem";
+import { healingHalls, healingModules } from "@/config/healing-ecosystem";
 
 export const dynamic = "force-static";
 
@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.metadataBase.replace(/\/$/, "");
   const now = new Date();
 
-  const staticPaths = ["", "/objects", "/desk", "/inquiry", "/guidance", "/guidance/session", "/rituals", "/healing"].map((path) => ({
+  const staticPaths = ["", "/objects", "/windkeep", "/quiet-receiving", "/desk", "/inquiry", "/guidance", "/guidance/session", "/rituals", "/healing", "/live"].map((path) => ({
     url: `${base}${path || "/"}`,
     lastModified: now,
     changeFrequency: path === "" ? ("weekly" as const) : ("monthly" as const),
@@ -30,5 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.65,
   }));
 
-  return [...staticPaths, ...ritualPaths, ...healingPaths];
+  const healingModulePaths = healingModules.map((module) => ({
+    url: `${base}/healing/${module.hall}/${module.id}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.55,
+  }));
+
+  return [...staticPaths, ...ritualPaths, ...healingPaths, ...healingModulePaths];
 }

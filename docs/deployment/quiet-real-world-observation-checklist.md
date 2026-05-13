@@ -9,8 +9,9 @@ This is not a launch checklist. Do not use it to create work when nothing is wro
 - [ ] Cloudflare Pages serves the static export without missing routes.
 - [ ] `/_headers` is present in the deployed output.
 - [ ] Preview URLs stay `noindex`.
-- [ ] `https://taoist365.com/llms.txt` opens.
-- [ ] `https://taoist365.com/ai-readable.json` opens and remains valid JSON.
+- [ ] `https://www.taoist365.com/llms.txt` opens.
+- [ ] `https://www.taoist365.com/ai-readable.json` opens and remains valid JSON.
+- [ ] `https://taoist365.com/*` redirects to `https://www.taoist365.com/*`.
 - [ ] `/objects`, `/desk`, `/inquiry`, and `/rituals/draw-a-lot` open from a cold browser.
 - [ ] `/admin` is not public without Cloudflare Access or equivalent protection.
 

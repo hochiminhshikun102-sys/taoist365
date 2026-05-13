@@ -1,0 +1,155 @@
+{
+  "name": "AI Native Quiet Commerce Stack",
+  "status": "observation_first_commerce_infrastructure",
+  "purpose": "Allow object continuity, human mail correspondence, and AI-readable commerce semantics without becoming an ecommerce platform or AI sales system.",
+  "object_commerce_ontology": {
+    "objects_are": "quietly existing things",
+    "allowed_fields": [
+      "stable id",
+      "name",
+      "anchor",
+      "plain kind",
+      "room placement",
+      "mail-only correspondence",
+      "plain provenance when useful",
+      "ordinary absence or availability"
+    ],
+    "forbidden_fields": [
+      "SKU-first identity",
+      "ranking",
+      "popularity",
+      "urgency",
+      "conversion metadata",
+      "recommendation categories",
+      "behavioral targeting"
+    ]
+  },
+  "ai_assisted_product_presence": {
+    "allowed_roles": [
+      "object wording continuity",
+      "semantic consistency",
+      "restraint repair",
+      "provenance summarization",
+      "commerce drift detection"
+    ],
+    "forbidden_roles": [
+      "sales automation",
+      "persuasion copy generation",
+      "SEO commerce generation",
+      "recommendation tuning",
+      "dynamic offers",
+      "autonomous merchandising"
+    ],
+    "rule": "AI helps continuity, not selling."
+  },
+  "quiet_placement_commerce": {
+    "allowed": [
+      "few homepage objects",
+      "human object movement",
+      "low-frequency replacement",
+      "seasonal object presence without announcement",
+      "Windkeep-style circulation without marketplace behavior"
+    ],
+    "forbidden": [
+      "campaign slots",
+      "banners",
+      "featured product pressure",
+      "sale events",
+      "commerce carousels",
+      "promotion systems"
+    ]
+  },
+  "human_guided_governance": {
+    "humans_own": [
+      "object selection",
+      "placement decisions",
+      "availability wording",
+      "source relationships",
+      "mail replies",
+      "object disappearance"
+    ],
+    "ai_supports": [
+      "semantic consistency",
+      "drift checks",
+      "wording repair",
+      "object continuity memory",
+      "supply note organization"
+    ],
+    "rule": "Human judgement outranks AI commerce optimization."
+  },
+  "supply_continuity": {
+    "allowed": [
+      "source notes",
+      "maker or supplier memory",
+      "plain provenance",
+      "batch variation",
+      "unavailable state without drama"
+    ],
+    "forbidden": [
+      "ERP vocabulary",
+      "sourcing optimization",
+      "scaling strategy",
+      "industrial complexity",
+      "vendor performance dashboards",
+      "scarcity theater"
+    ]
+  },
+  "semantic_commerce": {
+    "allowed": [
+      "object anchors",
+      "object kind",
+      "mail-only correspondence",
+      "checkout and platform boundaries",
+      "static semantic continuity"
+    ],
+    "forbidden": [
+      "keyword stuffing",
+      "GEO spam",
+      "crawler persuasion",
+      "product schema inflation for ranking",
+      "review or popularity signals"
+    ],
+    "rule": "Continuity is more important than traffic."
+  },
+  "commerce_observation": [
+    "objects still read as things, not SKUs",
+    "mail still reads as correspondence, not checkout",
+    "homepage placement does not become promotion",
+    "object absence does not become scarcity",
+    "AI-readable files do not become commerce SEO",
+    "no dashboard, funnel, or analytics language appears"
+  ],
+  "ai_army_commerce": {
+    "allowed_agents": [
+      "object continuity agent",
+      "wording thinning agent",
+      "semantic consistency agent",
+      "supply note organizer",
+      "commerce drift reviewer"
+    ],
+    "forbidden_agents": [
+      "sales agent",
+      "growth agent",
+      "recommendation agent",
+      "funnel optimizer",
+      "autonomous merchandiser"
+    ]
+  },
+  "windkeep_continuity": {
+    "allowed": [
+      "human correspondence",
+      "previous presence as memory",
+      "low-frequency circulation",
+      "plain mail coordination"
+    ],
+    "forbidden": [
+      "marketplace logic",
+      "bidding",
+      "rankings",
+      "popularity",
+      "social commerce",
+      "transaction theater"
+    ]
+  },
+  "final_rule": "Quiet commerce succeeds when an object can move from page to human life without the site behaving like ecommerce."
+}

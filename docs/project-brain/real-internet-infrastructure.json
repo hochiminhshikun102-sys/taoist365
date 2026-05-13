@@ -1,0 +1,140 @@
+{
+  "name": "Real Internet Infrastructure",
+  "status": "observation_first_preparation",
+  "purpose": "Keep taoist365 reachable, recoverable, AI-readable, and human-governed without turning it into a startup internet product.",
+  "repository_layer": {
+    "role": "GitHub continuity memory",
+    "keeps": [
+      "source code",
+      "docs/project-brain",
+      "guardrail scripts",
+      "deployment notes",
+      "public continuity files",
+      "small reviewable commits"
+    ],
+    "forbidden": [
+      "growth backlog",
+      "issue factory",
+      "agile workflow pressure",
+      "contribution gamification",
+      "feature appetite storage"
+    ]
+  },
+  "deployment_layer": {
+    "role": "quiet static internet presence",
+    "current_shape": {
+      "build_command": "npm run build",
+      "output_directory": "out",
+      "next_mode": "static export",
+      "image_mode": "unoptimized static images"
+    },
+    "required_observation": [
+      "Browser Air remains ordinary",
+      "mobile remains breathable",
+      "llms.txt remains available",
+      "ai-readable.json remains available",
+      "admin route is protected before public use"
+    ],
+    "forbidden": [
+      "release cadence addiction",
+      "preview explosion",
+      "deployment hype",
+      "optimization loops"
+    ]
+  },
+  "edge_layer": {
+    "role": "simple DNS and protection preparation",
+    "allowed": [
+      "DNS continuity",
+      "simple cache protection",
+      "basic bot filtering",
+      "lightweight access controls",
+      "AI crawler policy for semantic integrity"
+    ],
+    "forbidden": [
+      "enterprise edge complexity",
+      "security theater",
+      "performance benchmarking obsession",
+      "growth traffic shaping"
+    ]
+  },
+  "ai_readable_layer": {
+    "public_files": [
+      "/llms.txt",
+      "/ai-readable.json"
+    ],
+    "role": "stable machine-readable continuity",
+    "allowed": [
+      "stable site facts",
+      "public page roles",
+      "object anchors",
+      "boundary statements",
+      "plain mail semantics",
+      "local-only desk semantics"
+    ],
+    "forbidden": [
+      "GEO spam",
+      "keyword stuffing",
+      "ranking manipulation",
+      "AI SEO farming",
+      "crawler bait"
+    ]
+  },
+  "backup_layer": {
+    "minimum_layers": [
+      "Git repository",
+      "local working copy",
+      "docs/project-brain human-readable memory",
+      "machine-readable JSON continuity files",
+      "public llms.txt",
+      "public ai-readable.json",
+      "static export after deployment builds",
+      "private human-held domain and mail custody notes"
+    ],
+    "rule": "Continuity must not depend on one AI memory, one provider, or one chat thread."
+  },
+  "human_governance": {
+    "humans_own": [
+      "domain decisions",
+      "deployment approval",
+      "security posture",
+      "wording restraint",
+      "object placement",
+      "what must not change"
+    ],
+    "ai_supports": [
+      "drift comparison",
+      "small patches",
+      "guardrail execution",
+      "deployment risk summaries",
+      "semantic file consistency"
+    ],
+    "rule": "Human governance outranks AI optimization."
+  },
+  "deployment_observation": [
+    "ordinary homepage presence",
+    "mobile breathability",
+    "Objects anti-shop-wall continuity",
+    "admin anti-operations-console continuity",
+    "AI-readable anti-SEO continuity",
+    "stable contact and domain identity",
+    "absence of metrics and growth language"
+  ],
+  "security_preparation": [
+    "platform protection for /admin",
+    "environment variable separation",
+    "deployment access review",
+    "repository access review",
+    "recovery ownership notes",
+    "private domain and mail custody outside public files"
+  ],
+  "ai_continuity_required_read_order": [
+    "docs/project-brain/civilization-skeleton.md",
+    "docs/project-brain/civilization-security-evolution-governance.md",
+    "docs/project-brain/civilization-continuity-completion.md",
+    "docs/project-brain/deployment-civilization-observation.md",
+    "docs/project-brain/real-internet-infrastructure.md",
+    "src/config/terminology-guardrail.json"
+  ],
+  "final_rule": "Infrastructure is successful when taoist365 remains reachable, understandable, recoverable, and ordinary."
+}

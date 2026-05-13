@@ -1,0 +1,102 @@
+{
+  "name": "Deployment and Civilization Observation Foundation",
+  "status": "long_term_observation_era_deployment_preparation",
+  "scope": "GitHub repository governance, Vercel preparation, Cloudflare preparation, deployment observation, mobile observation, GEO observation, admin observation, deployment security, and human review",
+  "github_repository_governance": {
+    "role": "Civilization Source Layer",
+    "protect": [
+      "docs/project-brain",
+      "src/config/terminology-guardrail.json",
+      "public/brand/production",
+      "civilization core registry",
+      "guardrail scripts"
+    ],
+    "rules": [
+      "small maintenance commits",
+      "restraint-aware pull requests",
+      "guardrails before deployment",
+      "no feed, engagement, companion, personalization, or growth behavior"
+    ]
+  },
+  "vercel_preparation": {
+    "role": "quiet browser layer host",
+    "build_command": "npm run build",
+    "output_directory": "out",
+    "requires": [
+      "static export",
+      "Browser Air preservation",
+      "GEO files preserved",
+      "JSON-LD semantic integrity",
+      "NEXT_PUBLIC_QUIET_ADMIN_PHRASE for preview gate",
+      "platform-level admin access protection for public deployment"
+    ],
+    "avoid": ["unnecessary backend complexity", "runtime inflation", "deployment theater"]
+  },
+  "cloudflare_preparation": {
+    "role": "future civilization firewall",
+    "prepare": [
+      "DNS after deployment target is stable",
+      "simple cache rules",
+      "bot protection for continuity",
+      "AI crawler boundary planning",
+      "semantic abuse awareness"
+    ],
+    "avoid": ["growth acceleration", "traffic shaping for attention", "enterprise security theater"]
+  },
+  "deployment_observation": [
+    "Browser Air after deployment",
+    "mobile breathing continuity",
+    "semantic integrity after build",
+    "GEO structure preservation",
+    "quietness continuity",
+    "admin restraint continuity",
+    "absence of SaaS, operator, dashboard, app, and feed drift"
+  ],
+  "mobile_browser_air_observation": [
+    "breathing spacing",
+    "low-pressure scrolling",
+    "ordinary browser softness",
+    "anti-feed continuity",
+    "anti-app feeling",
+    "anti-tool feeling",
+    "lightly alive warmth"
+  ],
+  "geo_observation": [
+    "llms.txt restraint",
+    "ai-readable continuity",
+    "JSON-LD semantic integrity",
+    "anti-SEO-farm continuity",
+    "anti-ranking obsession",
+    "AI-readable human tone"
+  ],
+  "quiet_admin_observation": [
+    "dashboard drift",
+    "operator feeling",
+    "SaaS mutation",
+    "productivity-software pressure",
+    "over-management tendency",
+    "optimization atmosphere"
+  ],
+  "deployment_security_preparation": [
+    "admin exposure review",
+    "static gate review",
+    "deployment isolation checks",
+    "semantic poisoning awareness",
+    "AI crawler abuse awareness",
+    "civilization memory protection",
+    "platform environment variable review"
+  ],
+  "observation_first_governance": {
+    "allowed": ["drift repair", "restraint repair", "continuity repair", "semantic repair", "Browser Air preservation"],
+    "forbidden": ["high-frequency patching", "panic optimization", "engagement repair", "growth patching", "conversion tuning", "atmosphere over-correction"]
+  },
+  "human_observation": [
+    "Browser Air still alive",
+    "ordinary internet feeling remains",
+    "quietness not over-designed",
+    "GEO not SEO-like",
+    "admin not operator-like",
+    "mobile remains breathable",
+    "taoist365 does not feel like a product"
+  ]
+}

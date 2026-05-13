@@ -1,6 +1,6 @@
 /**
  * Guidance Operating Layer — barrel + arrival copy for /guidance.
- * Taoist365: living world internal slow response, not chat SaaS.
+ * Reverent Inquiry: living world internal slow response, not chat SaaS.
  */
 
 export { guidanceBoundaries } from "./guidance-boundaries";
