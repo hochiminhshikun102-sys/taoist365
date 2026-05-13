@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
-import { commerceObjects, formatPrice, objectById } from "@/config/operational-commerce";
+import {
+  commerceObjects,
+  formatPrice,
+  globalCommerceRegions,
+  globalPackagingStandard,
+  objectById,
+  quietPairingsForObjectId,
+} from "@/config/operational-commerce";
 
 type ObjectPageProps = {
   params: Promise<{ objectId: string }>;
@@ -30,25 +37,30 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
     return null;
   }
 
-  const related = object.relatedIds.map((id) => objectById(id)).filter(Boolean);
-  const sellingTags = [object.collectionTitle, object.shippingState, object.stock > 0 ? "Small stock" : "Unavailable"];
+  const related = quietPairingsForObjectId(object.id, 3);
+  const sellingTags = [object.collectionTitle, "USD base", object.stock > 0 ? "Small stock" : "Unavailable"];
   const skuOptions = [
     { label: "Version", value: object.subtitle },
-    { label: "Material", value: object.materials[0] ?? "Material pending receiving check" },
-    { label: "Quantity", value: "1 piece per add" },
+    { label: "Material", value: object.materials[0] ?? "Material confirmed before shipping" },
+    { label: "Package", value: "Protective carton or padded mailer with product card" },
+    { label: "Quantity", value: "1-9 pieces through cart" },
   ];
   const faqItems = [
     {
       question: "Are these final product photos?",
-      answer: "This page uses the current Taoist365 product material set. Some image sets may be replaced after final photo cleanup.",
+      answer: "This page uses the current Taoist365 product material set. Multi-angle, detail, placement, and package views can be replaced as better production photos arrive.",
     },
     {
       question: "When does it ship?",
       answer: object.shippingNote,
     },
     {
+      question: "Can this ship internationally?",
+      answer: "The product page uses USD as the base price and keeps region, duties, and carrier notes ready for confirmation before payment capture.",
+    },
+    {
       question: "Can I ask before ordering?",
-      answer: "Yes. Mail can confirm stock, dimensions, and packing before payment or shipment.",
+      answer: "Yes. Mail can confirm stock, dimensions, materials, region fit, and packing before payment or shipment.",
     },
   ];
 
@@ -124,7 +136,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
                 <div className="mt-4 grid gap-3">
                   <p className="text-sm leading-7 text-text-secondary">{object.shippingNote}</p>
                   <p className="text-sm leading-7 text-text-secondary">Returns are handled by mail for damaged, incorrect, or clearly mismatched items.</p>
-                  <p className="text-sm leading-7 text-text-secondary">Stock and final dimensions can be confirmed by a human before shipment.</p>
+                  <p className="text-sm leading-7 text-text-secondary">Stock, dimensions, materials, and regional packing can be confirmed before shipment.</p>
                 </div>
               </div>
 
@@ -169,7 +181,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
               <Image src={object.media.package} alt={`${object.title} packaging reference`} fill className="object-cover opacity-[0.9]" sizes="(max-width: 1024px) 92vw, 56rem" />
             </div>
             <figcaption className="mt-3 text-xs leading-6 text-text-muted">
-              Packaging box reference for internal order preparation.
+              Packaging reference for global order preparation.
             </figcaption>
           </figure>
 
@@ -247,11 +259,42 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
           </div>
         </section>
 
+        <section className="mt-10 grid gap-5 border-t border-border-subtle pt-10 lg:grid-cols-[0.45fr_0.55fr]" aria-label="Global order readiness">
+          <div>
+            <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Global readiness</p>
+            <h2 className="mt-3 text-2xl text-foreground">Sizing, packing, and region handoff</h2>
+            <p className="mt-4 text-sm leading-7 text-text-secondary">
+              The page stays in English with USD base pricing. Currency, shipping-rule, compliance, and localization hooks
+              are reserved so future regions do not require a page rebuild.
+            </p>
+          </div>
+          <div className="grid gap-4">
+            <div className="rounded-lg border border-border-subtle bg-white/48 p-5">
+              <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Packaging standard</p>
+              <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                {globalPackagingStandard.map((item) => (
+                  <p key={item} className="text-xs leading-6 text-text-muted">
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {globalCommerceRegions.slice(0, 4).map((region) => (
+                <section key={region.region} className="rounded-lg border border-border-subtle bg-white/46 p-4">
+                  <p className="text-xs text-foreground">{region.region}</p>
+                  <p className="mt-2 text-xs leading-6 text-text-muted">{region.shippingHook}</p>
+                </section>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="mt-10 border-t border-border-subtle pt-8" aria-label="Related objects">
           <div className="flex items-end justify-between gap-6">
             <div>
-              <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Related</p>
-              <h2 className="mt-3 text-2xl text-foreground">Similar objects</h2>
+              <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Quiet pairing</p>
+              <h2 className="mt-3 text-2xl text-foreground">Objects that can share the room</h2>
             </div>
             <Link href={`/collections/${object.collection}`} className="hidden text-sm text-text-muted underline-offset-4 hover:text-foreground hover:underline sm:block">
               Same collection

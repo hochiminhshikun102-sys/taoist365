@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomepageHeroAirRotation } from "@/components/marketing/HomepageHeroAirRotation";
 import { LivingAtmosphereVeil } from "@/components/ritual/LivingAtmosphereVeil";
-import { commerceCollections, commerceObjects, formatPrice } from "@/config/operational-commerce";
+import { commerceCollections, commerceObjects, formatPrice, globalCommerceRegions } from "@/config/operational-commerce";
 import {
   homepageFallbackRooms,
   homepageObjectSlots,
@@ -425,9 +425,10 @@ export function HomepageBrowserRoom() {
               <div className="grid gap-3 sm:grid-cols-2">
                 {[
                   ["Contact", "hello@taoist365.com"],
-                  ["Shipping", "Small-stock objects usually pack within 3-5 business days after confirmation."],
-                  ["FAQ", "Payment links are sent after stock and shipping are confirmed."],
-                  ["Policy", "Returns and damaged-package handling are confirmed by mail before payment provider setup is connected."],
+                  ["Shipping", "Small-stock objects usually prepare within 3-5 business days after stock and region confirmation."],
+                  ["FAQ", "USD is the base display price. Currency, duties, and carrier details stay confirmable before payment."],
+                  ["Policy", "Returns and damaged-package handling are confirmed by mail before payment-provider completion."],
+                  ["Packaging", "Outer carton or mailer, soft inner wrap, product card, and impact protection by material."],
                 ].map(([title, body]) => (
                   <div key={title} className="rounded-lg border border-border-subtle/70 bg-white/50 p-5">
                     <p className="text-xs uppercase tracking-[0.12em] text-text-muted">{title}</p>
@@ -435,6 +436,14 @@ export function HomepageBrowserRoom() {
                   </div>
                 ))}
               </div>
+            </div>
+            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {globalCommerceRegions.slice(0, 4).map((region) => (
+                <div key={region.region} className="rounded-lg border border-border-subtle/60 bg-white/38 p-4">
+                  <p className="text-xs text-foreground">{region.region}</p>
+                  <p className="mt-2 text-[0.72rem] leading-5 text-text-muted">{region.shippingHook}</p>
+                </div>
+              ))}
             </div>
           </section>
 

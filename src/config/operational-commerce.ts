@@ -41,6 +41,58 @@ export type CommerceObject = {
   relatedIds: readonly string[];
 };
 
+export type GlobalCommerceRegion = {
+  region: string;
+  shippingHook: string;
+  complianceHook: string;
+};
+
+export const globalCommerceRegions: readonly GlobalCommerceRegion[] = [
+  {
+    region: "United States",
+    shippingHook: "USD base pricing, carton or padded mailer by object weight, address confirmed before payment.",
+    complianceHook: "Care note, material note, and damaged-package handling prepared for payment-provider review.",
+  },
+  {
+    region: "Europe",
+    shippingHook: "Metric dimensions shown beside inch sizing; customs and VAT wording kept ready for later localization.",
+    complianceHook: "Material and origin fields stay explicit so country-specific policy copy can be added without page rebuild.",
+  },
+  {
+    region: "Middle East",
+    shippingHook: "Protective inner wrap and moisture-aware packing for long transit routes.",
+    complianceHook: "Neutral English base copy with region-specific delivery and restricted-item hooks reserved.",
+  },
+  {
+    region: "Latin America",
+    shippingHook: "Sturdy outer carton, product card, and tracking handoff prepared for cross-border shipment.",
+    complianceHook: "Duties, return window, and delivery exception copy reserved for order integration.",
+  },
+  {
+    region: "Australia",
+    shippingHook: "Long-distance carton protection and metric sizing visible before payment confirmation.",
+    complianceHook: "Biosecurity-sensitive material notes kept separate for future object-level checks.",
+  },
+  {
+    region: "Japan / Korea",
+    shippingHook: "Compact packaging, clean insert card, and precise cm sizing for small-room placement.",
+    complianceHook: "Localization hook reserved without changing the English base product page.",
+  },
+  {
+    region: "Southeast Asia",
+    shippingHook: "Humidity-aware wrap and compact carton sizing for mixed climate routes.",
+    complianceHook: "Regional shipping copy and currency display can be added through the commerce layer later.",
+  },
+] as const;
+
+export const globalPackagingStandard = [
+  "Outer mailer or corrugated carton sized to reduce empty movement.",
+  "Soft inner wrap for surface protection without luxury unboxing pressure.",
+  "Product card with title, material, size, and care note.",
+  "Corner or impact buffer for ceramic, metal bell, resin, and glass-like pieces.",
+  "Region label hook reserved for customs, return address, and carrier handoff.",
+] as const;
+
 export const commerceCollections: readonly CommerceCollection[] = [
   {
     id: "wind-objects",
@@ -803,18 +855,114 @@ function autoMaterialSeed(stem: string, index: number, fromSplit = false): Mater
       ? "This link comes from a grouped product board. The first pass isolates the object area, calms the background, and keeps the shape available for later model-level cleanup."
       : "This link keeps the product shape from the original material while resetting the surrounding field into a softer Taoist365 surface.",
     collection,
-    materials: isWindBell
-      ? ["Metal bell body", "hanging cord or chain", "decorative charm components"]
-      : ["Source material pending final receiving check", "cleaned high-resolution derivative", "soft room background"],
-    dimensions: isWindBell ? "Approx. 10-18 in hanging length / final measurement confirmed before shipping" : "Final dimensions pending stock receiving check",
-    placement: isWindBell
-      ? "Window hook, entryway peg, balcony corner, or a shelf edge with moving air."
-      : fromSplit
-      ? "Use as a test product card until the individual product photo is replaced."
-      : "Shelf, desk, room corner, or product card surface depending on final receiving.",
+    materials: standardizedMaterials(title, stem, isWindBell),
+    dimensions: standardizedDimensions(title, stem, isWindBell),
+    placement: standardizedPlacement(title, isWindBell, fromSplit),
     priceCents: isWindBell ? 5800 + (index % 4) * 400 : fromSplit ? 3200 + (index % 5) * 300 : 2800 + (index % 8) * 400,
     stock: fromSplit ? 3 + (index % 4) : 4 + (index % 9),
   };
+}
+
+function standardizedMaterials(title: string, source: string, isWindBell = false) {
+  const lower = `${title} ${source}`.toLowerCase();
+
+  if (isWindBell || lower.includes("wind bell") || lower.includes("window bell") || lower.includes("椋庨搩")) {
+    return ["Brass-tone metal bell", "alloy hanging hardware", "cotton or braided cord"];
+  }
+
+  if (lower.includes("bracelet") || lower.includes("crystal")) {
+    return ["Mixed crystal beads", "elastic cord", "alloy charm or spacer"];
+  }
+
+  if (lower.includes("plush") || lower.includes("jellyfish") || lower.includes("rabbit") || lower.includes("cat") || lower.includes("moon body")) {
+    return ["Soft plush textile", "polyester fiber fill", "embroidered or appliqued surface detail"];
+  }
+
+  if (lower.includes("lamp") || lower.includes("light")) {
+    return ["Printed shade", "metal stem", "weighted base"];
+  }
+
+  if (lower.includes("tea")) {
+    return ["Dried fruit tea", "paper gift box", "food-grade inner pouch"];
+  }
+
+  if (lower.includes("incense") || lower.includes("wood")) {
+    return ["Finished wood", "ceramic rest", "paper sleeve"];
+  }
+
+  if (lower.includes("linen") || lower.includes("cotton") || lower.includes("fabric")) {
+    return ["Linen or cotton textile", "stitched edge", "soft folded wrap"];
+  }
+
+  if (lower.includes("pendant") || lower.includes("ornament") || lower.includes("charm")) {
+    return ["Alloy metal body", "braided cord", "small charm hardware"];
+  }
+
+  if (lower.includes("ceramic") || lower.includes("dish") || lower.includes("bowl")) {
+    return ["Ceramic body", "glazed surface", "protective paper wrap"];
+  }
+
+  return ["Resin or alloy object body", "soft room finish", "protective packing material"];
+}
+
+function standardizedDimensions(title: string, source: string, isWindBell = false) {
+  const lower = `${title} ${source}`.toLowerCase();
+
+  if (isWindBell || lower.includes("wind bell") || lower.includes("window bell") || lower.includes("椋庨搩")) {
+    return "Approx. 10-18 in / 25-46 cm hanging length";
+  }
+
+  if (lower.includes("bracelet") || lower.includes("crystal")) {
+    return "Approx. 6.5-7.2 in / 16.5-18.3 cm inner circumference";
+  }
+
+  if (lower.includes("plush") || lower.includes("jellyfish") || lower.includes("rabbit") || lower.includes("cat") || lower.includes("moon body")) {
+    return "Approx. 7-10 in / 18-25 cm tall";
+  }
+
+  if (lower.includes("lamp") || lower.includes("light")) {
+    return "Approx. 8-12 in / 20-30 cm tall";
+  }
+
+  if (lower.includes("tea")) {
+    return "Approx. 6 x 4 x 2 in / 15 x 10 x 5 cm gift box";
+  }
+
+  if (lower.includes("incense") || lower.includes("wood")) {
+    return "Approx. 8-10 in / 20-25 cm long";
+  }
+
+  if (lower.includes("pendant") || lower.includes("ornament") || lower.includes("charm")) {
+    return "Approx. 2-5 in / 5-13 cm object body";
+  }
+
+  if (lower.includes("ceramic") || lower.includes("dish") || lower.includes("bowl")) {
+    return "Approx. 3-6 in / 8-15 cm across";
+  }
+
+  return "Approx. 4-9 in / 10-23 cm room-object scale";
+}
+
+function standardizedPlacement(title: string, isWindBell = false, fromSplit = false) {
+  const lower = title.toLowerCase();
+
+  if (isWindBell || lower.includes("wind bell") || lower.includes("window bell")) {
+    return "Window hook, entryway peg, balcony corner, or a shelf edge with moving air.";
+  }
+
+  if (lower.includes("bracelet") || lower.includes("pendant")) {
+    return "Wrist, bedside tray, shelf dish, or travel pouch between uses.";
+  }
+
+  if (lower.includes("plush") || lower.includes("jellyfish") || lower.includes("rabbit") || lower.includes("cat")) {
+    return "Reading chair, bed edge, low shelf, or soft room corner.";
+  }
+
+  if (fromSplit) {
+    return "Shelf, tray, product card, or small-room surface after the grouped source image is separated.";
+  }
+
+  return "Shelf, desk, room corner, or product card surface with low visual pressure.";
 }
 
 function marketAdjustedPriceCents(basePriceCents: number, title: string, source: string, index: number) {
@@ -925,19 +1073,19 @@ const materialProductObjects: readonly CommerceObject[] = allMaterialObjectSeeds
     placement: seed.placement,
     detailSurfaces: [
       seed.inspiration,
-      "First-stage materialization uses cleaned high-resolution derivatives from the current product shelf.",
-      "Final product photography, text removal, and model views can replace these assets without changing the product link.",
+      "High-resolution product derivatives are normalized for Browser Air backgrounds while preserving object shape.",
+      "Multi-angle, detail, placement, and packaging views share the same product link so later photography can replace the asset set cleanly.",
     ],
     shippingState: seed.stock <= 5 ? "limited" : "available",
     archiveState: "active",
     stock: seed.stock,
     priceCents: marketAdjustedPriceCents(seed.priceCents, seed.title, seed.sourceStem, index),
     trustNotes: [
-      "Internal-test product link; final photo cleanup may replace the image set.",
-      "Ships after human stock confirmation.",
-      "Measurements are placeholder ranges until final receiving check.",
+      "USD is the base display currency; future currency hooks are reserved.",
+      "Ships after stock, size, and region confirmation.",
+      "Packaging follows the global object packing standard before carrier handoff.",
     ],
-    shippingNote: "Internal-test ordering path. Final packing and shipping window will be confirmed before payment capture.",
+    shippingNote: "Ships after stock and region confirmation. Most small objects are prepared within 3-5 business days.",
     media: {
       hero: `/objects-derived/${seed.sourceStem}-hero.webp`,
       alt: `${seed.title} product image`,
@@ -965,6 +1113,63 @@ export function objectById(id: string) {
 
 export function objectsForCollection(collectionId: CommerceCollectionId) {
   return commerceObjects.filter((object) => object.collection === collectionId);
+}
+
+function relationshipScore(source: CommerceObject, candidate: CommerceObject) {
+  if (source.id === candidate.id || candidate.archiveState === "quiet-archive") {
+    return -1;
+  }
+
+  let score = 0;
+  if (source.collection === candidate.collection) score += 4;
+  if (source.materials.some((material) => candidate.materials.includes(material))) score += 3;
+
+  const sourceRoomWords = `${source.placement} ${source.atmosphereLine}`.toLowerCase();
+  const candidateRoomWords = `${candidate.placement} ${candidate.atmosphereLine}`.toLowerCase();
+  for (const word of ["window", "desk", "shelf", "room", "tea", "linen", "light", "wind", "wood", "ceramic"]) {
+    if (sourceRoomWords.includes(word) && candidateRoomWords.includes(word)) score += 1;
+  }
+
+  if (source.collection === "wind-objects" && ["quiet-desk", "ritual-objects"].includes(candidate.collection)) {
+    score += 2;
+  }
+  if (source.collection === "seasonal-collections" && candidate.collection === "wind-objects") {
+    score += 2;
+  }
+
+  return score;
+}
+
+export function quietPairingsForObjectId(id: string, limit = 4) {
+  const source = objectById(id);
+  if (!source) return [];
+
+  return commerceObjects
+    .map((candidate) => ({ candidate, score: relationshipScore(source, candidate) }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || a.candidate.title.localeCompare(b.candidate.title))
+    .slice(0, limit)
+    .map((entry) => entry.candidate);
+}
+
+export function quietPairingsForCart(ids: readonly string[], limit = 4) {
+  const cartIds = new Set(ids);
+  const selectedObjects = ids.map((id) => objectById(id)).filter(Boolean) as CommerceObject[];
+
+  if (selectedObjects.length === 0) {
+    return commerceObjects.filter((object) => object.collection === "wind-objects").slice(0, limit);
+  }
+
+  return commerceObjects
+    .filter((candidate) => !cartIds.has(candidate.id) && candidate.archiveState !== "quiet-archive")
+    .map((candidate) => ({
+      candidate,
+      score: selectedObjects.reduce((total, source) => total + Math.max(0, relationshipScore(source, candidate)), 0),
+    }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score || a.candidate.title.localeCompare(b.candidate.title))
+    .slice(0, limit)
+    .map((entry) => entry.candidate);
 }
 
 export function collectionById(id: string) {
