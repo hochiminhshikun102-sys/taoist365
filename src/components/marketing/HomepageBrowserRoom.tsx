@@ -144,7 +144,7 @@ function SoftMark({ name }: { name: string }) {
   return (
     <span
       aria-hidden
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c7d7df]/50 bg-white/76 text-[0.62rem] uppercase tracking-[0.11em] text-foreground/66 shadow-[0_8px_22px_rgba(38,61,78,0.055)]"
+      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#b7c9d2]/55 bg-white/60 text-[0.5rem] uppercase tracking-[0.08em] text-foreground/58 shadow-[0_4px_12px_rgba(38,61,78,0.035)] sm:h-9 sm:w-9 sm:text-[0.56rem]"
     >
       {name}
     </span>
@@ -155,7 +155,7 @@ function ArrowLink() {
   return (
     <span
       aria-hidden
-      className="mt-auto flex h-8 w-8 items-center justify-center rounded-full border border-foreground/12 bg-white/76 text-sm text-foreground/72"
+      className="mt-auto flex h-6 w-6 items-center justify-center rounded-full border border-foreground/12 bg-white/54 text-[0.62rem] text-foreground/58 sm:h-7 sm:w-7"
     >
       -&gt;
     </span>
@@ -191,17 +191,21 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch browser-air-presence clear-air-card relative flex min-h-[13.8rem] overflow-hidden rounded-lg border p-5"
+                  className="quiet-air-touch browser-air-presence clear-air-card grid min-h-[15rem] overflow-hidden rounded-lg border p-0"
                 >
-                  <Image src={entry.image} alt="" fill className="object-cover opacity-[0.68]" sizes="(max-width: 768px) 45vw, 22vw" />
-                  <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.46),rgba(255,255,255,0.03))]" />
-                  <div className="relative z-[1] flex min-h-full max-w-[12rem] flex-col">
-                    <SoftMark name={entry.mark} />
-                    <h3 className="mt-5 font-[var(--font-display-serif)] text-xl leading-tight text-foreground">
+                  <div className="grounded-card-image relative aspect-[1.68/1] overflow-hidden">
+                    <Image src={entry.image} alt="" fill className="object-cover opacity-[0.9]" sizes="(max-width: 768px) 92vw, 22vw" />
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]" />
+                  </div>
+                  <div className="relative z-[1] flex min-h-[9rem] flex-col p-4 sm:p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <SoftMark name={entry.mark} />
+                      <ArrowLink />
+                    </div>
+                    <h3 className="mt-4 font-[var(--font-display-serif)] text-[1.42rem] font-semibold leading-tight text-foreground sm:text-2xl">
                       {entry.title}
                     </h3>
-                    <p className="mt-3 text-sm leading-6 text-text-secondary">{entry.body}</p>
-                    <ArrowLink />
+                    <p className="grounded-card-copy mt-3 text-sm leading-6">{entry.body}</p>
                   </div>
                 </Link>
               ))}
@@ -223,10 +227,10 @@ export function HomepageBrowserRoom() {
                   className="quiet-air-touch clear-air-card flex min-h-[10.5rem] flex-col items-center rounded-lg border px-3 py-5 text-center"
                 >
                   <SoftMark name={path.mark} />
-                  <h3 className="mt-4 font-[var(--font-display-serif)] text-lg leading-tight text-foreground">
+                  <h3 className="mt-4 font-[var(--font-display-serif)] text-lg font-semibold leading-tight text-foreground">
                     {path.title}
                   </h3>
-                  <p className="mt-2 text-xs leading-5 text-text-secondary">{path.body}</p>
+                  <p className="grounded-card-copy mt-2 text-xs leading-5">{path.body}</p>
                   <ArrowLink />
                 </Link>
               ))}
@@ -238,19 +242,22 @@ export function HomepageBrowserRoom() {
               <Link
                 key={entry.title}
                 href={entry.href}
-                className={`quiet-air-touch browser-air-presence clear-air-card relative min-h-[17.5rem] overflow-hidden rounded-lg border p-5 ${
+                className={`quiet-air-touch browser-air-presence clear-air-card grid min-h-[18rem] overflow-hidden rounded-lg border p-0 ${
                   index === 0 || index === 2 ? "lg:-translate-y-2" : index === 4 ? "lg:translate-y-3" : ""
                 }`}
               >
-                <Image src={entry.image} alt="" fill className="object-cover opacity-[0.68]" sizes="(max-width: 768px) 92vw, 16vw" />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.06))]" />
-                <div className="relative z-[1] flex h-full flex-col">
-                  <SoftMark name={entry.mark} />
-                  <h2 className="mt-auto font-[var(--font-display-serif)] text-2xl leading-tight text-foreground">
+                <div className="grounded-card-image relative aspect-[1.48/1] overflow-hidden">
+                  <Image src={entry.image} alt="" fill className="object-cover opacity-[0.9]" sizes="(max-width: 768px) 92vw, 16vw" />
+                </div>
+                <div className="relative z-[1] flex min-h-[10rem] flex-col p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <SoftMark name={entry.mark} />
+                    <ArrowLink />
+                  </div>
+                  <h2 className="mt-5 font-[var(--font-display-serif)] text-2xl font-semibold leading-tight text-foreground">
                     {entry.title}
                   </h2>
-                  <p className="mt-3 text-sm leading-6 text-text-secondary">{entry.body}</p>
-                  <ArrowLink />
+                  <p className="grounded-card-copy mt-3 text-sm leading-6">{entry.body}</p>
                 </div>
               </Link>
             ))}

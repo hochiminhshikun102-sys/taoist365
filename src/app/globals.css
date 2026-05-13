@@ -6,6 +6,7 @@
   --foreground: #1a1a1a;
   --text-secondary: #4f5963;
   --text-muted: #8a929b;
+  --warm-graphite: #3f3935;
   --brand-wind: #7d8d9b;
   --brand-warm-residue: #cbb38a;
   --brand-drift: #9aa6b1;
@@ -257,16 +258,25 @@ html[data-open-duration="long"] .long-open-browser-softness {
 }
 
 .clear-air-card {
-  background: rgba(255, 255, 255, 0.72);
-  border-color: rgba(198, 213, 221, 0.46);
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(178, 196, 205, 0.58);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.72),
-    0 14px 38px rgba(38, 61, 78, 0.06);
+    0 12px 30px rgba(38, 61, 78, 0.07);
 }
 
 .clear-air-card:hover {
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.9);
   border-color: rgba(166, 192, 205, 0.56);
+}
+
+.grounded-card-image {
+  border-bottom: 1px solid rgba(178, 196, 205, 0.36);
+  background: rgba(242, 248, 250, 0.82);
+}
+
+.grounded-card-copy {
+  color: var(--warm-graphite);
 }
 
 .human-residue-presence {
