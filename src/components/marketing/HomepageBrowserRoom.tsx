@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomepageHeroCarousel } from "@/components/marketing/HomepageHeroCarousel";
 import { QuietSubscription } from "@/components/marketing/QuietSubscription";
-import { LivingAtmosphereVeil } from "@/components/ritual/LivingAtmosphereVeil";
+import { lilaHumanPresence } from "@/config/lila-human-presence";
 import { commerceObjects } from "@/config/operational-commerce";
 import {
   homepageObjectSlots,
@@ -24,22 +24,22 @@ const waysToBegin = [
     mark: "sun",
   },
   {
-    title: "Feng Shui Space",
-    body: "Bring balance into your room.",
+    title: "Room Balance",
+    body: "Let a room feel easier to stay in.",
     href: "/rituals/home-harmony",
     image: "/homepage-hero/windkeep-lantern-sea.png",
-    mark: "wind",
+    mark: "air",
   },
   {
     title: "Fortune Draw",
-    body: "Listen to a message meant for you.",
+    body: "Listen to a small message without pressure.",
     href: "/rituals/draw-a-lot",
     image: "/objects-living/incense-box.jpg",
-    mark: "lotus",
+    mark: "lot",
   },
   {
     title: "Driftbox",
-    body: "Send a question into the wind.",
+    body: "Send a question into quiet correspondence.",
     href: "/inquiry",
     image: "/objects-living/tea-gift-box.jpg",
     mark: "mail",
@@ -47,19 +47,19 @@ const waysToBegin = [
 ] as const;
 
 const pathsOfLife = [
-  { title: "Relationships", body: "Connection and healing", href: "/healing/stories", mark: "people" },
-  { title: "Home", body: "Creating a harmonious space", href: "/healing/elements", mark: "home" },
-  { title: "Timing", body: "Flowing with the right moment", href: "/healing/philosophy", mark: "time" },
-  { title: "Energy", body: "Nourish your inner vitality", href: "/healing/meditation", mark: "leaf" },
-  { title: "Direction", body: "Finding your true north", href: "/healing/creation", mark: "compass" },
-  { title: "Choices", body: "Make decisions with clarity", href: "/healing/playground", mark: "branch" },
-  { title: "Return", body: "Coming home to yourself", href: "/healing/subscriptions", mark: "circle" },
+  { title: "Relationships", body: "Connection and repair", href: "/healing/stories", mark: "rel" },
+  { title: "Home", body: "A room with room to breathe", href: "/healing/elements", mark: "home" },
+  { title: "Timing", body: "Moving with the right moment", href: "/healing/philosophy", mark: "time" },
+  { title: "Energy", body: "Returning to your own pace", href: "/healing/meditation", mark: "leaf" },
+  { title: "Direction", body: "Finding a quiet next step", href: "/healing/creation", mark: "path" },
+  { title: "Choices", body: "Deciding without force", href: "/healing/playground", mark: "turn" },
+  { title: "Return", body: "Coming back to yourself", href: "/healing/subscriptions", mark: "rest" },
 ] as const;
 
 const mainEntries = [
   {
     title: "Healing",
-    body: "45 quiet rooms for body, mind and spirit.",
+    body: "Quiet rooms for body, mind, and spirit.",
     href: "/healing",
     image: "/objects-living/crystal-window-plant.jpg",
     mark: "leaf",
@@ -69,7 +69,7 @@ const mainEntries = [
     body: "A world of objects in passage.",
     href: "/windkeep",
     image: "/homepage-hero/windkeep-lantern-sea.png",
-    mark: "wind",
+    mark: "air",
   },
   {
     title: "Driftbox",
@@ -80,24 +80,24 @@ const mainEntries = [
   },
   {
     title: "Live",
-    body: "Ambient spaces for presence and companionship.",
+    body: "Ambient rooms for gentle presence.",
     href: "/live",
     image: "/objects-living/incense-box.jpg",
-    mark: "cloud",
+    mark: "live",
   },
   {
     title: "Objects",
     body: "Thoughtful things for slow living.",
     href: "/objects",
     image: commerceObjects[0]?.media.placement ?? "/objects-living/incense-box.jpg",
-    mark: "vase",
+    mark: "obj",
   },
   {
     title: "Journal",
-    body: "Record, reflect and return to what matters.",
+    body: "Notes, traces, and small returns.",
     href: "/healing/stories",
     image: "/objects-living/tea-gift-box.jpg",
-    mark: "pen",
+    mark: "note",
   },
 ] as const;
 
@@ -141,29 +141,12 @@ const momentsOfPresence = [
 ] as const;
 
 function SoftMark({ name }: { name: string }) {
-  const marks: Record<string, string> = {
-    sun: "☼",
-    wind: "≋",
-    lotus: "♧",
-    mail: "✉",
-    people: "♙",
-    home: "⌂",
-    time: "◷",
-    leaf: "♧",
-    compass: "◌",
-    branch: "⌯",
-    circle: "○",
-    cloud: "☁",
-    vase: "♢",
-    pen: "✎",
-  };
-
   return (
     <span
       aria-hidden
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white/70 text-xl leading-none text-foreground/72 shadow-[0_10px_30px_rgba(29,42,56,0.05)]"
+      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c7d7df]/50 bg-white/76 text-[0.62rem] uppercase tracking-[0.11em] text-foreground/66 shadow-[0_8px_22px_rgba(38,61,78,0.055)]"
     >
-      {marks[name] ?? "○"}
+      {name}
     </span>
   );
 }
@@ -172,9 +155,9 @@ function ArrowLink() {
   return (
     <span
       aria-hidden
-      className="mt-auto flex h-8 w-8 items-center justify-center rounded-full border border-foreground/12 bg-white/68 text-sm text-foreground/72"
+      className="mt-auto flex h-8 w-8 items-center justify-center rounded-full border border-foreground/12 bg-white/76 text-sm text-foreground/72"
     >
-      →
+      -&gt;
     </span>
   );
 }
@@ -188,20 +171,19 @@ export function HomepageBrowserRoom() {
   const presenceRooms = roomThin ? homepageSeasonalRooms.slice(0, 4) : homepageSeasonalRooms;
 
   return (
-    <main className="min-h-full bg-[#f4f7f8] text-foreground">
+    <main className="min-h-full bg-[#f6fafb] text-foreground">
       <div className="relative isolate overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(239,246,250,0.98)_0%,rgba(250,250,247,0.94)_42%,rgba(244,247,247,0.96)_100%)]" />
-        <LivingAtmosphereVeil tone="default" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#f5fbfd_0%,#ffffff_38%,#f4faf9_100%)]" />
         <HomepageHeroCarousel />
 
         <div className="relative z-[1] mx-auto w-full max-w-[92rem] px-4 pb-16 sm:px-7 lg:px-10">
-          <section className="-mt-5 mx-auto max-w-[86rem] rounded-[1.35rem_1.35rem_0_0] bg-[#fbfbf8]/88 px-4 pb-8 pt-8 shadow-[0_-16px_45px_rgba(29,42,56,0.035)] backdrop-blur-sm sm:px-6 lg:px-8">
+          <section className="-mt-5 mx-auto max-w-[86rem] rounded-[1.35rem_1.35rem_0_0] sunlit-air-zone px-4 pb-8 pt-8 shadow-[0_-10px_38px_rgba(38,61,78,0.04)] sm:px-6 lg:px-8">
             <div className="mb-6 flex items-center gap-2">
               <h2 className="font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
                 Ways to Begin
               </h2>
               <span className="text-lg text-foreground/46" aria-hidden>
-                ♧
+                /
               </span>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -209,10 +191,10 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch browser-air-presence relative flex min-h-[13.8rem] overflow-hidden rounded-lg border border-white/70 bg-white/56 p-5 shadow-[0_12px_32px_rgba(29,42,56,0.035)]"
+                  className="quiet-air-touch browser-air-presence clear-air-card relative flex min-h-[13.8rem] overflow-hidden rounded-lg border p-5"
                 >
-                  <Image src={entry.image} alt="" fill className="object-cover opacity-[0.45]" sizes="(max-width: 768px) 45vw, 22vw" />
-                  <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.72),rgba(255,255,255,0.2))]" />
+                  <Image src={entry.image} alt="" fill className="object-cover opacity-[0.68]" sizes="(max-width: 768px) 45vw, 22vw" />
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.46),rgba(255,255,255,0.03))]" />
                   <div className="relative z-[1] flex min-h-full max-w-[12rem] flex-col">
                     <SoftMark name={entry.mark} />
                     <h3 className="mt-5 font-[var(--font-display-serif)] text-xl leading-tight text-foreground">
@@ -226,7 +208,7 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto max-w-[86rem] rounded-b-[1rem] bg-white/50 px-4 pb-8 pt-4 sm:px-6 lg:px-8">
+          <section className="mx-auto max-w-[86rem] rounded-b-[1rem] bg-white/72 px-4 pb-8 pt-4 sm:px-6 lg:px-8">
             <div className="mb-6 text-center">
               <h2 className="font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
                 Paths of Life
@@ -238,7 +220,7 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={path.title}
                   href={path.href}
-                  className="quiet-air-touch flex min-h-[10.5rem] flex-col items-center rounded-lg border border-white/70 bg-white/48 px-3 py-5 text-center shadow-[0_10px_26px_rgba(29,42,56,0.025)]"
+                  className="quiet-air-touch clear-air-card flex min-h-[10.5rem] flex-col items-center rounded-lg border px-3 py-5 text-center"
                 >
                   <SoftMark name={path.mark} />
                   <h3 className="mt-4 font-[var(--font-display-serif)] text-lg leading-tight text-foreground">
@@ -256,12 +238,12 @@ export function HomepageBrowserRoom() {
               <Link
                 key={entry.title}
                 href={entry.href}
-                className={`quiet-air-touch browser-air-presence relative min-h-[17.5rem] overflow-hidden rounded-lg border border-white/72 bg-white/54 p-5 shadow-[0_14px_36px_rgba(29,42,56,0.035)] ${
+                className={`quiet-air-touch browser-air-presence clear-air-card relative min-h-[17.5rem] overflow-hidden rounded-lg border p-5 ${
                   index === 0 || index === 2 ? "lg:-translate-y-2" : index === 4 ? "lg:translate-y-3" : ""
                 }`}
               >
-                <Image src={entry.image} alt="" fill className="object-cover opacity-[0.52]" sizes="(max-width: 768px) 92vw, 16vw" />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.68),rgba(255,255,255,0.26))]" />
+                <Image src={entry.image} alt="" fill className="object-cover opacity-[0.68]" sizes="(max-width: 768px) 92vw, 16vw" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.06))]" />
                 <div className="relative z-[1] flex h-full flex-col">
                   <SoftMark name={entry.mark} />
                   <h2 className="mt-auto font-[var(--font-display-serif)] text-2xl leading-tight text-foreground">
@@ -274,13 +256,13 @@ export function HomepageBrowserRoom() {
             ))}
           </section>
 
-          <section className="mx-auto max-w-[86rem] overflow-hidden rounded-lg border border-white/70 bg-white/58 shadow-[0_14px_38px_rgba(29,42,56,0.03)]">
-            <div className="grid gap-px bg-border-subtle/36 lg:grid-cols-[0.7fr_1fr_1fr]">
-              <div className="bg-[#fbfaf6]/84 p-6 sm:p-8">
+          <section className="mx-auto max-w-[86rem] overflow-hidden rounded-lg border border-[#c7d7df]/46 bg-white/76 shadow-[0_18px_46px_rgba(38,61,78,0.055)]">
+            <div className="grid gap-px bg-[#d8e5ea]/44 lg:grid-cols-[0.7fr_1fr_1fr]">
+              <div className="bg-white/86 p-6 sm:p-8">
                 <p className="font-[var(--font-display-serif)] text-2xl uppercase tracking-[0.04em] text-foreground">
                   Windkeep
                 </p>
-                <h2 className="mt-3 text-xl leading-8 text-foreground">风栈 · 物件持续文明世界</h2>
+                <h2 className="mt-3 text-xl leading-8 text-foreground">Objects continue through time.</h2>
                 <p className="mt-5 max-w-sm text-sm leading-7 text-text-secondary">
                   Each object keeps its own journey, meeting the right person in quiet time.
                 </p>
@@ -289,29 +271,29 @@ export function HomepageBrowserRoom() {
                 </p>
                 <Link
                   href="/windkeep"
-                  className="mt-6 inline-flex items-center gap-3 rounded-[0.28rem] border border-foreground/18 bg-white/42 px-4 py-2 text-xs tracking-[0.08em] text-foreground/82"
+                  className="mt-6 inline-flex items-center gap-3 rounded-[0.28rem] border border-foreground/18 bg-white/74 px-4 py-2 text-xs tracking-[0.08em] text-foreground/82"
                 >
-                  Enter Windkeep <span aria-hidden>→</span>
+                  Enter Windkeep <span aria-hidden>-&gt;</span>
                 </Link>
               </div>
-              <Link href="/windkeep#objects" className="quiet-air-touch relative min-h-[15rem] overflow-hidden bg-white/64 p-6 sm:p-8">
-                <Image src="/homepage-hero/windkeep-lantern-sea.png" alt="" fill className="object-cover opacity-[0.48]" sizes="(max-width: 1024px) 92vw, 32vw" />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.78),rgba(255,255,255,0.22))]" />
+              <Link href="/windkeep#objects" className="quiet-air-touch relative min-h-[15rem] overflow-hidden bg-white/72 p-6 sm:p-8">
+                <Image src="/homepage-hero/windkeep-lantern-sea.png" alt="" fill className="object-cover opacity-[0.68]" sizes="(max-width: 1024px) 92vw, 32vw" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.48),rgba(255,255,255,0.04))]" />
                 <div className="relative z-[1] max-w-sm">
                   <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Passing Things</p>
-                  <h3 className="mt-3 text-xl leading-tight text-foreground">物与时遇</h3>
+                  <h3 className="mt-3 text-xl leading-tight text-foreground">Objects meeting time</h3>
                   <p className="mt-4 text-sm leading-7 text-text-secondary">
                     Objects in passage, meeting the right person at the right time.
                   </p>
                   <ArrowLink />
                 </div>
               </Link>
-              <Link href="/quiet-receiving" className="quiet-air-touch relative min-h-[15rem] overflow-hidden bg-white/64 p-6 sm:p-8">
-                <Image src={commerceObjects[1]?.media.placement ?? windResiduePlacement.image} alt="" fill className="object-cover opacity-[0.42]" sizes="(max-width: 1024px) 92vw, 32vw" />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.78),rgba(255,255,255,0.2))]" />
+              <Link href="/quiet-receiving" className="quiet-air-touch relative min-h-[15rem] overflow-hidden bg-white/72 p-6 sm:p-8">
+                <Image src={commerceObjects[1]?.media.placement ?? windResiduePlacement.image} alt="" fill className="object-cover opacity-[0.66]" sizes="(max-width: 1024px) 92vw, 32vw" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.5),rgba(255,255,255,0.04))]" />
                 <div className="relative z-[1] max-w-sm">
                   <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Quiet Receiving</p>
-                  <h3 className="mt-3 text-xl leading-tight text-foreground">笑纳</h3>
+                  <h3 className="mt-3 text-xl leading-tight text-foreground">A quiet yes</h3>
                   <p className="mt-4 text-sm leading-7 text-text-secondary">
                     Objects waiting quietly to be received by the next keeper.
                   </p>
@@ -327,16 +309,16 @@ export function HomepageBrowserRoom() {
                 Moments of Presence
               </h2>
               <Link href="/live" className="text-sm text-foreground/62 hover:text-foreground">
-                View all →
+                View all -&gt;
               </Link>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-3">
               {momentsOfPresence.map((moment) => (
                 <Link key={moment.title} href={moment.href} className="quiet-air-touch min-w-[12.5rem]">
-                  <div className="browser-air-presence relative aspect-[1.82/1] overflow-hidden rounded-lg border border-white/70 bg-white/60">
-                    <Image src={moment.image} alt="" fill className="object-cover opacity-[0.86]" sizes="13rem" />
-                    <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-white/80 bg-white/42 text-xs text-white shadow-[0_8px_20px_rgba(29,42,56,0.14)]">
-                      ▶
+                  <div className="browser-air-presence relative aspect-[1.82/1] overflow-hidden rounded-lg border border-[#c7d7df]/50 bg-white/78">
+                    <Image src={moment.image} alt="" fill className="object-cover opacity-[0.92]" sizes="13rem" />
+                    <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-white/80 bg-white/54 text-[0.56rem] uppercase tracking-[0.08em] text-foreground/70 shadow-[0_8px_20px_rgba(29,42,56,0.14)]">
+                      play
                     </span>
                   </div>
                   <p className="mt-3 text-sm text-foreground">{moment.title}</p>
@@ -347,11 +329,26 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section className="mx-auto max-w-[86rem] border-t border-border-subtle/60 py-9">
+            <div className="mb-7 grid gap-5 rounded-lg border border-[#c7d7df]/42 bg-white/70 p-5 shadow-[0_12px_34px_rgba(38,61,78,0.045)] sm:grid-cols-[0.34fr_0.66fr] sm:p-6">
+              <div>
+                <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Human presence</p>
+                <h2 className="mt-2 font-[var(--font-display-serif)] text-2xl leading-tight text-foreground">
+                  {lilaHumanPresence.name}
+                </h2>
+                <p className="mt-1 text-sm text-text-muted">{lilaHumanPresence.role}</p>
+              </div>
+              <div>
+                <p className="text-sm leading-8 text-text-secondary">{lilaHumanPresence.homepageNote}</p>
+                <Link href="/about" className="mt-4 inline-flex text-sm text-foreground/68 hover:text-foreground">
+                  Read about the keeper
+                </Link>
+              </div>
+            </div>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
               {windkeepObjects.map((item) => (
-                <Link key={item.id} href={`/objects#${item.id}`} className="quiet-air-touch flex gap-4 rounded-lg bg-white/38 p-3">
-                  <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-md bg-white/60">
-                    <Image src={item.photo.src} alt="" fill className="object-cover opacity-[0.78]" sizes="5rem" />
+                <Link key={item.id} href={`/objects#${item.id}`} className="quiet-air-touch flex gap-4 rounded-lg bg-white/62 p-3">
+                  <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-md bg-white/80">
+                    <Image src={item.photo.src} alt="" fill className="object-cover opacity-[0.9]" sizes="5rem" />
                   </div>
                   <div>
                     <p className="text-sm leading-5 text-foreground">{item.title}</p>
@@ -360,7 +357,7 @@ export function HomepageBrowserRoom() {
                 </Link>
               ))}
               {presenceRooms.slice(0, 2).map((room) => (
-                <div key={room.label} className="rounded-lg bg-white/32 p-4">
+                <div key={room.label} className="rounded-lg bg-white/58 p-4">
                   <p className="text-sm text-foreground">{room.label}</p>
                   <p className="mt-1 text-xs text-text-muted">{room.note}</p>
                 </div>
@@ -378,11 +375,11 @@ export function HomepageBrowserRoom() {
                 <p className="font-[var(--font-display-serif)] text-xl text-foreground">{siteConfig.brandEnName}</p>
               </div>
               <p className="mt-4 max-w-xs text-sm leading-7 text-text-secondary">
-                A quiet space in the browser, for healing, presence and return.
+                A quiet space in the browser, for healing, presence, and return.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              {["Healing", "Windkeep", "Driftbox", "Live", "Objects", "Journal"].map((item) => {
+              {["Healing", "Windkeep", "Driftbox", "Live", "Objects", "Journal", "About"].map((item) => {
                 const href =
                   item === "Healing"
                     ? "/healing"
@@ -394,7 +391,9 @@ export function HomepageBrowserRoom() {
                           ? "/live"
                           : item === "Objects"
                             ? "/objects"
-                            : "/healing/stories";
+                            : item === "About"
+                              ? "/about"
+                              : "/healing/stories";
 
                 return (
                   <Link key={item} href={href} className="text-foreground/62 hover:text-foreground">

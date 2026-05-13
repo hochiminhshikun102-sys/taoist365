@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { HealingModuleCard } from "@/components/healing/HealingModuleCard";
 import { healingHallById, healingHalls, healingModulesForHall } from "@/config/healing-ecosystem";
+import { lilaHumanPresence } from "@/config/lila-human-presence";
 
 type HealingHallPageProps = {
   params: Promise<{ hallId: string }>;
@@ -67,7 +68,14 @@ export default async function HealingHallPage({ params }: HealingHallPageProps) 
           ))}
         </nav>
 
-        <section className="mt-10 grid gap-5 lg:grid-cols-2" aria-label={`${hall.title} modules`}>
+        {hall.id === "stories" ? (
+          <section className="mt-10 rounded-lg border border-[#c7d7df]/46 bg-white/72 p-5 shadow-[0_12px_34px_rgba(38,61,78,0.045)]">
+            <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Journal atmosphere</p>
+            <p className="mt-3 max-w-2xl text-sm leading-8 text-text-secondary">{lilaHumanPresence.journalNote}</p>
+          </section>
+        ) : null}
+
+        <section className="mt-10 grid gap-5 lg:grid-cols-2" aria-label={`${hall.title} rooms`}>
           {modules.map((module) => (
             <HealingModuleCard key={module.id} module={module} />
           ))}

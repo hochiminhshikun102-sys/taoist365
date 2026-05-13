@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { lilaHumanPresence } from "@/config/lila-human-presence";
 import { siteConfig } from "@/config/site";
 import { windkeepArrivalLines, windkeepObjects } from "@/config/windkeep-continuity";
 
@@ -16,11 +17,10 @@ export const metadata: Metadata = {
 
 export default function WindkeepPage() {
   return (
-    <main className="min-h-full bg-[#f4f8f9] text-foreground">
+    <main className="min-h-full bg-[#f6fbfc] text-foreground">
       <div className="relative isolate overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(238,247,251,0.96),rgba(251,252,249,0.94)_46%,rgba(241,247,246,0.98))]" />
-        <div className="pointer-events-none absolute left-[-18%] top-[-12%] h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(205,230,239,0.34),transparent_62%)] blur-3xl" />
-        <div className="pointer-events-none absolute right-[-12%] top-[18rem] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(218,236,229,0.28),transparent_64%)] blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#f2fbff_0%,#ffffff_42%,#f5faf7_100%)]" />
+        <div className="pointer-events-none absolute left-[-12%] top-[-8%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(207,232,242,0.2),transparent_64%)]" />
 
         <div className="relative mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 lg:px-10">
           <section className="grid min-h-[70svh] gap-10 py-8 lg:grid-cols-[0.46fr_0.54fr] lg:items-center">
@@ -36,10 +36,11 @@ export default function WindkeepPage() {
                   </p>
                 ))}
               </div>
+              <p className="mt-6 max-w-md text-xs leading-6 text-text-muted">{lilaHumanPresence.windkeepNote}</p>
               <div className="mt-9 flex flex-wrap gap-3">
                 <Link
                   href="#paths"
-                  className="rounded-[0.28rem] border border-foreground/16 bg-white/44 px-4 py-2.5 text-sm text-foreground/82 transition hover:bg-white/64"
+                  className="rounded-[0.28rem] border border-foreground/16 bg-white/78 px-4 py-2.5 text-sm text-foreground/82 transition hover:bg-white"
                 >
                   Choose a path
                 </Link>
@@ -48,17 +49,17 @@ export default function WindkeepPage() {
                 </Link>
               </div>
             </div>
-            <div className="relative min-h-[28rem] overflow-hidden rounded-[1.1rem] border border-white/76 bg-white/38 shadow-[0_24px_70px_rgba(29,42,56,0.055)]">
+            <div className="relative min-h-[28rem] overflow-hidden rounded-[1.1rem] border border-[#c7d7df]/48 bg-white/70 shadow-[0_24px_70px_rgba(38,61,78,0.07)]">
               <Image
                 src="/homepage-hero/windkeep-lantern-sea.png"
                 alt=""
                 fill
                 priority
-                className="object-cover opacity-[0.82]"
+                className="object-cover opacity-[0.94]"
                 sizes="(max-width: 1024px) 92vw, 44rem"
               />
-              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.42),rgba(255,255,255,0.08)),linear-gradient(180deg,rgba(238,247,251,0.18),rgba(255,255,255,0.46))]" />
-              <div className="absolute bottom-5 left-5 right-5 rounded-lg border border-white/70 bg-white/46 p-4 backdrop-blur-sm">
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.2),rgba(255,255,255,0.02)),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(246,251,251,0.18))]" />
+              <div className="absolute bottom-5 left-5 right-5 rounded-lg border border-white/70 bg-white/72 p-4 shadow-[0_10px_28px_rgba(38,61,78,0.07)]">
                 <p className="text-xs leading-6 text-text-secondary">
                   A place for continuation, passing, emotional traces, object memory, and quiet receiving.
                 </p>
@@ -66,7 +67,7 @@ export default function WindkeepPage() {
             </div>
           </section>
 
-          <section id="paths" className="scroll-mt-24 border-t border-white/70 py-10">
+          <section id="paths" className="scroll-mt-24 border-t border-[#d7e5ea]/72 py-10">
             <div className="mb-6">
               <h2 className="font-[var(--font-display-serif)] text-3xl font-normal text-foreground">Choose a Continuation Path</h2>
               <p className="mt-3 max-w-2xl text-sm leading-8 text-text-secondary">
@@ -76,45 +77,45 @@ export default function WindkeepPage() {
             <div className="grid gap-5 lg:grid-cols-2">
               <Link
                 href="#objects"
-                className="quiet-air-touch browser-air-presence relative min-h-[18rem] overflow-hidden rounded-lg border border-white/76 bg-white/50 p-6 shadow-[0_18px_48px_rgba(29,42,56,0.04)]"
+                className="quiet-air-touch browser-air-presence clear-air-card relative min-h-[18rem] overflow-hidden rounded-lg border p-6"
               >
-                <Image src="/home-hero/desktop-03.png" alt="" fill className="object-cover opacity-[0.44]" sizes="(max-width: 1024px) 92vw, 34rem" />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.78),rgba(255,255,255,0.2))]" />
+                <Image src="/home-hero/desktop-03.png" alt="" fill className="object-cover opacity-[0.74]" sizes="(max-width: 1024px) 92vw, 34rem" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.48),rgba(255,255,255,0.03))]" />
                 <div className="relative z-[1] max-w-md">
                   <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Passing Things</p>
-                  <h3 className="mt-4 text-2xl leading-tight text-foreground">{"\u7269\u4e0e\u65f6\u9047"}</h3>
+                  <h3 className="mt-4 text-2xl leading-tight text-foreground">Objects meeting time</h3>
                   <p className="mt-5 text-sm leading-8 text-text-secondary">
                     Objects exchanged through stories and continuation.
                   </p>
-                  <span className="mt-8 inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/12 bg-white/64 text-foreground/72">
-                    {"\u2192"}
+                  <span className="mt-8 inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/12 bg-white/76 text-foreground/72">
+                    -&gt;
                   </span>
                 </div>
               </Link>
               <Link
                 href="/quiet-receiving"
-                className="quiet-air-touch browser-air-presence relative min-h-[18rem] overflow-hidden rounded-lg border border-white/76 bg-white/50 p-6 shadow-[0_18px_48px_rgba(29,42,56,0.04)]"
+                className="quiet-air-touch browser-air-presence clear-air-card relative min-h-[18rem] overflow-hidden rounded-lg border p-6"
               >
-                <Image src="/objects-living/23.jpg" alt="" fill className="object-cover opacity-[0.42]" sizes="(max-width: 1024px) 92vw, 34rem" />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.78),rgba(255,255,255,0.18))]" />
+                <Image src="/objects-living/23.jpg" alt="" fill className="object-cover opacity-[0.72]" sizes="(max-width: 1024px) 92vw, 34rem" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.5),rgba(255,255,255,0.03))]" />
                 <div className="relative z-[1] max-w-md">
                   <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Quiet Receiving</p>
-                  <h3 className="mt-4 text-2xl leading-tight text-foreground">{"\u7b11\u7eb3"}</h3>
+                  <h3 className="mt-4 text-2xl leading-tight text-foreground">A quiet yes</h3>
                   <p className="mt-5 text-sm leading-8 text-text-secondary">
                     Objects quietly waiting for their next keeper.
                   </p>
-                  <span className="mt-8 inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/12 bg-white/64 text-foreground/72">
-                    {"\u2192"}
+                  <span className="mt-8 inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/12 bg-white/76 text-foreground/72">
+                    -&gt;
                   </span>
                 </div>
               </Link>
             </div>
           </section>
 
-          <section id="objects" className="scroll-mt-24 border-t border-white/70 py-10">
+          <section id="objects" className="scroll-mt-24 border-t border-[#d7e5ea]/72 py-10">
             <div className="mb-7 grid gap-5 lg:grid-cols-[0.38fr_0.62fr] lg:items-end">
               <div>
-                <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Object Browsing Layer</p>
+                <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Object Browsing</p>
                 <h2 className="mt-3 font-[var(--font-display-serif)] text-3xl font-normal text-foreground">
                   Passing objects
                 </h2>
@@ -127,13 +128,13 @@ export default function WindkeepPage() {
               {windkeepObjects.map(({ object, memory }, index) => (
                 <article
                   key={object.id}
-                  className={`browser-air-presence overflow-hidden rounded-lg border border-white/76 bg-white/54 shadow-[0_18px_48px_rgba(29,42,56,0.035)] ${
+                  className={`browser-air-presence overflow-hidden rounded-lg border border-[#c7d7df]/46 bg-white/76 shadow-[0_18px_48px_rgba(38,61,78,0.055)] ${
                     index % 2 === 1 ? "lg:translate-y-7" : ""
                   }`}
                 >
-                  <div className="relative aspect-[4/3] bg-white/60">
-                    <Image src={object.media.placement} alt={object.media.alt} fill className="object-cover opacity-[0.82]" sizes="(max-width: 768px) 92vw, 32rem" />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(244,249,249,0.34))]" />
+                  <div className="relative aspect-[4/3] bg-white/80">
+                    <Image src={object.media.placement} alt={object.media.alt} fill className="object-cover opacity-[0.94]" sizes="(max-width: 768px) 92vw, 32rem" />
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.01),rgba(244,249,249,0.16))]" />
                   </div>
                   <div className="p-5 sm:p-6">
                     <p className="text-xs text-text-muted">{memory.passingTime} / {memory.cities.join(" / ")}</p>
@@ -141,17 +142,17 @@ export default function WindkeepPage() {
                     <p className="mt-4 text-sm leading-8 text-text-secondary">{memory.shortStory}</p>
 
                     <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-lg bg-white/46 p-4">
+                      <div className="rounded-lg bg-[#f7fbfb] p-4">
                         <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Previous keeper</p>
                         <p className="mt-2 text-sm leading-6 text-foreground/78">{memory.previousKeeper}</p>
                       </div>
-                      <div className="rounded-lg bg-white/46 p-4">
+                      <div className="rounded-lg bg-[#f7fbfb] p-4">
                         <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Years</p>
                         <p className="mt-2 text-sm leading-6 text-foreground/78">{memory.years.join(" / ")}</p>
                       </div>
                     </div>
 
-                    <div className="mt-5 rounded-lg border border-white/70 bg-[#f8fbfb]/62 p-4">
+                    <div className="mt-5 rounded-lg border border-[#d7e5ea]/64 bg-white/78 p-4">
                       <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Drift Notes</p>
                       <ul className="mt-3 space-y-2">
                         {memory.continuityNotes.map((note) => (
@@ -164,7 +165,7 @@ export default function WindkeepPage() {
 
                     <div className="mt-5 flex flex-wrap gap-2">
                       {memory.traces.map((trace) => (
-                        <span key={trace} className="rounded-full border border-white/70 bg-white/52 px-3 py-1.5 text-xs text-text-muted">
+                        <span key={trace} className="rounded-full border border-[#d7e5ea]/70 bg-white/72 px-3 py-1.5 text-xs text-text-muted">
                           {trace}
                         </span>
                       ))}
@@ -174,7 +175,7 @@ export default function WindkeepPage() {
                       <Link href={`/objects/${object.id}`} className="text-sm text-foreground underline-offset-4 hover:underline">
                         Object memory
                       </Link>
-                      <Link href={`/inquiry?object=${object.id}`} className="rounded-[0.28rem] border border-foreground/14 bg-white/48 px-4 py-2 text-sm text-foreground/82 hover:bg-white/68">
+                      <Link href={`/inquiry?object=${object.id}`} className="rounded-[0.28rem] border border-foreground/14 bg-white/78 px-4 py-2 text-sm text-foreground/82 hover:bg-white">
                         Request Continuation
                       </Link>
                     </div>
@@ -184,7 +185,7 @@ export default function WindkeepPage() {
             </div>
           </section>
 
-          <section className="border-t border-white/70 py-10">
+          <section className="border-t border-[#d7e5ea]/72 py-10">
             <div className="grid gap-5 lg:grid-cols-[0.42fr_0.58fr]">
               <div>
                 <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Quiet Pairing</p>
@@ -194,7 +195,7 @@ export default function WindkeepPage() {
               </div>
               <div className="grid gap-3">
                 {windkeepObjects.slice(0, 4).map(({ object, memory }) => (
-                  <Link key={object.id} href={`/inquiry?object=${object.id}`} className="quiet-air-touch rounded-lg border border-white/70 bg-white/46 p-5">
+                  <Link key={object.id} href={`/inquiry?object=${object.id}`} className="quiet-air-touch rounded-lg border border-[#d7e5ea]/66 bg-white/72 p-5">
                     <p className="text-sm text-foreground">{object.title}</p>
                     <p className="mt-2 text-xs leading-6 text-text-secondary">{memory.quietPairing}</p>
                   </Link>
@@ -203,7 +204,7 @@ export default function WindkeepPage() {
             </div>
           </section>
 
-          <section className="border-t border-white/70 py-10">
+          <section className="border-t border-[#d7e5ea]/72 py-10">
             <div className="max-w-2xl">
               <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Continuation Request</p>
               <h2 className="mt-3 font-[var(--font-display-serif)] text-3xl font-normal text-foreground">
@@ -212,7 +213,7 @@ export default function WindkeepPage() {
               <p className="mt-4 text-sm leading-8 text-text-secondary">
                 A continuation request is a quiet note: why this object matters, where it may continue, and what feeling makes it belong near you.
               </p>
-              <Link href="/inquiry" className="mt-6 inline-flex rounded-[0.28rem] border border-foreground/14 bg-white/50 px-4 py-2.5 text-sm text-foreground/82 hover:bg-white/70">
+              <Link href="/inquiry" className="mt-6 inline-flex rounded-[0.28rem] border border-foreground/14 bg-white/78 px-4 py-2.5 text-sm text-foreground/82 hover:bg-white">
                 Write a continuation note
               </Link>
             </div>

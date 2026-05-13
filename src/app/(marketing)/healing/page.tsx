@@ -28,16 +28,16 @@ export default function HealingIndexPage() {
               A quiet browser world with seven halls.
             </h1>
             <p className="mt-5 max-w-2xl text-sm leading-8 text-text-secondary">
-              Forty-five light modules are held as browsable shells first: clear entrances, soft pacing, mobile-friendly
-              cards, future AI hooks, save and share surfaces, and no heavy app behavior.
+              Forty-five quiet rooms are held as browsable places first: clear entrances, soft pacing, mobile-friendly
+              cards, save and share surfaces, and no heavy app behavior.
             </p>
           </div>
           <div className="rounded-[0.9rem_1.1rem_1rem_0.96rem] border border-border-subtle bg-white/52 p-5">
             <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Current scope</p>
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
               <p className="text-sm leading-7 text-text-secondary">7 halls</p>
-              <p className="text-sm leading-7 text-text-secondary">{healingModules.length} module shells</p>
-              <p className="text-sm leading-7 text-text-secondary">Light runtime hooks</p>
+              <p className="text-sm leading-7 text-text-secondary">{healingModules.length} rooms</p>
+              <p className="text-sm leading-7 text-text-secondary">Soft page rhythm</p>
             </div>
           </div>
         </section>
@@ -47,7 +47,7 @@ export default function HealingIndexPage() {
             <Link key={hall.id} href={hall.href} className="quiet-air-touch rounded-lg border border-border-subtle bg-white/50 p-4 transition hover:bg-white/70">
               <p className="text-xs uppercase tracking-[0.12em] text-text-muted">{hall.shortTitle}</p>
               <h2 className="mt-3 text-lg leading-tight text-foreground">{hall.title}</h2>
-              <p className="mt-3 text-xs leading-6 text-text-muted">{healingModulesForHall(hall.id).length} modules</p>
+              <p className="mt-3 text-xs leading-6 text-text-muted">{healingModulesForHall(hall.id).length} rooms</p>
             </Link>
           ))}
         </section>
@@ -84,7 +84,7 @@ export default function HealingIndexPage() {
           <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.12em] text-text-muted">All modules</p>
-              <h2 className="mt-3 text-3xl text-foreground">A browsable world skeleton.</h2>
+              <h2 className="mt-3 text-3xl text-foreground">A browsable quiet world.</h2>
             </div>
             <Link href="/search" className="text-sm text-text-muted underline-offset-4 hover:text-foreground hover:underline">
               Search the site
