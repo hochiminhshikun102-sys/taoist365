@@ -1,10 +1,10 @@
-import { AdminConsole } from "@/components/admin/AdminConsole";
-import { QuietAdminAccess } from "@/components/admin/QuietAdminAccess";
+import { AdminOSAccess } from "@/components/admin/AdminOSAccess";
+import { AdminOSConsole } from "@/components/admin/AdminOSConsole";
 
 export default function AdminPage() {
   return (
-    <QuietAdminAccess>
-      <AdminConsole />
-    </QuietAdminAccess>
+    <AdminOSAccess>
+      <AdminOSConsole />
+    </AdminOSAccess>
   );
 }
