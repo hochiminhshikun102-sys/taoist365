@@ -11,14 +11,16 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isWindkeepRoom = pathname === "/windkeep" || pathname === "/quiet-receiving";
+  const isObjectsMarketplace = pathname === "/objects";
+  const ownsPageChrome = isHome || isWindkeepRoom || isObjectsMarketplace;
 
   return (
     <>
-      {isHome || isWindkeepRoom ? null : <CalmNavigation />}
+      {ownsPageChrome ? null : <CalmNavigation />}
       <div className="lived-room-frame runtime-room-shell">{children}</div>
       <QuietAiConcierge />
-      {isHome || isWindkeepRoom ? null : <PassiveReturnResidue />}
-      {isHome || isWindkeepRoom ? null : <SiteColophon />}
+      {ownsPageChrome ? null : <PassiveReturnResidue />}
+      {ownsPageChrome ? null : <SiteColophon />}
     </>
   );
 }
