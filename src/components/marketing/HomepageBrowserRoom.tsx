@@ -191,9 +191,9 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch browser-air-presence clear-air-card relative block aspect-[0.59/1] min-h-0 overflow-hidden rounded-lg border p-0"
+                  className="quiet-air-touch relative block aspect-[390/700] min-h-0 overflow-hidden rounded-[1.15rem] bg-transparent p-0"
                 >
-                  <Image src={entry.image} alt="" fill className="object-fill opacity-[0.98]" sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw" />
+                  <Image src={entry.image} alt="" fill className="object-cover opacity-[0.99]" sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw" />
                   <span className="sr-only">{entry.title}</span>
                   <span className="sr-only">{entry.body}</span>
                 </Link>
