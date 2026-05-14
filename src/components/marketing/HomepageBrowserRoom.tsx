@@ -61,42 +61,42 @@ const mainEntries = [
     title: "Healing",
     body: "Quiet rooms for body, mind, and spirit.",
     href: "/healing",
-    image: "/objects-living/crystal-window-plant.jpg",
+    image: "/brand/production/homepage/healing-world-layer/healing.jpg",
     mark: "leaf",
   },
   {
     title: "Windkeep",
     body: "A world of objects in passage.",
     href: "/windkeep",
-    image: "/homepage-hero/windkeep-lantern-sea.png",
+    image: "/brand/production/homepage/healing-world-layer/windkeep.jpg",
     mark: "air",
   },
   {
     title: "Driftbox",
     body: "Quiet correspondence and reflection.",
     href: "/inquiry",
-    image: "/objects-living/tea-gift-box.jpg",
+    image: "/brand/production/homepage/healing-world-layer/driftbox.jpg",
     mark: "mail",
   },
   {
     title: "Live",
     body: "Ambient rooms for gentle presence.",
     href: "/live",
-    image: "/objects-living/incense-box.jpg",
+    image: "/brand/production/homepage/healing-world-layer/live.jpg",
     mark: "live",
   },
   {
     title: "Objects",
     body: "Thoughtful things for slow living.",
     href: "/objects",
-    image: commerceObjects[0]?.media.placement ?? "/objects-living/incense-box.jpg",
+    image: "/brand/production/homepage/healing-world-layer/objects.jpg",
     mark: "obj",
   },
   {
     title: "Journal",
     body: "Notes, traces, and small returns.",
     href: "/healing/stories",
-    image: "/objects-living/tea-gift-box.jpg",
+    image: "/brand/production/homepage/healing-world-layer/journal.jpg",
     mark: "note",
   },
 ] as const;
@@ -226,27 +226,27 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto grid max-w-[86rem] gap-4 py-8 sm:grid-cols-2 lg:grid-cols-6">
+          <section className="mx-auto grid max-w-[86rem] grid-cols-2 gap-3 py-7 sm:gap-4 lg:grid-cols-6 lg:py-8">
             {mainEntries.map((entry, index) => (
               <Link
                 key={entry.title}
                 href={entry.href}
-                className={`quiet-air-touch browser-air-presence clear-air-card grid min-h-[18rem] overflow-hidden rounded-lg border p-0 ${
+                className={`quiet-air-touch browser-air-presence clear-air-card grid min-h-0 overflow-hidden rounded-lg border p-0 lg:min-h-[18rem] ${
                   index === 0 || index === 2 ? "lg:-translate-y-2" : index === 4 ? "lg:translate-y-3" : ""
                 }`}
               >
-                <div className="grounded-card-image relative aspect-[1.48/1] overflow-hidden">
-                  <Image src={entry.image} alt="" fill className="object-cover opacity-[0.9]" sizes="(max-width: 768px) 92vw, 16vw" />
+                <div className="grounded-card-image relative aspect-[1.2/1] overflow-hidden lg:aspect-[1.04/1]">
+                  <Image src={entry.image} alt="" fill className="object-cover opacity-[0.94]" sizes="(max-width: 768px) 46vw, 16vw" />
                 </div>
-                <div className="relative z-[1] flex min-h-[10rem] flex-col p-5">
+                <div className="relative z-[1] flex min-h-[7.4rem] flex-col p-3.5 sm:p-4 lg:min-h-[10rem] lg:p-5">
                   <div className="flex items-center justify-between gap-3">
                     <SoftMark name={entry.mark} />
                     <ArrowLink />
                   </div>
-                  <h2 className="mt-5 font-[var(--font-display-serif)] text-2xl font-semibold leading-tight text-foreground">
+                  <h2 className="mt-3 font-[var(--font-display-serif)] text-xl font-semibold leading-tight text-foreground lg:mt-5 lg:text-2xl">
                     {entry.title}
                   </h2>
-                  <p className="grounded-card-copy mt-3 text-sm leading-6">{entry.body}</p>
+                  <p className="grounded-card-copy mt-2 line-clamp-2 text-xs leading-5 lg:mt-3 lg:text-sm lg:leading-6">{entry.body}</p>
                 </div>
               </Link>
             ))}
