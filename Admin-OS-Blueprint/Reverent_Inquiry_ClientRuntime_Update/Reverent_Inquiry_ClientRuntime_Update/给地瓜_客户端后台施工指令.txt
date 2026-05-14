@@ -1,0 +1,152 @@
+
+地瓜：
+
+新增：
+
+客户端后台
+（用户个人中心 Runtime）
+
+立即并入：
+
+Reverent Inquiry 总系统。
+
+————————————————
+
+【核心定位】
+
+客户端：
+
+不是普通会员中心。
+
+而是：
+
+Human Runtime Layer
+（人类运行层）
+
+禁止：
+
+- SaaS 面板感
+- 社区 feed
+- 高频骚扰
+- 游戏化
+- 强运营感
+- 冰冷 dashboard
+
+必须保持：
+
+- Browser Air
+- Quiet Living
+- Gentle Commerce
+- Emotional Presence
+
+————————————————
+
+【客户端一级菜单】
+
+固定：
+
+1.
+Dashboard
+
+2.
+My Objects
+
+3.
+My Orders
+
+4.
+Membership
+
+5.
+Driftbox
+
+6.
+My AI
+
+7.
+Settings
+
+————————————————
+
+【核心规则】
+
+1.
+PC + Mobile 必须统一气候。
+
+2.
+移动端：
+
+只保留高频刚需。
+
+3.
+分享得积分：
+
+初期：
+只预留入口。
+
+禁止：
+立即激活裂变机制。
+
+4.
+风控：
+
+客户端：
+
+只允许：
+- 验证
+- 状态
+- 通知
+
+禁止：
+- 审核
+- 风控管理
+- 风控列表
+- 处罚
+
+5.
+Dashboard：
+
+不是运营后台。
+
+而是：
+
+Emotional Overview。
+
+6.
+My AI：
+
+未来预留：
+AI Runtime Layer。
+
+7.
+整个客户端：
+
+必须：
+
+长期挂着不烦人。
+
+不能做成：
+高刺激互联网产品。
+
+————————————————
+
+【开发顺序】
+
+Phase 1
+客户端基础 Runtime
+
+Phase 2
+分享积分预留
+
+Phase 3
+AI Runtime 扩展
+
+Phase 4
+风控联动
+
+Phase 5
+物流/会员/AI 全闭环
+
+严格按压缩包施工。
+
+禁止跑偏。
