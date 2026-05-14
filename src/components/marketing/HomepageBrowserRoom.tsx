@@ -20,28 +20,28 @@ const waysToBegin = [
     title: "Daily Guidance",
     body: "A gentle note to start your day.",
     href: "/rituals/daily-guidance",
-    image: "/objects-living/crystal-window-plant.jpg",
+    image: "/brand/production/homepage/ways-to-begin/daily-guidance-tao-doll.png",
     mark: "sun",
   },
   {
-    title: "Room Balance",
+    title: "Feng Shui Space",
     body: "Let a room feel easier to stay in.",
     href: "/rituals/home-harmony",
-    image: "/homepage-hero/windkeep-lantern-sea.png",
+    image: "/brand/production/homepage/ways-to-begin/feng-shui-wind-chime.png",
     mark: "air",
   },
   {
     title: "Fortune Draw",
     body: "Listen to a small message without pressure.",
     href: "/rituals/draw-a-lot",
-    image: "/objects-living/incense-box.jpg",
+    image: "/brand/production/homepage/ways-to-begin/fortune-draw-lotus-incense.png",
     mark: "lot",
   },
   {
     title: "Driftbox",
     body: "Send a question into quiet correspondence.",
     href: "/inquiry",
-    image: "/objects-living/tea-gift-box.jpg",
+    image: "/brand/production/homepage/ways-to-begin/driftbox-letter-leaf.png",
     mark: "mail",
   },
 ] as const;
@@ -144,7 +144,7 @@ function SoftMark({ name }: { name: string }) {
   return (
     <span
       aria-hidden
-      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#b7c9d2]/55 bg-white/60 text-[0.5rem] uppercase tracking-[0.08em] text-foreground/58 shadow-[0_4px_12px_rgba(38,61,78,0.035)] sm:h-9 sm:w-9 sm:text-[0.56rem]"
+      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#b7c9d2]/50 bg-white/48 text-[0.43rem] uppercase tracking-[0.04em] text-foreground/52 shadow-[0_3px_8px_rgba(38,61,78,0.026)] sm:h-9 sm:w-9 sm:text-[0.56rem]"
     >
       {name}
     </span>
@@ -155,7 +155,7 @@ function ArrowLink() {
   return (
     <span
       aria-hidden
-      className="mt-auto flex h-6 w-6 items-center justify-center rounded-full border border-foreground/12 bg-white/54 text-[0.62rem] text-foreground/58 sm:h-7 sm:w-7"
+      className="mt-auto flex h-5 w-5 items-center justify-center rounded-full border border-foreground/10 bg-white/42 text-[0.52rem] text-foreground/48 sm:h-7 sm:w-7"
     >
       -&gt;
     </span>
@@ -186,26 +186,26 @@ export function HomepageBrowserRoom() {
                 /
               </span>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {waysToBegin.map((entry) => (
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch browser-air-presence clear-air-card grid min-h-[15rem] overflow-hidden rounded-lg border p-0"
+                  className="quiet-air-touch browser-air-presence clear-air-card grid min-h-[10.25rem] overflow-hidden rounded-lg border p-0 sm:min-h-[15rem]"
                 >
-                  <div className="grounded-card-image relative aspect-[1.68/1] overflow-hidden">
-                    <Image src={entry.image} alt="" fill className="object-cover opacity-[0.9]" sizes="(max-width: 768px) 92vw, 22vw" />
+                  <div className="grounded-card-image relative aspect-[1.2/1] overflow-hidden sm:aspect-[1.68/1]">
+                    <Image src={entry.image} alt="" fill className="object-cover opacity-[0.92]" sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw" />
                     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]" />
                   </div>
-                  <div className="relative z-[1] flex min-h-[9rem] flex-col p-4 sm:p-5">
+                  <div className="relative z-[1] flex min-h-[5.25rem] flex-col p-3 sm:min-h-[9rem] sm:p-5">
                     <div className="flex items-center justify-between gap-3">
                       <SoftMark name={entry.mark} />
                       <ArrowLink />
                     </div>
-                    <h3 className="mt-4 font-[var(--font-display-serif)] text-[1.42rem] font-semibold leading-tight text-foreground sm:text-2xl">
+                    <h3 className="mt-2 line-clamp-1 font-[var(--font-display-serif)] text-[1.05rem] font-semibold leading-tight text-foreground sm:mt-4 sm:text-2xl">
                       {entry.title}
                     </h3>
-                    <p className="grounded-card-copy mt-3 text-sm leading-6">{entry.body}</p>
+                    <p className="grounded-card-copy mt-1.5 line-clamp-2 text-[0.72rem] leading-4 sm:mt-3 sm:text-sm sm:leading-6">{entry.body}</p>
                   </div>
                 </Link>
               ))}
