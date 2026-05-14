@@ -191,10 +191,10 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch browser-air-presence clear-air-card grid min-h-[10.25rem] overflow-hidden rounded-lg border p-0 sm:min-h-[15rem]"
+                  className="quiet-air-touch browser-air-presence clear-air-card grid min-h-[11.75rem] overflow-hidden rounded-lg border p-0 sm:min-h-[15rem]"
                 >
-                  <div className="grounded-card-image relative aspect-[1.2/1] overflow-hidden sm:aspect-[1.68/1]">
-                    <Image src={entry.image} alt="" fill className="object-cover opacity-[0.92]" sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw" />
+                  <div className="grounded-card-image relative aspect-[1.05/1] overflow-hidden sm:aspect-[1.45/1] lg:aspect-[1.32/1]">
+                    <Image src={entry.image} alt="" fill className="object-contain p-2 opacity-[0.96]" sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw" />
                     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]" />
                   </div>
                   <div className="relative z-[1] flex min-h-[5.25rem] flex-col p-3 sm:min-h-[9rem] sm:p-5">
