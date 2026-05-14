@@ -11,35 +11,42 @@ import {
 } from "@/config/quiet-placement";
 import { siteConfig } from "@/config/site";
 import { useWorldRuntime } from "@/lib/use-world-runtime";
-import { resolveDriftboxRuntimeForDayKey } from "@/runtime/driftbox-runtime";
 
 const waysToBegin = [
   {
     title: "Daily Guidance",
     body: "A gentle note to start your day.",
     href: "/rituals/daily-guidance",
-    image: "/brand/production/homepage/ways-to-begin/clean/daily-guidance.jpg",
+    image: "/brand/production/homepage/ways-to-begin/daily-guidance-tao-doll.png",
+    width: 390,
+    height: 700,
     mark: "sun",
   },
   {
     title: "Feng Shui Space",
     body: "Let a room feel easier to stay in.",
     href: "/rituals/home-harmony",
-    image: "/brand/production/homepage/ways-to-begin/clean/feng-shui-space.jpg",
+    image: "/brand/production/homepage/ways-to-begin/feng-shui-wind-chime.png",
+    width: 410,
+    height: 700,
     mark: "air",
   },
   {
     title: "Fortune Draw",
     body: "Listen to a small message without pressure.",
     href: "/rituals/draw-a-lot",
-    image: "/brand/production/homepage/ways-to-begin/clean/fortune-draw.jpg",
+    image: "/brand/production/homepage/ways-to-begin/fortune-draw-lotus-incense.png",
+    width: 410,
+    height: 700,
     mark: "lot",
   },
   {
     title: "Driftbox",
     body: "Send a question into quiet correspondence.",
     href: "/inquiry",
-    image: "/brand/production/homepage/ways-to-begin/clean/driftbox.jpg",
+    image: "/brand/production/homepage/ways-to-begin/driftbox-letter-leaf.png",
+    width: 430,
+    height: 700,
     mark: "mail",
   },
 ] as const;
@@ -104,37 +111,43 @@ const momentsOfPresence = [
     title: "Breath of Wind",
     subtitle: "wind and breath",
     href: "/live",
-    image: "/brand/production/homepage/windkeep-section/passing-things-wide.jpg",
+    pcImage: "/brand/production/homepage/moments-of-presence/final-v1/pc/card-01-shine-your-way.jpg",
+    mobileImage: "/brand/production/homepage/moments-of-presence/final-v1/mobile/mobile-card-01.jpg",
   },
   {
     title: "Five Elements Flow",
     subtitle: "light movement",
     href: "/healing/elements",
-    image: "/brand/production/homepage/healing-world-layer/healing.jpg",
+    pcImage: "/brand/production/homepage/moments-of-presence/final-v1/pc/card-02-small-joys.jpg",
+    mobileImage: "/brand/production/homepage/moments-of-presence/final-v1/mobile/mobile-card-02.jpg",
   },
   {
     title: "Tea in Silence",
     subtitle: "quiet tea",
     href: "/healing/meditation",
-    image: "/brand/production/homepage/windkeep-section/quiet-receiving.jpg",
+    pcImage: "/brand/production/homepage/moments-of-presence/final-v1/pc/card-03-keep-growing.jpg",
+    mobileImage: "/brand/production/homepage/moments-of-presence/final-v1/mobile/mobile-card-03.jpg",
   },
   {
     title: "Mountain Story",
     subtitle: "far water",
     href: "/healing/stories",
-    image: "/brand/production/homepage/healing-world-layer/windkeep.jpg",
+    pcImage: "/brand/production/homepage/moments-of-presence/final-v1/pc/card-04-dream-big.jpg",
+    mobileImage: "/brand/production/homepage/moments-of-presence/final-v1/mobile/mobile-card-04.jpg",
   },
   {
     title: "Write Freely",
     subtitle: "soft paper",
     href: "/healing/creation",
-    image: "/brand/production/homepage/healing-world-layer/driftbox.jpg",
+    pcImage: "/brand/production/homepage/moments-of-presence/final-v1/pc/card-05-good-food-good-life.jpg",
+    mobileImage: "/brand/production/homepage/moments-of-presence/final-v1/mobile/mobile-card-05.jpg",
   },
   {
     title: "Night Whisper",
     subtitle: "soft light",
     href: "/live",
-    image: "/brand/production/homepage/healing-world-layer/live.jpg",
+    pcImage: "/brand/production/homepage/moments-of-presence/final-v1/pc/card-06-better-together.jpg",
+    mobileImage: "/brand/production/homepage/moments-of-presence/final-v1/mobile/mobile-card-06.jpg",
   },
 ] as const;
 
@@ -161,8 +174,7 @@ function ArrowLink() {
 }
 
 export function HomepageBrowserRoom() {
-  const { structuralSilence, worldAiNativeInfrastructure } = useWorldRuntime();
-  const driftbox = resolveDriftboxRuntimeForDayKey(structuralSilence.dayKey);
+  const { worldAiNativeInfrastructure } = useWorldRuntime();
   const st = worldAiNativeInfrastructure.invisibleInfrastructureStructuralThinning;
   const roomThin = st.combinedProseBias > 0.66 || st.dailyForceCloseEchoes;
   const windkeepObjects = homepageObjectSlots.secondaryShelf.slice(0, 3);
@@ -189,27 +201,16 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch browser-air-presence clear-air-card min-h-0 overflow-hidden rounded-lg border bg-white/84 p-0"
+                  className="quiet-air-touch block overflow-hidden rounded-[1.15rem]"
                 >
-                  <div className="relative aspect-square overflow-hidden bg-[#f0f2f5]">
-                    <Image
-                      src={entry.image}
-                      alt=""
-                      fill
-                      className="object-cover opacity-[0.95]"
-                      sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw"
-                    />
-                  </div>
-                  <div className="flex min-h-[7rem] flex-col p-3.5 sm:p-4 lg:min-h-[8rem]">
-                    <div className="flex items-center justify-between gap-2">
-                      <SoftMark name={entry.mark} />
-                      <ArrowLink />
-                    </div>
-                    <h3 className="mt-3 font-[var(--font-display-serif)] text-lg font-semibold leading-tight text-foreground lg:text-xl">
-                      {entry.title}
-                    </h3>
-                    <p className="grounded-card-copy mt-2 line-clamp-2 text-xs leading-5">{entry.body}</p>
-                  </div>
+                  <Image
+                    src={entry.image}
+                    alt={entry.title}
+                    width={entry.width}
+                    height={entry.height}
+                    className="h-auto w-full"
+                    sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw"
+                  />
                 </Link>
               ))}
             </div>
@@ -240,119 +241,116 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto grid max-w-[86rem] grid-cols-2 gap-3 py-7 sm:gap-4 lg:grid-cols-6 lg:py-8">
-            {mainEntries.map((entry, index) => (
-              <Link
-                key={entry.title}
-                href={entry.href}
-                className={`quiet-air-touch browser-air-presence clear-air-card grid min-h-0 overflow-hidden rounded-lg border p-0 lg:min-h-[18rem] ${
-                  index === 0 || index === 2 ? "lg:-translate-y-2" : index === 4 ? "lg:translate-y-3" : ""
-                }`}
-              >
-                <div className="grounded-card-image relative aspect-[1.2/1] overflow-hidden lg:aspect-[1.04/1]">
-                  <Image src={entry.image} alt="" fill className="object-cover opacity-[0.94]" sizes="(max-width: 768px) 46vw, 16vw" />
-                </div>
-                <div className="relative z-[1] flex min-h-[7.4rem] flex-col p-3.5 sm:p-4 lg:min-h-[10rem] lg:p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <SoftMark name={entry.mark} />
-                    <ArrowLink />
-                  </div>
-                  <h2 className="mt-3 font-[var(--font-display-serif)] text-xl font-semibold leading-tight text-foreground lg:mt-5 lg:text-2xl">
-                    {entry.title}
-                  </h2>
-                  <p className="grounded-card-copy mt-2 line-clamp-2 text-xs leading-5 lg:mt-3 lg:text-sm lg:leading-6">{entry.body}</p>
-                </div>
-              </Link>
-            ))}
+          <section className="mx-auto max-w-[86rem] py-7 lg:py-8">
+            <div className="relative hidden overflow-hidden rounded-lg lg:block">
+              <Image
+                src="/brand/production/homepage/healing-world-layer/fixed-v3/pc/healing-world-layer-pc-final.jpg"
+                alt="Healing, Windkeep, Driftbox, Live, Objects, and Journal"
+                width={1686}
+                height={933}
+                className="h-auto w-full"
+                sizes="86rem"
+              />
+              {mainEntries.map((entry, index) => (
+                <Link
+                  key={entry.title}
+                  href={entry.href}
+                  aria-label={entry.title}
+                  className="absolute top-0 h-full"
+                  style={{ left: `${(index / mainEntries.length) * 100}%`, width: `${100 / mainEntries.length}%` }}
+                />
+              ))}
+            </div>
+            <div className="relative overflow-hidden rounded-lg lg:hidden">
+              <Image
+                src="/brand/production/homepage/healing-world-layer/fixed-v3/mobile/healing-world-layer-mobile-grid.jpg"
+                alt="Healing, Windkeep, Driftbox, Live, Objects, and Journal"
+                width={750}
+                height={1334}
+                className="h-auto w-full"
+                sizes="92vw"
+              />
+              {mainEntries.map((entry, index) => {
+                const col = index % 2;
+                const row = Math.floor(index / 2);
+
+                return (
+                  <Link
+                    key={entry.title}
+                    href={entry.href}
+                    aria-label={entry.title}
+                    className="absolute"
+                    style={{ left: `${col * 50}%`, top: `${row * (100 / 3)}%`, width: "50%", height: `${100 / 3}%` }}
+                  />
+                );
+              })}
+            </div>
           </section>
 
-          <section className="mx-auto max-w-[70rem]">
-            <div className="grid gap-3 lg:grid-cols-[0.78fr_1fr_1fr]">
-              <div className="browser-air-presence clear-air-card rounded-lg border border-[#c7d7df]/42 bg-white/88 p-5 shadow-[0_14px_34px_rgba(38,61,78,0.04)] sm:p-6 lg:flex lg:min-h-[14.5rem] lg:flex-col">
-                <p className="text-xs uppercase tracking-[0.22em] text-text-muted">Windkeep</p>
-                <h2 className="mt-3 max-w-[17rem] font-[var(--font-display-serif)] text-xl leading-tight text-foreground sm:text-2xl">
-                  Objects continue through time.
-                </h2>
-                <p className="mt-3 max-w-[18rem] text-sm leading-6 text-text-secondary">
-                  Each object keeps its own journey, meeting the right person in quiet time.
-                </p>
-                <p className="mt-2 line-clamp-2 max-w-sm text-xs leading-5 text-text-muted">
-                  {driftbox.lowEvent.oceanicLine}
-                </p>
-                <Link
-                  href="/windkeep"
-                  className="mt-5 inline-flex w-fit items-center gap-3 rounded-[0.28rem] border border-foreground/18 bg-white/74 px-4 py-2 text-xs tracking-[0.08em] text-foreground/82 lg:mt-auto"
-                >
-                  Enter Windkeep <span aria-hidden>-&gt;</span>
-                </Link>
-              </div>
-              <Link
-                href="/windkeep#objects"
-                className="quiet-air-touch browser-air-presence clear-air-card overflow-hidden rounded-lg border border-[#c7d7df]/42 bg-white/82 p-0 shadow-[0_14px_34px_rgba(38,61,78,0.04)]"
-              >
-                <div className="relative aspect-[16/7] overflow-hidden bg-[#f0f2f5]">
-                  <Image
-                    src="/brand/production/homepage/windkeep-section/passing-things-16x7.jpg"
-                    alt=""
-                    fill
-                    className="object-cover opacity-[0.9]"
-                    sizes="(max-width: 1024px) 92vw, 29vw"
-                  />
-                </div>
-                <div className="p-4 sm:p-5">
-                  <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Passing Things</p>
-                  <h3 className="mt-3 text-xl leading-tight text-foreground">Objects meeting time</h3>
-                  <p className="mt-2 line-clamp-2 text-sm leading-6 text-text-secondary">
-                    Objects in passage, meeting the right person at the right time.
-                  </p>
-                  <ArrowLink />
-                </div>
-              </Link>
-              <Link
-                href="/quiet-receiving"
-                className="quiet-air-touch browser-air-presence clear-air-card overflow-hidden rounded-lg border border-[#c7d7df]/42 bg-white/82 p-0 shadow-[0_14px_34px_rgba(38,61,78,0.04)]"
-              >
-                <div className="relative aspect-[16/7] overflow-hidden bg-[#f0f2f5]">
-                  <Image
-                    src="/brand/production/homepage/windkeep-section/quiet-receiving-16x7.jpg"
-                    alt=""
-                    fill
-                    className="object-cover opacity-[0.9]"
-                    sizes="(max-width: 1024px) 92vw, 29vw"
-                  />
-                </div>
-                <div className="p-4 sm:p-5">
-                  <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Quiet Receiving</p>
-                  <h3 className="mt-3 text-xl leading-tight text-foreground">A quiet yes</h3>
-                  <p className="mt-2 line-clamp-2 text-sm leading-6 text-text-secondary">
-                    Objects waiting quietly to be received by the next keeper.
-                  </p>
-                  <ArrowLink />
-                </div>
-              </Link>
+          <section className="mx-auto max-w-[86rem]">
+            <div className="relative hidden overflow-hidden rounded-lg lg:block">
+              <Image
+                src="/brand/production/homepage/windkeep-section/fixed-v1/pc/windkeep-section-hero-pc.png"
+                alt="Windkeep objects meeting time"
+                width={1920}
+                height={720}
+                className="h-auto w-full"
+                sizes="86rem"
+              />
+              <Link href="/windkeep" aria-label="Enter Windkeep" className="absolute inset-y-0 left-0 w-[64%]" />
+              <Link href="/quiet-receiving" aria-label="Quiet Receiving" className="absolute inset-y-0 right-0 w-[36%]" />
+            </div>
+            <div className="relative overflow-hidden rounded-lg lg:hidden">
+              <Image
+                src="/brand/production/homepage/windkeep-section/fixed-v1/mobile/windkeep-section-mobile-card.png"
+                alt="Windkeep objects meeting time"
+                width={1170}
+                height={1600}
+                className="h-auto w-full"
+                sizes="92vw"
+              />
+              <Link href="/windkeep" aria-label="Enter Windkeep" className="absolute inset-0" />
             </div>
           </section>
 
           <section className="mx-auto max-w-[86rem] border-t border-border-subtle/60 py-8">
             <div className="mb-5 flex items-end justify-between gap-4">
-              <h2 className="font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
-                Moments of Presence
-              </h2>
+              <div>
+                <p className="text-xs uppercase tracking-[0.12em] text-[#6f86a6]">Moments of Presence</p>
+                <h2 className="mt-2 font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
+                  Moments of Presence
+                </h2>
+                <p className="mt-2 text-sm text-[#6f86a6]">Real energy. Bright days. A world waiting.</p>
+              </div>
               <Link href="/live" className="text-sm text-foreground/62 hover:text-foreground">
                 View all -&gt;
               </Link>
             </div>
-            <div className="flex gap-3 overflow-x-auto pb-3 sm:gap-4">
+            <div className="hidden gap-6 overflow-x-auto pb-3 lg:flex">
               {momentsOfPresence.map((moment) => (
-                <Link key={moment.title} href={moment.href} className="quiet-air-touch min-w-[11.25rem] sm:min-w-[12.5rem]">
-                  <div className="browser-air-presence relative aspect-[1.82/1] overflow-hidden rounded-lg border border-[#c7d7df]/50 bg-white/82">
-                    <Image src={moment.image} alt="" fill className="object-cover opacity-[0.88]" sizes="13rem" />
-                    <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-white/80 bg-white/54 text-[0.56rem] uppercase tracking-[0.08em] text-foreground/70 shadow-[0_8px_20px_rgba(29,42,56,0.14)]">
-                      play
-                    </span>
-                  </div>
-                  <p className="mt-3 text-sm text-foreground">{moment.title}</p>
-                  <p className="mt-1 text-xs text-text-muted">{moment.subtitle}</p>
+                <Link key={moment.title} href={moment.href} className="quiet-air-touch block w-[180px] shrink-0 overflow-hidden rounded-[16px]">
+                  <Image
+                    src={moment.pcImage}
+                    alt={moment.title}
+                    width={180}
+                    height={375}
+                    className="h-auto w-full"
+                    sizes="180px"
+                  />
+                </Link>
+              ))}
+            </div>
+            <div className="grid grid-cols-2 gap-4 lg:hidden">
+              {momentsOfPresence.map((moment) => (
+                <Link key={moment.title} href={moment.href} className="quiet-air-touch block overflow-hidden rounded-xl">
+                  <Image
+                    src={moment.mobileImage}
+                    alt={moment.title}
+                    width={440}
+                    height={208}
+                    className="h-auto w-full"
+                    sizes="(max-width: 768px) 46vw, 220px"
+                  />
                 </Link>
               ))}
             </div>
