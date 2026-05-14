@@ -250,14 +250,14 @@ export function HomepageBrowserRoom() {
             ))}
           </section>
 
-          <section className="mx-auto max-w-[86rem] overflow-hidden rounded-lg border border-[#c7d7df]/42 bg-[#f0f2f5] shadow-[0_18px_46px_rgba(38,61,78,0.05)]">
-            <div className="grid gap-3 p-3 lg:grid-cols-[0.72fr_1fr_1fr] lg:gap-px lg:bg-[#d8e5ea]/38 lg:p-0">
-              <div className="rounded-md bg-white/88 p-5 sm:p-7 lg:rounded-none lg:p-8">
+          <section className="mx-auto max-w-[78rem] overflow-hidden rounded-lg border border-[#c7d7df]/42 bg-[#f0f2f5] shadow-[0_16px_38px_rgba(38,61,78,0.045)]">
+            <div className="grid gap-3 p-3 lg:grid-cols-[0.78fr_0.94fr_0.94fr] lg:gap-px lg:bg-[#d8e5ea]/38 lg:p-0">
+              <div className="rounded-md bg-white/88 p-5 sm:p-6 lg:flex lg:h-[18.5rem] lg:flex-col lg:rounded-none lg:p-6">
                 <p className="text-xs uppercase tracking-[0.22em] text-text-muted">Windkeep</p>
-                <h2 className="mt-3 font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
+                <h2 className="mt-3 max-w-[17rem] font-[var(--font-display-serif)] text-2xl leading-tight text-foreground">
                   Objects continue through time.
                 </h2>
-                <p className="mt-4 max-w-sm text-sm leading-7 text-text-secondary">
+                <p className="mt-4 max-w-[18rem] text-sm leading-6 text-text-secondary">
                   Each object keeps its own journey, meeting the right person in quiet time.
                 </p>
                 <p className="mt-3 max-w-sm text-xs leading-6 text-text-muted">
@@ -265,12 +265,12 @@ export function HomepageBrowserRoom() {
                 </p>
                 <Link
                   href="/windkeep"
-                  className="mt-5 inline-flex items-center gap-3 rounded-[0.28rem] border border-foreground/18 bg-white/74 px-4 py-2 text-xs tracking-[0.08em] text-foreground/82"
+                  className="mt-5 inline-flex w-fit items-center gap-3 rounded-[0.28rem] border border-foreground/18 bg-white/74 px-4 py-2 text-xs tracking-[0.08em] text-foreground/82 lg:mt-auto"
                 >
                   Enter Windkeep <span aria-hidden>-&gt;</span>
                 </Link>
               </div>
-              <Link href="/windkeep#objects" className="quiet-air-touch relative min-h-[13rem] overflow-hidden rounded-md bg-white/72 p-5 sm:min-h-[15rem] sm:p-7 lg:rounded-none lg:p-8">
+              <Link href="/windkeep#objects" className="quiet-air-touch relative min-h-[13rem] overflow-hidden rounded-md bg-white/72 p-5 sm:min-h-[15rem] sm:p-6 lg:h-[18.5rem] lg:rounded-none lg:p-6">
                 <Image
                   src="/brand/production/homepage/windkeep-section/passing-things.jpg"
                   alt=""
@@ -279,16 +279,16 @@ export function HomepageBrowserRoom() {
                   sizes="(max-width: 1024px) 92vw, 32vw"
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.66),rgba(255,255,255,0.18)_54%,rgba(255,255,255,0.02))]" />
-                <div className="relative z-[1] max-w-[16rem]">
+                <div className="relative z-[1] max-w-[15rem]">
                   <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Passing Things</p>
                   <h3 className="mt-3 text-xl leading-tight text-foreground">Objects meeting time</h3>
-                  <p className="mt-3 text-sm leading-6 text-text-secondary lg:leading-7">
+                  <p className="mt-3 text-sm leading-6 text-text-secondary">
                     Objects in passage, meeting the right person at the right time.
                   </p>
                   <ArrowLink />
                 </div>
               </Link>
-              <Link href="/quiet-receiving" className="quiet-air-touch relative min-h-[13rem] overflow-hidden rounded-md bg-white/72 p-5 sm:min-h-[15rem] sm:p-7 lg:rounded-none lg:p-8">
+              <Link href="/quiet-receiving" className="quiet-air-touch relative min-h-[13rem] overflow-hidden rounded-md bg-white/72 p-5 sm:min-h-[15rem] sm:p-6 lg:h-[18.5rem] lg:rounded-none lg:p-6">
                 <Image
                   src="/brand/production/homepage/windkeep-section/quiet-receiving.jpg"
                   alt=""
@@ -297,10 +297,10 @@ export function HomepageBrowserRoom() {
                   sizes="(max-width: 1024px) 92vw, 32vw"
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.7),rgba(255,255,255,0.24)_58%,rgba(255,255,255,0.04))]" />
-                <div className="relative z-[1] max-w-[16rem]">
+                <div className="relative z-[1] max-w-[15rem]">
                   <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Quiet Receiving</p>
                   <h3 className="mt-3 text-xl leading-tight text-foreground">A quiet yes</h3>
-                  <p className="mt-3 text-sm leading-6 text-text-secondary lg:leading-7">
+                  <p className="mt-3 text-sm leading-6 text-text-secondary">
                     Objects waiting quietly to be received by the next keeper.
                   </p>
                   <ArrowLink />
