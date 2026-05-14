@@ -18,28 +18,28 @@ const waysToBegin = [
     title: "Daily Guidance",
     body: "A gentle note to start your day.",
     href: "/rituals/daily-guidance",
-    image: "/brand/production/homepage/ways-to-begin/daily-guidance-tao-doll.png",
+    image: "/brand/production/homepage/ways-to-begin/clean/daily-guidance.jpg",
     mark: "sun",
   },
   {
     title: "Feng Shui Space",
     body: "Let a room feel easier to stay in.",
     href: "/rituals/home-harmony",
-    image: "/brand/production/homepage/ways-to-begin/feng-shui-wind-chime.png",
+    image: "/brand/production/homepage/ways-to-begin/clean/feng-shui-space.jpg",
     mark: "air",
   },
   {
     title: "Fortune Draw",
     body: "Listen to a small message without pressure.",
     href: "/rituals/draw-a-lot",
-    image: "/brand/production/homepage/ways-to-begin/fortune-draw-lotus-incense.png",
+    image: "/brand/production/homepage/ways-to-begin/clean/fortune-draw.jpg",
     mark: "lot",
   },
   {
     title: "Driftbox",
     body: "Send a question into quiet correspondence.",
     href: "/inquiry",
-    image: "/brand/production/homepage/ways-to-begin/driftbox-letter-leaf.png",
+    image: "/brand/production/homepage/ways-to-begin/clean/driftbox.jpg",
     mark: "mail",
   },
 ] as const;
@@ -104,37 +104,37 @@ const momentsOfPresence = [
     title: "Breath of Wind",
     subtitle: "wind and breath",
     href: "/live",
-    image: "/homepage-hero/windkeep-lantern-sea.png",
+    image: "/brand/production/homepage/windkeep-section/passing-things-wide.jpg",
   },
   {
     title: "Five Elements Flow",
     subtitle: "light movement",
     href: "/healing/elements",
-    image: "/objects-living/crystal-window-plant.jpg",
+    image: "/brand/production/homepage/healing-world-layer/healing.jpg",
   },
   {
     title: "Tea in Silence",
     subtitle: "quiet tea",
     href: "/healing/meditation",
-    image: "/objects-living/incense-box.jpg",
+    image: "/brand/production/homepage/windkeep-section/quiet-receiving.jpg",
   },
   {
     title: "Mountain Story",
     subtitle: "far water",
     href: "/healing/stories",
-    image: "/home-hero/desktop-03.png",
+    image: "/brand/production/homepage/healing-world-layer/windkeep.jpg",
   },
   {
     title: "Write Freely",
     subtitle: "soft paper",
     href: "/healing/creation",
-    image: "/objects-living/tea-gift-box.jpg",
+    image: "/brand/production/homepage/healing-world-layer/driftbox.jpg",
   },
   {
     title: "Night Whisper",
-    subtitle: "low light",
+    subtitle: "soft light",
     href: "/live",
-    image: "/home-hero/desktop-02.png",
+    image: "/brand/production/homepage/healing-world-layer/live.jpg",
   },
 ] as const;
 
@@ -189,11 +189,27 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch relative block aspect-[390/700] min-h-0 overflow-hidden rounded-[1.15rem] bg-transparent p-0"
+                  className="quiet-air-touch browser-air-presence clear-air-card min-h-0 overflow-hidden rounded-lg border bg-white/84 p-0"
                 >
-                  <Image src={entry.image} alt="" fill className="object-cover opacity-[0.99]" sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw" />
-                  <span className="sr-only">{entry.title}</span>
-                  <span className="sr-only">{entry.body}</span>
+                  <div className="relative aspect-[1.15/1] overflow-hidden bg-[#f0f2f5] lg:aspect-[4/5]">
+                    <Image
+                      src={entry.image}
+                      alt=""
+                      fill
+                      className="object-cover opacity-[0.95]"
+                      sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw"
+                    />
+                  </div>
+                  <div className="flex min-h-[7rem] flex-col p-3.5 sm:p-4 lg:min-h-[8rem]">
+                    <div className="flex items-center justify-between gap-2">
+                      <SoftMark name={entry.mark} />
+                      <ArrowLink />
+                    </div>
+                    <h3 className="mt-3 font-[var(--font-display-serif)] text-lg font-semibold leading-tight text-foreground lg:text-xl">
+                      {entry.title}
+                    </h3>
+                    <p className="grounded-card-copy mt-2 line-clamp-2 text-xs leading-5">{entry.body}</p>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -250,17 +266,17 @@ export function HomepageBrowserRoom() {
             ))}
           </section>
 
-          <section className="mx-auto max-w-[78rem] overflow-hidden rounded-lg border border-[#c7d7df]/42 bg-[#f0f2f5] shadow-[0_16px_38px_rgba(38,61,78,0.045)]">
-            <div className="grid gap-3 p-3 lg:grid-cols-[0.78fr_0.94fr_0.94fr] lg:gap-px lg:bg-[#d8e5ea]/38 lg:p-0">
-              <div className="rounded-md bg-white/88 p-5 sm:p-6 lg:flex lg:h-[18.5rem] lg:flex-col lg:rounded-none lg:p-6">
+          <section className="mx-auto max-w-[70rem]">
+            <div className="grid gap-3 lg:grid-cols-[0.78fr_1fr_1fr]">
+              <div className="browser-air-presence clear-air-card rounded-lg border border-[#c7d7df]/42 bg-white/88 p-5 shadow-[0_14px_34px_rgba(38,61,78,0.04)] sm:p-6 lg:flex lg:min-h-[14.5rem] lg:flex-col">
                 <p className="text-xs uppercase tracking-[0.22em] text-text-muted">Windkeep</p>
-                <h2 className="mt-3 max-w-[17rem] font-[var(--font-display-serif)] text-2xl leading-tight text-foreground">
+                <h2 className="mt-3 max-w-[17rem] font-[var(--font-display-serif)] text-xl leading-tight text-foreground sm:text-2xl">
                   Objects continue through time.
                 </h2>
-                <p className="mt-4 max-w-[18rem] text-sm leading-6 text-text-secondary">
+                <p className="mt-3 max-w-[18rem] text-sm leading-6 text-text-secondary">
                   Each object keeps its own journey, meeting the right person in quiet time.
                 </p>
-                <p className="mt-3 max-w-sm text-xs leading-6 text-text-muted">
+                <p className="mt-2 line-clamp-2 max-w-sm text-xs leading-5 text-text-muted">
                   {driftbox.lowEvent.oceanicLine}
                 </p>
                 <Link
@@ -270,37 +286,45 @@ export function HomepageBrowserRoom() {
                   Enter Windkeep <span aria-hidden>-&gt;</span>
                 </Link>
               </div>
-              <Link href="/windkeep#objects" className="quiet-air-touch relative min-h-[13rem] overflow-hidden rounded-md bg-white/72 p-5 sm:min-h-[15rem] sm:p-6 lg:h-[18.5rem] lg:rounded-none lg:p-6">
-                <Image
-                  src="/brand/production/homepage/windkeep-section/passing-things.jpg"
-                  alt=""
-                  fill
-                  className="object-cover opacity-[0.82]"
-                  sizes="(max-width: 1024px) 92vw, 32vw"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.66),rgba(255,255,255,0.18)_54%,rgba(255,255,255,0.02))]" />
-                <div className="relative z-[1] max-w-[15rem]">
+              <Link
+                href="/windkeep#objects"
+                className="quiet-air-touch browser-air-presence clear-air-card overflow-hidden rounded-lg border border-[#c7d7df]/42 bg-white/82 p-0 shadow-[0_14px_34px_rgba(38,61,78,0.04)]"
+              >
+                <div className="relative aspect-[1.72/1] overflow-hidden bg-[#f0f2f5] lg:aspect-[2.25/1]">
+                  <Image
+                    src="/brand/production/homepage/windkeep-section/passing-things-wide.jpg"
+                    alt=""
+                    fill
+                    className="object-cover opacity-[0.9]"
+                    sizes="(max-width: 1024px) 92vw, 29vw"
+                  />
+                </div>
+                <div className="p-4 sm:p-5">
                   <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Passing Things</p>
                   <h3 className="mt-3 text-xl leading-tight text-foreground">Objects meeting time</h3>
-                  <p className="mt-3 text-sm leading-6 text-text-secondary">
+                  <p className="mt-2 line-clamp-2 text-sm leading-6 text-text-secondary">
                     Objects in passage, meeting the right person at the right time.
                   </p>
                   <ArrowLink />
                 </div>
               </Link>
-              <Link href="/quiet-receiving" className="quiet-air-touch relative min-h-[13rem] overflow-hidden rounded-md bg-white/72 p-5 sm:min-h-[15rem] sm:p-6 lg:h-[18.5rem] lg:rounded-none lg:p-6">
-                <Image
-                  src="/brand/production/homepage/windkeep-section/quiet-receiving.jpg"
-                  alt=""
-                  fill
-                  className="object-cover opacity-[0.84]"
-                  sizes="(max-width: 1024px) 92vw, 32vw"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.7),rgba(255,255,255,0.24)_58%,rgba(255,255,255,0.04))]" />
-                <div className="relative z-[1] max-w-[15rem]">
+              <Link
+                href="/quiet-receiving"
+                className="quiet-air-touch browser-air-presence clear-air-card overflow-hidden rounded-lg border border-[#c7d7df]/42 bg-white/82 p-0 shadow-[0_14px_34px_rgba(38,61,78,0.04)]"
+              >
+                <div className="relative aspect-[1.72/1] overflow-hidden bg-[#f0f2f5] lg:aspect-[2.25/1]">
+                  <Image
+                    src="/brand/production/homepage/windkeep-section/quiet-receiving.jpg"
+                    alt=""
+                    fill
+                    className="object-cover opacity-[0.9]"
+                    sizes="(max-width: 1024px) 92vw, 29vw"
+                  />
+                </div>
+                <div className="p-4 sm:p-5">
                   <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Quiet Receiving</p>
                   <h3 className="mt-3 text-xl leading-tight text-foreground">A quiet yes</h3>
-                  <p className="mt-3 text-sm leading-6 text-text-secondary">
+                  <p className="mt-2 line-clamp-2 text-sm leading-6 text-text-secondary">
                     Objects waiting quietly to be received by the next keeper.
                   </p>
                   <ArrowLink />
@@ -309,7 +333,7 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/60 py-9">
+          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/60 py-8">
             <div className="mb-5 flex items-end justify-between gap-4">
               <h2 className="font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
                 Moments of Presence
@@ -318,11 +342,11 @@ export function HomepageBrowserRoom() {
                 View all -&gt;
               </Link>
             </div>
-            <div className="flex gap-4 overflow-x-auto pb-3">
+            <div className="flex gap-3 overflow-x-auto pb-3 sm:gap-4">
               {momentsOfPresence.map((moment) => (
-                <Link key={moment.title} href={moment.href} className="quiet-air-touch min-w-[12.5rem]">
-                  <div className="browser-air-presence relative aspect-[1.82/1] overflow-hidden rounded-lg border border-[#c7d7df]/50 bg-white/78">
-                    <Image src={moment.image} alt="" fill className="object-cover opacity-[0.92]" sizes="13rem" />
+                <Link key={moment.title} href={moment.href} className="quiet-air-touch min-w-[11.25rem] sm:min-w-[12.5rem]">
+                  <div className="browser-air-presence relative aspect-[1.82/1] overflow-hidden rounded-lg border border-[#c7d7df]/50 bg-white/82">
+                    <Image src={moment.image} alt="" fill className="object-cover opacity-[0.88]" sizes="13rem" />
                     <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full border border-white/80 bg-white/54 text-[0.56rem] uppercase tracking-[0.08em] text-foreground/70 shadow-[0_8px_20px_rgba(29,42,56,0.14)]">
                       play
                     </span>
