@@ -51,14 +51,37 @@ const waysToBegin = [
   },
 ] as const;
 
-const pathsOfLife = [
-  { title: "Relationships", body: "Connection and repair", href: "/healing/stories", mark: "rel" },
-  { title: "Home", body: "A room with room to breathe", href: "/healing/elements", mark: "home" },
-  { title: "Timing", body: "Moving with the right moment", href: "/healing/philosophy", mark: "time" },
-  { title: "Energy", body: "Returning to your own pace", href: "/healing/meditation", mark: "leaf" },
-  { title: "Direction", body: "Finding a quiet next step", href: "/healing/creation", mark: "path" },
-  { title: "Choices", body: "Deciding without force", href: "/healing/playground", mark: "turn" },
-  { title: "Return", body: "Coming back to yourself", href: "/healing/subscriptions", mark: "rest" },
+const energyFieldCards = [
+  {
+    title: "Morning Energy",
+    href: "/healing/meditation",
+    pcImage: "/brand/production/homepage/energy-field-section/pc/morning-card.png",
+    mobileImage: "/brand/production/homepage/energy-field-section/mobile/morning-card-mobile.png",
+  },
+  {
+    title: "Kitchen Energy",
+    href: "/healing/elements",
+    pcImage: "/brand/production/homepage/energy-field-section/pc/kitchen-card.png",
+    mobileImage: "/brand/production/homepage/energy-field-section/mobile/kitchen-card-mobile.png",
+  },
+  {
+    title: "Studio Energy",
+    href: "/healing/creation",
+    pcImage: "/brand/production/homepage/energy-field-section/pc/studio-card.png",
+    mobileImage: "/brand/production/homepage/energy-field-section/mobile/studio-card-mobile.png",
+  },
+  {
+    title: "Evening Energy",
+    href: "/live",
+    pcImage: "/brand/production/homepage/energy-field-section/pc/evening-card.png",
+    mobileImage: "/brand/production/homepage/energy-field-section/mobile/evening-card-mobile.png",
+  },
+  {
+    title: "Retreat Energy",
+    href: "/healing/stories",
+    pcImage: "/brand/production/homepage/energy-field-section/pc/retreat-card.png",
+    mobileImage: "/brand/production/homepage/energy-field-section/mobile/retreat-card-mobile.png",
+  },
 ] as const;
 
 const mainEntries = [
@@ -151,28 +174,6 @@ const momentsOfPresence = [
   },
 ] as const;
 
-function SoftMark({ name }: { name: string }) {
-  return (
-    <span
-      aria-hidden
-      className="flex h-6 w-6 items-center justify-center rounded-full border border-[#b7c9d2]/50 bg-white/48 text-[0.43rem] uppercase tracking-[0.04em] text-foreground/52 shadow-[0_3px_8px_rgba(38,61,78,0.026)] sm:h-9 sm:w-9 sm:text-[0.56rem]"
-    >
-      {name}
-    </span>
-  );
-}
-
-function ArrowLink() {
-  return (
-    <span
-      aria-hidden
-      className="mt-auto flex h-5 w-5 items-center justify-center rounded-full border border-foreground/10 bg-white/42 text-[0.52rem] text-foreground/48 sm:h-7 sm:w-7"
-    >
-      -&gt;
-    </span>
-  );
-}
-
 export function HomepageBrowserRoom() {
   const { worldAiNativeInfrastructure } = useWorldRuntime();
   const st = worldAiNativeInfrastructure.invisibleInfrastructureStructuralThinning;
@@ -216,26 +217,71 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto max-w-[86rem] rounded-b-[1rem] bg-white/72 px-4 pb-8 pt-4 sm:px-6 lg:px-8">
-            <div className="mb-6 text-center">
-              <h2 className="font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
-                Paths of Life
-              </h2>
-              <p className="mt-2 text-sm text-text-secondary">Explore healing spaces for every chapter.</p>
-            </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
-              {pathsOfLife.map((path) => (
+          <section
+            className="mx-auto max-w-[86rem] rounded-b-[1rem] bg-[#f0f2f5]/70 px-4 pb-7 pt-4 sm:px-6 lg:px-8"
+            aria-label="Energy Field"
+          >
+            <Link
+              href="/healing"
+              className="quiet-air-touch relative hidden aspect-[16/7] overflow-hidden rounded-[1.15rem] lg:block"
+              aria-label="Energy Field"
+            >
+              <Image
+                src="/brand/production/homepage/energy-field-section/pc/hero-energy-field.png"
+                alt="Energy Field"
+                fill
+                className="object-cover object-center"
+                sizes="86rem"
+              />
+            </Link>
+
+            <div className="mt-4 hidden grid-cols-5 gap-4 lg:grid">
+              {energyFieldCards.map((card) => (
                 <Link
-                  key={path.title}
-                  href={path.href}
-                  className="quiet-air-touch clear-air-card flex min-h-[10.5rem] flex-col items-center rounded-lg border px-3 py-5 text-center"
+                  key={card.title}
+                  href={card.href}
+                  className="quiet-air-touch relative block aspect-video overflow-hidden rounded-[0.9rem]"
+                  aria-label={card.title}
                 >
-                  <SoftMark name={path.mark} />
-                  <h3 className="mt-4 font-[var(--font-display-serif)] text-lg font-semibold leading-tight text-foreground">
-                    {path.title}
-                  </h3>
-                  <p className="grounded-card-copy mt-2 text-xs leading-5">{path.body}</p>
-                  <ArrowLink />
+                  <Image
+                    src={card.pcImage}
+                    alt={card.title}
+                    fill
+                    className="object-cover object-center"
+                    sizes="17vw"
+                  />
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 gap-3 lg:hidden">
+              <Link
+                href="/healing"
+                className="quiet-air-touch relative col-span-2 block aspect-[3/4] overflow-hidden rounded-[1rem]"
+                aria-label="Energy Field"
+              >
+                <Image
+                  src="/brand/production/homepage/energy-field-section/mobile/hero-energy-field-mobile.png"
+                  alt="Energy Field"
+                  fill
+                  className="object-cover object-center"
+                  sizes="92vw"
+                />
+              </Link>
+              {energyFieldCards.map((card) => (
+                <Link
+                  key={card.title}
+                  href={card.href}
+                  className="quiet-air-touch relative block aspect-[5/3] overflow-hidden rounded-[0.8rem]"
+                  aria-label={card.title}
+                >
+                  <Image
+                    src={card.mobileImage}
+                    alt={card.title}
+                    fill
+                    className="object-cover object-center"
+                    sizes="46vw"
+                  />
                 </Link>
               ))}
             </div>
