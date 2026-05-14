@@ -191,7 +191,7 @@ export function HomepageBrowserRoom() {
                   href={entry.href}
                   className="quiet-air-touch browser-air-presence clear-air-card min-h-0 overflow-hidden rounded-lg border bg-white/84 p-0"
                 >
-                  <div className="relative aspect-[1.15/1] overflow-hidden bg-[#f0f2f5] lg:aspect-[4/5]">
+                  <div className="relative aspect-square overflow-hidden bg-[#f0f2f5]">
                     <Image
                       src={entry.image}
                       alt=""
@@ -290,9 +290,9 @@ export function HomepageBrowserRoom() {
                 href="/windkeep#objects"
                 className="quiet-air-touch browser-air-presence clear-air-card overflow-hidden rounded-lg border border-[#c7d7df]/42 bg-white/82 p-0 shadow-[0_14px_34px_rgba(38,61,78,0.04)]"
               >
-                <div className="relative aspect-[1.72/1] overflow-hidden bg-[#f0f2f5] lg:aspect-[2.25/1]">
+                <div className="relative aspect-[16/7] overflow-hidden bg-[#f0f2f5]">
                   <Image
-                    src="/brand/production/homepage/windkeep-section/passing-things-wide.jpg"
+                    src="/brand/production/homepage/windkeep-section/passing-things-16x7.jpg"
                     alt=""
                     fill
                     className="object-cover opacity-[0.9]"
@@ -312,9 +312,9 @@ export function HomepageBrowserRoom() {
                 href="/quiet-receiving"
                 className="quiet-air-touch browser-air-presence clear-air-card overflow-hidden rounded-lg border border-[#c7d7df]/42 bg-white/82 p-0 shadow-[0_14px_34px_rgba(38,61,78,0.04)]"
               >
-                <div className="relative aspect-[1.72/1] overflow-hidden bg-[#f0f2f5] lg:aspect-[2.25/1]">
+                <div className="relative aspect-[16/7] overflow-hidden bg-[#f0f2f5]">
                   <Image
-                    src="/brand/production/homepage/windkeep-section/quiet-receiving.jpg"
+                    src="/brand/production/homepage/windkeep-section/quiet-receiving-16x7.jpg"
                     alt=""
                     fill
                     className="object-cover opacity-[0.9]"
