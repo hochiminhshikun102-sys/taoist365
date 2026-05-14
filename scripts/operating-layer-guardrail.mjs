@@ -5,6 +5,7 @@ const root = process.cwd();
 const checks = [
   ["node", "scripts/terminology-guardrail.mjs"],
   ["node", "scripts/runtime-infrastructure-guardrail.mjs"],
+  ["node", "scripts/admin-os-constitution-guardrail.mjs"],
 ];
 
 let commandFailures = 0;

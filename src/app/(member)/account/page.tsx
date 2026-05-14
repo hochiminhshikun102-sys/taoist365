@@ -135,7 +135,7 @@ export default function AccountRuntimePage() {
               ))}
             </div>
             <p className="mt-4 text-sm leading-6 text-[#7d929b]">
-              Review lists, punishment controls, audit records, and risk configuration remain inside Admin OS only.
+              Review queues and enforcement settings remain inside Admin OS only.
             </p>
           </SoftPanel>
         </section>

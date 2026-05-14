@@ -1,5 +1,7 @@
 # Project Brain
 
+Current canonical public identity: Reverent Inquiry on taoist365.com.
+
 ## QUICK CONTEXT BOOTSTRAP
 
 - Taoist365 is a **Taoist-inspired lifestyle guidance system**: static Next.js, **quiet ritual atmosphere**, **ritual calm**, **breathable interfaces**, and cross-page **emotional continuity** via `useWorldRuntime()`—not chat, SaaS, or social.

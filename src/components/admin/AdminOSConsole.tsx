@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useState } from "react";
 import { locales, localeDefinitions } from "@/config/locales";
 import { siteConfig } from "@/config/site";
 
@@ -15,6 +16,12 @@ const t = {
   risk: "\u4f1a\u5458\u98ce\u63a7",
   client: "\u5ba2\u6237\u7aef\u540e\u53f0",
   frontstage: "\u524d\u53f0\u8fd0\u8425",
+  message: "\u6d88\u606f\u4e0e\u901a\u77e5",
+  campaign: "\u6d3b\u52a8\u4e0e\u8425\u9500",
+  afterSales: "\u552e\u540e\u4e2d\u5fc3",
+  moderation: "\u793e\u533a\u4e0e\u5185\u5bb9\u5ba1\u6838",
+  compliance: "\u5408\u89c4\u4e0e\u6cd5\u52a1",
+  finance: "\u8d22\u52a1\u4e0e\u7ed3\u7b97",
   windkeep: "\u7269\u4ef6\u6d41\u8f6c",
   driftbox: "\u5b89\u9759\u6765\u4fe1",
   rules: "\u89c4\u5219\u4e2d\u5fc3",
@@ -28,11 +35,56 @@ const t = {
   threeLevels: "\u4e09\u7ea7\u4ee5\u5185",
 } as const;
 
-type WorkspaceId =
+export type AdminWorkspaceId =
   | "overview"
   | "objects"
   | "orders"
   | "payments"
+  | "message-center"
+  | "notification-overview"
+  | "notification-templates"
+  | "user-messages"
+  | "push-channels"
+  | "notification-audit"
+  | "ai-reach-reserve"
+  | "campaign-center"
+  | "coupons"
+  | "campaigns"
+  | "points-mall"
+  | "sharing-reserve"
+  | "roi-data"
+  | "ai-campaign-optimization"
+  | "after-sales-center"
+  | "after-sales-requests"
+  | "refunds-runtime"
+  | "exchange-runtime"
+  | "arbitration-runtime"
+  | "after-sales-tracking"
+  | "after-sales-risk-link"
+  | "community-moderation"
+  | "comment-review"
+  | "report-handling"
+  | "ugc-review"
+  | "sensitive-words"
+  | "ai-content-moderation"
+  | "media-moderation"
+  | "compliance-legal"
+  | "gdpr-runtime"
+  | "ccpa-runtime"
+  | "terms-runtime"
+  | "privacy-policy-runtime"
+  | "ai-usage-agreement"
+  | "infringement-handling"
+  | "legal-logs"
+  | "finance-settlement"
+  | "finance-overview"
+  | "reconciliation"
+  | "refund-reconciliation"
+  | "merchant-settlement"
+  | "tax-runtime"
+  | "funds-ledger"
+  | "freeze-unfreeze"
+  | "finance-audit-logs"
   | "homepage-runtime"
   | "section-runtime"
   | "navigation-runtime"
@@ -70,7 +122,7 @@ type WorkspaceId =
   | "locale-geo";
 
 type Workspace = {
-  id: WorkspaceId;
+  id: AdminWorkspaceId;
   cn: string;
   en: string;
   state: string;
@@ -107,6 +159,342 @@ const workspaceMap = {
     en: "Payments Runtime",
     state: "Provider-ready shell",
     work: ["Provider status", "Refunds", "Region rules", "Risk link", "Reconciliation", "Exception queue"],
+  },
+  "message-center": {
+    id: "message-center",
+    cn: t.message,
+    en: "Message & Notification Center",
+    state: "Interactive runtime",
+    work: ["Notification overview", "Templates", "User messages", "Push Channels", "Audit logs", "AI reach reserve"],
+    ai: ["AI reach reserve", "Template suggestion", "Channel timing", "Delivery anomaly"],
+    mobile: ["Unread", "Quick reply", "Notification switches"],
+  },
+  "notification-overview": {
+    id: "notification-overview",
+    cn: "\u901a\u77e5\u603b\u89c8",
+    en: "Notification Overview",
+    state: "Queue active",
+    work: ["Unread", "Sent", "Failed", "Channel status", "User segment", "Delivery queue"],
+    mobile: ["Unread", "Quick reply", "Notification switches"],
+  },
+  "notification-templates": {
+    id: "notification-templates",
+    cn: "\u6a21\u677f\u914d\u7f6e",
+    en: "Template Configuration",
+    state: "Version shell",
+    work: ["Email template", "Push template", "SMS template", "Locale copy", "Preview", "Version log"],
+  },
+  "user-messages": {
+    id: "user-messages",
+    cn: "\u7528\u6237\u79c1\u4fe1",
+    en: "User Messages",
+    state: "Inbox runtime",
+    work: ["Inbox", "Reply", "Archive", "User state", "Order link", "Driftbox link"],
+    mobile: ["Unread", "Quick reply", "User status"],
+  },
+  "push-channels": {
+    id: "push-channels",
+    cn: "Push Channels",
+    en: "Push Channels",
+    state: "Channel shell",
+    work: ["Email", "SMS", "Web push", "In-app", "Channel status", "Suppression rules"],
+  },
+  "notification-audit": {
+    id: "notification-audit",
+    cn: "\u65e5\u5fd7\u5ba1\u8ba1",
+    en: "Notification Logs & Audit",
+    state: "Audit runtime",
+    work: ["Delivery logs", "Operator logs", "Template changes", "Failed sends", "Export", "Audit trail"],
+  },
+  "ai-reach-reserve": {
+    id: "ai-reach-reserve",
+    cn: "AI \u89e6\u8fbe\u9884\u7559",
+    en: "AI Reach Reserve",
+    state: "Reserved only",
+    work: ["Reach suggestions", "Quiet timing", "No spam", "Cost", "Approval queue", "Failure retry"],
+    ai: ["AI reach scoring", "AI timing", "AI copy safety", "AI suppression"],
+  },
+  "campaign-center": {
+    id: "campaign-center",
+    cn: t.campaign,
+    en: "Campaign & Marketing Center",
+    state: "Low-stimulation runtime",
+    work: ["Coupons", "Campaigns", "Points mall", "Sharing reserve", "ROI data", "AI optimization reserve"],
+    ai: ["AI campaign optimization", "ROI insight", "Coupon risk", "Soft growth guard"],
+    mobile: ["Campaign status", "Coupon check", "ROI glance"],
+  },
+  coupons: {
+    id: "coupons",
+    cn: "\u4f18\u60e0\u5238",
+    en: "Coupons Runtime",
+    state: "Rule shell",
+    work: ["Coupon list", "Create coupon", "Eligibility", "Usage limit", "Risk link", "Redemption logs"],
+    mobile: ["Coupon status", "Quick pause", "Usage count"],
+  },
+  campaigns: {
+    id: "campaigns",
+    cn: "\u6d3b\u52a8",
+    en: "Campaigns Runtime",
+    state: "Schedule shell",
+    work: ["Campaign list", "Create campaign", "Schedule", "Landing route", "Budget", "Rollback"],
+  },
+  "points-mall": {
+    id: "points-mall",
+    cn: "\u79ef\u5206\u5546\u57ce",
+    en: "Points Mall",
+    state: "Reserved entry",
+    work: ["Reward list", "Point rules", "Redemption", "Member link", "Risk limit", "Logs"],
+  },
+  "sharing-reserve": {
+    id: "sharing-reserve",
+    cn: "\u5206\u4eab\u88c2\u53d8\u9884\u7559",
+    en: "Sharing Reserve",
+    state: "Not activated",
+    work: ["Entry reserve", "No forced sharing", "Channel rules", "Point reserve", "Risk limit", "Soft review"],
+  },
+  "roi-data": {
+    id: "roi-data",
+    cn: "ROI \u6570\u636e",
+    en: "ROI Data",
+    state: "Analytics shell",
+    work: ["ROI table", "Cost input", "Revenue link", "Channel compare", "Export", "Trend"],
+  },
+  "ai-campaign-optimization": {
+    id: "ai-campaign-optimization",
+    cn: "AI \u6d3b\u52a8\u4f18\u5316",
+    en: "AI Campaign Optimization",
+    state: "Reserved",
+    work: ["Suggestion queue", "Budget insight", "Copy safety", "ROI prediction", "Human approval", "Retry"],
+    ai: ["AI campaign scoring", "AI ROI prediction", "AI copy review", "AI channel mix"],
+  },
+  "after-sales-center": {
+    id: "after-sales-center",
+    cn: t.afterSales,
+    en: "After-Sales Center",
+    state: "Service runtime",
+    work: ["Applications", "Refunds", "Exchange", "Arbitration", "Logistics tracking", "Risk link"],
+    ai: ["AI arbitration reserve", "Refund anomaly", "Case summary", "Reply draft"],
+    mobile: ["Pending cases", "Refund status", "Quick reply", "Tracking"],
+  },
+  "after-sales-requests": {
+    id: "after-sales-requests",
+    cn: "\u552e\u540e\u7533\u8bf7",
+    en: "After-Sales Requests",
+    state: "Case queue",
+    work: ["Request list", "Case status", "Reason", "Evidence upload", "Action", "Logs"],
+    mobile: ["Pending cases", "Quick approve", "Quick reject"],
+  },
+  "refunds-runtime": {
+    id: "refunds-runtime",
+    cn: "\u9000\u6b3e",
+    en: "Refunds Runtime",
+    state: "Payment linked",
+    work: ["Refund queue", "Payment link", "Amount", "Reason", "Approval", "Refund logs"],
+  },
+  "exchange-runtime": {
+    id: "exchange-runtime",
+    cn: "\u6362\u8d27",
+    en: "Exchange Runtime",
+    state: "Inventory linked",
+    work: ["Exchange request", "Replacement stock", "Return label", "Shipment", "User note", "Logs"],
+  },
+  "arbitration-runtime": {
+    id: "arbitration-runtime",
+    cn: "\u4ef2\u88c1",
+    en: "Arbitration Runtime",
+    state: "AI reserve",
+    work: ["Dispute case", "Evidence", "Decision draft", "Human review", "Risk link", "Audit"],
+    ai: ["AI arbitration reserve", "Evidence summary", "Decision suggestion"],
+  },
+  "after-sales-tracking": {
+    id: "after-sales-tracking",
+    cn: "\u7269\u6d41\u8ffd\u8e2a",
+    en: "After-Sales Tracking",
+    state: "Carrier linked",
+    work: ["Return tracking", "Carrier", "Exception", "Receipt", "Refund trigger", "Logs"],
+  },
+  "after-sales-risk-link": {
+    id: "after-sales-risk-link",
+    cn: "\u98ce\u63a7\u8054\u52a8",
+    en: "After-Sales Risk Link",
+    state: "Risk linked",
+    work: ["Fraud flag", "Abuse pattern", "Member score", "Restriction link", "Manual review", "Audit"],
+  },
+  "community-moderation": {
+    id: "community-moderation",
+    cn: t.moderation,
+    en: "Community & Content Moderation",
+    state: "Moderation runtime",
+    work: ["Comments", "Reports", "UGC", "Sensitive words", "AI moderation", "Image / Video / Copy review"],
+    ai: ["AI content moderation", "Sensitive image detection", "Video review", "Copy risk"],
+    mobile: ["Pending review", "Reports", "Quick approve / reject"],
+  },
+  "comment-review": {
+    id: "comment-review",
+    cn: "\u8bc4\u8bba\u5ba1\u6838",
+    en: "Comment Review",
+    state: "Queue runtime",
+    work: ["Comment queue", "Approve", "Reject", "Edit note", "User state", "Logs"],
+  },
+  "report-handling": {
+    id: "report-handling",
+    cn: "\u4e3e\u62a5\u5904\u7406",
+    en: "Report Handling",
+    state: "Case runtime",
+    work: ["Report list", "Reporter", "Target", "Evidence", "Action", "Audit"],
+    mobile: ["Reports", "Quick action", "User state"],
+  },
+  "ugc-review": {
+    id: "ugc-review",
+    cn: "UGC",
+    en: "UGC Review",
+    state: "Media ready",
+    work: ["Text", "Image", "Video", "Object note", "Driftbox link", "Decision"],
+  },
+  "sensitive-words": {
+    id: "sensitive-words",
+    cn: "\u654f\u611f\u8bcd",
+    en: "Sensitive Words",
+    state: "Rule runtime",
+    work: ["Word list", "Add rule", "Severity", "Locale", "Match logs", "Export"],
+  },
+  "ai-content-moderation": {
+    id: "ai-content-moderation",
+    cn: "AI \u5185\u5bb9\u5ba1\u6838",
+    en: "AI Content Moderation",
+    state: "AI reserved",
+    work: ["AI queue", "Risk score", "Human review", "False positive", "Cost", "Retry"],
+    ai: ["AI text moderation", "AI image moderation", "AI video moderation"],
+  },
+  "media-moderation": {
+    id: "media-moderation",
+    cn: "\u56fe\u7247\u89c6\u9891\u5ba1\u6838",
+    en: "Image / Video / Copy Review",
+    state: "Multi-format runtime",
+    work: ["Image review", "Video review", "Copy review", "Preview", "Decision", "Logs"],
+  },
+  "compliance-legal": {
+    id: "compliance-legal",
+    cn: t.compliance,
+    en: "Compliance & Legal Center",
+    state: "Versioned legal runtime",
+    work: ["GDPR", "CCPA", "Terms", "Privacy policy", "AI usage agreement", "Infringement", "Legal logs"],
+    mobile: ["Policy status", "Legal alerts", "Quick view"],
+  },
+  "gdpr-runtime": {
+    id: "gdpr-runtime",
+    cn: "GDPR",
+    en: "GDPR Runtime",
+    state: "Compliance shell",
+    work: ["Data request", "Consent", "Export", "Deletion", "Region status", "Logs"],
+  },
+  "ccpa-runtime": {
+    id: "ccpa-runtime",
+    cn: "CCPA",
+    en: "CCPA Runtime",
+    state: "Compliance shell",
+    work: ["Request list", "Opt-out", "Disclosure", "Deletion", "Region status", "Logs"],
+  },
+  "terms-runtime": {
+    id: "terms-runtime",
+    cn: "\u7528\u6237\u534f\u8bae",
+    en: "User Agreement",
+    state: "Version runtime",
+    work: ["Draft", "Preview", "Publish", "Schedule", "Rollback", "Version log"],
+  },
+  "privacy-policy-runtime": {
+    id: "privacy-policy-runtime",
+    cn: "\u9690\u79c1\u653f\u7b56",
+    en: "Privacy Policy",
+    state: "Version runtime",
+    work: ["Draft", "Preview", "Publish", "Schedule", "Rollback", "Version log"],
+  },
+  "ai-usage-agreement": {
+    id: "ai-usage-agreement",
+    cn: "AI \u4f7f\u7528\u534f\u8bae",
+    en: "AI Usage Agreement",
+    state: "Version runtime",
+    work: ["AI terms", "Model disclosure", "Consent", "Version", "Rollback", "Logs"],
+  },
+  "infringement-handling": {
+    id: "infringement-handling",
+    cn: "\u4fb5\u6743\u5904\u7406",
+    en: "Infringement Handling",
+    state: "Case runtime",
+    work: ["Case list", "Evidence", "Claimant", "Decision", "Response", "Audit"],
+  },
+  "legal-logs": {
+    id: "legal-logs",
+    cn: "\u6cd5\u52a1\u65e5\u5fd7",
+    en: "Legal Logs",
+    state: "Audit runtime",
+    work: ["Legal actions", "Policy changes", "Consent logs", "Export", "Operator", "Audit"],
+  },
+  "finance-settlement": {
+    id: "finance-settlement",
+    cn: t.finance,
+    en: "Finance & Settlement Center",
+    state: "Settlement runtime",
+    work: ["Finance overview", "Reconciliation", "Refund reconciliation", "Merchant settlement", "Tax", "Funds ledger", "Freeze / unfreeze", "Audit logs"],
+    ai: ["AI finance analysis reserve", "Anomaly detection", "Margin insight", "Cashflow forecast"],
+    mobile: ["Finance overview", "Refund alerts", "Freeze alerts", "Settlement status"],
+  },
+  "finance-overview": {
+    id: "finance-overview",
+    cn: "\u8d22\u52a1\u603b\u89c8",
+    en: "Finance Overview",
+    state: "Metric runtime",
+    work: ["Revenue", "Refunds", "Settlement", "Tax", "Frozen funds", "Export"],
+    mobile: ["Finance overview", "Alerts", "Today status"],
+  },
+  reconciliation: {
+    id: "reconciliation",
+    cn: "\u5bf9\u8d26",
+    en: "Reconciliation",
+    state: "Table runtime",
+    work: ["Payment records", "Order records", "Mismatch", "Manual fix", "Export", "Audit"],
+  },
+  "refund-reconciliation": {
+    id: "refund-reconciliation",
+    cn: "\u9000\u6b3e\u5bf9\u8d26",
+    en: "Refund Reconciliation",
+    state: "Refund linked",
+    work: ["Refund records", "Payment provider", "Mismatch", "Status", "Export", "Audit"],
+  },
+  "merchant-settlement": {
+    id: "merchant-settlement",
+    cn: "\u5546\u6237\u7ed3\u7b97",
+    en: "Merchant Settlement",
+    state: "Settlement shell",
+    work: ["Settlement list", "Merchant", "Amount", "Status", "Payout", "Logs"],
+  },
+  "tax-runtime": {
+    id: "tax-runtime",
+    cn: "\u7a0e\u8d39",
+    en: "Tax Runtime",
+    state: "Region linked",
+    work: ["Tax region", "Rate table", "Invoice", "Duty note", "Export", "Logs"],
+  },
+  "funds-ledger": {
+    id: "funds-ledger",
+    cn: "\u8d44\u91d1\u6d41\u6c34",
+    en: "Funds Ledger",
+    state: "Ledger runtime",
+    work: ["Ledger", "Inflow", "Outflow", "Balance", "Provider", "Audit"],
+  },
+  "freeze-unfreeze": {
+    id: "freeze-unfreeze",
+    cn: "\u51bb\u7ed3 / \u89e3\u51bb",
+    en: "Freeze / Unfreeze",
+    state: "Risk linked",
+    work: ["Freeze list", "Reason", "Risk link", "Approval", "Unfreeze", "Audit"],
+  },
+  "finance-audit-logs": {
+    id: "finance-audit-logs",
+    cn: "\u5ba1\u8ba1\u65e5\u5fd7",
+    en: "Finance Audit Logs",
+    state: "Audit runtime",
+    work: ["Operator", "Action", "Amount", "Before / after", "Export", "Audit"],
   },
   "homepage-runtime": {
     id: "homepage-runtime",
@@ -360,7 +748,7 @@ const workspaceMap = {
     state: "14 locale routes",
     work: ["Locale routing", "Metadata", "Canonical", "Hreflang", "Open Graph", "Region rule"],
   },
-} satisfies Record<WorkspaceId, Workspace>;
+} satisfies Record<AdminWorkspaceId, Workspace>;
 
 const navGroups = [
   {
@@ -368,58 +756,110 @@ const navGroups = [
     icon: "FR",
     cn: t.frontstage,
     en: "Frontstage Runtime",
-    items: ["homepage-runtime", "section-runtime", "navigation-runtime", "frontstage-visual", "homepage-rotation", "publishing-runtime", "global-locale-runtime", "quiet-analytics", "frontstage-safe-area", "atmosphere-governance"] satisfies WorkspaceId[],
+    items: ["homepage-runtime", "section-runtime", "navigation-runtime", "frontstage-visual", "homepage-rotation", "publishing-runtime", "global-locale-runtime", "quiet-analytics", "frontstage-safe-area", "atmosphere-governance"] satisfies AdminWorkspaceId[],
   },
   {
     id: "commerce",
     icon: "CO",
     cn: t.commerce,
     en: "Commerce",
-    items: ["objects", "orders", "payments"] satisfies WorkspaceId[],
+    items: ["objects", "orders", "payments"] satisfies AdminWorkspaceId[],
+  },
+  {
+    id: "messages",
+    icon: "MS",
+    cn: t.message,
+    en: "Message & Notification",
+    items: ["message-center", "notification-overview", "notification-templates", "user-messages", "push-channels", "notification-audit", "ai-reach-reserve"] satisfies AdminWorkspaceId[],
+  },
+  {
+    id: "campaign",
+    icon: "MK",
+    cn: t.campaign,
+    en: "Campaign & Marketing",
+    items: ["campaign-center", "coupons", "campaigns", "points-mall", "sharing-reserve", "roi-data", "ai-campaign-optimization"] satisfies AdminWorkspaceId[],
+  },
+  {
+    id: "after-sales",
+    icon: "AS",
+    cn: t.afterSales,
+    en: "After-Sales",
+    items: ["after-sales-center", "after-sales-requests", "refunds-runtime", "exchange-runtime", "arbitration-runtime", "after-sales-tracking", "after-sales-risk-link"] satisfies AdminWorkspaceId[],
+  },
+  {
+    id: "moderation",
+    icon: "CM",
+    cn: t.moderation,
+    en: "Community Moderation",
+    items: ["community-moderation", "comment-review", "report-handling", "ugc-review", "sensitive-words", "ai-content-moderation", "media-moderation"] satisfies AdminWorkspaceId[],
+  },
+  {
+    id: "compliance",
+    icon: "CL",
+    cn: t.compliance,
+    en: "Compliance & Legal",
+    items: ["compliance-legal", "gdpr-runtime", "ccpa-runtime", "terms-runtime", "privacy-policy-runtime", "ai-usage-agreement", "infringement-handling", "legal-logs"] satisfies AdminWorkspaceId[],
+  },
+  {
+    id: "finance",
+    icon: "FN",
+    cn: t.finance,
+    en: "Finance & Settlement",
+    items: ["finance-settlement", "finance-overview", "reconciliation", "refund-reconciliation", "merchant-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs"] satisfies AdminWorkspaceId[],
   },
   {
     id: "ai",
     icon: "AI",
     cn: t.ai,
     en: "AI Operations",
-    items: ["ai-queue", "ai-image", "ai-video", "geo", "viral-radar"] satisfies WorkspaceId[],
+    items: ["ai-queue", "ai-image", "ai-video", "geo", "viral-radar"] satisfies AdminWorkspaceId[],
   },
   {
     id: "logistics",
     icon: "LG",
     cn: t.logistics,
     en: "Logistics",
-    items: ["logistics", "tracking", "freight", "returns"] satisfies WorkspaceId[],
+    items: ["logistics", "tracking", "freight", "returns"] satisfies AdminWorkspaceId[],
   },
   {
     id: "supply",
     icon: "SC",
     cn: t.supply,
     en: "Supply Chain",
-    items: ["suppliers", "inventory", "procurement", "costs"] satisfies WorkspaceId[],
+    items: ["suppliers", "inventory", "procurement", "costs"] satisfies AdminWorkspaceId[],
   },
   {
     id: "media",
     icon: "MA",
     cn: t.media,
     en: "Media Assets",
-    items: ["brand-assets", "product-media", "social-media", "prompt-packs", "safe-area"] satisfies WorkspaceId[],
+    items: ["brand-assets", "product-media", "social-media", "prompt-packs", "safe-area"] satisfies AdminWorkspaceId[],
   },
   {
     id: "member",
     icon: "MB",
     cn: t.member,
     en: "Member",
-    items: ["member-center", "member-risk-control", "client-runtime"] satisfies WorkspaceId[],
+    items: ["member-center", "member-risk-control", "client-runtime"] satisfies AdminWorkspaceId[],
   },
   {
     id: "world",
     icon: "WR",
     cn: "\u6587\u660e\u8fd0\u884c",
     en: "World Runtime",
-    items: ["windkeep", "driftbox", "rules-binding", "locale-geo"] satisfies WorkspaceId[],
+    items: ["windkeep", "driftbox", "rules-binding", "locale-geo"] satisfies AdminWorkspaceId[],
   },
 ] as const;
+
+export const adminWorkspaceIds = Object.keys(workspaceMap) as AdminWorkspaceId[];
+
+export function isAdminWorkspaceId(value: string): value is AdminWorkspaceId {
+  return adminWorkspaceIds.includes(value as AdminWorkspaceId);
+}
+
+function workspaceHref(id: AdminWorkspaceId) {
+  return id === "overview" ? "/admin" : `/admin/${id}`;
+}
 
 const uploadSpecs = [
   ["\u9996\u9875\u89c6\u89c9", "Homepage Visuals", "PC + Mobile exported section artwork", "Use source ratio only", "Text and key object inside exported artwork", "PNG / JPG / WEBP, max 8 MB"],
@@ -456,9 +896,30 @@ function RuntimeCard({ children }: Readonly<{ children: React.ReactNode }>) {
   );
 }
 
+const runtimeStatuses = ["Open", "Review", "Scheduled", "Failed"] as const;
+
 function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [drawerItem, setDrawerItem] = useState<string | null>(null);
+  const [modalAction, setModalAction] = useState<string | null>(null);
+
+  const rows = workspace.work.map((work, index) => ({
+    id: `${workspace.id}-${index + 1}`,
+    name: work,
+    status: runtimeStatuses[index % runtimeStatuses.length],
+    owner: index % 2 === 0 ? "Operations" : "Review",
+    queue: `${index + 2}`,
+    updated: `2026-05-${15 - (index % 4)}`,
+  }));
+  const filteredRows = rows.filter((row) => {
+    const matchesQuery = row.name.toLowerCase().includes(query.toLowerCase());
+    const matchesStatus = statusFilter === "All" || row.status === statusFilter;
+    return matchesQuery && matchesStatus;
+  });
+
   return (
-    <div className="grid gap-5">
+    <div className="grid gap-5 xl:grid-cols-[1fr_22rem]">
       <section className="rounded-3xl border border-[#3b2c18] bg-[#100d09] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.34)] sm:p-6">
         <div className="flex flex-col gap-4 border-b border-[#2d2214] pb-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -468,13 +929,126 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
           <StatusPill>{workspace.state}</StatusPill>
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
-          {workspace.work.map((work) => (
-            <button key={work} type="button" className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-3 py-3 text-left text-sm text-[#d8c48d] hover:border-[#8d7446]/55">
-              {work}
+        <div className="mt-5 grid gap-3 lg:grid-cols-[1fr_auto_auto]">
+          <label className="block">
+            <span className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">Search</span>
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              className="mt-2 w-full rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]"
+              placeholder="Search runtime item"
+              type="search"
+            />
+          </label>
+          <label className="block">
+            <span className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">Filter</span>
+            <select
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value)}
+              className="mt-2 w-full rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]"
+            >
+              <option>All</option>
+              {runtimeStatuses.map((status) => (
+                <option key={status}>{status}</option>
+              ))}
+            </select>
+          </label>
+          <div className="flex items-end gap-2">
+            <button type="button" onClick={() => setModalAction("Create runtime item")} className="rounded-xl border border-[#8d7446] bg-[#20180d] px-4 py-3 text-sm text-[#f3db9b]">
+              New
             </button>
+            <button type="button" onClick={() => setModalAction("Upload asset")} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#d8c48d]">
+              Upload
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {[
+            ["Status", workspace.state],
+            ["Queue", `${rows.length} items`],
+            ["Logs", "Audit trail active"],
+            ["Actions", "Drawer + modal ready"],
+          ].map(([label, value]) => (
+            <div key={label} className="rounded-xl border border-[#2d2214] bg-[#0b0907] p-4">
+              <p className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">{label}</p>
+              <p className="mt-3 text-lg text-[#e7d19a]">{value}</p>
+            </div>
           ))}
         </div>
+
+        <div className="mt-5 overflow-auto rounded-2xl border border-[#2d2214]">
+          <table className="w-full min-w-[54rem] border-collapse text-left text-sm">
+            <thead className="bg-[#0b0907] text-[#9f8a60]">
+              <tr>
+                <th className="border-b border-[#2d2214] px-3 py-3">Runtime Item</th>
+                <th className="border-b border-[#2d2214] px-3 py-3">Status</th>
+                <th className="border-b border-[#2d2214] px-3 py-3">Owner</th>
+                <th className="border-b border-[#2d2214] px-3 py-3">Queue</th>
+                <th className="border-b border-[#2d2214] px-3 py-3">Updated</th>
+                <th className="border-b border-[#2d2214] px-3 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredRows.map((row) => (
+                <tr key={row.id}>
+                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#e7d19a]">{row.name}</td>
+                  <td className="border-b border-[#1e170f] px-3 py-3"><StatusPill>{row.status}</StatusPill></td>
+                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.owner}</td>
+                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.queue}</td>
+                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#9f8a60]">{row.updated}</td>
+                  <td className="border-b border-[#1e170f] px-3 py-3">
+                    <div className="flex gap-2">
+                      <button type="button" onClick={() => setDrawerItem(row.name)} className="rounded-lg border border-[#3b2c18] px-3 py-2 text-xs text-[#d8c48d] hover:border-[#8d7446]">Open</button>
+                      <button type="button" onClick={() => setModalAction(`Approve ${row.name}`)} className="rounded-lg border border-[#3b2c18] px-3 py-2 text-xs text-[#d8c48d] hover:border-[#8d7446]">Approve</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="mt-5 grid gap-4 xl:grid-cols-2">
+          <RuntimeCard>
+            <p className="text-sm text-[#9f8a60]">Form / Runtime editing</p>
+            <form className="mt-4 grid gap-3" onSubmit={(event) => { event.preventDefault(); setModalAction("Save runtime form"); }}>
+              <input className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder="Runtime title" />
+              <select className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]">
+                {runtimeStatuses.map((status) => <option key={status}>{status}</option>)}
+              </select>
+              <textarea className="min-h-24 rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder="Operational note" />
+              <button type="submit" className="rounded-xl border border-[#8d7446] bg-[#20180d] px-4 py-3 text-sm text-[#f3db9b]">Save Form</button>
+            </form>
+          </RuntimeCard>
+
+          <RuntimeCard>
+            <p className="text-sm text-[#9f8a60]">Queue / Logs</p>
+            <div className="mt-4 grid gap-3">
+              {rows.slice(0, 4).map((row) => (
+                <div key={`log-${row.id}`} className="flex items-center justify-between gap-3 rounded-xl border border-[#2d2214] bg-[#0b0907] p-3">
+                  <div>
+                    <p className="text-sm text-[#e7d19a]">{row.name}</p>
+                    <p className="mt-1 text-xs text-[#7f704f]">Queue {row.queue} / {row.updated}</p>
+                  </div>
+                  <button type="button" onClick={() => setModalAction(`Retry ${row.name}`)} className="rounded-lg border border-[#3b2c18] px-3 py-2 text-xs text-[#d8c48d]">Retry</button>
+                </div>
+              ))}
+            </div>
+          </RuntimeCard>
+        </div>
+      </section>
+
+      <aside className="grid gap-5">
+        <RuntimeCard>
+          <p className="text-sm text-[#9f8a60]">Drawer</p>
+          <h3 className="mt-2 text-2xl font-semibold text-[#e7d19a]">{drawerItem ?? "No item selected"}</h3>
+          <p className="mt-3 text-sm leading-6 text-[#cbb477]">Open a row to inspect status, queue position, logs, linked rules, and operator actions without leaving this workspace.</p>
+          <div className="mt-4 flex gap-2">
+            <button type="button" onClick={() => setModalAction("Escalate drawer item")} className="rounded-xl border border-[#3b2c18] px-3 py-2 text-sm text-[#d8c48d]">Escalate</button>
+            <button type="button" onClick={() => setDrawerItem(null)} className="rounded-xl border border-[#3b2c18] px-3 py-2 text-sm text-[#d8c48d]">Close</button>
+          </div>
+        </RuntimeCard>
 
         {workspace.ai ? (
           <RuntimeCard>
@@ -490,14 +1064,28 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
         {workspace.mobile ? (
           <RuntimeCard>
             <p className="text-sm text-[#9f8a60]">{t.quick} / Mobile high-frequency only</p>
-            <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4">
+            <div className="mt-3 grid grid-cols-2 gap-2">
               {workspace.mobile.map((item) => (
                 <span key={item} className="text-sm text-[#cbb477]">{item}</span>
               ))}
             </div>
           </RuntimeCard>
         ) : null}
-      </section>
+      </aside>
+
+      {modalAction ? (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/65 px-4">
+          <div className="w-full max-w-md rounded-3xl border border-[#8d7446]/60 bg-[#100d09] p-6 shadow-[0_28px_80px_rgba(0,0,0,0.5)]">
+            <p className="text-sm text-[#9f8a60]">Modal</p>
+            <h3 className="mt-2 text-2xl font-semibold text-[#f3db9b]">{modalAction}</h3>
+            <p className="mt-3 text-sm leading-6 text-[#cbb477]">Confirm this operation inside the current Runtime Workspace. This shell reserves approval, failure retry, and audit log hooks.</p>
+            <div className="mt-6 flex justify-end gap-2">
+              <button type="button" onClick={() => setModalAction(null)} className="rounded-xl border border-[#3b2c18] px-4 py-3 text-sm text-[#d8c48d]">Cancel</button>
+              <button type="button" onClick={() => setModalAction(null)} className="rounded-xl border border-[#8d7446] bg-[#20180d] px-4 py-3 text-sm text-[#f3db9b]">Confirm</button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -592,17 +1180,9 @@ function LocaleWorkspace() {
   );
 }
 
-export function AdminOSConsole() {
-  const [activeWorkspace, setActiveWorkspace] = useState<WorkspaceId>("overview");
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() =>
-    Object.fromEntries(navGroups.map((group) => [group.id, true])),
-  );
-
+export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ activeWorkspace?: AdminWorkspaceId }>) {
   const workspace = workspaceMap[activeWorkspace];
-  const activeGroup = useMemo(
-    () => navGroups.find((group) => (group.items as readonly WorkspaceId[]).includes(activeWorkspace)),
-    [activeWorkspace],
-  );
+  const activeGroup = navGroups.find((group) => (group.items as readonly AdminWorkspaceId[]).includes(activeWorkspace));
 
   return (
     <main className="min-h-screen bg-[#070605] text-[#f1e7cf]">
@@ -612,55 +1192,47 @@ export function AdminOSConsole() {
             <p className="text-2xl font-semibold leading-tight text-[#e7d19a]">{t.adminSystem}</p>
             <p className="mt-1 text-sm text-[#9f8a60]">Admin OS</p>
             <p className="mt-4 text-sm leading-6 text-[#b9a878]">{siteConfig.siteName}</p>
-            <button
-              type="button"
-              onClick={() => setActiveWorkspace("overview")}
-              className={`mt-5 w-full rounded-xl border px-3 py-3 text-left text-sm ${activeWorkspace === "overview" ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-[#3b2c18] bg-[#100d09] text-[#cbb477]"}`}
+            <Link
+              href="/admin"
+              className={`mt-5 block w-full rounded-xl border px-3 py-3 text-left text-sm ${activeWorkspace === "overview" ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-[#3b2c18] bg-[#100d09] text-[#cbb477]"}`}
             >
               Runtime Overview
-            </button>
+            </Link>
           </div>
 
           <nav className="max-h-[calc(100vh-10rem)] overflow-auto px-3 py-4" aria-label="Admin OS workspace navigation">
             {navGroups.map((group) => {
-              const isOpen = openGroups[group.id];
               const isActiveGroup = activeGroup?.id === group.id;
               return (
-                <div key={group.id} className="mb-2">
-                  <button
-                    type="button"
-                    onClick={() => setOpenGroups((current) => ({ ...current, [group.id]: !current[group.id] }))}
+                <details key={group.id} className="mb-2" open={isActiveGroup || group.id === "frontstage"}>
+                  <summary
                     className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3 text-left transition ${isActiveGroup ? "border-[#8d7446]/70 bg-[#171107]" : "border-transparent hover:border-[#3b2c18] hover:bg-[#100d09]"}`}
-                    aria-expanded={isOpen}
                   >
                     <span className="grid h-9 w-9 place-items-center rounded-lg border border-[#4b381f] bg-[#100d09] text-xs font-semibold text-[#d8bd78]">{group.icon}</span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-lg leading-tight text-[#e7d19a]">{group.cn}</span>
                       <span className="block truncate text-xs text-[#7f704f]">{group.en}</span>
                     </span>
-                    <span className="text-[#9f8a60]">{isOpen ? "-" : "+"}</span>
-                  </button>
+                    <span className="text-[#9f8a60]">+</span>
+                  </summary>
 
-                  {isOpen ? (
-                    <div className="mt-1 grid gap-1 pl-12">
-                      {group.items.map((id) => {
-                        const item = workspaceMap[id];
-                        const isActive = id === activeWorkspace;
-                        return (
-                          <button
-                            key={id}
-                            type="button"
-                            onClick={() => setActiveWorkspace(id)}
-                            className={`rounded-lg border px-3 py-2 text-left text-sm transition ${isActive ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-transparent text-[#b9a878] hover:border-[#3b2c18] hover:bg-[#100d09]"}`}
-                          >
-                            <span className="block">{item.cn}</span>
-                            <span className="mt-0.5 block text-xs text-[#7f704f]">{item.en}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                </div>
+                  <div className="mt-1 grid gap-1 pl-12">
+                    {group.items.map((id) => {
+                      const item = workspaceMap[id];
+                      const isActive = id === activeWorkspace;
+                      return (
+                        <Link
+                          key={id}
+                          href={workspaceHref(id)}
+                          className={`rounded-lg border px-3 py-2 text-left text-sm transition ${isActive ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-transparent text-[#b9a878] hover:border-[#3b2c18] hover:bg-[#100d09]"}`}
+                        >
+                          <span className="block">{item.cn}</span>
+                          <span className="mt-0.5 block text-xs text-[#7f704f]">{item.en}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </details>
               );
             })}
           </nav>
@@ -690,3 +1262,4 @@ export function AdminOSConsole() {
     </main>
   );
 }
+

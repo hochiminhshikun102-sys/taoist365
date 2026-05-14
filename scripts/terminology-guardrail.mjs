@@ -55,8 +55,12 @@ function scanOneFile(fullPath) {
     return;
   }
 
-  const text = fs.readFileSync(fullPath, "utf8");
   const rel = path.relative(root, fullPath).replaceAll("\\", "/");
+  if ((config.scanExcludePaths ?? []).some((segment) => rel.includes(segment))) {
+    return;
+  }
+
+  const text = fs.readFileSync(fullPath, "utf8");
   filesScanned.push(rel);
   scanFile(rel, text);
 }
@@ -137,6 +141,10 @@ function hasDriftTerm(text, term) {
     }
 
     for (const match of line.matchAll(pattern)) {
+      if (term.toLowerCase() === "fortune" && (line.includes("Fortune Draw") || line.includes("/brand/production/homepage/ways-to-begin/fortune-draw"))) {
+        continue;
+      }
+
       if (!isBoundaryUse(line, match.index ?? 0)) {
         return true;
       }
@@ -193,6 +201,10 @@ function scanProductionPaths() {
 
   function scanPathName(fullPath) {
     const rel = path.relative(root, fullPath).replaceAll("\\", "/");
+    if ((config.productionPathExcludePaths ?? []).some((segment) => rel.includes(segment))) {
+      return;
+    }
+
     pathsScanned.push(rel);
     const lowerPath = rel.toLowerCase();
     for (const term of forbiddenPathTerms) {

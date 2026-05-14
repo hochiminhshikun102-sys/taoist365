@@ -1,0 +1,55 @@
+
+地瓜：
+
+新增以下 6 个一级 Runtime 模块，
+立即并入当前 Reverent Inquiry Admin OS：
+
+13. Message & Notification Center
+14. Campaign & Marketing Center
+15. After-Sales Center
+16. Community & Content Moderation
+17. Compliance & Legal Center
+18. Finance & Settlement Center
+
+所有一级菜单：
+独立页面。
+
+所有二级菜单：
+独立 Workspace。
+
+禁止：
+Landing Page 化、
+一页到底、
+静态展示。
+
+所有模块：
+必须进入 Interactive Runtime。
+
+即：
+
+- table
+- search
+- filter
+- forms
+- actions
+- queue
+- logs
+- status
+- drawer
+- modal
+
+必须真实存在。
+
+PC + Mobile 同时落地。
+
+移动端：
+只保留高频刚需。
+
+严格按：
+《Reverent Inquiry Admin OS 完整地基最终文档（20260515）》
++
+本次新增 Runtime 模块合集
+
+统一施工。
+
+禁止跑偏。

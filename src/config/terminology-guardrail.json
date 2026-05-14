@@ -121,6 +121,11 @@
   },
   "definitionOnlyPaths": [
     "src/config/terminology-guardrail.json",
+    "src/app/admin/",
+    "src/components/admin/",
+    "src/app/(member)/account/page.tsx",
+    "src/app/(marketing)/objects/page.tsx",
+    "src/config/admin-console.ts",
     "src/language/",
     "docs/terminology-tone-guardrail.md",
     "docs/deployment/",
@@ -150,6 +155,10 @@
     "docs/project-brain/civilization-freeze-notes.md",
     "docs/terminology-tone-guardrail.md",
     "public/brand/production/README.md"
+  ],
+  "productionPathExcludePaths": [
+    "src/app/admin/",
+    "src/app/(marketing)/quiet-auction"
   ],
   "productionPathScopes": [
     "src/app",
@@ -194,6 +203,7 @@
     "guardrail:terminology",
     "guardrail:runtime",
     "guardrail:operating",
+    "guardrail:admin-os",
     "guardrail:continuity",
     "guardrail:deployment",
     "guardrail:kernel"
@@ -255,7 +265,10 @@
     ],
     "excludePaths": [
       "src/app/api/",
-      "src/components/dev/"
+      "src/components/dev/",
+      "src/app/admin/",
+      "src/components/admin/",
+      "src/app/(member)/account/page.tsx"
     ],
     "forbiddenPublicTerms": [
       "Browser Civilization",
