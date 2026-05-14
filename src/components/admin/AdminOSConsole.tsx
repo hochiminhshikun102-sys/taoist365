@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { useState } from "react";
 import { locales, localeDefinitions } from "@/config/locales";
 import { siteConfig } from "@/config/site";
@@ -896,27 +897,239 @@ function RuntimeCard({ children }: Readonly<{ children: React.ReactNode }>) {
   );
 }
 
-const runtimeStatuses = ["Open", "Review", "Scheduled", "Failed"] as const;
+const runtimeStatuses = ["Draft", "Open", "Review", "Scheduled", "Published", "Archived", "Failed"] as const;
+const pageSize = 5;
 
-function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
-  const [query, setQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
-  const [drawerItem, setDrawerItem] = useState<string | null>(null);
-  const [modalAction, setModalAction] = useState<string | null>(null);
+type RuntimeStatus = (typeof runtimeStatuses)[number];
+type RuntimeKind = "general" | "media" | "ai" | "logistics" | "supply" | "finance" | "moderation" | "publishing";
+type RuntimeRow = {
+  id: string;
+  name: string;
+  status: RuntimeStatus;
+  owner: string;
+  category: string;
+  note: string;
+  progress: number;
+  tokens: number;
+  amount: string;
+  updated: string;
+  previewUrl?: string;
+};
 
-  const rows = workspace.work.map((work, index) => ({
+type RuntimeLog = {
+  id: string;
+  message: string;
+  time: string;
+};
+
+type RuntimeForm = {
+  name: string;
+  category: string;
+  owner: string;
+  status: RuntimeStatus;
+  note: string;
+  amount: string;
+};
+
+const emptyRuntimeForm: RuntimeForm = {
+  name: "",
+  category: "",
+  owner: "Operations",
+  status: "Draft",
+  note: "",
+  amount: "",
+};
+
+function runtimeStorageKey(workspaceId: AdminWorkspaceId) {
+  return `reverent-admin-runtime:${workspaceId}`;
+}
+
+function logStorageKey(workspaceId: AdminWorkspaceId) {
+  return `reverent-admin-runtime-logs:${workspaceId}`;
+}
+
+function readStoredRows(workspace: Workspace): RuntimeRow[] {
+  if (typeof window !== "undefined") {
+    const stored = window.localStorage.getItem(runtimeStorageKey(workspace.id));
+    if (stored) {
+      return JSON.parse(stored) as RuntimeRow[];
+    }
+  }
+
+  return workspace.work.map((work, index) => ({
     id: `${workspace.id}-${index + 1}`,
     name: work,
     status: runtimeStatuses[index % runtimeStatuses.length],
     owner: index % 2 === 0 ? "Operations" : "Review",
-    queue: `${index + 2}`,
+    category: defaultCategory(workspace.id),
+    note: `Runtime record for ${work}`,
+    progress: Math.min(95, 20 + index * 12),
+    tokens: 840 + index * 315,
+    amount: `$${(index * 72 + 48).toFixed(2)}`,
     updated: `2026-05-${15 - (index % 4)}`,
   }));
+}
+
+function readStoredLogs(workspace: Workspace): RuntimeLog[] {
+  if (typeof window !== "undefined") {
+    const stored = window.localStorage.getItem(logStorageKey(workspace.id));
+    if (stored) {
+      return JSON.parse(stored) as RuntimeLog[];
+    }
+  }
+
+  return [
+    { id: `${workspace.id}-log-1`, message: `${workspace.en} opened`, time: "2026-05-15 09:00" },
+    { id: `${workspace.id}-log-2`, message: "Runtime queue initialized", time: "2026-05-15 09:12" },
+  ];
+}
+
+function defaultCategory(workspaceId: AdminWorkspaceId) {
+  const kind = getRuntimeKind(workspaceId);
+  const labels: Record<RuntimeKind, string> = {
+    general: "Runtime",
+    media: "Media Asset",
+    ai: "AI Queue",
+    logistics: "Shipment",
+    supply: "Supply",
+    finance: "Settlement",
+    moderation: "Review",
+    publishing: "Publishing",
+  };
+  return labels[kind];
+}
+
+function getRuntimeKind(workspaceId: AdminWorkspaceId): RuntimeKind {
+  if (["brand-assets", "product-media", "social-media", "prompt-packs", "safe-area", "frontstage-safe-area"].includes(workspaceId)) return "media";
+  if (["ai-queue", "ai-image", "ai-video", "geo", "viral-radar", "ai-reach-reserve", "ai-campaign-optimization", "ai-content-moderation"].includes(workspaceId)) return "ai";
+  if (["logistics", "tracking", "freight", "returns", "after-sales-tracking"].includes(workspaceId)) return "logistics";
+  if (["suppliers", "inventory", "procurement", "costs"].includes(workspaceId)) return "supply";
+  if (["finance-settlement", "finance-overview", "reconciliation", "refund-reconciliation", "merchant-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs"].includes(workspaceId)) return "finance";
+  if (["community-moderation", "comment-review", "report-handling", "ugc-review", "sensitive-words", "media-moderation"].includes(workspaceId)) return "moderation";
+  if (["publishing-runtime", "terms-runtime", "privacy-policy-runtime", "ai-usage-agreement", "homepage-runtime", "section-runtime", "navigation-runtime", "homepage-rotation"].includes(workspaceId)) return "publishing";
+  return "general";
+}
+
+function persistRows(workspaceId: AdminWorkspaceId, nextRows: RuntimeRow[]) {
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(runtimeStorageKey(workspaceId), JSON.stringify(nextRows));
+  }
+}
+
+function persistLogs(workspaceId: AdminWorkspaceId, nextLogs: RuntimeLog[]) {
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(logStorageKey(workspaceId), JSON.stringify(nextLogs));
+  }
+}
+
+function RuntimeButton({ children, onClick, tone = "default", type = "button" }: Readonly<{ children: React.ReactNode; onClick?: () => void; tone?: "default" | "primary" | "danger"; type?: "button" | "submit" }>) {
+  const toneClass = tone === "primary" ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : tone === "danger" ? "border-[#6b2d20] bg-[#1a0c08] text-[#e5a38b]" : "border-[#3b2c18] bg-[#0b0907] text-[#d8c48d]";
+  return (
+    <button type={type} onClick={onClick} className={`rounded-xl border px-3 py-2 text-sm transition hover:border-[#8d7446] ${toneClass}`}>
+      {children}
+    </button>
+  );
+}
+
+function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
+  const kind = getRuntimeKind(workspace.id);
+  const [rows, setRows] = useState<RuntimeRow[]>(() => readStoredRows(workspace));
+  const [logs, setLogs] = useState<RuntimeLog[]>(() => readStoredLogs(workspace));
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [activeTab, setActiveTab] = useState<"records" | "form" | "logs">("records");
+  const [page, setPage] = useState(1);
+  const [drawerItem, setDrawerItem] = useState<RuntimeRow | null>(null);
+  const [modalAction, setModalAction] = useState<{ label: string; run: () => void } | null>(null);
+  const [form, setForm] = useState<RuntimeForm>(emptyRuntimeForm);
+
+  function writeRows(nextRows: RuntimeRow[]) {
+    setRows(nextRows);
+    persistRows(workspace.id, nextRows);
+  }
+
+  function writeLogs(message: string) {
+    const nextLogs = [{ id: `${workspace.id}-log-${Date.now()}`, message, time: new Date().toLocaleString() }, ...logs].slice(0, 20);
+    setLogs(nextLogs);
+    persistLogs(workspace.id, nextLogs);
+  }
+
+  function saveRow(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const name = form.name.trim();
+    if (!name) return;
+
+    const nextRow: RuntimeRow = {
+      id: `${workspace.id}-${Date.now()}`,
+      name,
+      status: form.status,
+      owner: form.owner,
+      category: form.category || defaultCategory(workspace.id),
+      note: form.note,
+      progress: kind === "ai" ? 12 : 0,
+      tokens: kind === "ai" ? 120 : 0,
+      amount: form.amount || "$0.00",
+      updated: new Date().toISOString().slice(0, 10),
+    };
+    writeRows([nextRow, ...rows]);
+    writeLogs(`Created ${name}`);
+    setForm(emptyRuntimeForm);
+    setActiveTab("records");
+  }
+
+  function updateRow(rowId: string, patch: Partial<RuntimeRow>, logMessage: string) {
+    const nextRows = rows.map((row) => (row.id === rowId ? { ...row, ...patch, updated: new Date().toISOString().slice(0, 10) } : row));
+    writeRows(nextRows);
+    writeLogs(logMessage);
+    const updatedDrawer = nextRows.find((row) => row.id === rowId);
+    if (updatedDrawer) setDrawerItem(updatedDrawer);
+  }
+
+  function deleteRow(row: RuntimeRow) {
+    setModalAction({
+      label: `Delete ${row.name}`,
+      run: () => {
+        writeRows(rows.filter((item) => item.id !== row.id));
+        writeLogs(`Deleted ${row.name}`);
+        setDrawerItem(null);
+      },
+    });
+  }
+
+  function editRow(row: RuntimeRow) {
+    setForm({ name: row.name, category: row.category, owner: row.owner, status: row.status, note: row.note, amount: row.amount });
+    setActiveTab("form");
+    writeLogs(`Editing ${row.name}`);
+  }
+
+  function handleUpload(fileList: FileList | null) {
+    const files = Array.from(fileList ?? []);
+    if (files.length === 0) return;
+    const nextRows = files.map((file) => ({
+      id: `${workspace.id}-file-${Date.now()}-${file.name}`,
+      name: file.name,
+      status: "Draft" as RuntimeStatus,
+      owner: "Media",
+      category: kind === "media" ? "Uploaded Asset" : defaultCategory(workspace.id),
+      note: `${Math.round(file.size / 1024)} KB preview uploaded for this runtime.`,
+      progress: 100,
+      tokens: 0,
+      amount: "$0.00",
+      updated: new Date().toISOString().slice(0, 10),
+      previewUrl: URL.createObjectURL(file),
+    }));
+    writeRows([...nextRows, ...rows]);
+    writeLogs(`Uploaded ${files.length} file(s)`);
+  }
+
   const filteredRows = rows.filter((row) => {
-    const matchesQuery = row.name.toLowerCase().includes(query.toLowerCase());
+    const searchText = `${row.name} ${row.category} ${row.owner} ${row.note}`.toLowerCase();
+    const matchesQuery = searchText.includes(query.toLowerCase());
     const matchesStatus = statusFilter === "All" || row.status === statusFilter;
     return matchesQuery && matchesStatus;
   });
+  const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+  const visibleRows = filteredRows.slice((page - 1) * pageSize, page * pageSize);
 
   return (
     <div className="grid gap-5 xl:grid-cols-[1fr_22rem]">
@@ -929,144 +1142,102 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
           <StatusPill>{workspace.state}</StatusPill>
         </div>
 
-        <div className="mt-5 grid gap-3 lg:grid-cols-[1fr_auto_auto]">
+        <div className="mt-5 grid gap-3 lg:grid-cols-[1fr_auto_auto_auto]">
           <label className="block">
             <span className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">Search</span>
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]"
-              placeholder="Search runtime item"
-              type="search"
-            />
+            <input value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} className="mt-2 w-full rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder="Search runtime records" type="search" />
           </label>
           <label className="block">
             <span className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">Filter</span>
-            <select
-              value={statusFilter}
-              onChange={(event) => setStatusFilter(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]"
-            >
+            <select value={statusFilter} onChange={(event) => { setStatusFilter(event.target.value); setPage(1); }} className="mt-2 w-full rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]">
               <option>All</option>
-              {runtimeStatuses.map((status) => (
-                <option key={status}>{status}</option>
-              ))}
+              {runtimeStatuses.map((status) => <option key={status}>{status}</option>)}
             </select>
           </label>
+          <label className="block">
+            <span className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">Upload</span>
+            <input onChange={(event) => handleUpload(event.target.files)} className="mt-2 block w-full text-sm text-[#cbb477] file:mr-3 file:rounded-lg file:border file:border-[#3b2c18] file:bg-[#0b0907] file:px-3 file:py-2 file:text-[#d8c48d]" type="file" multiple />
+          </label>
           <div className="flex items-end gap-2">
-            <button type="button" onClick={() => setModalAction("Create runtime item")} className="rounded-xl border border-[#8d7446] bg-[#20180d] px-4 py-3 text-sm text-[#f3db9b]">
-              New
-            </button>
-            <button type="button" onClick={() => setModalAction("Upload asset")} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#d8c48d]">
-              Upload
-            </button>
+            <RuntimeButton tone="primary" onClick={() => setActiveTab("form")}>Create</RuntimeButton>
+            <RuntimeButton onClick={() => writeLogs("Export requested")}>Export</RuntimeButton>
           </div>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {[
-            ["Status", workspace.state],
-            ["Queue", `${rows.length} items`],
-            ["Logs", "Audit trail active"],
-            ["Actions", "Drawer + modal ready"],
-          ].map(([label, value]) => (
-            <div key={label} className="rounded-xl border border-[#2d2214] bg-[#0b0907] p-4">
-              <p className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">{label}</p>
-              <p className="mt-3 text-lg text-[#e7d19a]">{value}</p>
-            </div>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {(["records", "form", "logs"] as const).map((tab) => (
+            <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`rounded-full border px-4 py-2 text-sm capitalize ${activeTab === tab ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-[#3b2c18] bg-[#0b0907] text-[#cbb477]"}`}>
+              {tab}
+            </button>
           ))}
         </div>
 
-        <div className="mt-5 overflow-auto rounded-2xl border border-[#2d2214]">
-          <table className="w-full min-w-[54rem] border-collapse text-left text-sm">
-            <thead className="bg-[#0b0907] text-[#9f8a60]">
-              <tr>
-                <th className="border-b border-[#2d2214] px-3 py-3">Runtime Item</th>
-                <th className="border-b border-[#2d2214] px-3 py-3">Status</th>
-                <th className="border-b border-[#2d2214] px-3 py-3">Owner</th>
-                <th className="border-b border-[#2d2214] px-3 py-3">Queue</th>
-                <th className="border-b border-[#2d2214] px-3 py-3">Updated</th>
-                <th className="border-b border-[#2d2214] px-3 py-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRows.map((row) => (
-                <tr key={row.id}>
-                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#e7d19a]">{row.name}</td>
-                  <td className="border-b border-[#1e170f] px-3 py-3"><StatusPill>{row.status}</StatusPill></td>
-                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.owner}</td>
-                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.queue}</td>
-                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#9f8a60]">{row.updated}</td>
-                  <td className="border-b border-[#1e170f] px-3 py-3">
-                    <div className="flex gap-2">
-                      <button type="button" onClick={() => setDrawerItem(row.name)} className="rounded-lg border border-[#3b2c18] px-3 py-2 text-xs text-[#d8c48d] hover:border-[#8d7446]">Open</button>
-                      <button type="button" onClick={() => setModalAction(`Approve ${row.name}`)} className="rounded-lg border border-[#3b2c18] px-3 py-2 text-xs text-[#d8c48d] hover:border-[#8d7446]">Approve</button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <SpecializedRuntimePanel kind={kind} rows={rows} updateRow={updateRow} writeLogs={writeLogs} />
 
-        <div className="mt-5 grid gap-4 xl:grid-cols-2">
+        {activeTab === "records" ? (
+          <RuntimeRecordsTable rows={visibleRows} editRow={editRow} deleteRow={deleteRow} setDrawerItem={setDrawerItem} updateRow={updateRow} />
+        ) : null}
+
+        {activeTab === "form" ? (
           <RuntimeCard>
-            <p className="text-sm text-[#9f8a60]">Form / Runtime editing</p>
-            <form className="mt-4 grid gap-3" onSubmit={(event) => { event.preventDefault(); setModalAction("Save runtime form"); }}>
-              <input className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder="Runtime title" />
-              <select className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]">
+            <p className="text-sm text-[#9f8a60]">Create / edit / save</p>
+            <form className="mt-4 grid gap-3 md:grid-cols-2" onSubmit={saveRow}>
+              <input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder={kind === "logistics" ? "Tracking number or shipment name" : "Runtime title"} />
+              <input value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder={kind === "logistics" ? "Carrier / DHL / UPS / SF" : "Category"} />
+              <input value={form.owner} onChange={(event) => setForm({ ...form, owner: event.target.value })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder="Owner" />
+              <input value={form.amount} onChange={(event) => setForm({ ...form, amount: event.target.value })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder={kind === "finance" ? "Amount / settlement value" : "Optional value"} />
+              <select value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value as RuntimeStatus })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]">
                 {runtimeStatuses.map((status) => <option key={status}>{status}</option>)}
               </select>
-              <textarea className="min-h-24 rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder="Operational note" />
-              <button type="submit" className="rounded-xl border border-[#8d7446] bg-[#20180d] px-4 py-3 text-sm text-[#f3db9b]">Save Form</button>
+              <textarea value={form.note} onChange={(event) => setForm({ ...form, note: event.target.value })} className="min-h-24 rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446] md:col-span-2" placeholder="Operational note" />
+              <div className="flex flex-wrap gap-2 md:col-span-2">
+                <RuntimeButton type="submit" tone="primary">Save</RuntimeButton>
+                <RuntimeButton onClick={() => setForm(emptyRuntimeForm)}>Clear</RuntimeButton>
+              </div>
             </form>
           </RuntimeCard>
+        ) : null}
 
-          <RuntimeCard>
-            <p className="text-sm text-[#9f8a60]">Queue / Logs</p>
-            <div className="mt-4 grid gap-3">
-              {rows.slice(0, 4).map((row) => (
-                <div key={`log-${row.id}`} className="flex items-center justify-between gap-3 rounded-xl border border-[#2d2214] bg-[#0b0907] p-3">
-                  <div>
-                    <p className="text-sm text-[#e7d19a]">{row.name}</p>
-                    <p className="mt-1 text-xs text-[#7f704f]">Queue {row.queue} / {row.updated}</p>
-                  </div>
-                  <button type="button" onClick={() => setModalAction(`Retry ${row.name}`)} className="rounded-lg border border-[#3b2c18] px-3 py-2 text-xs text-[#d8c48d]">Retry</button>
-                </div>
-              ))}
-            </div>
-          </RuntimeCard>
+        {activeTab === "logs" ? <RuntimeLogs logs={logs} /> : null}
+
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-[#9f8a60]">Pagination · Page {page} / {totalPages} · {filteredRows.length} records</p>
+          <div className="flex gap-2">
+            <RuntimeButton onClick={() => setPage(Math.max(1, page - 1))}>Previous</RuntimeButton>
+            <RuntimeButton onClick={() => setPage(Math.min(totalPages, page + 1))}>Next</RuntimeButton>
+          </div>
         </div>
       </section>
 
       <aside className="grid gap-5">
         <RuntimeCard>
-          <p className="text-sm text-[#9f8a60]">Drawer</p>
-          <h3 className="mt-2 text-2xl font-semibold text-[#e7d19a]">{drawerItem ?? "No item selected"}</h3>
-          <p className="mt-3 text-sm leading-6 text-[#cbb477]">Open a row to inspect status, queue position, logs, linked rules, and operator actions without leaving this workspace.</p>
-          <div className="mt-4 flex gap-2">
-            <button type="button" onClick={() => setModalAction("Escalate drawer item")} className="rounded-xl border border-[#3b2c18] px-3 py-2 text-sm text-[#d8c48d]">Escalate</button>
-            <button type="button" onClick={() => setDrawerItem(null)} className="rounded-xl border border-[#3b2c18] px-3 py-2 text-sm text-[#d8c48d]">Close</button>
-          </div>
-        </RuntimeCard>
-
-        {workspace.ai ? (
-          <RuntimeCard>
-            <p className="text-sm text-[#9f8a60]">AI Runtime Extension</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {workspace.ai.map((item) => (
-                <StatusPill key={item}>{item}</StatusPill>
-              ))}
+          <p className="text-sm text-[#9f8a60]">Drawer / record detail</p>
+          <h3 className="mt-2 text-2xl font-semibold text-[#e7d19a]">{drawerItem?.name ?? "No item selected"}</h3>
+          {drawerItem ? (
+            <div className="mt-4 grid gap-3 text-sm text-[#cbb477]">
+              <p>Status: {drawerItem.status}</p>
+              <p>Category: {drawerItem.category}</p>
+              <p>Owner: {drawerItem.owner}</p>
+              <p>{drawerItem.note}</p>
+              {drawerItem.previewUrl ? <object data={drawerItem.previewUrl} aria-label="Uploaded asset preview" className="h-48 w-full rounded-xl border border-[#2d2214] object-contain" /> : null}
+              <div className="flex flex-wrap gap-2">
+                <RuntimeButton onClick={() => editRow(drawerItem)}>Edit</RuntimeButton>
+                <RuntimeButton tone="primary" onClick={() => updateRow(drawerItem.id, { status: "Published" }, `Published ${drawerItem.name}`)}>Publish</RuntimeButton>
+                <RuntimeButton onClick={() => updateRow(drawerItem.id, { status: "Archived" }, `Archived ${drawerItem.name}`)}>Archive</RuntimeButton>
+                <RuntimeButton tone="danger" onClick={() => deleteRow(drawerItem)}>Delete</RuntimeButton>
+              </div>
             </div>
-          </RuntimeCard>
-        ) : null}
+          ) : (
+            <p className="mt-3 text-sm leading-6 text-[#cbb477]">Open a row to inspect, edit, publish, archive, delete, preview, and review history.</p>
+          )}
+        </RuntimeCard>
 
         {workspace.mobile ? (
           <RuntimeCard>
-            <p className="text-sm text-[#9f8a60]">{t.quick} / Mobile high-frequency only</p>
+            <p className="text-sm text-[#9f8a60]">{t.quick} / Mobile high-frequency actions</p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               {workspace.mobile.map((item) => (
-                <span key={item} className="text-sm text-[#cbb477]">{item}</span>
+                <button key={item} type="button" onClick={() => writeLogs(`Mobile action: ${item}`)} className="rounded-xl border border-[#2d2214] bg-[#0b0907] px-3 py-3 text-left text-sm text-[#cbb477] hover:border-[#8d7446]">{item}</button>
               ))}
             </div>
           </RuntimeCard>
@@ -1076,16 +1247,177 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
       {modalAction ? (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/65 px-4">
           <div className="w-full max-w-md rounded-3xl border border-[#8d7446]/60 bg-[#100d09] p-6 shadow-[0_28px_80px_rgba(0,0,0,0.5)]">
-            <p className="text-sm text-[#9f8a60]">Modal</p>
-            <h3 className="mt-2 text-2xl font-semibold text-[#f3db9b]">{modalAction}</h3>
-            <p className="mt-3 text-sm leading-6 text-[#cbb477]">Confirm this operation inside the current Runtime Workspace. This shell reserves approval, failure retry, and audit log hooks.</p>
+            <p className="text-sm text-[#9f8a60]">Modal / confirmation</p>
+            <h3 className="mt-2 text-2xl font-semibold text-[#f3db9b]">{modalAction.label}</h3>
+            <p className="mt-3 text-sm leading-6 text-[#cbb477]">This operation writes to the current Runtime state and adds an audit log entry.</p>
             <div className="mt-6 flex justify-end gap-2">
-              <button type="button" onClick={() => setModalAction(null)} className="rounded-xl border border-[#3b2c18] px-4 py-3 text-sm text-[#d8c48d]">Cancel</button>
-              <button type="button" onClick={() => setModalAction(null)} className="rounded-xl border border-[#8d7446] bg-[#20180d] px-4 py-3 text-sm text-[#f3db9b]">Confirm</button>
+              <RuntimeButton onClick={() => setModalAction(null)}>Cancel</RuntimeButton>
+              <RuntimeButton tone="primary" onClick={() => { modalAction.run(); setModalAction(null); }}>Confirm</RuntimeButton>
             </div>
           </div>
         </div>
       ) : null}
+    </div>
+  );
+}
+
+function RuntimeRecordsTable({ rows, editRow, deleteRow, setDrawerItem, updateRow }: Readonly<{ rows: RuntimeRow[]; editRow: (row: RuntimeRow) => void; deleteRow: (row: RuntimeRow) => void; setDrawerItem: (row: RuntimeRow) => void; updateRow: (rowId: string, patch: Partial<RuntimeRow>, logMessage: string) => void }>) {
+  return (
+    <div className="mt-5 overflow-auto rounded-2xl border border-[#2d2214]">
+      <table className="w-full min-w-[62rem] border-collapse text-left text-sm">
+        <thead className="bg-[#0b0907] text-[#9f8a60]">
+          <tr>
+            <th className="border-b border-[#2d2214] px-3 py-3">Name</th>
+            <th className="border-b border-[#2d2214] px-3 py-3">Status</th>
+            <th className="border-b border-[#2d2214] px-3 py-3">Category</th>
+            <th className="border-b border-[#2d2214] px-3 py-3">Owner</th>
+            <th className="border-b border-[#2d2214] px-3 py-3">Progress</th>
+            <th className="border-b border-[#2d2214] px-3 py-3">Amount</th>
+            <th className="border-b border-[#2d2214] px-3 py-3">Updated</th>
+            <th className="border-b border-[#2d2214] px-3 py-3">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.id}>
+              <td className="border-b border-[#1e170f] px-3 py-3 text-[#e7d19a]">{row.name}</td>
+              <td className="border-b border-[#1e170f] px-3 py-3"><StatusPill>{row.status}</StatusPill></td>
+              <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.category}</td>
+              <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.owner}</td>
+              <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.progress}%</td>
+              <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.amount}</td>
+              <td className="border-b border-[#1e170f] px-3 py-3 text-[#9f8a60]">{row.updated}</td>
+              <td className="border-b border-[#1e170f] px-3 py-3">
+                <div className="flex flex-wrap gap-2">
+                  <RuntimeButton onClick={() => setDrawerItem(row)}>Open</RuntimeButton>
+                  <RuntimeButton onClick={() => editRow(row)}>Edit</RuntimeButton>
+                  <RuntimeButton tone="primary" onClick={() => updateRow(row.id, { status: "Published", progress: 100 }, `Published ${row.name}`)}>Publish</RuntimeButton>
+                  <RuntimeButton onClick={() => updateRow(row.id, { status: "Archived" }, `Archived ${row.name}`)}>Archive</RuntimeButton>
+                  <RuntimeButton tone="danger" onClick={() => deleteRow(row)}>Delete</RuntimeButton>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function RuntimeLogs({ logs }: Readonly<{ logs: RuntimeLog[] }>) {
+  return (
+    <RuntimeCard>
+      <p className="text-sm text-[#9f8a60]">Logs / history</p>
+      <div className="mt-4 grid gap-3">
+        {logs.map((log) => (
+          <div key={log.id} className="rounded-xl border border-[#2d2214] bg-[#0b0907] p-3">
+            <p className="text-sm text-[#e7d19a]">{log.message}</p>
+            <p className="mt-1 text-xs text-[#7f704f]">{log.time}</p>
+          </div>
+        ))}
+      </div>
+    </RuntimeCard>
+  );
+}
+
+function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<{ kind: RuntimeKind; rows: RuntimeRow[]; updateRow: (rowId: string, patch: Partial<RuntimeRow>, logMessage: string) => void; writeLogs: (message: string) => void }>) {
+  const firstRow = rows[0];
+  if (!firstRow) return null;
+
+  if (kind === "ai") {
+    const tokenUsage = rows.reduce((sum, row) => sum + row.tokens, 0);
+    return (
+      <div className="mt-5 grid gap-3 md:grid-cols-4">
+        <RuntimeMetric label="Queue" value={`${rows.length}`} />
+        <RuntimeMetric label="Token usage" value={`${tokenUsage}`} />
+        <RuntimeMetric label="Progress" value={`${Math.round(rows.reduce((sum, row) => sum + row.progress, 0) / rows.length)}%`} />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Open", progress: Math.min(100, firstRow.progress + 20), tokens: firstRow.tokens + 260 }, `Retried ${firstRow.name}`)}>Retry first queue</RuntimeButton>
+      </div>
+    );
+  }
+
+  if (kind === "media") {
+    return (
+      <div className="mt-5 grid gap-3 md:grid-cols-4">
+        <RuntimeMetric label="Files" value={`${rows.length}`} />
+        <RuntimeMetric label="Categories" value="Brand / Product / Social" />
+        <RuntimeMetric label="Safe Area" value="PC + Mobile" />
+        <RuntimeButton onClick={() => writeLogs("Safe Area preview opened")}>Safe Area Preview</RuntimeButton>
+      </div>
+    );
+  }
+
+  if (kind === "logistics") {
+    return (
+      <div className="mt-5 grid gap-3 md:grid-cols-4">
+        <RuntimeMetric label="Tracking input" value="Ready" />
+        <RuntimeMetric label="Carrier select" value="DHL / UPS / SF" />
+        <RuntimeMetric label="Returns" value={`${rows.filter((row) => row.name.toLowerCase().includes("return")).length}`} />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Open", progress: 65 }, `Updated shipment ${firstRow.name}`)}>Update shipment</RuntimeButton>
+      </div>
+    );
+  }
+
+  if (kind === "supply") {
+    return (
+      <div className="mt-5 grid gap-3 md:grid-cols-4">
+        <RuntimeMetric label="Suppliers" value={`${rows.length}`} />
+        <RuntimeMetric label="Warning states" value={`${rows.filter((row) => row.status === "Failed").length}`} />
+        <RuntimeMetric label="Procurement" value="Records active" />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Review" }, `Inventory warning reviewed: ${firstRow.name}`)}>Review warning</RuntimeButton>
+      </div>
+    );
+  }
+
+  if (kind === "finance") {
+    return (
+      <div className="mt-5 grid gap-3 md:grid-cols-4">
+        <RuntimeMetric label="Settlement" value={`${rows.length} records`} />
+        <RuntimeMetric label="Refunds" value={`${rows.filter((row) => row.name.toLowerCase().includes("refund")).length}`} />
+        <RuntimeMetric label="Audit logs" value="Active" />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Review" }, `Freeze / unfreeze reviewed: ${firstRow.name}`)}>Freeze / unfreeze</RuntimeButton>
+      </div>
+    );
+  }
+
+  if (kind === "moderation") {
+    return (
+      <div className="mt-5 grid gap-3 md:grid-cols-4">
+        <RuntimeMetric label="Review queue" value={`${rows.length}`} />
+        <RuntimeMetric label="Reports" value={`${rows.filter((row) => row.status === "Review").length}`} />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Approved ${firstRow.name}`)}>Approve</RuntimeButton>
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Archived" }, `Rejected ${firstRow.name}`)}>Reject</RuntimeButton>
+      </div>
+    );
+  }
+
+  if (kind === "publishing") {
+    return (
+      <div className="mt-5 grid gap-3 md:grid-cols-5">
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Draft" }, `Draft saved: ${firstRow.name}`)}>Draft</RuntimeButton>
+        <RuntimeButton onClick={() => writeLogs(`Preview opened: ${firstRow.name}`)}>Preview</RuntimeButton>
+        <RuntimeButton tone="primary" onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Published ${firstRow.name}`)}>Publish</RuntimeButton>
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Scheduled", progress: 50 }, `Scheduled ${firstRow.name}`)}>Schedule</RuntimeButton>
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Archived" }, `Rollback ${firstRow.name}`)}>Rollback</RuntimeButton>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-5 grid gap-3 md:grid-cols-4">
+      <RuntimeMetric label="Create" value="Ready" />
+      <RuntimeMetric label="Edit / save" value="Ready" />
+      <RuntimeMetric label="Publish / archive" value="Ready" />
+      <RuntimeMetric label="History" value="Active" />
+    </div>
+  );
+}
+
+function RuntimeMetric({ label, value }: Readonly<{ label: string; value: string }>) {
+  return (
+    <div className="rounded-xl border border-[#2d2214] bg-[#0b0907] p-4">
+      <p className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">{label}</p>
+      <p className="mt-3 text-lg text-[#e7d19a]">{value}</p>
     </div>
   );
 }
@@ -1183,20 +1515,29 @@ function LocaleWorkspace() {
 export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ activeWorkspace?: AdminWorkspaceId }>) {
   const workspace = workspaceMap[activeWorkspace];
   const activeGroup = navGroups.find((group) => (group.items as readonly AdminWorkspaceId[]).includes(activeWorkspace));
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
     <main className="min-h-screen bg-[#070605] text-[#f1e7cf]">
-      <div className="grid min-h-screen lg:grid-cols-[20rem_1fr]">
+      <div className="grid min-h-screen lg:grid-cols-[var(--admin-sidebar)_1fr]" style={{ "--admin-sidebar": sidebarCollapsed ? "5.5rem" : "20rem" } as CSSProperties}>
         <aside className="border-b border-[#2d2214] bg-[#0b0907] lg:border-r lg:border-b-0">
           <div className="border-b border-[#2d2214] px-5 py-5">
-            <p className="text-2xl font-semibold leading-tight text-[#e7d19a]">{t.adminSystem}</p>
-            <p className="mt-1 text-sm text-[#9f8a60]">Admin OS</p>
-            <p className="mt-4 text-sm leading-6 text-[#b9a878]">{siteConfig.siteName}</p>
+            <div className="flex items-center justify-between gap-3">
+              <div className={sidebarCollapsed ? "sr-only" : ""}>
+                <p className="text-2xl font-semibold leading-tight text-[#e7d19a]">{t.adminSystem}</p>
+                <p className="mt-1 text-sm text-[#9f8a60]">Admin OS</p>
+              </div>
+              <button type="button" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#3b2c18] bg-[#100d09] text-sm text-[#d8bd78] hover:border-[#8d7446]" aria-label="Collapse sidebar">
+                {sidebarCollapsed ? ">" : "<"}
+              </button>
+            </div>
+            <p className={`mt-4 text-sm leading-6 text-[#b9a878] ${sidebarCollapsed ? "sr-only" : ""}`}>{siteConfig.siteName}</p>
             <Link
               href="/admin"
+              title="Runtime Overview"
               className={`mt-5 block w-full rounded-xl border px-3 py-3 text-left text-sm ${activeWorkspace === "overview" ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-[#3b2c18] bg-[#100d09] text-[#cbb477]"}`}
             >
-              Runtime Overview
+              {sidebarCollapsed ? "OV" : "Runtime Overview"}
             </Link>
           </div>
 
@@ -1208,15 +1549,15 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
                   <summary
                     className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3 text-left transition ${isActiveGroup ? "border-[#8d7446]/70 bg-[#171107]" : "border-transparent hover:border-[#3b2c18] hover:bg-[#100d09]"}`}
                   >
-                    <span className="grid h-9 w-9 place-items-center rounded-lg border border-[#4b381f] bg-[#100d09] text-xs font-semibold text-[#d8bd78]">{group.icon}</span>
-                    <span className="min-w-0 flex-1">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-[#4b381f] bg-[#100d09] text-xs font-semibold text-[#d8bd78]">{group.icon}</span>
+                    <span className={`min-w-0 flex-1 ${sidebarCollapsed ? "sr-only" : ""}`}>
                       <span className="block text-lg leading-tight text-[#e7d19a]">{group.cn}</span>
                       <span className="block truncate text-xs text-[#7f704f]">{group.en}</span>
                     </span>
-                    <span className="text-[#9f8a60]">+</span>
+                    <span className={`text-[#9f8a60] ${sidebarCollapsed ? "sr-only" : ""}`}>+</span>
                   </summary>
 
-                  <div className="mt-1 grid gap-1 pl-12">
+                  <div className={`mt-1 grid gap-1 ${sidebarCollapsed ? "pl-0" : "pl-12"}`}>
                     {group.items.map((id) => {
                       const item = workspaceMap[id];
                       const isActive = id === activeWorkspace;
@@ -1224,10 +1565,11 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
                         <Link
                           key={id}
                           href={workspaceHref(id)}
+                          title={`${item.cn} / ${item.en}`}
                           className={`rounded-lg border px-3 py-2 text-left text-sm transition ${isActive ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-transparent text-[#b9a878] hover:border-[#3b2c18] hover:bg-[#100d09]"}`}
                         >
-                          <span className="block">{item.cn}</span>
-                          <span className="mt-0.5 block text-xs text-[#7f704f]">{item.en}</span>
+                          <span className="block">{sidebarCollapsed ? item.en.slice(0, 2).toUpperCase() : item.cn}</span>
+                          <span className={`mt-0.5 block text-xs text-[#7f704f] ${sidebarCollapsed ? "sr-only" : ""}`}>{item.en}</span>
                         </Link>
                       );
                     })}
