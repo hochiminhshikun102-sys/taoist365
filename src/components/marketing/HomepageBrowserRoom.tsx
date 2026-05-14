@@ -191,22 +191,11 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch browser-air-presence clear-air-card grid min-h-[11.75rem] overflow-hidden rounded-lg border p-0 sm:min-h-[15rem]"
+                  className="quiet-air-touch browser-air-presence clear-air-card relative block aspect-[0.59/1] min-h-0 overflow-hidden rounded-lg border p-0"
                 >
-                  <div className="grounded-card-image relative aspect-[1.05/1] overflow-hidden sm:aspect-[1.45/1] lg:aspect-[1.32/1]">
-                    <Image src={entry.image} alt="" fill className="object-contain p-2 opacity-[0.96]" sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw" />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))]" />
-                  </div>
-                  <div className="relative z-[1] flex min-h-[5.25rem] flex-col p-3 sm:min-h-[9rem] sm:p-5">
-                    <div className="flex items-center justify-between gap-3">
-                      <SoftMark name={entry.mark} />
-                      <ArrowLink />
-                    </div>
-                    <h3 className="mt-2 line-clamp-1 font-[var(--font-display-serif)] text-[1.05rem] font-semibold leading-tight text-foreground sm:mt-4 sm:text-2xl">
-                      {entry.title}
-                    </h3>
-                    <p className="grounded-card-copy mt-1.5 line-clamp-2 text-[0.72rem] leading-4 sm:mt-3 sm:text-sm sm:leading-6">{entry.body}</p>
-                  </div>
+                  <Image src={entry.image} alt="" fill className="object-fill opacity-[0.98]" sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw" />
+                  <span className="sr-only">{entry.title}</span>
+                  <span className="sr-only">{entry.body}</span>
                 </Link>
               ))}
             </div>
