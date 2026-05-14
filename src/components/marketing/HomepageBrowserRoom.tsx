@@ -181,9 +181,48 @@ export function HomepageBrowserRoom() {
   const windkeepObjects = homepageObjectSlots.secondaryShelf.slice(0, 3);
   const presenceRooms = roomThin ? homepageSeasonalRooms.slice(0, 4) : homepageSeasonalRooms;
 
+  const humanPresenceLayer = (
+    <section className="mx-auto max-w-[86rem] border-t border-border-subtle/60 py-9">
+      <div className="mb-7 grid gap-5 rounded-lg border border-[#c7d7df]/42 bg-white/70 p-5 shadow-[0_12px_34px_rgba(38,61,78,0.045)] sm:grid-cols-[0.34fr_0.66fr] sm:p-6">
+        <div>
+          <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Human presence</p>
+          <h2 className="mt-2 font-[var(--font-display-serif)] text-2xl leading-tight text-foreground">
+            {lilaHumanPresence.name}
+          </h2>
+          <p className="mt-1 text-sm text-text-muted">{lilaHumanPresence.role}</p>
+        </div>
+        <div>
+          <p className="text-sm leading-8 text-text-secondary">{lilaHumanPresence.homepageNote}</p>
+          <Link href="/about" className="mt-4 inline-flex text-sm text-foreground/68 hover:text-foreground">
+            Read about the keeper
+          </Link>
+        </div>
+      </div>
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+        {windkeepObjects.map((item) => (
+          <Link key={item.id} href={`/objects#${item.id}`} className="quiet-air-touch flex gap-4 rounded-lg bg-white/62 p-3">
+            <div className="flex h-16 w-20 shrink-0 items-center justify-center rounded-md bg-white/80">
+              <Image src={item.photo.src} alt="" width={80} height={64} className="h-auto max-h-16 w-auto opacity-[0.9]" sizes="5rem" />
+            </div>
+            <div>
+              <p className="text-sm leading-5 text-foreground">{item.title}</p>
+              <p className="mt-1 text-xs leading-5 text-text-muted">{item.roomPlacement}</p>
+            </div>
+          </Link>
+        ))}
+        {presenceRooms.slice(0, 2).map((room) => (
+          <div key={room.label} className="rounded-lg bg-white/58 p-4">
+            <p className="text-sm text-foreground">{room.label}</p>
+            <p className="mt-1 text-xs text-text-muted">{room.note}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+
   return (
     <main className="min-h-full bg-[#f6fafb] text-foreground">
-      <div className="relative isolate overflow-hidden">
+      <div className="relative isolate">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#f5fbfd_0%,#ffffff_38%,#f4faf9_100%)]" />
         <HomepageHeroCarousel />
 
@@ -202,7 +241,7 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch block overflow-hidden rounded-[1.15rem]"
+                  className="quiet-air-touch block rounded-[1.15rem]"
                 >
                   <Image
                     src={entry.image}
@@ -223,14 +262,15 @@ export function HomepageBrowserRoom() {
           >
             <Link
               href="/healing"
-              className="quiet-air-touch relative hidden aspect-[16/7] overflow-hidden rounded-[1.15rem] lg:block"
+              className="quiet-air-touch hidden rounded-[1.15rem] lg:block"
               aria-label="Energy Field"
             >
               <Image
                 src="/brand/production/homepage/energy-field-section/pc/hero-energy-field.png"
                 alt="Energy Field"
-                fill
-                className="object-cover object-center"
+                width={1600}
+                height={700}
+                className="h-auto w-full"
                 sizes="86rem"
               />
             </Link>
@@ -240,14 +280,15 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={card.title}
                   href={card.href}
-                  className="quiet-air-touch relative block aspect-video overflow-hidden rounded-[0.9rem]"
+                  className="quiet-air-touch block rounded-[0.9rem]"
                   aria-label={card.title}
                 >
                   <Image
                     src={card.pcImage}
                     alt={card.title}
-                    fill
-                    className="object-cover object-center"
+                    width={640}
+                    height={360}
+                    className="h-auto w-full"
                     sizes="17vw"
                   />
                 </Link>
@@ -257,14 +298,15 @@ export function HomepageBrowserRoom() {
             <div className="mt-4 grid grid-cols-2 gap-3 lg:hidden">
               <Link
                 href="/healing"
-                className="quiet-air-touch relative col-span-2 block aspect-[3/4] overflow-hidden rounded-[1rem]"
+                className="quiet-air-touch col-span-2 block rounded-[1rem]"
                 aria-label="Energy Field"
               >
                 <Image
                   src="/brand/production/homepage/energy-field-section/mobile/hero-energy-field-mobile.png"
                   alt="Energy Field"
-                  fill
-                  className="object-cover object-center"
+                  width={900}
+                  height={1200}
+                  className="h-auto w-full"
                   sizes="92vw"
                 />
               </Link>
@@ -272,14 +314,15 @@ export function HomepageBrowserRoom() {
                 <Link
                   key={card.title}
                   href={card.href}
-                  className="quiet-air-touch relative block aspect-[5/3] overflow-hidden rounded-[0.8rem]"
+                  className="quiet-air-touch block rounded-[0.8rem]"
                   aria-label={card.title}
                 >
                   <Image
                     src={card.mobileImage}
                     alt={card.title}
-                    fill
-                    className="object-cover object-center"
+                    width={440}
+                    height={264}
+                    className="h-auto w-full"
                     sizes="46vw"
                   />
                 </Link>
@@ -288,7 +331,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section className="mx-auto max-w-[86rem] py-7 lg:py-8">
-            <div className="relative hidden overflow-hidden rounded-lg lg:block">
+            <div className="relative hidden rounded-lg lg:block">
               <Image
                 src="/brand/production/homepage/healing-world-layer/fixed-v3/pc/healing-world-layer-pc-final.jpg"
                 alt="Healing, Windkeep, Driftbox, Live, Objects, and Journal"
@@ -307,7 +350,7 @@ export function HomepageBrowserRoom() {
                 />
               ))}
             </div>
-            <div className="relative overflow-hidden rounded-lg lg:hidden">
+            <div className="relative rounded-lg lg:hidden">
               <Image
                 src="/brand/production/homepage/healing-world-layer/fixed-v3/mobile/healing-world-layer-mobile-grid.jpg"
                 alt="Healing, Windkeep, Driftbox, Live, Objects, and Journal"
@@ -334,7 +377,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section className="mx-auto max-w-[86rem]">
-            <div className="relative hidden overflow-hidden rounded-lg lg:block">
+            <div className="relative hidden rounded-lg lg:block">
               <Image
                 src="/brand/production/homepage/windkeep-section/fixed-v1/pc/windkeep-section-hero-pc.png"
                 alt="Windkeep objects meeting time"
@@ -346,7 +389,7 @@ export function HomepageBrowserRoom() {
               <Link href="/windkeep" aria-label="Enter Windkeep" className="absolute inset-y-0 left-0 w-[64%]" />
               <Link href="/quiet-receiving" aria-label="Quiet Receiving" className="absolute inset-y-0 right-0 w-[36%]" />
             </div>
-            <div className="relative overflow-hidden rounded-lg lg:hidden">
+            <div className="relative rounded-lg lg:hidden">
               <Image
                 src="/brand/production/homepage/windkeep-section/fixed-v1/mobile/windkeep-section-mobile-card.png"
                 alt="Windkeep objects meeting time"
@@ -374,7 +417,7 @@ export function HomepageBrowserRoom() {
             </div>
             <div className="hidden gap-6 overflow-x-auto pb-3 lg:flex">
               {momentsOfPresence.map((moment) => (
-                <Link key={moment.title} href={moment.href} className="quiet-air-touch block w-[180px] shrink-0 overflow-hidden rounded-[16px]">
+                <Link key={moment.title} href={moment.href} className="quiet-air-touch block w-[180px] shrink-0 rounded-[16px]">
                   <Image
                     src={moment.pcImage}
                     alt={moment.title}
@@ -388,7 +431,7 @@ export function HomepageBrowserRoom() {
             </div>
             <div className="grid grid-cols-2 gap-4 lg:hidden">
               {momentsOfPresence.map((moment) => (
-                <Link key={moment.title} href={moment.href} className="quiet-air-touch block overflow-hidden rounded-xl">
+                <Link key={moment.title} href={moment.href} className="quiet-air-touch block rounded-xl">
                   <Image
                     src={moment.mobileImage}
                     alt={moment.title}
@@ -402,42 +445,7 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <section className="mx-auto max-w-[86rem] border-t border-border-subtle/60 py-9">
-            <div className="mb-7 grid gap-5 rounded-lg border border-[#c7d7df]/42 bg-white/70 p-5 shadow-[0_12px_34px_rgba(38,61,78,0.045)] sm:grid-cols-[0.34fr_0.66fr] sm:p-6">
-              <div>
-                <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Human presence</p>
-                <h2 className="mt-2 font-[var(--font-display-serif)] text-2xl leading-tight text-foreground">
-                  {lilaHumanPresence.name}
-                </h2>
-                <p className="mt-1 text-sm text-text-muted">{lilaHumanPresence.role}</p>
-              </div>
-              <div>
-                <p className="text-sm leading-8 text-text-secondary">{lilaHumanPresence.homepageNote}</p>
-                <Link href="/about" className="mt-4 inline-flex text-sm text-foreground/68 hover:text-foreground">
-                  Read about the keeper
-                </Link>
-              </div>
-            </div>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-              {windkeepObjects.map((item) => (
-                <Link key={item.id} href={`/objects#${item.id}`} className="quiet-air-touch flex gap-4 rounded-lg bg-white/62 p-3">
-                  <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-md bg-white/80">
-                    <Image src={item.photo.src} alt="" fill className="object-cover opacity-[0.9]" sizes="5rem" />
-                  </div>
-                  <div>
-                    <p className="text-sm leading-5 text-foreground">{item.title}</p>
-                    <p className="mt-1 text-xs leading-5 text-text-muted">{item.roomPlacement}</p>
-                  </div>
-                </Link>
-              ))}
-              {presenceRooms.slice(0, 2).map((room) => (
-                <div key={room.label} className="rounded-lg bg-white/58 p-4">
-                  <p className="text-sm text-foreground">{room.label}</p>
-                  <p className="mt-1 text-xs text-text-muted">{room.note}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+          {humanPresenceLayer}
 
           <footer className="mx-auto grid max-w-[86rem] gap-8 border-t border-border-subtle/70 py-8 text-sm text-text-secondary lg:grid-cols-[1fr_1.2fr_0.8fr]">
             <div>

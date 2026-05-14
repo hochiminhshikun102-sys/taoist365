@@ -23,7 +23,7 @@ const heroSlides = [
 
 export function HomepageHeroCarousel() {
   return (
-    <section className="homepage-hero-carousel relative min-h-[100svh] overflow-hidden bg-[#eef3f5]" aria-label="Homepage hero carousel">
+    <section className="homepage-hero-carousel relative aspect-[853/1844] bg-[#eef3f5] md:aspect-video" aria-label="Homepage hero carousel">
       <h1 className="sr-only">Reverent Inquiry</h1>
       {heroSlides.map((slide, index) => (
         <div
@@ -40,7 +40,7 @@ export function HomepageHeroCarousel() {
               fetchPriority={index === 0 ? "high" : "auto"}
               loading={index === 0 ? "eager" : "lazy"}
               decoding="async"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
             />
           </picture>
         </div>
