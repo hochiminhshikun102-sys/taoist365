@@ -8,7 +8,8 @@
     "Admin-OS-Blueprint/Reverent_Inquiry_Logistics_SupplyChain_Update",
     "Admin-OS-Blueprint/Reverent_Inquiry_RiskControl_Update",
     "Admin-OS-Blueprint/Reverent_Inquiry_ClientRuntime_Update",
-    "Admin-OS-Blueprint/Reverent_Inquiry_NewModules_Update"
+    "Admin-OS-Blueprint/Reverent_Inquiry_NewModules_Update",
+    "Admin-OS-Blueprint/Reverent_Inquiry_WindSeeker_Runtime_Ultimate"
   ],
   "requiredBlueprintAnchors": [
     {
@@ -25,6 +26,7 @@
         "Community & Content Moderation",
         "Compliance & Legal Center",
         "Finance & Settlement Center",
+        "Wind Seeker",
         "Member Risk Control",
         "Fixed Visual Runtime Mode"
       ]
@@ -36,7 +38,9 @@
       "src/app/admin/[workspaceId]/page.tsx",
       "src/components/admin/AdminOSConsole.tsx",
       "src/components/admin/AdminOSAccess.tsx",
-      "src/app/(member)/account/page.tsx"
+      "src/app/(member)/account/page.tsx",
+      "src/app/(member)/wind-seeker/page.tsx",
+      "src/components/wind-seeker/WindSeekerRuntime.tsx"
     ],
     "requiredWorkspaceIds": [
       "homepage-runtime",
@@ -52,6 +56,18 @@
       "objects",
       "orders",
       "payments",
+      "wind-seeker-approval",
+      "ai-product-moderation",
+      "buyer-risk-dashboard",
+      "wind-seeker-settlement",
+      "logistics-monitor",
+      "dispute-runtime",
+      "buyer-deposit-runtime",
+      "wind-seeker-drafts",
+      "wind-seeker-notifications",
+      "wind-seeker-account",
+      "shipping-runtime",
+      "refund-runtime",
       "message-center",
       "notification-overview",
       "notification-templates",
@@ -92,7 +108,7 @@
       "finance-overview",
       "reconciliation",
       "refund-reconciliation",
-      "merchant-settlement",
+      "partner-settlement",
       "tax-runtime",
       "funds-ledger",
       "freeze-unfreeze",
@@ -136,6 +152,11 @@
       "Community & Content Moderation",
       "Compliance & Legal Center",
       "Finance & Settlement Center",
+      "Wind Seeker Approval",
+      "AI Product Moderation",
+      "Buyer Risk Dashboard",
+      "Buyer Deposit Runtime",
+      "3-minute listing review",
       "Interactive runtime",
       "Search",
       "Filter",

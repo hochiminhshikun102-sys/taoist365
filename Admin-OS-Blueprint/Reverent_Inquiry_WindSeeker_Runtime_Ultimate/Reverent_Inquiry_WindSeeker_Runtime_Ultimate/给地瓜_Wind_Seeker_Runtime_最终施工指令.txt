@@ -1,0 +1,111 @@
+
+地瓜：
+
+Global Buyer Runtime 正式命名锁定：
+
+Wind Seeker Runtime
+
+以后：
+
+禁止再使用：
+Seller Center
+Merchant Center
+Marketplace
+
+统一使用：
+
+Wind Seeker
+
+————————————————
+
+【定位】
+
+Wind Seeker：
+
+全球物件发现者。
+
+不是：
+
+卖家。
+
+————————————————
+
+【核心】
+
+发现
+→
+拍照
+→
+AI生成
+→
+审核
+→
+上线
+→
+销售
+
+必须：
+Mobile First。
+
+————————————————
+
+【移动端】
+
+核心 Tab：
+
+- Home
+- Upload
+- Orders
+- Messages
+- Me
+
+必须：
+3分钟完成上架。
+
+————————————————
+
+【必须施工】
+
+- Deposit Runtime
+- Settlement Runtime
+- Logistics Runtime
+- Draft Runtime
+- Notification Runtime
+- After-Sales Runtime
+- Account Runtime
+
+————————————————
+
+【Admin OS 同步】
+
+新增：
+
+- Wind Seeker Approval
+- Product Moderation
+- Buyer Risk Dashboard
+- Settlement Runtime
+- Logistics Monitor
+- Dispute Runtime
+
+————————————————
+
+【双端配色】
+
+前台：
+#F0F2F5 系列
+
+后台：
+#F5F6F8 系列
+
+禁止混色。
+
+————————————————
+
+【最终目标】
+
+Wind Seeker：
+
+成为 Reverent Inquiry
+全球分布式发现网络。
+
+不是传统卖家系统。

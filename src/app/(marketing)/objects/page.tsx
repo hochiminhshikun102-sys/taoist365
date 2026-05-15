@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
@@ -8,10 +8,10 @@ import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Objects",
-  description: "A breathable marketplace for quiet living objects, gifts, desk pieces, and seasonal things.",
+  description: "A breathable object room for quiet living objects, gifts, desk pieces, and seasonal things.",
   openGraph: {
     title: `Objects - ${siteConfig.siteName}`,
-    description: "A breathable marketplace for quiet living objects, gifts, desk pieces, and seasonal things.",
+    description: "A breathable object room for quiet living objects, gifts, desk pieces, and seasonal things.",
     url: `${siteConfig.metadataBase}/objects`,
   },
 };
@@ -23,7 +23,7 @@ const categoryChips = [
   { label: "Quiet Gifts", href: "/collections/seasonal-collections", image: "/objects-living/12.jpg" },
   { label: "Healing", href: "/healing", image: "/objects-living/68.jpg" },
   { label: "POD Apparel", href: "/search?q=apparel", image: "/objects-derived/102-hero.webp" },
-  { label: "Outdoor Wind", href: "/collections/wind-objects", image: "/objects-living/椋庨搩001.jpg" },
+  { label: "Outdoor Wind", href: "/collections/wind-objects", image: "/objects-living/妞嬪酣鎼?01.jpg" },
   { label: "Seasonal Things", href: "/new-arrivals", image: "/objects-derived/103-hero.webp" },
 ] as const;
 
@@ -77,7 +77,7 @@ const editorialBanners = [
   {
     title: "Take the quiet outside",
     href: "/collections/wind-objects",
-    image: "/objects-living/椋庨搩001.jpg",
+    image: "/objects-living/妞嬪酣鎼?01.jpg",
   },
 ] as const;
 
@@ -143,7 +143,7 @@ export default function ObjectsPage() {
               </h1>
               <p className="mt-5 max-w-sm text-sm leading-7 text-[#5e574f]">{heroSlides[0].body}</p>
               <Link href={heroSlides[0].href} className="mt-7 inline-flex w-fit items-center gap-3 text-sm underline underline-offset-4">
-                Explore the collection <span aria-hidden>→</span>
+                Explore the collection <span aria-hidden>-&gt;</span>
               </Link>
               <div className="mt-9 flex gap-2" aria-hidden>
                 <span className="h-1.5 w-1.5 rounded-full bg-[#171514]" />
@@ -167,15 +167,13 @@ export default function ObjectsPage() {
             aria-label="Previous hero"
             className="absolute left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full border border-[#d7d0c6] bg-white/84 text-lg text-[#4e473f] shadow-sm lg:block"
           >
-            ‹
-          </button>
+            鈥?          </button>
           <button
             type="button"
             aria-label="Next hero"
             className="absolute right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full border border-[#d7d0c6] bg-white/84 text-lg text-[#4e473f] shadow-sm lg:block"
           >
-            ›
-          </button>
+            鈥?          </button>
         </div>
 
         <nav className="mt-5 flex gap-4 overflow-x-auto pb-3" aria-label="Object categories">
@@ -264,7 +262,7 @@ export default function ObjectsPage() {
                   <ObjectImage src={object.media.hero} alt={object.media.alt} sizes="(max-width: 768px) 46vw, 20vw" />
                   {index < 2 ? (
                     <span className="absolute left-3 top-3 rounded bg-white px-2 py-1 text-[0.65rem] font-medium text-[#171514]">
-                      {index === 0 ? "New" : "Bestseller"}
+                      {index === 0 ? "New" : "Loved"}
                     </span>
                   ) : null}
                 </Link>
@@ -275,8 +273,7 @@ export default function ObjectsPage() {
                       <p className="mt-1 line-clamp-1 text-xs text-[#81786e]">{object.subtitle}</p>
                     </div>
                     <button type="button" aria-label={`Add ${object.title} to wishlist`} className="text-lg leading-none text-[#5e574f]">
-                      ♡
-                    </button>
+                      鈾?                    </button>
                   </div>
                   <div className="mt-3 flex items-center justify-between gap-2">
                     <p className="text-sm font-semibold">{formatPrice(object.priceCents)}</p>
@@ -304,7 +301,7 @@ export default function ObjectsPage() {
                   <h3 className="font-[var(--font-display-serif)] text-2xl leading-tight text-white drop-shadow-sm lg:text-xl">
                     {banner.title}
                   </h3>
-                  <span className="mt-4 inline-flex text-sm text-white underline underline-offset-4">Discover →</span>
+                  <span className="mt-4 inline-flex text-sm text-white underline underline-offset-4">Discover -&gt;</span>
                 </div>
                 <div className="relative flex aspect-[16/9] items-center justify-center bg-[#e6ded2]">
                   <Image src={banner.image} alt="" fill className="object-contain object-center" sizes="28vw" />
@@ -326,8 +323,7 @@ export default function ObjectsPage() {
                       <p className="mt-1 line-clamp-1 text-xs text-[#81786e]">{object.subtitle}</p>
                     </div>
                     <button type="button" aria-label={`Add ${object.title} to wishlist`} className="text-lg leading-none text-[#5e574f]">
-                      ♡
-                    </button>
+                      鈾?                    </button>
                   </div>
                   <div className="mt-3 flex items-center justify-between gap-2">
                     <p className="text-sm font-semibold">{formatPrice(object.priceCents)}</p>
@@ -379,3 +375,4 @@ export default function ObjectsPage() {
     </main>
   );
 }
+

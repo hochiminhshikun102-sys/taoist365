@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import type { CSSProperties } from "react";
@@ -23,6 +23,7 @@ const t = {
   moderation: "\u793e\u533a\u4e0e\u5185\u5bb9\u5ba1\u6838",
   compliance: "\u5408\u89c4\u4e0e\u6cd5\u52a1",
   finance: "\u8d22\u52a1\u4e0e\u7ed3\u7b97",
+  windSeeker: "Wind Seeker",
   windkeep: "\u7269\u4ef6\u6d41\u8f6c",
   driftbox: "\u5b89\u9759\u6765\u4fe1",
   rules: "\u89c4\u5219\u4e2d\u5fc3",
@@ -41,6 +42,18 @@ export type AdminWorkspaceId =
   | "objects"
   | "orders"
   | "payments"
+  | "wind-seeker-approval"
+  | "ai-product-moderation"
+  | "buyer-risk-dashboard"
+  | "wind-seeker-settlement"
+  | "logistics-monitor"
+  | "dispute-runtime"
+  | "buyer-deposit-runtime"
+  | "wind-seeker-drafts"
+  | "wind-seeker-notifications"
+  | "wind-seeker-account"
+  | "shipping-runtime"
+  | "refund-runtime"
   | "message-center"
   | "notification-overview"
   | "notification-templates"
@@ -81,7 +94,7 @@ export type AdminWorkspaceId =
   | "finance-overview"
   | "reconciliation"
   | "refund-reconciliation"
-  | "merchant-settlement"
+  | "partner-settlement"
   | "tax-runtime"
   | "funds-ledger"
   | "freeze-unfreeze"
@@ -160,6 +173,101 @@ const workspaceMap = {
     en: "Payments Runtime",
     state: "Provider-ready shell",
     work: ["Provider status", "Refunds", "Region rules", "Risk link", "Reconciliation", "Exception queue"],
+  },
+  "wind-seeker-approval": {
+    id: "wind-seeker-approval",
+    cn: "Wind Seeker \u5ba1\u6838",
+    en: "Wind Seeker Approval",
+    state: "3-minute listing review",
+    work: ["Photo intake", "AI clarity check", "Story review", "Price review", "Human approval", "Publish queue"],
+    ai: ["AI title", "AI description", "SEO / GEO", "Suggested price", "Safe Area check"],
+    mobile: ["Pending", "Approve", "Reject", "Message"],
+  },
+  "ai-product-moderation": {
+    id: "ai-product-moderation",
+    cn: "AI \u7269\u4ef6\u5ba1\u6838",
+    en: "AI Product Moderation",
+    state: "AI review runtime",
+    work: ["Image safety", "Video safety", "Copy safety", "Object category", "Duplicate detection", "Manual review"],
+    ai: ["AI clarity detection", "AI safety score", "AI duplicate scan", "AI price range"],
+  },
+  "buyer-risk-dashboard": {
+    id: "buyer-risk-dashboard",
+    cn: "\u4e70\u65b9\u98ce\u9669\u4eea\u8868",
+    en: "Buyer Risk Dashboard",
+    state: "Trust linked",
+    work: ["Deposit state", "Order behavior", "Dispute flags", "Account risk", "Restriction link", "Audit"],
+    ai: ["AI risk scoring", "AI fraud signal", "Deposit recommendation"],
+  },
+  "wind-seeker-settlement": {
+    id: "wind-seeker-settlement",
+    cn: "Wind Seeker \u7ed3\u7b97",
+    en: "Settlement Runtime",
+    state: "Finance linked",
+    work: ["Pending settlement", "Released funds", "Fee records", "Refund link", "Freeze / unfreeze", "Audit logs"],
+    mobile: ["Balance", "Pending", "Payout state"],
+  },
+  "logistics-monitor": {
+    id: "logistics-monitor",
+    cn: "\u7269\u6d41\u76d1\u63a7",
+    en: "Logistics Monitor",
+    state: "Shipping linked",
+    work: ["Tracking input", "Carrier select", "Shipment status", "Exception monitor", "Returns", "Delivery logs"],
+    mobile: ["Tracking", "Exception", "Return"],
+  },
+  "dispute-runtime": {
+    id: "dispute-runtime",
+    cn: "\u4e89\u8bae\u5904\u7406",
+    en: "Dispute Runtime",
+    state: "After-sales linked",
+    work: ["Dispute queue", "Evidence", "Messages", "Decision", "Refund link", "Risk link"],
+    ai: ["AI case summary", "AI arbitration reserve", "Risk pattern"],
+  },
+  "buyer-deposit-runtime": {
+    id: "buyer-deposit-runtime",
+    cn: "\u4e70\u65b9\u4fdd\u8bc1\u91d1",
+    en: "Buyer Deposit Runtime",
+    state: "Deposit active",
+    work: ["Deposit records", "Hold state", "Release state", "Risk link", "Refund link", "Audit logs"],
+  },
+  "wind-seeker-drafts": {
+    id: "wind-seeker-drafts",
+    cn: "Wind Seeker \u8349\u7a3f",
+    en: "Draft Runtime",
+    state: "Mobile first",
+    work: ["Draft list", "AI generated copy", "Price", "Condition", "Region", "Unique object", "Story"],
+    mobile: ["Continue draft", "Photo", "Publish"],
+  },
+  "wind-seeker-notifications": {
+    id: "wind-seeker-notifications",
+    cn: "Wind Seeker \u901a\u77e5",
+    en: "Notification Runtime",
+    state: "Message linked",
+    work: ["Review notice", "Order notice", "Settlement notice", "Dispute notice", "Shipping notice", "Logs"],
+    mobile: ["Unread", "Reply", "Switches"],
+  },
+  "wind-seeker-account": {
+    id: "wind-seeker-account",
+    cn: "Wind Seeker \u8d26\u6237",
+    en: "Account Runtime",
+    state: "Trust linked",
+    work: ["Profile", "Verification", "Region", "Payout account", "Deposit status", "Account logs"],
+    mobile: ["Profile", "Verification", "Balance"],
+  },
+  "shipping-runtime": {
+    id: "shipping-runtime",
+    cn: "\u53d1\u8d27",
+    en: "Shipping Runtime",
+    state: "Logistics linked",
+    work: ["Shipping address", "Carrier", "Label", "Pickup", "Tracking", "Exception"],
+    mobile: ["Ship", "Tracking", "Exception"],
+  },
+  "refund-runtime": {
+    id: "refund-runtime",
+    cn: "\u9000\u6b3e",
+    en: "Refund Runtime",
+    state: "Finance linked",
+    work: ["Refund request", "Reason", "Payment link", "Approval", "Release", "Audit"],
   },
   "message-center": {
     id: "message-center",
@@ -436,7 +544,7 @@ const workspaceMap = {
     cn: t.finance,
     en: "Finance & Settlement Center",
     state: "Settlement runtime",
-    work: ["Finance overview", "Reconciliation", "Refund reconciliation", "Merchant settlement", "Tax", "Funds ledger", "Freeze / unfreeze", "Audit logs"],
+    work: ["Finance overview", "Reconciliation", "Refund reconciliation", "Partner settlement", "Tax", "Funds ledger", "Freeze / unfreeze", "Audit logs"],
     ai: ["AI finance analysis reserve", "Anomaly detection", "Margin insight", "Cashflow forecast"],
     mobile: ["Finance overview", "Refund alerts", "Freeze alerts", "Settlement status"],
   },
@@ -462,12 +570,12 @@ const workspaceMap = {
     state: "Refund linked",
     work: ["Refund records", "Payment provider", "Mismatch", "Status", "Export", "Audit"],
   },
-  "merchant-settlement": {
-    id: "merchant-settlement",
+  "partner-settlement": {
+    id: "partner-settlement",
     cn: "\u5546\u6237\u7ed3\u7b97",
-    en: "Merchant Settlement",
+    en: "Partner Settlement",
     state: "Settlement shell",
-    work: ["Settlement list", "Merchant", "Amount", "Status", "Payout", "Logs"],
+    work: ["Settlement list", "Partner", "Amount", "Status", "Payout", "Logs"],
   },
   "tax-runtime": {
     id: "tax-runtime",
@@ -767,6 +875,13 @@ const navGroups = [
     items: ["objects", "orders", "payments"] satisfies AdminWorkspaceId[],
   },
   {
+    id: "wind-seeker",
+    icon: "WS",
+    cn: t.windSeeker,
+    en: "Global Object Scout Network",
+    items: ["wind-seeker-approval", "ai-product-moderation", "buyer-risk-dashboard", "wind-seeker-settlement", "logistics-monitor", "dispute-runtime", "buyer-deposit-runtime", "wind-seeker-drafts", "wind-seeker-notifications", "wind-seeker-account", "shipping-runtime", "refund-runtime"] satisfies AdminWorkspaceId[],
+  },
+  {
     id: "messages",
     icon: "MS",
     cn: t.message,
@@ -806,7 +921,7 @@ const navGroups = [
     icon: "FN",
     cn: t.finance,
     en: "Finance & Settlement",
-    items: ["finance-settlement", "finance-overview", "reconciliation", "refund-reconciliation", "merchant-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs"] satisfies AdminWorkspaceId[],
+    items: ["finance-settlement", "finance-overview", "reconciliation", "refund-reconciliation", "partner-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs"] satisfies AdminWorkspaceId[],
   },
   {
     id: "ai",
@@ -883,7 +998,7 @@ const ruleBindings = [
 
 function StatusPill({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <span className="rounded-full border border-[#8d7446]/55 bg-[#20180d] px-3 py-1 text-xs text-[#d8bd78]">
+    <span className="rounded-full border border-[#947A66]/55 bg-[#947A66] px-3 py-1 text-xs text-white">
       {children}
     </span>
   );
@@ -891,7 +1006,7 @@ function StatusPill({ children }: Readonly<{ children: React.ReactNode }>) {
 
 function RuntimeCard({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="rounded-2xl border border-[#3b2c18] bg-[#100d09] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
+    <div className="rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
       {children}
     </div>
   );
@@ -901,7 +1016,7 @@ const runtimeStatuses = ["Draft", "Open", "Review", "Scheduled", "Published", "A
 const pageSize = 5;
 
 type RuntimeStatus = (typeof runtimeStatuses)[number];
-type RuntimeKind = "general" | "media" | "ai" | "logistics" | "supply" | "finance" | "moderation" | "publishing";
+type RuntimeKind = "general" | "media" | "ai" | "logistics" | "supply" | "finance" | "moderation" | "publishing" | "windseeker";
 type RuntimeRow = {
   id: string;
   name: string;
@@ -995,16 +1110,18 @@ function defaultCategory(workspaceId: AdminWorkspaceId) {
     finance: "Settlement",
     moderation: "Review",
     publishing: "Publishing",
+    windseeker: "Wind Seeker",
   };
   return labels[kind];
 }
 
 function getRuntimeKind(workspaceId: AdminWorkspaceId): RuntimeKind {
+  if (["wind-seeker-approval", "ai-product-moderation", "buyer-risk-dashboard", "wind-seeker-settlement", "logistics-monitor", "dispute-runtime", "buyer-deposit-runtime", "wind-seeker-drafts", "wind-seeker-notifications", "wind-seeker-account", "shipping-runtime", "refund-runtime"].includes(workspaceId)) return "windseeker";
   if (["brand-assets", "product-media", "social-media", "prompt-packs", "safe-area", "frontstage-safe-area"].includes(workspaceId)) return "media";
   if (["ai-queue", "ai-image", "ai-video", "geo", "viral-radar", "ai-reach-reserve", "ai-campaign-optimization", "ai-content-moderation"].includes(workspaceId)) return "ai";
   if (["logistics", "tracking", "freight", "returns", "after-sales-tracking"].includes(workspaceId)) return "logistics";
   if (["suppliers", "inventory", "procurement", "costs"].includes(workspaceId)) return "supply";
-  if (["finance-settlement", "finance-overview", "reconciliation", "refund-reconciliation", "merchant-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs"].includes(workspaceId)) return "finance";
+  if (["finance-settlement", "finance-overview", "reconciliation", "refund-reconciliation", "partner-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs"].includes(workspaceId)) return "finance";
   if (["community-moderation", "comment-review", "report-handling", "ugc-review", "sensitive-words", "media-moderation"].includes(workspaceId)) return "moderation";
   if (["publishing-runtime", "terms-runtime", "privacy-policy-runtime", "ai-usage-agreement", "homepage-runtime", "section-runtime", "navigation-runtime", "homepage-rotation"].includes(workspaceId)) return "publishing";
   return "general";
@@ -1023,9 +1140,9 @@ function persistLogs(workspaceId: AdminWorkspaceId, nextLogs: RuntimeLog[]) {
 }
 
 function RuntimeButton({ children, onClick, tone = "default", type = "button" }: Readonly<{ children: React.ReactNode; onClick?: () => void; tone?: "default" | "primary" | "danger"; type?: "button" | "submit" }>) {
-  const toneClass = tone === "primary" ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : tone === "danger" ? "border-[#6b2d20] bg-[#1a0c08] text-[#e5a38b]" : "border-[#3b2c18] bg-[#0b0907] text-[#d8c48d]";
+  const toneClass = tone === "primary" ? "border-[#947A66] bg-[#947A66] text-white" : tone === "danger" ? "border-[#9E6B6B] bg-[#9E6B6B] text-white" : "border-[#D9DCE0] bg-[#EBEDEF] text-[#2D333A]";
   return (
-    <button type={type} onClick={onClick} className={`rounded-xl border px-3 py-2 text-sm transition hover:border-[#8d7446] ${toneClass}`}>
+    <button type={type} onClick={onClick} className={`rounded-xl border px-3 py-2 text-sm transition hover:border-[#A88C75] ${toneClass}`}>
       {children}
     </button>
   );
@@ -1133,30 +1250,30 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
 
   return (
     <div className="grid gap-5 xl:grid-cols-[1fr_22rem]">
-      <section className="rounded-3xl border border-[#3b2c18] bg-[#100d09] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.34)] sm:p-6">
-        <div className="flex flex-col gap-4 border-b border-[#2d2214] pb-5 lg:flex-row lg:items-end lg:justify-between">
+      <section className="rounded-3xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(0,0,0,0.34)] sm:p-6">
+        <div className="flex flex-col gap-4 border-b border-[#D9DCE0] pb-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-sm text-[#9f8a60]">{workspace.en}</p>
-            <h2 className="mt-2 text-4xl font-semibold leading-tight text-[#f3db9b]">{workspace.cn}</h2>
+            <p className="text-sm text-[#6B7280]">{workspace.en}</p>
+            <h2 className="mt-2 text-4xl font-semibold leading-tight text-[#2D333A]">{workspace.cn}</h2>
           </div>
           <StatusPill>{workspace.state}</StatusPill>
         </div>
 
         <div className="mt-5 grid gap-3 lg:grid-cols-[1fr_auto_auto_auto]">
           <label className="block">
-            <span className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">Search</span>
-            <input value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} className="mt-2 w-full rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder="Search runtime records" type="search" />
+            <span className="text-xs uppercase tracking-[0.22em] text-[#9CA3AF]">Search</span>
+            <input value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} className="mt-2 w-full rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder="Search runtime records" type="search" />
           </label>
           <label className="block">
-            <span className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">Filter</span>
-            <select value={statusFilter} onChange={(event) => { setStatusFilter(event.target.value); setPage(1); }} className="mt-2 w-full rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]">
+            <span className="text-xs uppercase tracking-[0.22em] text-[#9CA3AF]">Filter</span>
+            <select value={statusFilter} onChange={(event) => { setStatusFilter(event.target.value); setPage(1); }} className="mt-2 w-full rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]">
               <option>All</option>
               {runtimeStatuses.map((status) => <option key={status}>{status}</option>)}
             </select>
           </label>
           <label className="block">
-            <span className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">Upload</span>
-            <input onChange={(event) => handleUpload(event.target.files)} className="mt-2 block w-full text-sm text-[#cbb477] file:mr-3 file:rounded-lg file:border file:border-[#3b2c18] file:bg-[#0b0907] file:px-3 file:py-2 file:text-[#d8c48d]" type="file" multiple />
+            <span className="text-xs uppercase tracking-[0.22em] text-[#9CA3AF]">Upload</span>
+            <input onChange={(event) => handleUpload(event.target.files)} className="mt-2 block w-full text-sm text-[#6B7280] file:mr-3 file:rounded-lg file:border file:border-[#D9DCE0] file:bg-[#EBEDEF] file:px-3 file:py-2 file:text-[#2D333A]" type="file" multiple />
           </label>
           <div className="flex items-end gap-2">
             <RuntimeButton tone="primary" onClick={() => setActiveTab("form")}>Create</RuntimeButton>
@@ -1166,7 +1283,7 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
 
         <div className="mt-5 flex flex-wrap gap-2">
           {(["records", "form", "logs"] as const).map((tab) => (
-            <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`rounded-full border px-4 py-2 text-sm capitalize ${activeTab === tab ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-[#3b2c18] bg-[#0b0907] text-[#cbb477]"}`}>
+            <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`rounded-full border px-4 py-2 text-sm capitalize ${activeTab === tab ? "border-[#947A66] bg-[#947A66] text-white" : "border-[#D9DCE0] bg-[#EBEDEF] text-[#6B7280]"}`}>
               {tab}
             </button>
           ))}
@@ -1180,16 +1297,16 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
 
         {activeTab === "form" ? (
           <RuntimeCard>
-            <p className="text-sm text-[#9f8a60]">Create / edit / save</p>
+            <p className="text-sm text-[#6B7280]">Create / edit / save</p>
             <form className="mt-4 grid gap-3 md:grid-cols-2" onSubmit={saveRow}>
-              <input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder={kind === "logistics" ? "Tracking number or shipment name" : "Runtime title"} />
-              <input value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder={kind === "logistics" ? "Carrier / DHL / UPS / SF" : "Category"} />
-              <input value={form.owner} onChange={(event) => setForm({ ...form, owner: event.target.value })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder="Owner" />
-              <input value={form.amount} onChange={(event) => setForm({ ...form, amount: event.target.value })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]" placeholder={kind === "finance" ? "Amount / settlement value" : "Optional value"} />
-              <select value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value as RuntimeStatus })} className="rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446]">
+              <input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder={kind === "logistics" ? "Tracking number or shipment name" : "Runtime title"} />
+              <input value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder={kind === "logistics" ? "Carrier / DHL / UPS / SF" : "Category"} />
+              <input value={form.owner} onChange={(event) => setForm({ ...form, owner: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder="Owner" />
+              <input value={form.amount} onChange={(event) => setForm({ ...form, amount: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder={kind === "finance" ? "Amount / settlement value" : "Optional value"} />
+              <select value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value as RuntimeStatus })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]">
                 {runtimeStatuses.map((status) => <option key={status}>{status}</option>)}
               </select>
-              <textarea value={form.note} onChange={(event) => setForm({ ...form, note: event.target.value })} className="min-h-24 rounded-xl border border-[#3b2c18] bg-[#0b0907] px-4 py-3 text-sm text-[#f1e7cf] outline-none focus:border-[#8d7446] md:col-span-2" placeholder="Operational note" />
+              <textarea value={form.note} onChange={(event) => setForm({ ...form, note: event.target.value })} className="min-h-24 rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66] md:col-span-2" placeholder="Operational note" />
               <div className="flex flex-wrap gap-2 md:col-span-2">
                 <RuntimeButton type="submit" tone="primary">Save</RuntimeButton>
                 <RuntimeButton onClick={() => setForm(emptyRuntimeForm)}>Clear</RuntimeButton>
@@ -1201,7 +1318,7 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
         {activeTab === "logs" ? <RuntimeLogs logs={logs} /> : null}
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-[#9f8a60]">Pagination · Page {page} / {totalPages} · {filteredRows.length} records</p>
+          <p className="text-sm text-[#6B7280]">Pagination 路 Page {page} / {totalPages} 路 {filteredRows.length} records</p>
           <div className="flex gap-2">
             <RuntimeButton onClick={() => setPage(Math.max(1, page - 1))}>Previous</RuntimeButton>
             <RuntimeButton onClick={() => setPage(Math.min(totalPages, page + 1))}>Next</RuntimeButton>
@@ -1211,15 +1328,15 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
 
       <aside className="grid gap-5">
         <RuntimeCard>
-          <p className="text-sm text-[#9f8a60]">Drawer / record detail</p>
-          <h3 className="mt-2 text-2xl font-semibold text-[#e7d19a]">{drawerItem?.name ?? "No item selected"}</h3>
+          <p className="text-sm text-[#6B7280]">Drawer / record detail</p>
+          <h3 className="mt-2 text-2xl font-semibold text-[#2D333A]">{drawerItem?.name ?? "No item selected"}</h3>
           {drawerItem ? (
-            <div className="mt-4 grid gap-3 text-sm text-[#cbb477]">
+            <div className="mt-4 grid gap-3 text-sm text-[#6B7280]">
               <p>Status: {drawerItem.status}</p>
               <p>Category: {drawerItem.category}</p>
               <p>Owner: {drawerItem.owner}</p>
               <p>{drawerItem.note}</p>
-              {drawerItem.previewUrl ? <object data={drawerItem.previewUrl} aria-label="Uploaded asset preview" className="h-48 w-full rounded-xl border border-[#2d2214] object-contain" /> : null}
+              {drawerItem.previewUrl ? <object data={drawerItem.previewUrl} aria-label="Uploaded asset preview" className="h-48 w-full rounded-xl border border-[#D9DCE0] object-contain" /> : null}
               <div className="flex flex-wrap gap-2">
                 <RuntimeButton onClick={() => editRow(drawerItem)}>Edit</RuntimeButton>
                 <RuntimeButton tone="primary" onClick={() => updateRow(drawerItem.id, { status: "Published" }, `Published ${drawerItem.name}`)}>Publish</RuntimeButton>
@@ -1228,16 +1345,16 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
               </div>
             </div>
           ) : (
-            <p className="mt-3 text-sm leading-6 text-[#cbb477]">Open a row to inspect, edit, publish, archive, delete, preview, and review history.</p>
+            <p className="mt-3 text-sm leading-6 text-[#6B7280]">Open a row to inspect, edit, publish, archive, delete, preview, and review history.</p>
           )}
         </RuntimeCard>
 
         {workspace.mobile ? (
           <RuntimeCard>
-            <p className="text-sm text-[#9f8a60]">{t.quick} / Mobile high-frequency actions</p>
+            <p className="text-sm text-[#6B7280]">{t.quick} / Mobile high-frequency actions</p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               {workspace.mobile.map((item) => (
-                <button key={item} type="button" onClick={() => writeLogs(`Mobile action: ${item}`)} className="rounded-xl border border-[#2d2214] bg-[#0b0907] px-3 py-3 text-left text-sm text-[#cbb477] hover:border-[#8d7446]">{item}</button>
+                <button key={item} type="button" onClick={() => writeLogs(`Mobile action: ${item}`)} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-3 py-3 text-left text-sm text-[#6B7280] hover:border-[#A88C75]">{item}</button>
               ))}
             </div>
           </RuntimeCard>
@@ -1245,11 +1362,11 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
       </aside>
 
       {modalAction ? (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/65 px-4">
-          <div className="w-full max-w-md rounded-3xl border border-[#8d7446]/60 bg-[#100d09] p-6 shadow-[0_28px_80px_rgba(0,0,0,0.5)]">
-            <p className="text-sm text-[#9f8a60]">Modal / confirmation</p>
-            <h3 className="mt-2 text-2xl font-semibold text-[#f3db9b]">{modalAction.label}</h3>
-            <p className="mt-3 text-sm leading-6 text-[#cbb477]">This operation writes to the current Runtime state and adds an audit log entry.</p>
+        <div className="fixed inset-0 z-50 grid place-items-center bg-[#2D333A]/35 px-4">
+          <div className="w-full max-w-md rounded-3xl border border-[#947A66] bg-white p-6 shadow-[0_28px_80px_rgba(0,0,0,0.5)]">
+            <p className="text-sm text-[#6B7280]">Modal / confirmation</p>
+            <h3 className="mt-2 text-2xl font-semibold text-[#2D333A]">{modalAction.label}</h3>
+            <p className="mt-3 text-sm leading-6 text-[#6B7280]">This operation writes to the current Runtime state and adds an audit log entry.</p>
             <div className="mt-6 flex justify-end gap-2">
               <RuntimeButton onClick={() => setModalAction(null)}>Cancel</RuntimeButton>
               <RuntimeButton tone="primary" onClick={() => { modalAction.run(); setModalAction(null); }}>Confirm</RuntimeButton>
@@ -1263,31 +1380,31 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
 
 function RuntimeRecordsTable({ rows, editRow, deleteRow, setDrawerItem, updateRow }: Readonly<{ rows: RuntimeRow[]; editRow: (row: RuntimeRow) => void; deleteRow: (row: RuntimeRow) => void; setDrawerItem: (row: RuntimeRow) => void; updateRow: (rowId: string, patch: Partial<RuntimeRow>, logMessage: string) => void }>) {
   return (
-    <div className="mt-5 overflow-auto rounded-2xl border border-[#2d2214]">
+    <div className="mt-5 overflow-auto rounded-2xl border border-[#D9DCE0]">
       <table className="w-full min-w-[62rem] border-collapse text-left text-sm">
-        <thead className="bg-[#0b0907] text-[#9f8a60]">
+        <thead className="bg-[#EBEDEF] text-[#6B7280]">
           <tr>
-            <th className="border-b border-[#2d2214] px-3 py-3">Name</th>
-            <th className="border-b border-[#2d2214] px-3 py-3">Status</th>
-            <th className="border-b border-[#2d2214] px-3 py-3">Category</th>
-            <th className="border-b border-[#2d2214] px-3 py-3">Owner</th>
-            <th className="border-b border-[#2d2214] px-3 py-3">Progress</th>
-            <th className="border-b border-[#2d2214] px-3 py-3">Amount</th>
-            <th className="border-b border-[#2d2214] px-3 py-3">Updated</th>
-            <th className="border-b border-[#2d2214] px-3 py-3">Actions</th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3">Name</th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3">Status</th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3">Category</th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3">Owner</th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3">Progress</th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3">Amount</th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3">Updated</th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3">Actions</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row.id}>
-              <td className="border-b border-[#1e170f] px-3 py-3 text-[#e7d19a]">{row.name}</td>
-              <td className="border-b border-[#1e170f] px-3 py-3"><StatusPill>{row.status}</StatusPill></td>
-              <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.category}</td>
-              <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.owner}</td>
-              <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.progress}%</td>
-              <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{row.amount}</td>
-              <td className="border-b border-[#1e170f] px-3 py-3 text-[#9f8a60]">{row.updated}</td>
-              <td className="border-b border-[#1e170f] px-3 py-3">
+              <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#2D333A]">{row.name}</td>
+              <td className="border-b border-[#D9DCE0] px-3 py-3"><StatusPill>{row.status}</StatusPill></td>
+              <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{row.category}</td>
+              <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{row.owner}</td>
+              <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{row.progress}%</td>
+              <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{row.amount}</td>
+              <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{row.updated}</td>
+              <td className="border-b border-[#D9DCE0] px-3 py-3">
                 <div className="flex flex-wrap gap-2">
                   <RuntimeButton onClick={() => setDrawerItem(row)}>Open</RuntimeButton>
                   <RuntimeButton onClick={() => editRow(row)}>Edit</RuntimeButton>
@@ -1307,12 +1424,12 @@ function RuntimeRecordsTable({ rows, editRow, deleteRow, setDrawerItem, updateRo
 function RuntimeLogs({ logs }: Readonly<{ logs: RuntimeLog[] }>) {
   return (
     <RuntimeCard>
-      <p className="text-sm text-[#9f8a60]">Logs / history</p>
+      <p className="text-sm text-[#6B7280]">Logs / history</p>
       <div className="mt-4 grid gap-3">
         {logs.map((log) => (
-          <div key={log.id} className="rounded-xl border border-[#2d2214] bg-[#0b0907] p-3">
-            <p className="text-sm text-[#e7d19a]">{log.message}</p>
-            <p className="mt-1 text-xs text-[#7f704f]">{log.time}</p>
+          <div key={log.id} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] p-3">
+            <p className="text-sm text-[#2D333A]">{log.message}</p>
+            <p className="mt-1 text-xs text-[#9CA3AF]">{log.time}</p>
           </div>
         ))}
       </div>
@@ -1403,6 +1520,17 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
     );
   }
 
+  if (kind === "windseeker") {
+    return (
+      <div className="mt-5 grid gap-3 md:grid-cols-4">
+        <RuntimeMetric label="3-minute flow" value="Discover 锟?photo 锟?AI 锟?review" />
+        <RuntimeMetric label="AI generated" value="Title / SEO / GEO / price" />
+        <RuntimeMetric label="Deposit" value="Hold / release / refund" />
+        <RuntimeButton tone="primary" onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Wind Seeker approved: ${firstRow.name}`)}>Approve listing</RuntimeButton>
+      </div>
+    );
+  }
+
   return (
     <div className="mt-5 grid gap-3 md:grid-cols-4">
       <RuntimeMetric label="Create" value="Ready" />
@@ -1415,9 +1543,9 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
 
 function RuntimeMetric({ label, value }: Readonly<{ label: string; value: string }>) {
   return (
-    <div className="rounded-xl border border-[#2d2214] bg-[#0b0907] p-4">
-      <p className="text-xs uppercase tracking-[0.22em] text-[#7f704f]">{label}</p>
-      <p className="mt-3 text-lg text-[#e7d19a]">{value}</p>
+    <div className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] p-4">
+      <p className="text-xs uppercase tracking-[0.22em] text-[#9CA3AF]">{label}</p>
+      <p className="mt-3 text-lg text-[#2D333A]">{value}</p>
     </div>
   );
 }
@@ -1434,28 +1562,28 @@ function OverviewWorkspace() {
           [t.client, "Human Runtime", "Client shell reserved"],
         ].map(([cn, en, value]) => (
           <RuntimeCard key={cn}>
-            <p className="text-3xl font-semibold text-[#e7d19a]">{cn}</p>
-            <p className="mt-1 text-sm text-[#9f8a60]">{en}</p>
-            <p className="mt-6 text-xl text-[#f1e7cf]">{value}</p>
+            <p className="text-3xl font-semibold text-[#2D333A]">{cn}</p>
+            <p className="mt-1 text-sm text-[#6B7280]">{en}</p>
+            <p className="mt-6 text-xl text-[#2D333A]">{value}</p>
           </RuntimeCard>
         ))}
       </section>
 
       <section className="grid gap-4 xl:grid-cols-[1fr_0.9fr]">
         <RuntimeCard>
-          <h3 className="text-2xl font-semibold text-[#e7d19a]">{t.upload}</h3>
+          <h3 className="text-2xl font-semibold text-[#2D333A]">{t.upload}</h3>
           <div className="mt-4 grid gap-3">
             {uploadSpecs.map(([cn, en, size, ratio, safe, limits]) => (
-              <article key={en} className="rounded-xl border border-[#2d2214] bg-[#0b0907] p-4">
+              <article key={en} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] p-4">
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-                  <h4 className="text-xl font-semibold text-[#e7d19a]">{cn}</h4>
-                  <p className="text-sm text-[#9f8a60]">{en}</p>
+                  <h4 className="text-xl font-semibold text-[#2D333A]">{cn}</h4>
+                  <p className="text-sm text-[#6B7280]">{en}</p>
                 </div>
-                <dl className="mt-4 grid gap-2 text-sm text-[#cbb477] sm:grid-cols-2">
-                  <div><dt className="text-[#7f704f]">Size</dt><dd>{size}</dd></div>
-                  <div><dt className="text-[#7f704f]">Ratio</dt><dd>{ratio}</dd></div>
-                  <div><dt className="text-[#7f704f]">Safe Area</dt><dd>{safe}</dd></div>
-                  <div><dt className="text-[#7f704f]">Limits</dt><dd>{limits}</dd></div>
+                <dl className="mt-4 grid gap-2 text-sm text-[#6B7280] sm:grid-cols-2">
+                  <div><dt className="text-[#9CA3AF]">Size</dt><dd>{size}</dd></div>
+                  <div><dt className="text-[#9CA3AF]">Ratio</dt><dd>{ratio}</dd></div>
+                  <div><dt className="text-[#9CA3AF]">Safe Area</dt><dd>{safe}</dd></div>
+                  <div><dt className="text-[#9CA3AF]">Limits</dt><dd>{limits}</dd></div>
                 </dl>
               </article>
             ))}
@@ -1463,12 +1591,12 @@ function OverviewWorkspace() {
         </RuntimeCard>
 
         <RuntimeCard>
-          <h3 className="text-2xl font-semibold text-[#e7d19a]">{t.ruleBinding}</h3>
+          <h3 className="text-2xl font-semibold text-[#2D333A]">{t.ruleBinding}</h3>
           <div className="mt-4 grid gap-3">
             {ruleBindings.map(([area, rule]) => (
-              <div key={area} className="rounded-xl border border-[#2d2214] bg-[#0b0907] p-4">
-                <p className="text-xl font-semibold text-[#e7d19a]">{area}</p>
-                <p className="mt-2 text-sm leading-6 text-[#cbb477]">{rule}</p>
+              <div key={area} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] p-4">
+                <p className="text-xl font-semibold text-[#2D333A]">{area}</p>
+                <p className="mt-2 text-sm leading-6 text-[#6B7280]">{rule}</p>
               </div>
             ))}
           </div>
@@ -1481,16 +1609,16 @@ function OverviewWorkspace() {
 function LocaleWorkspace() {
   return (
     <RuntimeCard>
-      <h3 className="text-2xl font-semibold text-[#e7d19a]">{t.localeGeo}</h3>
-      <p className="mt-1 text-sm text-[#9f8a60]">Locale routing, canonical localization, hreflang, and region readiness.</p>
-      <div className="mt-5 max-h-[32rem] overflow-auto rounded-xl border border-[#2d2214]">
+      <h3 className="text-2xl font-semibold text-[#2D333A]">{t.localeGeo}</h3>
+      <p className="mt-1 text-sm text-[#6B7280]">Locale routing, canonical localization, hreflang, and region readiness.</p>
+      <div className="mt-5 max-h-[32rem] overflow-auto rounded-xl border border-[#D9DCE0]">
         <table className="w-full min-w-[44rem] border-collapse text-left text-sm">
-          <thead className="bg-[#0b0907] text-[#9f8a60]">
+          <thead className="bg-[#EBEDEF] text-[#6B7280]">
             <tr>
-              <th className="border-b border-[#2d2214] px-3 py-3">Route</th>
-              <th className="border-b border-[#2d2214] px-3 py-3">Language</th>
-              <th className="border-b border-[#2d2214] px-3 py-3">Direction</th>
-              <th className="border-b border-[#2d2214] px-3 py-3">Status</th>
+              <th className="border-b border-[#D9DCE0] px-3 py-3">Route</th>
+              <th className="border-b border-[#D9DCE0] px-3 py-3">Language</th>
+              <th className="border-b border-[#D9DCE0] px-3 py-3">Direction</th>
+              <th className="border-b border-[#D9DCE0] px-3 py-3">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -1498,10 +1626,10 @@ function LocaleWorkspace() {
               const definition = localeDefinitions[locale];
               return (
                 <tr key={locale}>
-                  <td className="border-b border-[#1e170f] px-3 py-3 font-mono text-[#e7d19a]">/{locale}</td>
-                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{definition.label}</td>
-                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#cbb477]">{definition.dir.toUpperCase()}</td>
-                  <td className="border-b border-[#1e170f] px-3 py-3 text-[#9f8a60]">Reserved</td>
+                  <td className="border-b border-[#D9DCE0] px-3 py-3 font-mono text-[#2D333A]">/{locale}</td>
+                  <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{definition.label}</td>
+                  <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{definition.dir.toUpperCase()}</td>
+                  <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">Reserved</td>
                 </tr>
               );
             })}
@@ -1518,24 +1646,24 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <main className="min-h-screen bg-[#070605] text-[#f1e7cf]">
+    <main className="min-h-screen bg-[#F5F6F8] text-[#2D333A]">
       <div className="grid min-h-screen lg:grid-cols-[var(--admin-sidebar)_1fr]" style={{ "--admin-sidebar": sidebarCollapsed ? "5.5rem" : "20rem" } as CSSProperties}>
-        <aside className="border-b border-[#2d2214] bg-[#0b0907] lg:border-r lg:border-b-0">
-          <div className="border-b border-[#2d2214] px-5 py-5">
+        <aside className="border-b border-[#D9DCE0] bg-[#EBEDEF] lg:border-r lg:border-b-0">
+          <div className="border-b border-[#D9DCE0] px-5 py-5">
             <div className="flex items-center justify-between gap-3">
               <div className={sidebarCollapsed ? "sr-only" : ""}>
-                <p className="text-2xl font-semibold leading-tight text-[#e7d19a]">{t.adminSystem}</p>
-                <p className="mt-1 text-sm text-[#9f8a60]">Admin OS</p>
+                <p className="text-2xl font-semibold leading-tight text-[#2D333A]">{t.adminSystem}</p>
+                <p className="mt-1 text-sm text-[#6B7280]">Admin OS</p>
               </div>
-              <button type="button" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#3b2c18] bg-[#100d09] text-sm text-[#d8bd78] hover:border-[#8d7446]" aria-label="Collapse sidebar">
+              <button type="button" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#D9DCE0] bg-white text-sm text-[#2D333A] hover:border-[#A88C75]" aria-label="Collapse sidebar">
                 {sidebarCollapsed ? ">" : "<"}
               </button>
             </div>
-            <p className={`mt-4 text-sm leading-6 text-[#b9a878] ${sidebarCollapsed ? "sr-only" : ""}`}>{siteConfig.siteName}</p>
+            <p className={`mt-4 text-sm leading-6 text-[#6B7280] ${sidebarCollapsed ? "sr-only" : ""}`}>{siteConfig.siteName}</p>
             <Link
               href="/admin"
               title="Runtime Overview"
-              className={`mt-5 block w-full rounded-xl border px-3 py-3 text-left text-sm ${activeWorkspace === "overview" ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-[#3b2c18] bg-[#100d09] text-[#cbb477]"}`}
+              className={`mt-5 block w-full rounded-xl border px-3 py-3 text-left text-sm ${activeWorkspace === "overview" ? "border-[#947A66] bg-[#947A66] text-white" : "border-[#D9DCE0] bg-white text-[#6B7280]"}`}
             >
               {sidebarCollapsed ? "OV" : "Runtime Overview"}
             </Link>
@@ -1547,14 +1675,14 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
               return (
                 <details key={group.id} className="mb-2" open={isActiveGroup || group.id === "frontstage"}>
                   <summary
-                    className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3 text-left transition ${isActiveGroup ? "border-[#8d7446]/70 bg-[#171107]" : "border-transparent hover:border-[#3b2c18] hover:bg-[#100d09]"}`}
+                    className={`flex w-full items-center gap-3 rounded-xl border px-3 py-3 text-left transition ${isActiveGroup ? "border-[#947A66] bg-white" : "border-transparent hover:border-[#D9DCE0] hover:bg-white"}`}
                   >
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-[#4b381f] bg-[#100d09] text-xs font-semibold text-[#d8bd78]">{group.icon}</span>
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-[#D9DCE0] bg-[#947A66] text-xs font-semibold text-white">{group.icon}</span>
                     <span className={`min-w-0 flex-1 ${sidebarCollapsed ? "sr-only" : ""}`}>
-                      <span className="block text-lg leading-tight text-[#e7d19a]">{group.cn}</span>
-                      <span className="block truncate text-xs text-[#7f704f]">{group.en}</span>
+                      <span className="block text-lg leading-tight text-[#2D333A]">{group.cn}</span>
+                      <span className="block truncate text-xs text-[#9CA3AF]">{group.en}</span>
                     </span>
-                    <span className={`text-[#9f8a60] ${sidebarCollapsed ? "sr-only" : ""}`}>+</span>
+                    <span className={`text-[#6B7280] ${sidebarCollapsed ? "sr-only" : ""}`}>+</span>
                   </summary>
 
                   <div className={`mt-1 grid gap-1 ${sidebarCollapsed ? "pl-0" : "pl-12"}`}>
@@ -1566,10 +1694,10 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
                           key={id}
                           href={workspaceHref(id)}
                           title={`${item.cn} / ${item.en}`}
-                          className={`rounded-lg border px-3 py-2 text-left text-sm transition ${isActive ? "border-[#8d7446] bg-[#20180d] text-[#f3db9b]" : "border-transparent text-[#b9a878] hover:border-[#3b2c18] hover:bg-[#100d09]"}`}
+                          className={`rounded-lg border px-3 py-2 text-left text-sm transition ${isActive ? "border-[#947A66] bg-[#947A66] text-white" : "border-transparent text-[#6B7280] hover:border-[#D9DCE0] hover:bg-white"}`}
                         >
                           <span className="block">{sidebarCollapsed ? item.en.slice(0, 2).toUpperCase() : item.cn}</span>
-                          <span className={`mt-0.5 block text-xs text-[#7f704f] ${sidebarCollapsed ? "sr-only" : ""}`}>{item.en}</span>
+                          <span className={`mt-0.5 block text-xs text-[#9CA3AF] ${sidebarCollapsed ? "sr-only" : ""}`}>{item.en}</span>
                         </Link>
                       );
                     })}
@@ -1581,12 +1709,12 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
         </aside>
 
         <section className="flex min-h-screen min-w-0 flex-col">
-          <header className="sticky top-0 z-10 border-b border-[#2d2214] bg-[#070605]/96 px-4 py-4 backdrop-blur lg:px-7">
+          <header className="sticky top-0 z-10 border-b border-[#D9DCE0] bg-[#F5F6F8]/96 px-4 py-4 backdrop-blur lg:px-7">
             <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
               <div>
-                <p className="text-sm text-[#9f8a60]">Runtime Workspace Architecture</p>
-                <h1 className="mt-1 text-3xl font-semibold leading-tight text-[#f3db9b] sm:text-4xl">{workspace.en}</h1>
-                <p className="mt-1 text-sm text-[#b9a878]">{workspace.cn} / {workspace.state}</p>
+                <p className="text-sm text-[#6B7280]">Runtime Workspace Architecture</p>
+                <h1 className="mt-1 text-3xl font-semibold leading-tight text-[#2D333A] sm:text-4xl">{workspace.en}</h1>
+                <p className="mt-1 text-sm text-[#6B7280]">{workspace.cn} / {workspace.state}</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <StatusPill>{t.threeLevels} / 3 levels max</StatusPill>
@@ -1604,4 +1732,6 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
     </main>
   );
 }
+
+
 

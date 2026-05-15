@@ -11,6 +11,7 @@ Authoritative sources, in order:
 5. `Admin-OS-Blueprint/Reverent_Inquiry_RiskControl_Update/`
 6. `Admin-OS-Blueprint/Reverent_Inquiry_ClientRuntime_Update/`
 7. `Admin-OS-Blueprint/Reverent_Inquiry_NewModules_Update/`
+8. `Admin-OS-Blueprint/Reverent_Inquiry_WindSeeker_Runtime_Ultimate/`
 
 Locked rules:
 
@@ -26,6 +27,7 @@ Locked rules:
 - No module may be merged, omitted, renamed, or invented outside the constitution and Runtime packages.
 - Frontstage Runtime is the Browser Air frontstage civilization control layer, not ordinary page management.
 - Message & Notification Center, Campaign & Marketing Center, After-Sales Center, Community & Content Moderation, Compliance & Legal Center, and Finance & Settlement Center are locked first-level Runtime modules.
+- Wind Seeker is the locked name for the global object scout network. Seller Center, Merchant Center, and marketplace naming must not be used for this runtime.
 - Member Risk Control exists only in Admin OS. Client Runtime may only expose verification, status, and notifications.
 - Media Assets Center remains the Visual Governance Layer.
 - Fixed Visual Runtime Mode remains binding for exported visual assets.

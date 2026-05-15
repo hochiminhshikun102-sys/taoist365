@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdminOSAccess } from "@/components/admin/AdminOSAccess";
 import { AdminOSConsole, type AdminWorkspaceId } from "@/components/admin/AdminOSConsole";
@@ -7,6 +7,18 @@ const adminWorkspaceIds = [
   "objects",
   "orders",
   "payments",
+  "wind-seeker-approval",
+  "ai-product-moderation",
+  "buyer-risk-dashboard",
+  "wind-seeker-settlement",
+  "logistics-monitor",
+  "dispute-runtime",
+  "buyer-deposit-runtime",
+  "wind-seeker-drafts",
+  "wind-seeker-notifications",
+  "wind-seeker-account",
+  "shipping-runtime",
+  "refund-runtime",
   "message-center",
   "notification-overview",
   "notification-templates",
@@ -47,7 +59,7 @@ const adminWorkspaceIds = [
   "finance-overview",
   "reconciliation",
   "refund-reconciliation",
-  "merchant-settlement",
+  "partner-settlement",
   "tax-runtime",
   "funds-ledger",
   "freeze-unfreeze",
@@ -122,3 +134,4 @@ export default async function AdminWorkspacePage({ params }: AdminWorkspacePageP
     </AdminOSAccess>
   );
 }
+
