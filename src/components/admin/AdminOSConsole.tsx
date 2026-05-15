@@ -54,6 +54,26 @@ export type AdminWorkspaceId =
   | "wind-seeker-account"
   | "shipping-runtime"
   | "refund-runtime"
+  | "buyer-level-runtime"
+  | "aml-kyc-runtime"
+  | "wind-seeker-risk-runtime"
+  | "wind-seeker-moderation-runtime"
+  | "multi-language-runtime"
+  | "multi-currency-runtime"
+  | "region-restriction-runtime"
+  | "country-restriction-runtime"
+  | "sanctions-runtime"
+  | "legal-runtime"
+  | "compliance-runtime"
+  | "aml-runtime"
+  | "settlement-runtime"
+  | "moderation-runtime"
+  | "deposit-runtime"
+  | "audit-runtime"
+  | "risk-runtime"
+  | "quiet-receiving-runtime"
+  | "chargeback-runtime"
+  | "counterfeit-enforcement"
   | "message-center"
   | "notification-overview"
   | "notification-templates"
@@ -268,6 +288,152 @@ const workspaceMap = {
     en: "Refund Runtime",
     state: "Finance linked",
     work: ["Refund request", "Reason", "Payment link", "Approval", "Release", "Audit"],
+  },
+  "buyer-level-runtime": {
+    id: "buyer-level-runtime",
+    cn: "\u4e70\u65b9\u7b49\u7ea7",
+    en: "Buyer Level Runtime",
+    state: "Trust tier active",
+    work: ["Level table", "Deposit rule", "Order behavior", "Dispute state", "Country rule", "Audit"],
+    ai: ["AI trust scoring", "AI behavior signal", "AI deposit suggestion"],
+  },
+  "aml-kyc-runtime": {
+    id: "aml-kyc-runtime",
+    cn: "AML / KYC",
+    en: "AML / KYC Runtime",
+    state: "Identity review",
+    work: ["KYC submission", "AML review", "Document status", "Country risk", "Sanctions hit", "Manual approval"],
+    ai: ["AI document check", "AI risk country signal", "AI sanctions precheck"],
+  },
+  "wind-seeker-risk-runtime": {
+    id: "wind-seeker-risk-runtime",
+    cn: "Wind Seeker \u98ce\u63a7",
+    en: "Risk Runtime",
+    state: "Risk country dynamic update",
+    work: ["Risk country table", "Freeze runtime", "Counterfeit enforcement", "Dispute link", "Chargeback link", "Audit"],
+    ai: ["AI risk scoring", "AI counterfeit signal", "AI chargeback risk"],
+  },
+  "wind-seeker-moderation-runtime": {
+    id: "wind-seeker-moderation-runtime",
+    cn: "Wind Seeker \u5ba1\u6838\u961f\u5217",
+    en: "Moderation Runtime",
+    state: "Review queue active",
+    work: ["Object review", "Image review", "Video review", "Copy review", "Approve", "Reject", "Logs"],
+    ai: ["AI image moderation", "AI copy moderation", "AI duplicate scan"],
+  },
+  "multi-language-runtime": {
+    id: "multi-language-runtime",
+    cn: "\u591a\u8bed\u8a00",
+    en: "Multi-language Runtime",
+    state: "Locale ready",
+    work: ["Language list", "Translation queue", "SEO / GEO copy", "Localized policy", "Publish state", "Logs"],
+  },
+  "multi-currency-runtime": {
+    id: "multi-currency-runtime",
+    cn: "\u591a\u5e01\u79cd",
+    en: "Multi-currency Runtime",
+    state: "Finance linked",
+    work: ["Currency table", "FX note", "Settlement currency", "Deposit currency", "Refund currency", "Audit"],
+  },
+  "region-restriction-runtime": {
+    id: "region-restriction-runtime",
+    cn: "\u533a\u57df\u9650\u5236",
+    en: "Region Restriction Runtime",
+    state: "GEO linked",
+    work: ["Region rules", "Shipping regions", "Payment regions", "Policy version", "Override", "Logs"],
+  },
+  "country-restriction-runtime": {
+    id: "country-restriction-runtime",
+    cn: "\u56fd\u5bb6\u9650\u5236",
+    en: "Country Restriction Runtime",
+    state: "Country table active",
+    work: ["Country table", "Risk level", "Allowed state", "Blocked state", "Manual override", "Audit"],
+  },
+  "sanctions-runtime": {
+    id: "sanctions-runtime",
+    cn: "\u5236\u88c1\u540d\u5355",
+    en: "Sanctions Runtime",
+    state: "Compliance linked",
+    work: ["Sanctions table", "Screening queue", "Country risk", "AML review", "Freeze link", "Audit logs"],
+    ai: ["AI sanctions precheck", "AI false-positive summary"],
+  },
+  "legal-runtime": {
+    id: "legal-runtime",
+    cn: "\u6cd5\u52a1",
+    en: "Legal Runtime",
+    state: "Backend full runtime",
+    work: ["Frontstage Public Version", "Backend Full Runtime Version", "Terms version", "Privacy version", "Cookie version", "Rollback"],
+  },
+  "compliance-runtime": {
+    id: "compliance-runtime",
+    cn: "\u5408\u89c4",
+    en: "Compliance Runtime",
+    state: "Global compliance",
+    work: ["GDPR", "CCPA", "AI usage", "Country restriction", "Sanctions runtime", "Logs"],
+  },
+  "aml-runtime": {
+    id: "aml-runtime",
+    cn: "AML",
+    en: "AML Runtime",
+    state: "Review active",
+    work: ["AML review", "KYC link", "Risk country", "Sanctions hit", "Freeze runtime", "Audit"],
+  },
+  "settlement-runtime": {
+    id: "settlement-runtime",
+    cn: "\u7ed3\u7b97",
+    en: "Settlement Runtime",
+    state: "Global settlement",
+    work: ["Settlement table", "Multi-currency", "Payout", "Deposit release", "Refund link", "Audit"],
+  },
+  "moderation-runtime": {
+    id: "moderation-runtime",
+    cn: "\u5ba1\u6838",
+    en: "Moderation Runtime",
+    state: "Queue active",
+    work: ["Review queue", "Approve", "Reject", "Counterfeit enforcement", "Sensitive copy", "Logs"],
+  },
+  "deposit-runtime": {
+    id: "deposit-runtime",
+    cn: "\u4fdd\u8bc1\u91d1",
+    en: "Deposit Runtime",
+    state: "Hold / release",
+    work: ["Deposit table", "Hold", "Release", "Refund", "Risk link", "Audit"],
+  },
+  "audit-runtime": {
+    id: "audit-runtime",
+    cn: "\u5ba1\u8ba1",
+    en: "Audit Runtime",
+    state: "Logs active",
+    work: ["Operator logs", "Policy logs", "Finance logs", "Risk logs", "Export", "History"],
+  },
+  "risk-runtime": {
+    id: "risk-runtime",
+    cn: "\u98ce\u63a7",
+    en: "Risk Runtime",
+    state: "Global risk",
+    work: ["Risk country dynamic update", "Freeze runtime", "Counterfeit enforcement", "Dispute runtime", "Chargeback runtime", "Audit"],
+    ai: ["AI risk scoring", "AI fraud prediction", "AI restriction strategy"],
+  },
+  "quiet-receiving-runtime": {
+    id: "quiet-receiving-runtime",
+    cn: "Quiet Receiving",
+    en: "Quiet Receiving Runtime",
+    state: "Windkeep linked",
+    work: ["Continuation request", "Receiving review", "Object memory", "Keeper note", "Risk link", "Publish"],
+  },
+  "chargeback-runtime": {
+    id: "chargeback-runtime",
+    cn: "\u62d2\u4ed8",
+    en: "Chargeback Runtime",
+    state: "Finance risk",
+    work: ["Chargeback queue", "Evidence", "Payment provider", "Risk link", "Decision", "Audit"],
+  },
+  "counterfeit-enforcement": {
+    id: "counterfeit-enforcement",
+    cn: "\u5047\u8d27\u6cbb\u7406",
+    en: "Counterfeit Enforcement",
+    state: "Moderation linked",
+    work: ["Counterfeit queue", "Evidence", "Object source", "Reject", "Freeze", "Audit"],
   },
   "message-center": {
     id: "message-center",
@@ -879,7 +1045,7 @@ const navGroups = [
     icon: "WS",
     cn: t.windSeeker,
     en: "Global Object Scout Network",
-    items: ["wind-seeker-approval", "ai-product-moderation", "buyer-risk-dashboard", "wind-seeker-settlement", "logistics-monitor", "dispute-runtime", "buyer-deposit-runtime", "wind-seeker-drafts", "wind-seeker-notifications", "wind-seeker-account", "shipping-runtime", "refund-runtime"] satisfies AdminWorkspaceId[],
+    items: ["wind-seeker-approval", "ai-product-moderation", "buyer-risk-dashboard", "wind-seeker-settlement", "logistics-monitor", "dispute-runtime", "buyer-deposit-runtime", "wind-seeker-drafts", "wind-seeker-notifications", "wind-seeker-account", "shipping-runtime", "refund-runtime", "buyer-level-runtime", "aml-kyc-runtime", "wind-seeker-risk-runtime", "wind-seeker-moderation-runtime", "multi-language-runtime", "multi-currency-runtime", "region-restriction-runtime", "country-restriction-runtime", "sanctions-runtime"] satisfies AdminWorkspaceId[],
   },
   {
     id: "messages",
@@ -914,14 +1080,14 @@ const navGroups = [
     icon: "CL",
     cn: t.compliance,
     en: "Compliance & Legal",
-    items: ["compliance-legal", "gdpr-runtime", "ccpa-runtime", "terms-runtime", "privacy-policy-runtime", "ai-usage-agreement", "infringement-handling", "legal-logs"] satisfies AdminWorkspaceId[],
+    items: ["legal-runtime", "compliance-runtime", "aml-runtime", "sanctions-runtime", "chargeback-runtime", "counterfeit-enforcement", "compliance-legal", "gdpr-runtime", "ccpa-runtime", "terms-runtime", "privacy-policy-runtime", "ai-usage-agreement", "infringement-handling", "legal-logs"] satisfies AdminWorkspaceId[],
   },
   {
     id: "finance",
     icon: "FN",
     cn: t.finance,
     en: "Finance & Settlement",
-    items: ["finance-settlement", "finance-overview", "reconciliation", "refund-reconciliation", "partner-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs"] satisfies AdminWorkspaceId[],
+    items: ["settlement-runtime", "deposit-runtime", "audit-runtime", "finance-settlement", "finance-overview", "reconciliation", "refund-reconciliation", "partner-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs"] satisfies AdminWorkspaceId[],
   },
   {
     id: "ai",
@@ -963,7 +1129,7 @@ const navGroups = [
     icon: "WR",
     cn: "\u6587\u660e\u8fd0\u884c",
     en: "World Runtime",
-    items: ["windkeep", "driftbox", "rules-binding", "locale-geo"] satisfies AdminWorkspaceId[],
+    items: ["windkeep", "quiet-receiving-runtime", "driftbox", "risk-runtime", "moderation-runtime", "rules-binding", "locale-geo"] satisfies AdminWorkspaceId[],
   },
 ] as const;
 
@@ -1116,14 +1282,14 @@ function defaultCategory(workspaceId: AdminWorkspaceId) {
 }
 
 function getRuntimeKind(workspaceId: AdminWorkspaceId): RuntimeKind {
-  if (["wind-seeker-approval", "ai-product-moderation", "buyer-risk-dashboard", "wind-seeker-settlement", "logistics-monitor", "dispute-runtime", "buyer-deposit-runtime", "wind-seeker-drafts", "wind-seeker-notifications", "wind-seeker-account", "shipping-runtime", "refund-runtime"].includes(workspaceId)) return "windseeker";
+  if (["wind-seeker-approval", "ai-product-moderation", "buyer-risk-dashboard", "wind-seeker-settlement", "logistics-monitor", "dispute-runtime", "buyer-deposit-runtime", "wind-seeker-drafts", "wind-seeker-notifications", "wind-seeker-account", "shipping-runtime", "refund-runtime", "buyer-level-runtime", "aml-kyc-runtime", "wind-seeker-risk-runtime", "wind-seeker-moderation-runtime", "multi-language-runtime", "multi-currency-runtime", "region-restriction-runtime", "country-restriction-runtime", "sanctions-runtime"].includes(workspaceId)) return "windseeker";
   if (["brand-assets", "product-media", "social-media", "prompt-packs", "safe-area", "frontstage-safe-area"].includes(workspaceId)) return "media";
   if (["ai-queue", "ai-image", "ai-video", "geo", "viral-radar", "ai-reach-reserve", "ai-campaign-optimization", "ai-content-moderation"].includes(workspaceId)) return "ai";
   if (["logistics", "tracking", "freight", "returns", "after-sales-tracking"].includes(workspaceId)) return "logistics";
   if (["suppliers", "inventory", "procurement", "costs"].includes(workspaceId)) return "supply";
-  if (["finance-settlement", "finance-overview", "reconciliation", "refund-reconciliation", "partner-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs"].includes(workspaceId)) return "finance";
-  if (["community-moderation", "comment-review", "report-handling", "ugc-review", "sensitive-words", "media-moderation"].includes(workspaceId)) return "moderation";
-  if (["publishing-runtime", "terms-runtime", "privacy-policy-runtime", "ai-usage-agreement", "homepage-runtime", "section-runtime", "navigation-runtime", "homepage-rotation"].includes(workspaceId)) return "publishing";
+  if (["finance-settlement", "finance-overview", "settlement-runtime", "deposit-runtime", "reconciliation", "refund-reconciliation", "partner-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs", "chargeback-runtime"].includes(workspaceId)) return "finance";
+  if (["community-moderation", "moderation-runtime", "comment-review", "report-handling", "ugc-review", "sensitive-words", "media-moderation", "counterfeit-enforcement"].includes(workspaceId)) return "moderation";
+  if (["publishing-runtime", "legal-runtime", "terms-runtime", "privacy-policy-runtime", "ai-usage-agreement", "homepage-runtime", "section-runtime", "navigation-runtime", "homepage-rotation"].includes(workspaceId)) return "publishing";
   return "general";
 }
 
@@ -1523,9 +1689,10 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
   if (kind === "windseeker") {
     return (
       <div className="mt-5 grid gap-3 md:grid-cols-4">
-        <RuntimeMetric label="3-minute flow" value="Discover 锟?photo 锟?AI 锟?review" />
+        <RuntimeMetric label="3-minute flow" value="Discover / photo / AI / review" />
         <RuntimeMetric label="AI generated" value="Title / SEO / GEO / price" />
         <RuntimeMetric label="Deposit" value="Hold / release / refund" />
+        <RuntimeMetric label="Global controls" value="AML / KYC / country / sanctions" />
         <RuntimeButton tone="primary" onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Wind Seeker approved: ${firstRow.name}`)}>Approve listing</RuntimeButton>
       </div>
     );
@@ -1555,7 +1722,7 @@ function OverviewWorkspace() {
     <div className="grid gap-5">
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         {[
-          [t.assetGovernance, "Visual Governance", "12 asset domains"],
+          [t.assetGovernance, "RI Constitution Pack V2 Global Runtime Blueprint", "12 asset domains"],
           ["AI \u961f\u5217", "AI Queue", "7 reserved lanes"],
           [t.logistics, "Fulfillment Runtime", "API-ready shell"],
           [t.risk, "Trust Infrastructure", "Backend-only runtime"],

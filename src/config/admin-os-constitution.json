@@ -1,6 +1,7 @@
 {
   "constitutionVersion": "20260515",
   "constitutionPaths": [
+    "Admin-OS-Blueprint/Constitution/RI Constitution Pack V2 Global Runtime Blueprint 20260515最终版.AAAAAAA不变了.docx",
     "Admin-OS-Blueprint/Constitution/Reverent Inquiry Admin OS 完整地基最终文档（20260515）.docx",
     "Admin-OS-Blueprint/Constitution/新模块合集：独立站后台2026051501.docx",
     "Admin-OS-Blueprint/Constitution/README.md",
@@ -137,7 +138,27 @@
       "windkeep",
       "driftbox",
       "rules-binding",
-      "locale-geo"
+      "locale-geo",
+      "buyer-level-runtime",
+      "aml-kyc-runtime",
+      "wind-seeker-risk-runtime",
+      "wind-seeker-moderation-runtime",
+      "multi-language-runtime",
+      "multi-currency-runtime",
+      "region-restriction-runtime",
+      "country-restriction-runtime",
+      "sanctions-runtime",
+      "legal-runtime",
+      "compliance-runtime",
+      "aml-runtime",
+      "settlement-runtime",
+      "moderation-runtime",
+      "deposit-runtime",
+      "audit-runtime",
+      "risk-runtime",
+      "quiet-receiving-runtime",
+      "chargeback-runtime",
+      "counterfeit-enforcement"
     ],
     "requiredTerms": [
       "Runtime Workspace Architecture",
@@ -178,7 +199,17 @@
       "Approve",
       "Reject",
       "Rollback",
-      "AI risk scoring"
+      "AI risk scoring",
+      "RI Constitution Pack V2 Global Runtime Blueprint",
+      "AML / KYC Runtime",
+      "Sanctions Runtime",
+      "Country Restriction Runtime",
+      "Risk country dynamic update",
+      "Chargeback Runtime",
+      "Counterfeit Enforcement",
+      "Quiet Receiving Runtime",
+      "Frontstage Public Version",
+      "Backend Full Runtime Version"
     ],
     "forbiddenTerms": [
       "setActiveWorkspace(",

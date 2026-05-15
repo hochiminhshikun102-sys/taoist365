@@ -61,6 +61,14 @@ export const localizedStaticPaths = [
   "live",
   "objects",
   "inquiry",
+  "driftbox",
+  "journal",
+  "quiet-extracts",
+  "shipping",
+  "refund",
+  "privacy",
+  "cookie",
+  "wind-seeker-intro",
   "search",
 ] as const;
 
@@ -76,4 +84,3 @@ export function localePath(locale: Locale, path = "") {
 export function localizedAlternates(path = "") {
   return Object.fromEntries(locales.map((locale) => [localeDefinitions[locale].htmlLang, localePath(locale, path)]));
 }
-

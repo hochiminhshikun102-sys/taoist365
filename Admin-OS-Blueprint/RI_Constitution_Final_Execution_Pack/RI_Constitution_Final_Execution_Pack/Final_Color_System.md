@@ -1,0 +1,17 @@
+# Final Locked Color System
+
+Frontstage:
+#F0F2F5
+#E8EBF0
+#2C323C
+#646E7A
+#909BA8
+#8A7C6E
+
+Backend:
+#F5F6F8
+#EBEDEF
+#D9DCE0
+#2D333A
+#6B7280
+#947A66

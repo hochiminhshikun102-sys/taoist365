@@ -1,0 +1,30 @@
+地瓜：
+
+现在正式开始：
+
+RI Constitution Pack V2 Runtime 落地。
+
+必须：
+- Wind Seeker Runtime
+- Admin OS Runtime
+- multilingual runtime
+- settlement runtime
+- AML/KYC
+- sanctions runtime
+- moderation runtime
+
+所有 Runtime：
+必须 Interactive Runtime。
+
+禁止：
+- 静态页面
+- Landing Page 化
+- 假交互
+
+最终目标：
+
+RI：
+AI-era human living infrastructure.
+
+Wind Seeker：
+Global distributed object discovery network.

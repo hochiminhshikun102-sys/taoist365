@@ -71,7 +71,12 @@ export function WindSeekerRuntime() {
               <RuntimeTile title="Draft Runtime" text="Continue a quiet object draft." action={() => setActiveTab("Upload")} />
               <RuntimeTile title="Deposit Runtime" text="Deposit hold, release, refund state." />
               <RuntimeTile title="Settlement Runtime" text="Pending balance and payout status." />
+              <RuntimeTile title="Keeper Trust Runtime" text="Trust level, deposit rule, and access state." />
+              <RuntimeTile title="AML / KYC Runtime" text="Identity review, risk country, and sanctions precheck." />
+              <RuntimeTile title="Risk Runtime" text="Freeze, chargeback, dispute, and counterfeit enforcement." />
+              <RuntimeTile title="Moderation Runtime" text="AI first review and human approval queue." />
               <RuntimeTile title="Notification Runtime" text="Review, order, message, and shipping notices." />
+              <RuntimeTile title="Global Runtime" text="Language, currency, country limits, region limits, and sanctions rules." />
             </div>
           ) : null}
 
@@ -126,9 +131,9 @@ export function WindSeekerRuntime() {
             </div>
           ) : null}
 
-          {activeTab === "Orders" ? <SimpleList title="Orders" items={["Awaiting shipment", "Shipping Runtime", "After-Sales Runtime", "Refund Runtime"]} /> : null}
+          {activeTab === "Orders" ? <SimpleList title="Orders" items={["Awaiting shipment", "Shipping Runtime", "After-Sales Runtime", "Refund Runtime", "Chargeback Runtime"]} /> : null}
           {activeTab === "Messages" ? <SimpleList title="Messages" items={["Review message", "Order question", "Dispute update", "Notification settings"]} /> : null}
-          {activeTab === "Me" ? <SimpleList title="Me" items={["Account Runtime", "Region", "Settlement account", "Deposit status"]} /> : null}
+          {activeTab === "Me" ? <SimpleList title="Me" items={["Account Runtime", "Keeper Trust", "AML / KYC", "Country restriction", "Settlement account", "Deposit status"]} /> : null}
         </div>
 
         <p className="mt-4 rounded-2xl border border-[#D7DCE3] bg-[#E8EBF0] p-4 text-sm leading-6 text-[#646E7A]">{aiReady ? "AI draft ready. " : ""}{log}</p>

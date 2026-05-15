@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import AboutPage from "@/app/(marketing)/about/page";
+import CookiePage from "@/app/(marketing)/cookie/page";
+import DriftboxPage from "@/app/(marketing)/driftbox/page";
 import HealingIndexPage from "@/app/(marketing)/healing/page";
 import InquiryPage from "@/app/(marketing)/inquiry/page";
+import JournalPage from "@/app/(marketing)/journal/page";
 import QuietLiveRoomPage from "@/app/(marketing)/live/page";
 import ObjectsPage from "@/app/(marketing)/objects/page";
+import PrivacyPage from "@/app/(marketing)/privacy/page";
+import QuietExtractsPage from "@/app/(marketing)/quiet-extracts/page";
 import QuietReceivingPage from "@/app/(marketing)/quiet-receiving/page";
+import RefundPage from "@/app/(marketing)/refund/page";
 import SearchPage from "@/app/(marketing)/search/page";
+import ShippingPage from "@/app/(marketing)/shipping/page";
 import WindkeepPage from "@/app/(marketing)/windkeep/page";
+import WindSeekerIntroPage from "@/app/(marketing)/wind-seeker-intro/page";
 import { HomepageBrowserRoom } from "@/components/marketing/HomepageBrowserRoom";
 import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
 import {
@@ -34,6 +42,14 @@ const routeTitles: Record<string, string> = {
   live: "Quiet Live Room",
   objects: "Objects",
   inquiry: "Driftbox",
+  driftbox: "Driftbox",
+  journal: "Journal",
+  "quiet-extracts": "Quiet Extracts",
+  shipping: "Shipping",
+  refund: "Refund",
+  privacy: "Privacy",
+  cookie: "Cookie",
+  "wind-seeker-intro": "Wind Seeker",
   search: "Search",
 };
 
@@ -130,6 +146,30 @@ export default async function LocalePage({ params }: LocalePageProps) {
       break;
     case "inquiry":
       page = <InquiryPage />;
+      break;
+    case "driftbox":
+      page = <DriftboxPage />;
+      break;
+    case "journal":
+      page = <JournalPage />;
+      break;
+    case "quiet-extracts":
+      page = <QuietExtractsPage />;
+      break;
+    case "shipping":
+      page = <ShippingPage />;
+      break;
+    case "refund":
+      page = <RefundPage />;
+      break;
+    case "privacy":
+      page = <PrivacyPage />;
+      break;
+    case "cookie":
+      page = <CookiePage />;
+      break;
+    case "wind-seeker-intro":
+      page = <WindSeekerIntroPage />;
       break;
     case "search":
       page = <SearchPage />;
