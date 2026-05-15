@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import { organizationSchema } from "@/lib/seo-geo-runtime";
 
 export function QuietSiteJsonLd() {
   const graph = {
@@ -9,9 +10,7 @@ export function QuietSiteJsonLd() {
     description: siteConfig.description,
     inLanguage: siteConfig.locale,
     publisher: {
-      "@type": "Organization",
-      name: siteConfig.siteName,
-      url: siteConfig.metadataBase,
+      ...organizationSchema(),
       contactPoint: {
         "@type": "ContactPoint",
         email: siteConfig.inquiryEmail,

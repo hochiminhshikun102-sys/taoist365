@@ -97,6 +97,7 @@ const adminWorkspaceIds = [
   "ai-queue",
   "ai-image",
   "ai-video",
+  "seo-geo-runtime",
   "geo",
   "viral-radar",
   "logistics",

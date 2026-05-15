@@ -2,15 +2,38 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { windkeepObjects } from "@/config/windkeep-continuity";
+import { breadcrumbSchema, buildSeoGeoMetadata, faqSchema, SeoGeoJsonLd } from "@/lib/seo-geo-runtime";
 
-export const metadata: Metadata = {
-  title: "Quiet Receiving",
+export const metadata: Metadata = buildSeoGeoMetadata({
+  title: "Quiet Receiving - Reverent Inquiry",
   description: "Objects quietly waiting for their next keeper inside Windkeep.",
-};
+  path: "/quiet-receiving",
+  kind: "quiet-receiving",
+  phrases: ["object continuation", "next keeper", "continuation request", "Windkeep"],
+});
 
 export default function QuietReceivingPage() {
   return (
     <main className="min-h-full bg-[#f6fbfc] text-foreground">
+      <SeoGeoJsonLd
+        graph={[
+          faqSchema([
+            {
+              question: "What is Quiet Receiving?",
+              answer: "Quiet Receiving is the Windkeep layer for objects that may continue with another keeper through a written continuation request.",
+            },
+            {
+              question: "Is this a bidding surface?",
+              answer: "No. The public action is to explain why an object may continue near you.",
+            },
+          ]),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Windkeep", path: "/windkeep" },
+            { name: "Quiet Receiving", path: "/quiet-receiving" },
+          ]),
+        ]}
+      />
       <div className="relative isolate overflow-hidden">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#f2fbff_0%,#ffffff_46%,#f5faf7_100%)]" />
         <div className="relative mx-auto w-full max-w-6xl px-5 py-12 sm:px-8 lg:px-10">

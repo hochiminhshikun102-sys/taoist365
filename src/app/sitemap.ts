@@ -2,7 +2,9 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 import { experienceRoutes } from "@/config/experience-routes";
 import { healingHalls, healingModules } from "@/config/healing-ecosystem";
+import { journalEntries } from "@/config/journal-runtime";
 import { locales, localizedStaticPaths, localePath } from "@/config/locales";
+import { commerceObjects } from "@/config/operational-commerce";
 
 export const dynamic = "force-static";
 
@@ -10,11 +12,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.metadataBase.replace(/\/$/, "");
   const now = new Date();
 
-  const staticPaths = ["", "/objects", "/windkeep", "/quiet-receiving", "/desk", "/inquiry", "/guidance", "/guidance/session", "/rituals", "/healing", "/live"].map((path) => ({
+  const staticPaths = ["", "/objects", "/windkeep", "/quiet-receiving", "/desk", "/inquiry", "/guidance", "/guidance/session", "/rituals", "/healing", "/live", "/journal", "/quiet-extracts", "/wind-seeker", "/wind-seeker-intro"].map((path) => ({
     url: `${base}${path || "/"}`,
     lastModified: now,
     changeFrequency: path === "" ? ("weekly" as const) : ("monthly" as const),
     priority: path === "" ? 1 : 0.7,
+  }));
+
+  const objectPaths = commerceObjects.map((object) => ({
+    url: `${base}/objects/${object.id}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.64,
+  }));
+
+  const journalAnchors = journalEntries.map((entry) => ({
+    url: `${base}/journal#${entry.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.52,
   }));
 
   const ritualPaths = experienceRoutes.map((route) => ({
@@ -50,5 +66,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   );
 
-  return [...staticPaths, ...ritualPaths, ...healingPaths, ...healingModulePaths, ...localizedPaths];
+  return [...staticPaths, ...objectPaths, ...journalAnchors, ...ritualPaths, ...healingPaths, ...healingModulePaths, ...localizedPaths];
 }

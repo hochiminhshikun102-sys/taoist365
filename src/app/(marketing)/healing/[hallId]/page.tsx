@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { HealingModuleCard } from "@/components/healing/HealingModuleCard";
 import { healingHallById, healingHalls, healingModulesForHall } from "@/config/healing-ecosystem";
 import { lilaHumanPresence } from "@/config/lila-human-presence";
+import { breadcrumbSchema, buildSeoGeoMetadata, SeoGeoJsonLd } from "@/lib/seo-geo-runtime";
 
 type HealingHallPageProps = {
   params: Promise<{ hallId: string }>;
@@ -17,10 +18,13 @@ export async function generateMetadata({ params }: HealingHallPageProps): Promis
   const { hallId } = await params;
   const hall = healingHallById(hallId);
 
-  return {
-    title: hall?.title ?? "Healing Hall",
+  return buildSeoGeoMetadata({
+    title: hall ? `${hall.title} - Reverent Inquiry` : "Healing Hall - Reverent Inquiry",
     description: hall?.summary ?? "Reverent Inquiry healing hall.",
-  };
+    path: hall?.href ?? "/healing",
+    kind: "healing",
+    phrases: hall ? [hall.shortTitle, hall.hero, hall.climate] : undefined,
+  });
 }
 
 export default async function HealingHallPage({ params }: HealingHallPageProps) {
@@ -35,6 +39,13 @@ export default async function HealingHallPage({ params }: HealingHallPageProps) 
 
   return (
     <main className="min-h-full bg-background">
+      <SeoGeoJsonLd
+        graph={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Healing", path: "/healing" },
+          { name: hall.title, path: hall.href },
+        ])}
+      />
       <div className="room-section-y-standard mx-auto w-full max-w-6xl px-6 sm:px-10">
         <Link href="/healing" className="text-xs text-text-muted underline-offset-4 hover:text-foreground hover:underline">
           Healing

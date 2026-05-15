@@ -132,6 +132,7 @@ export type AdminWorkspaceId =
   | "ai-queue"
   | "ai-image"
   | "ai-video"
+  | "seo-geo-runtime"
   | "geo"
   | "viral-radar"
   | "logistics"
@@ -863,6 +864,14 @@ const workspaceMap = {
     state: "Reserved",
     work: ["Video tasks", "Scene prompts", "Cost logs", "Status", "Failure retry", "Platform export"],
   },
+  "seo-geo-runtime": {
+    id: "seo-geo-runtime",
+    cn: "SEO / GEO",
+    en: "AI Search Era GEO Runtime",
+    state: "Metadata and schema active",
+    work: ["Dynamic metadata", "Product schema", "Article schema", "FAQ schema", "Breadcrumb schema", "Sitemap", "Internal links", "Performance checks"],
+    ai: ["Emotional keywords", "Semantic phrases", "GEO phrases", "AI summaries", "Tags", "Related links"],
+  },
   geo: {
     id: "geo",
     cn: "GEO",
@@ -1094,7 +1103,7 @@ const navGroups = [
     icon: "AI",
     cn: t.ai,
     en: "AI Operations",
-    items: ["ai-queue", "ai-image", "ai-video", "geo", "viral-radar"] satisfies AdminWorkspaceId[],
+    items: ["ai-queue", "ai-image", "ai-video", "seo-geo-runtime", "geo", "viral-radar"] satisfies AdminWorkspaceId[],
   },
   {
     id: "logistics",
@@ -1284,7 +1293,7 @@ function defaultCategory(workspaceId: AdminWorkspaceId) {
 function getRuntimeKind(workspaceId: AdminWorkspaceId): RuntimeKind {
   if (["wind-seeker-approval", "ai-product-moderation", "buyer-risk-dashboard", "wind-seeker-settlement", "logistics-monitor", "dispute-runtime", "buyer-deposit-runtime", "wind-seeker-drafts", "wind-seeker-notifications", "wind-seeker-account", "shipping-runtime", "refund-runtime", "buyer-level-runtime", "aml-kyc-runtime", "wind-seeker-risk-runtime", "wind-seeker-moderation-runtime", "multi-language-runtime", "multi-currency-runtime", "region-restriction-runtime", "country-restriction-runtime", "sanctions-runtime"].includes(workspaceId)) return "windseeker";
   if (["brand-assets", "product-media", "social-media", "prompt-packs", "safe-area", "frontstage-safe-area"].includes(workspaceId)) return "media";
-  if (["ai-queue", "ai-image", "ai-video", "geo", "viral-radar", "ai-reach-reserve", "ai-campaign-optimization", "ai-content-moderation"].includes(workspaceId)) return "ai";
+  if (["ai-queue", "ai-image", "ai-video", "seo-geo-runtime", "geo", "viral-radar", "ai-reach-reserve", "ai-campaign-optimization", "ai-content-moderation"].includes(workspaceId)) return "ai";
   if (["logistics", "tracking", "freight", "returns", "after-sales-tracking"].includes(workspaceId)) return "logistics";
   if (["suppliers", "inventory", "procurement", "costs"].includes(workspaceId)) return "supply";
   if (["finance-settlement", "finance-overview", "settlement-runtime", "deposit-runtime", "reconciliation", "refund-reconciliation", "partner-settlement", "tax-runtime", "funds-ledger", "freeze-unfreeze", "finance-audit-logs", "chargeback-runtime"].includes(workspaceId)) return "finance";

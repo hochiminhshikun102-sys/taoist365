@@ -4,17 +4,15 @@ import Link from "next/link";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
 import { CartLink } from "@/components/commerce/CartLink";
 import { commerceObjects, formatPrice } from "@/config/operational-commerce";
-import { siteConfig } from "@/config/site";
+import { buildSeoGeoMetadata } from "@/lib/seo-geo-runtime";
 
-export const metadata: Metadata = {
-  title: "Objects",
+export const metadata: Metadata = buildSeoGeoMetadata({
+  title: "Objects - Reverent Inquiry",
   description: "A breathable object room for quiet living objects, gifts, desk pieces, and seasonal things.",
-  openGraph: {
-    title: `Objects - ${siteConfig.siteName}`,
-    description: "A breathable object room for quiet living objects, gifts, desk pieces, and seasonal things.",
-    url: `${siteConfig.metadataBase}/objects`,
-  },
-};
+  path: "/objects",
+  kind: "product",
+  phrases: ["quiet living objects", "desk objects", "wind living", "slow gifts"],
+});
 
 const categoryChips = [
   { label: "Wind Living", href: "/collections/wind-objects", image: "/objects-living/49.jpg" },

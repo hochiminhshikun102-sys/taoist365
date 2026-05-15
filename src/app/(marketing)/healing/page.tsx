@@ -9,11 +9,15 @@ import {
   windkeepHealingSurfaces,
 } from "@/config/healing-ecosystem";
 import { HealingModuleCard } from "@/components/healing/HealingModuleCard";
+import { buildSeoGeoMetadata } from "@/lib/seo-geo-runtime";
 
-export const metadata: Metadata = {
-  title: "Healing",
+export const metadata: Metadata = buildSeoGeoMetadata({
+  title: "Healing - Reverent Inquiry",
   description: "Reverent Inquiry quiet browser world: halls, modules, object stories, and light interactions.",
-};
+  path: "/healing",
+  kind: "healing",
+  phrases: ["45 healing rooms", "seven healing halls", "soft daily ritual", "browser healing"],
+});
 
 export default function HealingIndexPage() {
   const coreModules = healingCoreEntries.map((id) => healingModuleById(id)).filter(Boolean);

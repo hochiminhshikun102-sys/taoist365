@@ -10,6 +10,7 @@ import {
   objectById,
   quietPairingsForObjectId,
 } from "@/config/operational-commerce";
+import { breadcrumbSchema, buildSeoGeoMetadata, faqSchema, productSchema, SeoGeoJsonLd } from "@/lib/seo-geo-runtime";
 
 type ObjectPageProps = {
   params: Promise<{ objectId: string }>;
@@ -23,10 +24,14 @@ export async function generateMetadata({ params }: ObjectPageProps): Promise<Met
   const { objectId } = await params;
   const object = objectById(objectId);
 
-  return {
-    title: object?.title ?? "Object",
-    description: object?.subtitle ?? "Reverent Inquiry object.",
-  };
+  return buildSeoGeoMetadata({
+    title: object ? `${object.title} - Reverent Inquiry` : "Object - Reverent Inquiry",
+    description: object?.atmosphereLine ?? "A Reverent Inquiry object with quiet material presence.",
+    path: object ? `/objects/${object.id}` : "/objects",
+    kind: "product",
+    image: object?.media.hero,
+    phrases: object ? [object.collectionTitle, ...object.materials, object.placement] : undefined,
+  });
 }
 
 export default async function ObjectDetailPage({ params }: ObjectPageProps) {
@@ -66,6 +71,17 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
 
   return (
     <main className="min-h-full bg-background">
+      <SeoGeoJsonLd
+        graph={[
+          productSchema(object),
+          faqSchema(faqItems),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Objects", path: "/objects" },
+            { name: object.title, path: `/objects/${object.id}` },
+          ]),
+        ]}
+      />
       <div className="room-section-y-standard mx-auto w-full max-w-6xl px-6 sm:px-10">
         <section className="grid gap-8 lg:grid-cols-[0.58fr_0.42fr]" aria-label="Product top">
           <div>
