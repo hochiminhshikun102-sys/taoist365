@@ -6,7 +6,7 @@ export default function CheckoutPage() {
     <VeluneStoreShell>
       <main className="wrap section">
         <div className="eyebrow">Checkout</div>
-        <h1 className="productTitle">Checkout request</h1>
+        <h1 className="productTitle">Secure checkout</h1>
         <CheckoutRuntime />
       </main>
     </VeluneStoreShell>

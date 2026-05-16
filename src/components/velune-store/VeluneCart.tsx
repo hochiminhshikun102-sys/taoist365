@@ -1,11 +1,62 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { FormEvent } from "react";
 import Link from "next/link";
 import { formatUsd, type VeluneProduct } from "@/lib/velune-store";
 
 type CartItem = { sku: string; slug: string; name: string; price: number; qty: number };
+type CheckoutActions = {
+  updateEmail: (email: string) => Promise<{ type?: string; error?: { message?: string } }>;
+  confirm: () => Promise<{ error?: { message?: string } }>;
+  getSession?: () => { total?: { total?: { amount?: number } } };
+};
+type StripePaymentElement = { mount: (target: HTMLElement | string) => void; destroy?: () => void };
+type StripeRuntime = {
+  initCheckoutElementsSdk: (config: {
+    clientSecret: Promise<string>;
+    elementsOptions?: Record<string, unknown>;
+  }) => {
+    on: (event: "change", callback: (session: { canConfirm?: boolean; total?: { total?: { amount?: number } } }) => void) => void;
+    loadActions: () => Promise<{ type: string; actions?: CheckoutActions; error?: { message?: string } }>;
+    createPaymentElement: () => StripePaymentElement;
+  };
+};
+
 const CART_KEY = "velune_audit_cart";
+const STRIPE_PUBLISHABLE_KEY =
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ||
+  "pk_test_51TTn6O2E4wBiMi56zlnYBklf8rVnXBGfHhRNlqfLJExCIHwXNGJuufqmXG7gi4DNli25j6KW8TUUEIgXiSiNTzlB00dcmhnIqG";
+
+declare global {
+  interface Window {
+    Stripe?: (key: string) => StripeRuntime;
+  }
+}
+
+let stripeLoader: Promise<StripeRuntime> | null = null;
+
+function loadStripe() {
+  if (typeof window === "undefined") return Promise.reject(new Error("Stripe can only load in the browser."));
+  if (window.Stripe) return Promise.resolve(window.Stripe(STRIPE_PUBLISHABLE_KEY));
+  if (stripeLoader) return stripeLoader;
+
+  stripeLoader = new Promise((resolve, reject) => {
+    const existing = document.querySelector<HTMLScriptElement>("script[data-velune-stripe]");
+    const script = existing || document.createElement("script");
+    script.src = "https://js.stripe.com/dahlia/stripe.js";
+    script.async = true;
+    script.dataset.veluneStripe = "true";
+    script.onload = () => {
+      if (!window.Stripe) reject(new Error("Stripe.js did not initialize."));
+      else resolve(window.Stripe(STRIPE_PUBLISHABLE_KEY));
+    };
+    script.onerror = () => reject(new Error("Unable to load Stripe.js."));
+    if (!existing) document.head.appendChild(script);
+  });
+
+  return stripeLoader;
+}
 
 function readCart(): CartItem[] {
   if (typeof window === "undefined") return [];
@@ -107,44 +158,207 @@ export function CartRuntime() {
 }
 
 export function CheckoutRuntime() {
-  const [submitted, setSubmitted] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
-  useEffect(() => setCart(readCart()), []);
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "ready" | "submitting" | "paid" | "error">("idle");
+  const [message, setMessage] = useState("");
+  const [buttonText, setButtonText] = useState("Pay now");
+  const [canConfirm, setCanConfirm] = useState(false);
+  const [actions, setActions] = useState<CheckoutActions | null>(null);
+  const paymentElementRef = useRef<HTMLDivElement | null>(null);
+  const mountedElementRef = useRef<StripePaymentElement | null>(null);
+  const subtotal = useMemo(() => cart.reduce((sum, item) => sum + item.price * item.qty, 0), [cart]);
 
-  return (
-    <>
-      {submitted ? (
-        <div className="notice">
-          <strong>Order request received.</strong><br />
-          This review storefront records a basic checkout request for flow testing. Payment activation remains disabled until merchant approval.
-        </div>
-      ) : null}
-      <div className="notice" style={{ marginTop: submitted ? 16 : 0 }}>
-        <strong>Order summary: {formatUsd(subtotal)} USD</strong><br />United States delivery only during review.
-      </div>
-      <form
-        className="formGrid"
-        onSubmit={(event) => {
-          event.preventDefault();
+  useEffect(() => {
+    queueMicrotask(() => setCart(readCart()));
+  }, []);
+
+  useEffect(() => {
+    const sessionId = new URLSearchParams(window.location.search).get("session_id");
+    if (!sessionId) return;
+
+    let active = true;
+    queueMicrotask(() => {
+      if (active) setStatus("loading");
+    });
+    fetch(`/api/session-status?session_id=${encodeURIComponent(sessionId)}`)
+      .then(async (response) => {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Unable to confirm payment status.");
+        return data;
+      })
+      .then((data) => {
+        if (!active) return;
+        if (data.status === "complete" || data.payment_status === "paid") {
           writeCart([]);
           setCart([]);
-          setSubmitted(true);
-        }}
-      >
-        <div className="field"><label>First name</label><input required autoComplete="given-name" /></div>
-        <div className="field"><label>Last name</label><input required autoComplete="family-name" /></div>
-        <div className="field"><label>Email</label><input required type="email" autoComplete="email" /></div>
-        <div className="field"><label>Phone</label><input required autoComplete="tel" /></div>
-        <div className="field"><label>Address line 1</label><input required autoComplete="address-line1" /></div>
-        <div className="field"><label>Address line 2</label><input autoComplete="address-line2" /></div>
-        <div className="field"><label>City</label><input required autoComplete="address-level2" /></div>
-        <div className="field"><label>State</label><input required autoComplete="address-level1" /></div>
-        <div className="field"><label>ZIP code</label><input required autoComplete="postal-code" /></div>
-        <div className="field"><label>Country</label><select required defaultValue="United States"><option>United States</option></select></div>
-        <div className="field" style={{ gridColumn: "1 / -1" }}><label>Order note</label><textarea rows={4} /></div>
-        <button className="button" type="submit">Submit Checkout Request</button>
+          setStatus("paid");
+          setMessage("Payment received in Stripe sandbox. Your Velune order is ready for review processing.");
+        } else {
+          setStatus("error");
+          setMessage("Payment was not completed. Please try again or use another test card.");
+        }
+      })
+      .catch((error) => {
+        if (!active) return;
+        setStatus("error");
+        setMessage(error.message);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!cart.length || new URLSearchParams(window.location.search).has("session_id")) return;
+    let active = true;
+
+    async function initializeStripeCheckout() {
+      try {
+        setStatus("loading");
+        setMessage("Loading secure Stripe sandbox checkout...");
+        const stripe = await loadStripe();
+        const clientSecret = fetch("/api/create-checkout-session", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ cart: cart.map(({ sku, qty }) => ({ sku, qty })) }),
+        })
+          .then(async (response) => {
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || "Unable to start Stripe checkout.");
+            return data.clientSecret as string;
+          });
+
+        const checkout = stripe.initCheckoutElementsSdk({
+          clientSecret,
+          elementsOptions: {
+            appearance: {
+              theme: "stripe",
+              variables: {
+                colorPrimary: "#bfa675",
+                colorText: "#2d2d2a",
+                colorDanger: "#9e6b6b",
+                borderRadius: "12px",
+                fontFamily: "Inter, Arial, sans-serif",
+              },
+            },
+          },
+        });
+
+        checkout.on("change", (session) => {
+          if (!active) return;
+          setCanConfirm(Boolean(session.canConfirm));
+          const amount = session.total?.total?.amount;
+          if (typeof amount === "number") setButtonText(`Pay ${formatUsd(amount / 100)}`);
+        });
+
+        const loadActionsResult = await checkout.loadActions();
+        if (!active) return;
+        if (loadActionsResult.type !== "success" || !loadActionsResult.actions) {
+          throw new Error(loadActionsResult.error?.message || "Stripe checkout is not ready.");
+        }
+
+        setActions(loadActionsResult.actions);
+        const amount = loadActionsResult.actions.getSession?.().total?.total?.amount;
+        if (typeof amount === "number") setButtonText(`Pay ${formatUsd(amount / 100)}`);
+
+        if (paymentElementRef.current) {
+          mountedElementRef.current?.destroy?.();
+          mountedElementRef.current = checkout.createPaymentElement();
+          mountedElementRef.current.mount(paymentElementRef.current);
+        }
+
+        setStatus("ready");
+        setMessage("");
+      } catch (error) {
+        if (!active) return;
+        setStatus("error");
+        setMessage(error instanceof Error ? error.message : "Unable to load Stripe checkout.");
+      }
+    }
+
+    initializeStripeCheckout();
+
+    return () => {
+      active = false;
+      mountedElementRef.current?.destroy?.();
+      mountedElementRef.current = null;
+    };
+  }, [cart]);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!actions) return;
+
+    setStatus("submitting");
+    setMessage("");
+
+    const emailResult = await actions.updateEmail(email);
+    if (emailResult.type === "error") {
+      setStatus("ready");
+      setMessage(emailResult.error?.message || "Please enter a valid email address.");
+      return;
+    }
+
+    const result = await actions.confirm();
+    if (result.error) {
+      setStatus("ready");
+      setMessage(result.error.message || "Payment could not be completed.");
+    }
+  }
+
+  if (!cart.length && status !== "paid") {
+    return <div className="notice">Your bag is empty. <Link href="/store#shop">Return to the collection</Link>.</div>;
+  }
+
+  if (status === "paid") {
+    return (
+      <div className="checkoutLayout">
+        <div className="notice successNotice">
+          <strong>Payment received.</strong><br />
+          {message}
+        </div>
+        <Link className="button" href="/store">Return to Velune Store</Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="checkoutLayout">
+      <div className="notice">
+        <strong>Order summary: {formatUsd(subtotal)} USD</strong><br />
+        Secure sandbox checkout is powered by Stripe. United States delivery only during review.
+        <ul className="checkoutItems">
+          {cart.map((item) => (
+            <li key={item.sku}>
+              {item.name} × {item.qty} <span>{formatUsd(item.price * item.qty)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <form className="stripeCheckoutForm" onSubmit={handleSubmit}>
+        <div className="field">
+          <label>Email</label>
+          <input
+            required
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="you@example.com"
+          />
+        </div>
+        <div className="paymentBox">
+          <h3>Payment</h3>
+          <div ref={paymentElementRef} />
+        </div>
+        {message ? <div className={status === "error" ? "notice errorNotice" : "notice"}>{message}</div> : null}
+        <button className="button" type="submit" disabled={!actions || !canConfirm || status === "loading" || status === "submitting"}>
+          {status === "loading" ? "Loading checkout..." : status === "submitting" ? "Processing..." : buttonText}
+        </button>
       </form>
-    </>
+    </div>
   );
 }
