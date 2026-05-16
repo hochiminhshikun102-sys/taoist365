@@ -24,9 +24,7 @@ type StripeRuntime = {
 };
 
 const CART_KEY = "velune_audit_cart";
-const STRIPE_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ||
-  "pk_test_51TTn6O2E4wBiMi56zlnYBklf8rVnXBGfHhRNlqfLJExCIHwXNGJuufqmXG7gi4DNli25j6KW8TUUEIgXiSiNTzlB00dcmhnIqG";
+const BUILD_STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "";
 
 declare global {
   interface Window {
@@ -35,10 +33,29 @@ declare global {
 }
 
 let stripeLoader: Promise<StripeRuntime> | null = null;
+let publishableKeyLoader: Promise<string> | null = null;
 
-function loadStripe() {
+async function getStripePublishableKey() {
+  if (publishableKeyLoader) return publishableKeyLoader;
+
+  publishableKeyLoader = fetch("/api/stripe-config", { cache: "no-store" })
+    .then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Stripe publishable key is not configured.");
+      return data.publishableKey as string;
+    })
+    .catch((error) => {
+      if (BUILD_STRIPE_PUBLISHABLE_KEY) return BUILD_STRIPE_PUBLISHABLE_KEY;
+      throw error;
+    });
+
+  return publishableKeyLoader;
+}
+
+async function loadStripe() {
   if (typeof window === "undefined") return Promise.reject(new Error("Stripe can only load in the browser."));
-  if (window.Stripe) return Promise.resolve(window.Stripe(STRIPE_PUBLISHABLE_KEY));
+  const publishableKey = await getStripePublishableKey();
+  if (window.Stripe) return Promise.resolve(window.Stripe(publishableKey));
   if (stripeLoader) return stripeLoader;
 
   stripeLoader = new Promise((resolve, reject) => {
@@ -49,7 +66,7 @@ function loadStripe() {
     script.dataset.veluneStripe = "true";
     script.onload = () => {
       if (!window.Stripe) reject(new Error("Stripe.js did not initialize."));
-      else resolve(window.Stripe(STRIPE_PUBLISHABLE_KEY));
+      else resolve(window.Stripe(publishableKey));
     };
     script.onerror = () => reject(new Error("Unable to load Stripe.js."));
     if (!existing) document.head.appendChild(script);
@@ -328,7 +345,7 @@ export function CheckoutRuntime() {
     <div className="checkoutLayout">
       <div className="notice">
         <strong>Order summary: {formatUsd(subtotal)} USD</strong><br />
-        Secure sandbox checkout is powered by Stripe. United States delivery only during review.
+        Secure checkout is powered by Stripe. United States delivery only during review.
         <ul className="checkoutItems">
           {cart.map((item) => (
             <li key={item.sku}>
