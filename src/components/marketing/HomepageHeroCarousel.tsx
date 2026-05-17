@@ -2,19 +2,19 @@ import Link from "next/link";
 
 const heroSlides = [
   {
-    desktop: "/home-hero/desktop-01.png",
+    desktop: "/home-hero/desktop-clean-01.png",
     mobile: "/home-hero/mobile-01.png",
     title: "Wind Form",
     href: "/collections/wind-objects",
   },
   {
-    desktop: "/home-hero/desktop-02.png",
+    desktop: "/home-hero/desktop-clean-02.png",
     mobile: "/home-hero/mobile-02.png",
     title: "Windform",
     href: "/objects",
   },
   {
-    desktop: "/home-hero/desktop-03.png",
+    desktop: "/home-hero/desktop-clean-03.png",
     mobile: "/home-hero/mobile-03.png",
     title: "Inner Quiet",
     href: "/healing",
