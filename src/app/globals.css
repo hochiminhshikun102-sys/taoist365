@@ -660,6 +660,20 @@ html[data-open-duration="long"] .long-open-browser-softness {
     radial-gradient(ellipse 56% 40% at 50% 100%, rgba(255, 255, 255, 0.64), transparent 72%);
 }
 
+.ri-home-hero .ri-hero-image {
+  object-position: center 44%;
+}
+
+@media (max-width: 767px) {
+  .ri-home-hero .ri-hero-image {
+    object-position: center 46%;
+  }
+
+  .ri-home-hero::after {
+    height: clamp(5.5rem, 18vw, 8.5rem);
+  }
+}
+
 .ri-section-breath {
   pointer-events: none;
   position: absolute;
