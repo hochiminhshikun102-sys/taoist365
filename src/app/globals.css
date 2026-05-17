@@ -666,11 +666,11 @@ html[data-open-duration="long"] .long-open-browser-softness {
 
 @media (max-width: 767px) {
   .ri-home-hero .ri-hero-image {
-    object-position: center 46%;
+    object-position: center 34%;
   }
 
   .ri-home-hero::after {
-    height: clamp(5.5rem, 18vw, 8.5rem);
+    height: clamp(4rem, 14vw, 6.5rem);
   }
 }
 

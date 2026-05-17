@@ -23,7 +23,7 @@ const heroSlides = [
 
 export function HomepageHeroCarousel() {
   return (
-    <section className="homepage-hero-carousel ri-home-hero relative h-[76svh] min-h-[34rem] max-h-[46rem] bg-[#eef3f5] md:aspect-video md:h-auto md:min-h-0 md:max-h-none" aria-label="Homepage hero carousel">
+    <section className="homepage-hero-carousel ri-home-hero relative h-[68svh] min-h-[30rem] max-h-[39rem] bg-[#eef3f5] md:aspect-video md:h-auto md:min-h-0 md:max-h-none" aria-label="Homepage hero carousel">
       <h1 className="sr-only">Reverent Inquiry</h1>
       <div className="ri-hero-air ri-hero-air-a" aria-hidden />
       <div className="ri-hero-air ri-hero-air-b" aria-hidden />
