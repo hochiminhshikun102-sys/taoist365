@@ -23,8 +23,10 @@ const heroSlides = [
 
 export function HomepageHeroCarousel() {
   return (
-    <section className="homepage-hero-carousel relative aspect-[853/1844] bg-[#eef3f5] md:aspect-video" aria-label="Homepage hero carousel">
+    <section className="homepage-hero-carousel ri-home-hero relative aspect-[853/1844] bg-[#eef3f5] md:aspect-video" aria-label="Homepage hero carousel">
       <h1 className="sr-only">Reverent Inquiry</h1>
+      <div className="ri-hero-air ri-hero-air-a" aria-hidden />
+      <div className="ri-hero-air ri-hero-air-b" aria-hidden />
       {heroSlides.map((slide, index) => (
         <div
           key={slide.desktop}
@@ -45,7 +47,7 @@ export function HomepageHeroCarousel() {
           </picture>
         </div>
       ))}
-      <nav className="absolute inset-x-0 top-0 z-[2] mx-auto hidden h-[7.5rem] max-w-[92rem] items-center justify-center gap-[3.5rem] px-10 text-sm text-foreground/72 lg:flex" aria-label="Hero navigation">
+      <nav className="ri-hero-nav absolute inset-x-0 top-0 z-[2] mx-auto hidden h-[7.5rem] max-w-[92rem] items-center justify-center gap-[3.5rem] px-10 text-sm text-foreground/72 lg:flex" aria-label="Hero navigation">
         <Link href="/healing">Healing</Link>
         <Link href="/windkeep">Windkeep</Link>
         <Link href="/inquiry">Driftbox</Link>

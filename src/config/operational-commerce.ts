@@ -791,7 +791,7 @@ const materialObjectSeeds: readonly MaterialObjectSeed[] = [
 ];
 
 const autoMaterialSourceStems = [
-  "1.1", "1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "2", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "3", "30", "31", "32", "33", "35", "36", "37", "38", "39", "4", "40", "41", "42", "43", "44", "45", "46", "47", "49.1", "49.2", "49.3", "49.4", "49", "5", "50", "51", "52", "53", "54", "55", "56", "57", "58", "6", "60", "63", "64", "65", "66", "67.1", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "8", "80", "83", "84", "85", "86", "87", "9", "91", "92", "93", "94", "95", "96", "97", "131-2", "161", "162", "163", "165", "166", "167", "168", "crystal-window-plant", "incense-box", "tea-gift-box", "风铃001",
+  "1.1", "1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "2", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "3", "30", "31", "32", "33", "35", "36", "37", "38", "39", "4", "40", "41", "42", "43", "44", "45", "46", "47", "49.1", "49.2", "49.3", "49.4", "49", "5", "50", "51", "52", "53", "54", "55", "56", "57", "58", "6", "60", "63", "64", "65", "66", "67.1", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "8", "80", "83", "84", "85", "86", "87", "9", "91", "92", "93", "94", "95", "96", "97", "131-2", "161", "162", "163", "165", "166", "167", "168", "crystal-window-plant", "incense-box", "tea-gift-box", "wind-bell-001",
 ] as const;
 
 const splitMaterialSourceStems = [
@@ -816,7 +816,7 @@ function titleFromStem(stem: string) {
     "crystal-window-plant": "Crystal Window Plant",
     "incense-box": "Still Water Incense Box",
     "tea-gift-box": "Tao Fruit Tea Gift Box",
-    "风铃001": "Window Wind Bell",
+    "wind-bell-001": "Window Wind Bell",
     "161": "Window Bell 161",
     "162": "Window Bell 162",
     "163": "Window Bell 163",
@@ -834,7 +834,7 @@ function autoMaterialSeed(stem: string, index: number, fromSplit = false): Mater
   const isWindBell = title.includes("Wind Bell") || title.includes("Window Bell");
   const collection = isWindBell ? "wind-objects" : fromSplit ? "ritual-objects" : collectionCycle[index % collectionCycle.length];
   const namedSlugs: Record<string, string> = {
-    "风铃001": "window-wind-bell-001",
+    "wind-bell-001": "window-wind-bell-001",
   };
   const normalizedSlug = stem.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const slug = namedSlugs[stem] ?? (normalizedSlug || `source-${index}`);
@@ -866,7 +866,7 @@ function autoMaterialSeed(stem: string, index: number, fromSplit = false): Mater
 function standardizedMaterials(title: string, source: string, isWindBell = false) {
   const lower = `${title} ${source}`.toLowerCase();
 
-  if (isWindBell || lower.includes("wind bell") || lower.includes("window bell") || lower.includes("椋庨搩")) {
+  if (isWindBell || lower.includes("wind bell") || lower.includes("window bell")) {
     return ["Brass-tone metal bell", "alloy hanging hardware", "cotton or braided cord"];
   }
 
@@ -908,7 +908,7 @@ function standardizedMaterials(title: string, source: string, isWindBell = false
 function standardizedDimensions(title: string, source: string, isWindBell = false) {
   const lower = `${title} ${source}`.toLowerCase();
 
-  if (isWindBell || lower.includes("wind bell") || lower.includes("window bell") || lower.includes("椋庨搩")) {
+  if (isWindBell || lower.includes("wind bell") || lower.includes("window bell")) {
     return "Approx. 10-18 in / 25-46 cm hanging length";
   }
 
@@ -968,7 +968,7 @@ function standardizedPlacement(title: string, isWindBell = false, fromSplit = fa
 function marketAdjustedPriceCents(basePriceCents: number, title: string, source: string, index: number) {
   const lower = `${title} ${source}`.toLowerCase();
 
-  if (lower.includes("wind bell") || lower.includes("window bell") || lower.includes("风铃")) {
+  if (lower.includes("wind bell") || lower.includes("window bell")) {
     return 5800 + (index % 5) * 500;
   }
 

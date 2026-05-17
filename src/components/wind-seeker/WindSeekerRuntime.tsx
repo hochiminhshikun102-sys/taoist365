@@ -22,6 +22,10 @@ const draftDefaults: DraftState = {
   unique: true,
 };
 
+function RuntimeLabel({ children }: Readonly<{ children: string }>) {
+  return <span className="block text-[1.02rem] font-semibold leading-tight">{children}</span>;
+}
+
 export function WindSeekerRuntime() {
   const [activeTab, setActiveTab] = useState<SeekerTab>("Home");
   const [step, setStep] = useState(1);
@@ -53,13 +57,15 @@ export function WindSeekerRuntime() {
     <main className="min-h-dvh bg-[#F0F2F5] text-[#2C323C]">
       <section className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4 pb-24 pt-5">
         <header className="rounded-[28px] border border-[#D7DCE3] bg-[#E8EBF0] p-5 shadow-[0_18px_50px_rgba(44,50,60,0.08)]">
-          <p className="text-sm text-[#646E7A]">Global Object Scout Network</p>
+          <p className="text-sm text-[#646E7A]">Global Object Discovery Network</p>
           <h1 className="mt-2 text-4xl font-semibold tracking-[-0.01em] text-[#2C323C]">Wind Seeker</h1>
-          <p className="mt-3 text-sm leading-6 text-[#646E7A]">Discover, photograph, let AI prepare the listing, then submit for review in about three minutes.</p>
+          <p className="mt-3 text-sm leading-6 text-[#646E7A]">
+            Discover, photograph, let AI prepare the listing, then submit for review in about three minutes.
+          </p>
           <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-[#646E7A]">
             {["Photo", "AI", "Review"].map((item, index) => (
               <div key={item} className={`rounded-2xl border px-2 py-3 ${step > index ? "border-[#728278] bg-white text-[#2C323C]" : "border-[#D7DCE3] bg-[#F0F2F5]"}`}>
-                {item}
+                <RuntimeLabel>{item}</RuntimeLabel>
               </div>
             ))}
           </div>
@@ -69,7 +75,7 @@ export function WindSeekerRuntime() {
           {activeTab === "Home" ? (
             <div className="grid gap-3">
               <RuntimeTile title="Draft Runtime" text="Continue a quiet object draft." action={() => setActiveTab("Upload")} />
-              <RuntimeTile title="Deposit Runtime" text="Deposit hold, release, refund state." />
+              <RuntimeTile title="Deposit Runtime" text="Deposit hold, release, and refund state." />
               <RuntimeTile title="Settlement Runtime" text="Pending balance and payout status." />
               <RuntimeTile title="Keeper Trust Runtime" text="Trust level, deposit rule, and access state." />
               <RuntimeTile title="AML / KYC Runtime" text="Identity review, risk country, and sanctions precheck." />
@@ -83,8 +89,10 @@ export function WindSeekerRuntime() {
           {activeTab === "Upload" ? (
             <div className="grid gap-4">
               <label className="rounded-3xl border border-dashed border-[#D7DCE3] bg-[#F0F2F5] p-5 text-center">
-                <span className="block text-lg font-semibold text-[#2C323C]">Photo / video upload</span>
-                <span className="mt-2 block text-sm leading-6 text-[#646E7A]">Multiple images, video, Safe Area, and AI clarity detection are reserved here.</span>
+                <span className="block text-lg font-semibold text-[#2C323C]">Photo / Video Upload</span>
+                <span className="mt-2 block text-sm leading-6 text-[#646E7A]">
+                  Multiple images, video, Safe Area, and AI clarity detection are reserved here.
+                </span>
                 <input
                   className="mt-4 block w-full text-sm text-[#646E7A] file:rounded-xl file:border file:border-[#D7DCE3] file:bg-white file:px-3 file:py-2 file:text-[#2C323C]"
                   type="file"
@@ -106,7 +114,7 @@ export function WindSeekerRuntime() {
               ) : null}
 
               <button type="button" onClick={runAiGeneration} className="rounded-2xl bg-[#8A7C6E] px-4 py-3 text-sm font-semibold text-white hover:bg-[#9D8F80]">
-                Run AI generation
+                <RuntimeLabel>Run AI Generation</RuntimeLabel>
               </button>
 
               <div className="grid gap-3">
@@ -114,9 +122,9 @@ export function WindSeekerRuntime() {
                 <input value={draft.price} onChange={(event) => setDraft({ ...draft, price: event.target.value })} className="rounded-2xl border border-[#D7DCE3] bg-[#F0F2F5] px-4 py-3 text-sm outline-none" placeholder="Price" />
                 <input value={draft.region} onChange={(event) => setDraft({ ...draft, region: event.target.value })} className="rounded-2xl border border-[#D7DCE3] bg-[#F0F2F5] px-4 py-3 text-sm outline-none" placeholder="Region" />
                 <select value={draft.condition} onChange={(event) => setDraft({ ...draft, condition: event.target.value })} className="rounded-2xl border border-[#D7DCE3] bg-[#F0F2F5] px-4 py-3 text-sm outline-none">
-                  <option>New</option>
-                  <option>Good</option>
-                  <option>Used with traces</option>
+                  <option value="New">New</option>
+                  <option value="Good">Good</option>
+                  <option value="Used with traces">Used with traces</option>
                 </select>
                 <textarea value={draft.story} onChange={(event) => setDraft({ ...draft, story: event.target.value })} className="min-h-28 rounded-2xl border border-[#D7DCE3] bg-[#F0F2F5] px-4 py-3 text-sm outline-none" placeholder="Object story" />
                 <label className="flex items-center gap-3 text-sm text-[#646E7A]">
@@ -126,7 +134,7 @@ export function WindSeekerRuntime() {
               </div>
 
               <button type="button" onClick={publishDraft} className="rounded-2xl bg-[#728278] px-4 py-3 text-sm font-semibold text-white">
-                Submit for review
+                <RuntimeLabel>Submit for Review</RuntimeLabel>
               </button>
             </div>
           ) : null}
@@ -136,13 +144,15 @@ export function WindSeekerRuntime() {
           {activeTab === "Me" ? <SimpleList title="Me" items={["Account Runtime", "Keeper Trust", "AML / KYC", "Country restriction", "Settlement account", "Deposit status"]} /> : null}
         </div>
 
-        <p className="mt-4 rounded-2xl border border-[#D7DCE3] bg-[#E8EBF0] p-4 text-sm leading-6 text-[#646E7A]">{aiReady ? "AI draft ready. " : ""}{log}</p>
+        <p className="mt-4 rounded-2xl border border-[#D7DCE3] bg-[#E8EBF0] p-4 text-sm leading-6 text-[#646E7A]">
+          {aiReady ? "AI draft ready. " : ""}{log}
+        </p>
       </section>
 
       <nav className="fixed inset-x-0 bottom-0 mx-auto grid max-w-md grid-cols-5 border-t border-[#D7DCE3] bg-[#F0F2F5]/95 px-2 py-2 backdrop-blur">
         {tabs.map((tab) => (
           <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`rounded-2xl px-2 py-3 text-xs ${activeTab === tab ? "bg-[#E8EBF0] text-[#2C323C]" : "text-[#646E7A]"}`}>
-            {tab}
+            <RuntimeLabel>{tab}</RuntimeLabel>
           </button>
         ))}
       </nav>
@@ -153,8 +163,8 @@ export function WindSeekerRuntime() {
 function RuntimeTile({ title, text, action }: Readonly<{ title: string; text: string; action?: () => void }>) {
   return (
     <button type="button" onClick={action} className="rounded-2xl border border-[#D7DCE3] bg-[#F0F2F5] p-4 text-left">
-      <span className="block text-lg font-semibold text-[#2C323C]">{title}</span>
-      <span className="mt-1 block text-sm leading-6 text-[#646E7A]">{text}</span>
+      <RuntimeLabel>{title}</RuntimeLabel>
+      <span className="mt-2 block text-sm leading-6 text-[#646E7A]">{text}</span>
     </button>
   );
 }
@@ -166,7 +176,7 @@ function SimpleList({ title, items }: Readonly<{ title: string; items: string[] 
       <div className="mt-4 grid gap-3">
         {items.map((item) => (
           <button key={item} type="button" className="rounded-2xl border border-[#D7DCE3] bg-[#F0F2F5] px-4 py-3 text-left text-sm text-[#646E7A]">
-            {item}
+            <RuntimeLabel>{item}</RuntimeLabel>
           </button>
         ))}
       </div>

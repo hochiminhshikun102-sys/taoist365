@@ -21,7 +21,7 @@ const categoryChips = [
   { label: "Quiet Gifts", href: "/collections/seasonal-collections", image: "/objects-living/12.jpg" },
   { label: "Healing", href: "/healing", image: "/objects-living/68.jpg" },
   { label: "POD Apparel", href: "/search?q=apparel", image: "/objects-derived/102-hero.webp" },
-  { label: "Outdoor Wind", href: "/collections/wind-objects", image: "/objects-living/妞嬪酣鎼?01.jpg" },
+  { label: "Outdoor Wind", href: "/collections/wind-objects", image: "/objects-living/161.png" },
   { label: "Seasonal Things", href: "/new-arrivals", image: "/objects-derived/103-hero.webp" },
 ] as const;
 
@@ -75,7 +75,7 @@ const editorialBanners = [
   {
     title: "Take the quiet outside",
     href: "/collections/wind-objects",
-    image: "/objects-living/妞嬪酣鎼?01.jpg",
+    image: "/objects-living/161.png",
   },
 ] as const;
 
@@ -165,13 +165,15 @@ export default function ObjectsPage() {
             aria-label="Previous hero"
             className="absolute left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full border border-[#d7d0c6] bg-white/84 text-lg text-[#4e473f] shadow-sm lg:block"
           >
-            鈥?          </button>
+            {"<"}
+          </button>
           <button
             type="button"
             aria-label="Next hero"
             className="absolute right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full border border-[#d7d0c6] bg-white/84 text-lg text-[#4e473f] shadow-sm lg:block"
           >
-            鈥?          </button>
+            {">"}
+          </button>
         </div>
 
         <nav className="mt-5 flex gap-4 overflow-x-auto pb-3" aria-label="Object categories">
@@ -271,7 +273,8 @@ export default function ObjectsPage() {
                       <p className="mt-1 line-clamp-1 text-xs text-[#81786e]">{object.subtitle}</p>
                     </div>
                     <button type="button" aria-label={`Add ${object.title} to wishlist`} className="text-lg leading-none text-[#5e574f]">
-                      鈾?                    </button>
+                      Save
+                    </button>
                   </div>
                   <div className="mt-3 flex items-center justify-between gap-2">
                     <p className="text-sm font-semibold">{formatPrice(object.priceCents)}</p>
@@ -321,7 +324,8 @@ export default function ObjectsPage() {
                       <p className="mt-1 line-clamp-1 text-xs text-[#81786e]">{object.subtitle}</p>
                     </div>
                     <button type="button" aria-label={`Add ${object.title} to wishlist`} className="text-lg leading-none text-[#5e574f]">
-                      鈾?                    </button>
+                      Save
+                    </button>
                   </div>
                   <div className="mt-3 flex items-center justify-between gap-2">
                     <p className="text-sm font-semibold">{formatPrice(object.priceCents)}</p>

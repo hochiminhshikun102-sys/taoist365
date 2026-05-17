@@ -293,12 +293,306 @@ html[data-open-duration="long"] .long-open-browser-softness {
     background-color 520ms ease-out,
     border-color 520ms ease-out,
     color 520ms ease-out,
-    opacity 520ms ease-out;
+    opacity 520ms ease-out,
+    box-shadow 680ms ease-out,
+    filter 680ms ease-out,
+    transform 680ms ease-out;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .quiet-air-touch:hover {
     opacity: 0.96;
+  }
+}
+
+.ri-homepage {
+  --ri-wind-base: #f0f2f5;
+  --ri-wind-blue: rgba(195, 220, 232, 0.28);
+  --ri-wind-gold: rgba(196, 174, 132, 0.12);
+  --ri-wind-line: rgba(166, 192, 205, 0.34);
+  --ri-wind-shadow: rgba(38, 61, 78, 0.055);
+  overflow-x: hidden;
+  font-family: var(--font-inter), Arial, sans-serif;
+  background:
+    radial-gradient(ellipse 72% 34% at 18% 3%, rgba(255, 255, 255, 0.88), transparent 72%),
+    linear-gradient(180deg, #f0f2f5 0%, #fbfcfb 34%, #f3f7f8 100%);
+}
+
+.ri-homepage h1,
+.ri-homepage h2,
+.ri-homepage h3,
+.ri-homepage .font-\[var\(--font-display-serif\)\] {
+  font-family: var(--font-display-serif), Georgia, serif;
+  letter-spacing: 0;
+}
+
+.ri-homepage p,
+.ri-homepage a,
+.ri-homepage button,
+.ri-homepage input {
+  letter-spacing: 0;
+}
+
+.ri-global-wind {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ri-global-wind::before,
+.ri-global-wind::after {
+  content: "";
+  position: absolute;
+  width: min(76rem, 78vw);
+  height: min(28rem, 36vw);
+  border-radius: 999px;
+  filter: blur(24px);
+  transform: translate3d(0, 0, 0) rotate(-7deg);
+}
+
+.ri-global-wind-a::before {
+  left: -10vw;
+  top: 8%;
+  background: linear-gradient(96deg, transparent, rgba(255, 255, 255, 0.36), rgba(196, 221, 233, 0.18), transparent);
+  opacity: 0.09;
+  animation: ri-wind-drift-a 42s ease-in-out infinite;
+}
+
+.ri-global-wind-a::after {
+  right: -18vw;
+  top: 38%;
+  background: linear-gradient(102deg, transparent, rgba(255, 255, 255, 0.3), rgba(196, 174, 132, 0.08), transparent);
+  opacity: 0.07;
+  animation: ri-wind-drift-b 38s ease-in-out infinite;
+}
+
+.ri-global-wind-b::before {
+  left: 16vw;
+  top: 62%;
+  width: min(62rem, 72vw);
+  background: linear-gradient(90deg, transparent, rgba(205, 225, 233, 0.2), rgba(255, 255, 255, 0.28), transparent);
+  opacity: 0.08;
+  animation: ri-wind-drift-c 34s ease-in-out infinite;
+}
+
+.ri-global-wind-c {
+  background:
+    linear-gradient(112deg, transparent 0%, rgba(255, 255, 255, 0.18) 22%, transparent 46%),
+    linear-gradient(180deg, transparent 0%, rgba(181, 205, 216, 0.045) 48%, transparent 100%);
+  opacity: 0.58;
+  mix-blend-mode: screen;
+}
+
+.ri-home-stack {
+  position: relative;
+}
+
+.ri-home-stack::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: -2rem 0 auto;
+  height: 18rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent);
+  opacity: 0.72;
+}
+
+.ri-home-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.ri-home-section + .ri-home-section {
+  margin-top: clamp(0.35rem, 1.1vw, 1rem);
+}
+
+.ri-home-section::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: -0.35rem;
+  z-index: 1;
+  border-radius: inherit;
+  background:
+    linear-gradient(116deg, rgba(255, 255, 255, 0.06), transparent 38%, rgba(204, 224, 232, 0.035)),
+    radial-gradient(ellipse 42% 20% at 18% 0%, rgba(255, 255, 255, 0.13), transparent 70%);
+  opacity: 0.54;
+}
+
+.ri-home-section > * {
+  position: relative;
+  z-index: 2;
+}
+
+.homepage-wind-morning .quiet-air-touch {
+  will-change: transform, filter;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .homepage-wind-morning .quiet-air-touch:hover {
+    opacity: 0.985;
+    transform: translate3d(0, -2px, 0);
+    filter: brightness(1.018) saturate(0.99);
+    box-shadow: 0 18px 42px rgba(38, 61, 78, 0.055);
+  }
+
+  .ri-hero-nav a,
+  .ri-section-footer a {
+    transition: color 560ms ease-out, opacity 560ms ease-out, text-shadow 560ms ease-out;
+  }
+
+  .ri-hero-nav a:hover,
+  .ri-section-footer a:hover {
+    color: rgba(44, 50, 60, 0.88);
+    text-shadow: 0 8px 24px rgba(255, 255, 255, 0.46);
+  }
+}
+
+.ri-section-ways {
+  box-shadow:
+    0 -10px 38px rgba(38, 61, 78, 0.035),
+    0 18px 54px rgba(38, 61, 78, 0.025);
+}
+
+.ri-section-ways::before {
+  opacity: 0.68;
+}
+
+.ri-section-energy-field,
+.ri-section-explore,
+.ri-section-windkeep,
+.ri-section-moments,
+.ri-section-human {
+  border-color: rgba(199, 215, 223, 0.5);
+}
+
+.ri-section-windkeep::before {
+  background:
+    linear-gradient(98deg, rgba(255, 255, 255, 0.12), transparent 32%, rgba(185, 211, 224, 0.052)),
+    radial-gradient(ellipse 50% 32% at 68% 12%, rgba(255, 255, 255, 0.16), transparent 72%);
+  opacity: 0.62;
+}
+
+.ri-section-moments {
+  border-top-color: rgba(177, 200, 213, 0.34);
+}
+
+.ri-section-footer {
+  padding-top: clamp(2.1rem, 4vw, 3.8rem);
+  padding-bottom: clamp(2.6rem, 5vw, 4.5rem);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(240, 242, 245, 0.36)),
+    radial-gradient(ellipse 62% 58% at 50% 0%, rgba(255, 255, 255, 0.48), transparent 72%);
+}
+
+.ri-section-footer::before {
+  opacity: 0.34;
+}
+
+.ri-hero-air {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+.ri-hero-air-a {
+  background:
+    linear-gradient(106deg, transparent 8%, rgba(255, 255, 255, 0.2) 32%, transparent 58%),
+    radial-gradient(ellipse 48% 34% at 74% 42%, rgba(255, 246, 224, 0.12), transparent 70%);
+  opacity: 0.34;
+  animation: ri-hero-air-a 32s ease-in-out infinite;
+}
+
+.ri-hero-air-b {
+  background: linear-gradient(76deg, transparent 0%, rgba(204, 225, 235, 0.16) 42%, rgba(255, 255, 255, 0.12) 52%, transparent 72%);
+  opacity: 0.24;
+  animation: ri-hero-air-b 41s ease-in-out infinite;
+}
+
+@keyframes ri-wind-drift-a {
+  0%,
+  100% {
+    transform: translate3d(-2%, 0, 0) rotate(-7deg);
+  }
+  50% {
+    transform: translate3d(8%, 2.5%, 0) rotate(-4deg);
+  }
+}
+
+@keyframes ri-wind-drift-b {
+  0%,
+  100% {
+    transform: translate3d(4%, 0, 0) rotate(6deg);
+  }
+  50% {
+    transform: translate3d(-7%, -2%, 0) rotate(3deg);
+  }
+}
+
+@keyframes ri-wind-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+  50% {
+    transform: translate3d(6%, -1.5%, 0) rotate(1deg);
+  }
+}
+
+@keyframes ri-hero-air-a {
+  0%,
+  100% {
+    transform: translate3d(-2%, 0, 0);
+    opacity: 0.28;
+  }
+  50% {
+    transform: translate3d(2.4%, -0.8%, 0);
+    opacity: 0.38;
+  }
+}
+
+@keyframes ri-hero-air-b {
+  0%,
+  100% {
+    transform: translate3d(2%, 0, 0) skewX(-2deg);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate3d(-2.5%, 1%, 0) skewX(1deg);
+    opacity: 0.31;
+  }
+}
+
+@media (max-width: 640px) {
+  .ri-home-section + .ri-home-section {
+    margin-top: 0.35rem;
+  }
+
+  .ri-home-section::before {
+    inset: -0.2rem;
+    opacity: 0.42;
+  }
+
+  .ri-global-wind::before,
+  .ri-global-wind::after {
+    filter: blur(18px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ri-global-wind::before,
+  .ri-global-wind::after,
+  .ri-hero-air-a,
+  .ri-hero-air-b {
+    animation: none !important;
+  }
+
+  .homepage-wind-morning .quiet-air-touch:hover {
+    transform: none;
   }
 }
 
