@@ -307,14 +307,15 @@ html[data-open-duration="long"] .long-open-browser-softness {
 
 .ri-homepage {
   --ri-wind-base: #f0f2f5;
-  --ri-wind-blue: rgba(195, 220, 232, 0.28);
-  --ri-wind-gold: rgba(196, 174, 132, 0.12);
-  --ri-wind-line: rgba(166, 192, 205, 0.34);
-  --ri-wind-shadow: rgba(38, 61, 78, 0.055);
+  --ri-wind-blue: rgba(190, 220, 235, 0.34);
+  --ri-wind-gold: rgba(196, 174, 132, 0.16);
+  --ri-wind-line: rgba(146, 178, 195, 0.4);
+  --ri-wind-shadow: rgba(38, 61, 78, 0.07);
   overflow-x: hidden;
   font-family: var(--font-inter), Arial, sans-serif;
   background:
-    radial-gradient(ellipse 72% 34% at 18% 3%, rgba(255, 255, 255, 0.88), transparent 72%),
+    radial-gradient(ellipse 72% 34% at 18% 3%, rgba(255, 255, 255, 0.94), transparent 72%),
+    radial-gradient(ellipse 58% 42% at 88% 28%, rgba(207, 229, 237, 0.28), transparent 72%),
     linear-gradient(180deg, #f0f2f5 0%, #fbfcfb 34%, #f3f7f8 100%);
 }
 
@@ -355,16 +356,16 @@ html[data-open-duration="long"] .long-open-browser-softness {
 .ri-global-wind-a::before {
   left: -10vw;
   top: 8%;
-  background: linear-gradient(96deg, transparent, rgba(255, 255, 255, 0.36), rgba(196, 221, 233, 0.18), transparent);
-  opacity: 0.09;
+  background: linear-gradient(96deg, transparent, rgba(255, 255, 255, 0.42), rgba(196, 221, 233, 0.24), transparent);
+  opacity: 0.11;
   animation: ri-wind-drift-a 42s ease-in-out infinite;
 }
 
 .ri-global-wind-a::after {
   right: -18vw;
   top: 38%;
-  background: linear-gradient(102deg, transparent, rgba(255, 255, 255, 0.3), rgba(196, 174, 132, 0.08), transparent);
-  opacity: 0.07;
+  background: linear-gradient(102deg, transparent, rgba(255, 255, 255, 0.34), rgba(196, 174, 132, 0.12), transparent);
+  opacity: 0.09;
   animation: ri-wind-drift-b 38s ease-in-out infinite;
 }
 
@@ -372,8 +373,8 @@ html[data-open-duration="long"] .long-open-browser-softness {
   left: 16vw;
   top: 62%;
   width: min(62rem, 72vw);
-  background: linear-gradient(90deg, transparent, rgba(205, 225, 233, 0.2), rgba(255, 255, 255, 0.28), transparent);
-  opacity: 0.08;
+  background: linear-gradient(90deg, transparent, rgba(205, 225, 233, 0.28), rgba(255, 255, 255, 0.34), transparent);
+  opacity: 0.1;
   animation: ri-wind-drift-c 34s ease-in-out infinite;
 }
 
@@ -405,7 +406,7 @@ html[data-open-duration="long"] .long-open-browser-softness {
 }
 
 .ri-home-section + .ri-home-section {
-  margin-top: clamp(0.35rem, 1.1vw, 1rem);
+  margin-top: clamp(0.75rem, 1.8vw, 1.7rem);
 }
 
 .ri-home-section::before {
@@ -421,6 +422,17 @@ html[data-open-duration="long"] .long-open-browser-softness {
   opacity: 0.54;
 }
 
+.ri-home-section::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: auto 8% -1.15rem;
+  z-index: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(146, 178, 195, 0.26), rgba(255, 255, 255, 0.52), transparent);
+  opacity: 0.72;
+}
+
 .ri-home-section > * {
   position: relative;
   z-index: 2;
@@ -428,14 +440,15 @@ html[data-open-duration="long"] .long-open-browser-softness {
 
 .homepage-wind-morning .quiet-air-touch {
   will-change: transform, filter;
+  box-shadow: 0 12px 32px rgba(38, 61, 78, 0.035);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .homepage-wind-morning .quiet-air-touch:hover {
     opacity: 0.985;
-    transform: translate3d(0, -2px, 0);
-    filter: brightness(1.018) saturate(0.99);
-    box-shadow: 0 18px 42px rgba(38, 61, 78, 0.055);
+    transform: translate3d(0, -3px, 0) scale(1.006);
+    filter: brightness(1.025) saturate(0.99);
+    box-shadow: 0 20px 48px rgba(38, 61, 78, 0.07);
   }
 
   .ri-hero-nav a,
@@ -452,8 +465,8 @@ html[data-open-duration="long"] .long-open-browser-softness {
 
 .ri-section-ways {
   box-shadow:
-    0 -10px 38px rgba(38, 61, 78, 0.035),
-    0 18px 54px rgba(38, 61, 78, 0.025);
+    0 -10px 38px rgba(38, 61, 78, 0.04),
+    0 18px 54px rgba(38, 61, 78, 0.034);
 }
 
 .ri-section-ways::before {
@@ -468,6 +481,24 @@ html[data-open-duration="long"] .long-open-browser-softness {
   border-color: rgba(199, 215, 223, 0.5);
 }
 
+.ri-section-energy-field {
+  background:
+    linear-gradient(180deg, rgba(240, 242, 245, 0.82), rgba(255, 255, 255, 0.58)),
+    radial-gradient(ellipse 58% 38% at 82% 0%, rgba(196, 221, 233, 0.24), transparent 70%);
+  box-shadow: 0 18px 48px rgba(38, 61, 78, 0.032);
+}
+
+.ri-section-explore {
+  padding-top: clamp(2.1rem, 4.4vw, 4.8rem);
+  padding-bottom: clamp(1.8rem, 3.8vw, 4rem);
+}
+
+.ri-section-explore img,
+.ri-section-windkeep img,
+.ri-section-moments img {
+  filter: saturate(0.985) contrast(0.992) brightness(1.012);
+}
+
 .ri-section-windkeep::before {
   background:
     linear-gradient(98deg, rgba(255, 255, 255, 0.12), transparent 32%, rgba(185, 211, 224, 0.052)),
@@ -475,8 +506,21 @@ html[data-open-duration="long"] .long-open-browser-softness {
   opacity: 0.62;
 }
 
+.ri-section-windkeep {
+  padding-top: clamp(0.9rem, 2.2vw, 2rem);
+  padding-bottom: clamp(1rem, 2.8vw, 2.4rem);
+}
+
 .ri-section-moments {
   border-top-color: rgba(177, 200, 213, 0.34);
+  background:
+    radial-gradient(ellipse 68% 42% at 16% 10%, rgba(255, 255, 255, 0.54), transparent 72%),
+    linear-gradient(180deg, rgba(246, 250, 251, 0.62), rgba(240, 242, 245, 0.32));
+}
+
+.ri-section-human {
+  padding-top: clamp(2.2rem, 4vw, 4.2rem);
+  padding-bottom: clamp(2rem, 3.6vw, 3.8rem);
 }
 
 .ri-section-footer {
@@ -503,14 +547,53 @@ html[data-open-duration="long"] .long-open-browser-softness {
   background:
     linear-gradient(106deg, transparent 8%, rgba(255, 255, 255, 0.2) 32%, transparent 58%),
     radial-gradient(ellipse 48% 34% at 74% 42%, rgba(255, 246, 224, 0.12), transparent 70%);
-  opacity: 0.34;
+  opacity: 0.42;
   animation: ri-hero-air-a 32s ease-in-out infinite;
 }
 
 .ri-hero-air-b {
   background: linear-gradient(76deg, transparent 0%, rgba(204, 225, 235, 0.16) 42%, rgba(255, 255, 255, 0.12) 52%, transparent 72%);
-  opacity: 0.24;
+  opacity: 0.32;
   animation: ri-hero-air-b 41s ease-in-out infinite;
+}
+
+.ri-section-breath {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+  width: min(38rem, 54vw);
+  height: min(12rem, 18vw);
+  border-radius: 999px;
+  background: linear-gradient(98deg, transparent, rgba(255, 255, 255, 0.5), rgba(190, 220, 235, 0.16), transparent);
+  filter: blur(18px);
+  opacity: 0.48;
+  mix-blend-mode: screen;
+  animation: ri-section-breath 28s ease-in-out infinite;
+}
+
+.ri-section-breath-left {
+  left: -7%;
+  top: 10%;
+  transform: rotate(-6deg);
+}
+
+.ri-section-breath-right {
+  right: -9%;
+  top: 18%;
+  transform: rotate(7deg);
+  animation-duration: 36s;
+}
+
+@keyframes ri-section-breath {
+  0%,
+  100% {
+    opacity: 0.34;
+    translate: 0 0;
+  }
+  50% {
+    opacity: 0.56;
+    translate: 4% -5%;
+  }
 }
 
 @keyframes ri-wind-drift-a {

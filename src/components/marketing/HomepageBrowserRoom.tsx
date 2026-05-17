@@ -231,6 +231,8 @@ export function HomepageBrowserRoom() {
 
         <div className="ri-home-stack relative z-[1] mx-auto w-full max-w-[92rem] px-4 pb-16 sm:px-7 lg:px-10">
           <section className="ri-home-section ri-section-ways -mt-5 mx-auto max-w-[86rem] rounded-[1.35rem_1.35rem_0_0] sunlit-air-zone px-4 pb-8 pt-8 shadow-[0_-10px_38px_rgba(38,61,78,0.04)] sm:px-6 lg:px-8">
+            <span className="ri-section-breath ri-section-breath-left" aria-hidden />
+            <span className="ri-section-breath ri-section-breath-right" aria-hidden />
             <div className="mb-6 flex items-center gap-2">
               <h2 className="font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
                 Ways to Begin
@@ -263,6 +265,7 @@ export function HomepageBrowserRoom() {
             className="ri-home-section ri-section-energy-field mx-auto max-w-[86rem] rounded-b-[1rem] bg-[#f0f2f5]/70 px-4 pb-7 pt-4 sm:px-6 lg:px-8"
             aria-label="Energy Field"
           >
+            <span className="ri-section-breath ri-section-breath-right" aria-hidden />
             <Link
               href="/healing"
               className="quiet-air-touch hidden rounded-[1.15rem] lg:block"
@@ -334,6 +337,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section className="ri-home-section ri-section-explore mx-auto max-w-[86rem] py-7 lg:py-8">
+            <span className="ri-section-breath ri-section-breath-left" aria-hidden />
             <div className="relative hidden rounded-lg lg:block">
               <Image
                 src="/brand/production/homepage/healing-world-layer/fixed-v3/pc/healing-world-layer-pc-final.jpg"
@@ -380,6 +384,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section className="ri-home-section ri-section-windkeep mx-auto max-w-[86rem]">
+            <span className="ri-section-breath ri-section-breath-right" aria-hidden />
             <div className="relative hidden rounded-lg lg:block">
               <Image
                 src="/brand/production/homepage/windkeep-section/fixed-v1/pc/windkeep-section-hero-pc.png"
@@ -406,6 +411,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section className="ri-home-section ri-section-moments mx-auto max-w-[86rem] border-t border-border-subtle/60 py-8">
+            <span className="ri-section-breath ri-section-breath-left" aria-hidden />
             <div className="mb-5 flex items-end justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-[0.12em] text-[#6f86a6]">Moments of Presence</p>
