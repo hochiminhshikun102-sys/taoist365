@@ -11,36 +11,36 @@ const waysToBegin = [
     title: "Daily Guidance",
     body: "A gentle note to start your day.",
     href: "/rituals/daily-guidance",
-    image: "/brand/production/homepage/ways-to-begin/daily-guidance-tao-doll.png",
-    width: 390,
-    height: 700,
+    image: "/brand/production/homepage/ways-to-begin/final-v1/daily-guidance.png",
+    width: 2048,
+    height: 2048,
     mark: "sun",
   },
   {
     title: "Feng Shui Space",
     body: "Let a room feel easier to stay in.",
     href: "/rituals/home-harmony",
-    image: "/brand/production/homepage/ways-to-begin/feng-shui-wind-chime.png",
-    width: 410,
-    height: 700,
+    image: "/brand/production/homepage/ways-to-begin/final-v1/feng-shui-space.png",
+    width: 2048,
+    height: 2048,
     mark: "air",
   },
   {
     title: "Fortune Draw",
     body: "Listen to a small message without pressure.",
     href: "/rituals/draw-a-lot",
-    image: "/brand/production/homepage/ways-to-begin/fortune-draw-lotus-incense.png",
-    width: 410,
-    height: 700,
+    image: "/brand/production/homepage/ways-to-begin/final-v1/fortune-draw.png",
+    width: 2048,
+    height: 2048,
     mark: "lot",
   },
   {
     title: "Driftbox",
     body: "Send a question into quiet correspondence.",
     href: "/inquiry",
-    image: "/brand/production/homepage/ways-to-begin/driftbox-letter-leaf.png",
-    width: 430,
-    height: 700,
+    image: "/brand/production/homepage/ways-to-begin/final-v1/driftbox.png",
+    width: 2732,
+    height: 1534,
     mark: "mail",
   },
 ] as const;
@@ -259,34 +259,63 @@ export function HomepageBrowserRoom() {
         <HomepageHeroCarousel />
 
         <div className="ri-home-stack relative z-[1] mx-auto w-full max-w-[92rem] px-4 pb-16 sm:px-7 lg:px-10">
-          <section className="ri-home-section ri-section-ways -mt-5 mx-auto max-w-[86rem] rounded-[1.35rem_1.35rem_0_0] sunlit-air-zone px-4 pb-8 pt-8 shadow-[0_-10px_38px_rgba(38,61,78,0.04)] sm:px-6 lg:px-8">
+          <section className="ri-home-section ri-section-ways -mt-5 mx-auto max-w-[86rem] rounded-[1.35rem_1.35rem_0_0] sunlit-air-zone px-4 pb-7 pt-7 shadow-[0_-10px_38px_rgba(38,61,78,0.04)] sm:px-6 sm:pb-8 sm:pt-8 lg:px-8">
             <span className="ri-section-breath ri-section-breath-left" aria-hidden />
             <span className="ri-section-breath ri-section-breath-right" aria-hidden />
-            <div className="mb-6 flex items-center gap-2">
-              <h2 className="font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
-                Ways to Begin
-              </h2>
-              <span className="text-lg text-foreground/46" aria-hidden>
-                /
-              </span>
+            <div className="mb-5 flex items-start justify-between gap-5 sm:mb-7 sm:block sm:text-center">
+              <div>
+                <p className="hidden text-xs uppercase tracking-[0.18em] text-[#8a7c6e] sm:block">Begin softly</p>
+                <h2 className="font-[var(--font-display-serif)] text-3xl leading-tight text-foreground sm:mt-2 sm:text-4xl">
+                  Ways to Begin
+                </h2>
+                <p className="mt-1 max-w-[12rem] text-sm leading-5 text-[#536577] sm:mx-auto sm:mt-3 sm:max-w-md sm:leading-6">
+                  Choose your first breath.
+                </p>
+              </div>
+              <Link href="/rituals" className="mt-2 shrink-0 text-sm text-foreground/72 transition hover:text-foreground sm:hidden">
+                View All -&gt;
+              </Link>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            <div className="ri-way-card-row grid grid-cols-4 gap-2 sm:gap-4">
               {waysToBegin.map((entry) => (
                 <Link
                   key={entry.title}
                   href={entry.href}
-                  className="quiet-air-touch block rounded-[1.15rem]"
+                  className="quiet-air-touch ri-way-card group block overflow-hidden rounded-[1.15rem] border border-[#d7dfe5]/70 bg-white/72"
                 >
-                  <Image
-                    src={entry.image}
-                    alt={entry.title}
-                    width={entry.width}
-                    height={entry.height}
-                    className="h-auto w-full"
-                    sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw"
-                  />
+                  <div className="ri-way-card-image flex aspect-[4/5] items-center justify-center bg-[#f0f2f5]/70 sm:aspect-[4/5]">
+                    <Image
+                      src={entry.image}
+                      alt={entry.title}
+                      width={entry.width}
+                      height={entry.height}
+                      className="ri-way-image h-full w-full object-contain"
+                      sizes="(max-width: 640px) 22vw, (max-width: 1024px) 22vw, 21vw"
+                    />
+                  </div>
+                  <div className="grid gap-1.5 p-2.5 sm:gap-2 sm:p-4">
+                    <div className="hidden items-center justify-between gap-3 sm:flex">
+                      <span className="rounded-full border border-[#d7dfe5] bg-white/78 px-2.5 py-1 text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">
+                        {entry.mark}
+                      </span>
+                      <span className="grid h-7 w-7 place-items-center rounded-full border border-[#d7dfe5] text-sm text-foreground/52 transition-colors group-hover:text-foreground">
+                        -&gt;
+                      </span>
+                    </div>
+                    <h3 className="text-center font-[var(--font-display-serif)] text-[0.78rem] leading-tight text-[#22314c] sm:text-left sm:text-xl sm:text-foreground">
+                      {entry.title}
+                    </h3>
+                    <p className="hidden min-h-[2.5rem] text-xs leading-5 text-text-secondary sm:block sm:text-sm">
+                      {entry.body}
+                    </p>
+                  </div>
                 </Link>
               ))}
+            </div>
+            <div className="mt-6 hidden text-center sm:block">
+              <Link href="/rituals" className="inline-flex rounded-full border border-[#cbd9df] bg-[#8aa2b4]/18 px-5 py-2 text-sm text-foreground/70 hover:text-foreground">
+                Explore all practices
+              </Link>
             </div>
           </section>
 
