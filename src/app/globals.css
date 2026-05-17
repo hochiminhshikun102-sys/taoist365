@@ -388,6 +388,9 @@ html[data-open-duration="long"] .long-open-browser-softness {
 
 .ri-home-stack {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.8rem, 1.8vw, 1.9rem);
 }
 
 .ri-home-stack::before {
@@ -400,13 +403,28 @@ html[data-open-duration="long"] .long-open-browser-softness {
   opacity: 0.72;
 }
 
+.ri-home-stack::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 2rem 0 8rem;
+  z-index: 0;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(197, 222, 234, 0.13) 18%, transparent 38%),
+    linear-gradient(105deg, transparent 8%, rgba(255, 255, 255, 0.28) 42%, transparent 68%),
+    linear-gradient(180deg, transparent, rgba(240, 242, 245, 0.34));
+  opacity: 0.78;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+
 .ri-home-section {
   position: relative;
   isolation: isolate;
+  z-index: 1;
 }
 
 .ri-home-section + .ri-home-section {
-  margin-top: clamp(0.75rem, 1.8vw, 1.7rem);
+  margin-top: 0;
 }
 
 .ri-home-section::before {
@@ -465,8 +483,8 @@ html[data-open-duration="long"] .long-open-browser-softness {
 
 .ri-section-ways {
   box-shadow:
-    0 -10px 38px rgba(38, 61, 78, 0.04),
-    0 18px 54px rgba(38, 61, 78, 0.034);
+    0 -10px 38px rgba(38, 61, 78, 0.05),
+    0 24px 68px rgba(38, 61, 78, 0.045);
 }
 
 .ri-section-ways::before {
@@ -485,18 +503,49 @@ html[data-open-duration="long"] .long-open-browser-softness {
   background:
     linear-gradient(180deg, rgba(240, 242, 245, 0.82), rgba(255, 255, 255, 0.58)),
     radial-gradient(ellipse 58% 38% at 82% 0%, rgba(196, 221, 233, 0.24), transparent 70%);
-  box-shadow: 0 18px 48px rgba(38, 61, 78, 0.032);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 18px 48px rgba(38, 61, 78, 0.045);
 }
 
 .ri-section-explore {
-  padding-top: clamp(2.1rem, 4.4vw, 4.8rem);
-  padding-bottom: clamp(1.8rem, 3.8vw, 4rem);
+  padding-top: clamp(2.3rem, 4.8vw, 5.4rem);
+  padding-bottom: clamp(2rem, 4.2vw, 4.6rem);
+}
+
+.ri-section-explore > .relative,
+.ri-section-windkeep > .relative,
+.ri-section-moments .quiet-air-touch,
+.ri-section-energy-field .quiet-air-touch,
+.ri-section-ways .quiet-air-touch {
+  overflow: visible;
+  border-radius: 1.15rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(240, 242, 245, 0.24)),
+    rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85),
+    0 22px 64px rgba(38, 61, 78, 0.07);
+}
+
+.ri-section-explore > .relative::before,
+.ri-section-windkeep > .relative::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: -0.8rem;
+  z-index: -1;
+  border-radius: 1.45rem;
+  background:
+    radial-gradient(ellipse 38% 28% at 10% 10%, rgba(255, 255, 255, 0.66), transparent 74%),
+    linear-gradient(118deg, rgba(194, 221, 233, 0.18), transparent 44%, rgba(196, 174, 132, 0.08));
+  opacity: 0.82;
 }
 
 .ri-section-explore img,
 .ri-section-windkeep img,
 .ri-section-moments img {
-  filter: saturate(0.985) contrast(0.992) brightness(1.012);
+  filter: saturate(0.99) contrast(0.995) brightness(1.018);
 }
 
 .ri-section-windkeep::before {
@@ -507,8 +556,8 @@ html[data-open-duration="long"] .long-open-browser-softness {
 }
 
 .ri-section-windkeep {
-  padding-top: clamp(0.9rem, 2.2vw, 2rem);
-  padding-bottom: clamp(1rem, 2.8vw, 2.4rem);
+  padding-top: clamp(1.2rem, 2.8vw, 2.8rem);
+  padding-bottom: clamp(1.4rem, 3.4vw, 3.4rem);
 }
 
 .ri-section-moments {
@@ -516,6 +565,8 @@ html[data-open-duration="long"] .long-open-browser-softness {
   background:
     radial-gradient(ellipse 68% 42% at 16% 10%, rgba(255, 255, 255, 0.54), transparent 72%),
     linear-gradient(180deg, rgba(246, 250, 251, 0.62), rgba(240, 242, 245, 0.32));
+  border-radius: 1.3rem;
+  padding-inline: clamp(0.8rem, 2vw, 1.8rem);
 }
 
 .ri-section-human {
@@ -529,6 +580,7 @@ html[data-open-duration="long"] .long-open-browser-softness {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(240, 242, 245, 0.36)),
     radial-gradient(ellipse 62% 58% at 50% 0%, rgba(255, 255, 255, 0.48), transparent 72%);
+  border-radius: 1.3rem 1.3rem 0 0;
 }
 
 .ri-section-footer::before {
@@ -545,16 +597,28 @@ html[data-open-duration="long"] .long-open-browser-softness {
 
 .ri-hero-air-a {
   background:
-    linear-gradient(106deg, transparent 8%, rgba(255, 255, 255, 0.2) 32%, transparent 58%),
-    radial-gradient(ellipse 48% 34% at 74% 42%, rgba(255, 246, 224, 0.12), transparent 70%);
-  opacity: 0.42;
+    linear-gradient(106deg, transparent 8%, rgba(255, 255, 255, 0.32) 32%, transparent 58%),
+    radial-gradient(ellipse 48% 34% at 74% 42%, rgba(255, 246, 224, 0.2), transparent 70%);
+  opacity: 0.52;
   animation: ri-hero-air-a 32s ease-in-out infinite;
 }
 
 .ri-hero-air-b {
-  background: linear-gradient(76deg, transparent 0%, rgba(204, 225, 235, 0.16) 42%, rgba(255, 255, 255, 0.12) 52%, transparent 72%);
-  opacity: 0.32;
+  background: linear-gradient(76deg, transparent 0%, rgba(204, 225, 235, 0.24) 42%, rgba(255, 255, 255, 0.2) 52%, transparent 72%);
+  opacity: 0.42;
   animation: ri-hero-air-b 41s ease-in-out infinite;
+}
+
+.ri-home-hero::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 2;
+  height: clamp(7rem, 14vw, 13rem);
+  background:
+    linear-gradient(180deg, transparent, rgba(240, 242, 245, 0.58) 62%, rgba(246, 250, 251, 0.96)),
+    radial-gradient(ellipse 56% 40% at 50% 100%, rgba(255, 255, 255, 0.64), transparent 72%);
 }
 
 .ri-section-breath {
