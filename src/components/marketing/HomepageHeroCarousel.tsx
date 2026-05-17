@@ -60,13 +60,13 @@ export function HomepageHeroCarousel() {
         className="homepage-hero-brand-breath absolute left-5 top-5 z-[3] hidden items-center gap-3 text-foreground/72 sm:left-8 sm:top-7 lg:left-10 lg:top-9 lg:flex"
         aria-label="Reverent Inquiry home"
       >
-        <span
-          aria-hidden
-          className="h-7 w-12 shrink-0 bg-[url('/brand/production/air-mark.svg')] bg-contain bg-center bg-no-repeat opacity-72"
+        <img
+          src="/brand/production/identity/reverent-inquiry-logo-gradient.png"
+          alt="Reverent Inquiry"
+          className="h-auto w-[11.5rem] object-contain mix-blend-multiply opacity-82"
+          loading="eager"
+          decoding="async"
         />
-        <span className="font-[var(--font-display-serif)] text-xl leading-none tracking-normal sm:text-2xl">
-          Reverent Inquiry
-        </span>
       </Link>
       <div className="absolute left-[8%] top-[58%] z-[2] hidden lg:block">
         {heroSlides.map((slide, index) => (

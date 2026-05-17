@@ -4,13 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomepageHeroCarousel } from "@/components/marketing/HomepageHeroCarousel";
 import { QuietSubscription } from "@/components/marketing/QuietSubscription";
-import { lilaHumanPresence } from "@/config/lila-human-presence";
-import {
-  homepageObjectSlots,
-  homepageSeasonalRooms,
-} from "@/config/quiet-placement";
-import { siteConfig } from "@/config/site";
-import { useWorldRuntime } from "@/lib/use-world-runtime";
+import { homepageObjectSlots } from "@/config/quiet-placement";
 
 const waysToBegin = [
   {
@@ -174,51 +168,86 @@ const momentsOfPresence = [
   },
 ] as const;
 
-export function HomepageBrowserRoom() {
-  const { worldAiNativeInfrastructure } = useWorldRuntime();
-  const st = worldAiNativeInfrastructure.invisibleInfrastructureStructuralThinning;
-  const roomThin = st.combinedProseBias > 0.66 || st.dailyForceCloseEchoes;
-  const windkeepObjects = homepageObjectSlots.secondaryShelf.slice(0, 3);
-  const presenceRooms = roomThin ? homepageSeasonalRooms.slice(0, 4) : homepageSeasonalRooms;
+const lifeStageCards = [
+  {
+    title: "Morning Ease",
+    body: "Begin the day with a softer rhythm.",
+    image: "/brand/production/homepage/energy-field-section/pc/morning-card.png",
+    href: "/healing/meditation",
+  },
+  {
+    title: "Quiet Reset",
+    body: "Return when the room feels too full.",
+    image: "/brand/production/homepage/energy-field-section/pc/kitchen-card.png",
+    href: "/healing/elements",
+  },
+  {
+    title: "Inner Room",
+    body: "Make space for attention to settle.",
+    image: "/brand/production/homepage/energy-field-section/pc/studio-card.png",
+    href: "/healing/creation",
+  },
+  {
+    title: "Evening Repair",
+    body: "Let the day close without pressure.",
+    image: "/brand/production/homepage/energy-field-section/pc/evening-card.png",
+    href: "/live",
+  },
+  {
+    title: "Seasonal Return",
+    body: "Move with the quiet weather of life.",
+    image: "/brand/production/homepage/energy-field-section/pc/retreat-card.png",
+    href: "/healing/stories",
+  },
+] as const;
 
-  const humanPresenceLayer = (
-    <section className="ri-home-section ri-section-human mx-auto max-w-[86rem] border-t border-border-subtle/60 py-9">
-      <div className="mb-7 grid gap-5 rounded-lg border border-[#c7d7df]/42 bg-white/70 p-5 shadow-[0_12px_34px_rgba(38,61,78,0.045)] sm:grid-cols-[0.34fr_0.66fr] sm:p-6">
-        <div>
-          <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Human presence</p>
-          <h2 className="mt-2 font-[var(--font-display-serif)] text-2xl leading-tight text-foreground">
-            {lilaHumanPresence.name}
-          </h2>
-          <p className="mt-1 text-sm text-text-muted">{lilaHumanPresence.role}</p>
-        </div>
-        <div>
-          <p className="text-sm leading-8 text-text-secondary">{lilaHumanPresence.homepageNote}</p>
-          <Link href="/about" className="mt-4 inline-flex text-sm text-foreground/68 hover:text-foreground">
-            Read about the keeper
-          </Link>
-        </div>
-      </div>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-        {windkeepObjects.map((item) => (
-          <Link key={item.id} href={`/objects#${item.id}`} className="quiet-air-touch flex gap-4 rounded-lg bg-white/62 p-3">
-            <div className="flex h-16 w-20 shrink-0 items-center justify-center rounded-md bg-white/80">
-              <Image src={item.photo.src} alt="" width={80} height={64} className="h-auto max-h-16 w-auto opacity-[0.9]" sizes="5rem" />
-            </div>
-            <div>
-              <p className="text-sm leading-5 text-foreground">{item.title}</p>
-              <p className="mt-1 text-xs leading-5 text-text-muted">{item.roomPlacement}</p>
-            </div>
-          </Link>
-        ))}
-        {presenceRooms.slice(0, 2).map((room) => (
-          <div key={room.label} className="rounded-lg bg-white/58 p-4">
-            <p className="text-sm text-foreground">{room.label}</p>
-            <p className="mt-1 text-xs text-text-muted">{room.note}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
+const companionMoments = [
+  {
+    title: "Gentle Guidance",
+    body: "Support for your everyday pause.",
+    image: "/brand/production/homepage/ways-to-begin/daily-guidance-tao-doll.png",
+    href: "/rituals/daily-guidance",
+  },
+  {
+    title: "Moonlight Moment",
+    body: "Small rituals for soft returns.",
+    image: "/brand/production/homepage/ways-to-begin/fortune-draw-lotus-incense.png",
+    href: "/rituals/draw-a-lot",
+  },
+  {
+    title: "Elemental Ease",
+    body: "Calm your room, soften your mind.",
+    image: "/brand/production/homepage/ways-to-begin/feng-shui-wind-chime.png",
+    href: "/rituals/home-harmony",
+  },
+  {
+    title: "Quiet Letters",
+    body: "A place for questions to move slowly.",
+    image: "/brand/production/homepage/ways-to-begin/driftbox-letter-leaf.png",
+    href: "/inquiry",
+  },
+] as const;
+
+const veluneCards = [
+  {
+    title: "Flow Soft",
+    image: "/velune-storefront/assets/card-expanded/products/vel-wd-001-flow-soft.jpg",
+    href: "/store/products/vel-wd-001-flow-soft",
+  },
+  {
+    title: "Night Ease",
+    image: "/velune-storefront/assets/card-expanded/products/vel-wd-002-night-ease.jpg",
+    href: "/store/products/vel-wd-002-night-ease",
+  },
+  {
+    title: "Pure Breath",
+    image: "/velune-storefront/assets/card-expanded/products/vel-mt-001-pure-breath.jpg",
+    href: "/store/products/vel-mt-001-pure-breath",
+  },
+] as const;
+
+export function HomepageBrowserRoom() {
+  const objectShelf = homepageObjectSlots.shelf.slice(0, 6);
 
   return (
     <main className="ri-homepage homepage-wind-morning min-h-full bg-[#f6fafb] text-foreground">
@@ -255,81 +284,6 @@ export function HomepageBrowserRoom() {
                     height={entry.height}
                     className="h-auto w-full"
                     sizes="(max-width: 640px) 46vw, (max-width: 1024px) 45vw, 22vw"
-                  />
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          <section
-            className="ri-home-section ri-section-energy-field mx-auto max-w-[86rem] rounded-b-[1rem] bg-[#f0f2f5]/70 px-4 pb-7 pt-4 sm:px-6 lg:px-8"
-            aria-label="Energy Field"
-          >
-            <span className="ri-section-breath ri-section-breath-right" aria-hidden />
-            <Link
-              href="/healing"
-              className="quiet-air-touch hidden rounded-[1.15rem] lg:block"
-              aria-label="Energy Field"
-            >
-              <Image
-                src="/brand/production/homepage/energy-field-section/pc/hero-energy-field.png"
-                alt="Energy Field"
-                width={1600}
-                height={700}
-                className="h-auto w-full"
-                sizes="86rem"
-              />
-            </Link>
-
-            <div className="mt-4 hidden grid-cols-5 gap-4 lg:grid">
-              {energyFieldCards.map((card) => (
-                <Link
-                  key={card.title}
-                  href={card.href}
-                  className="quiet-air-touch block rounded-[0.9rem]"
-                  aria-label={card.title}
-                >
-                  <Image
-                    src={card.pcImage}
-                    alt={card.title}
-                    width={640}
-                    height={360}
-                    className="h-auto w-full"
-                    sizes="17vw"
-                  />
-                </Link>
-              ))}
-            </div>
-
-            <div className="mt-4 grid grid-cols-2 gap-3 lg:hidden">
-              <Link
-                href="/healing"
-                className="quiet-air-touch col-span-2 block rounded-[1rem]"
-                aria-label="Energy Field"
-              >
-                <Image
-                  src="/brand/production/homepage/energy-field-section/mobile/hero-energy-field-mobile.png"
-                  alt="Energy Field"
-                  width={900}
-                  height={1200}
-                  className="h-auto w-full"
-                  sizes="92vw"
-                />
-              </Link>
-              {energyFieldCards.map((card) => (
-                <Link
-                  key={card.title}
-                  href={card.href}
-                  className="quiet-air-touch block rounded-[0.8rem]"
-                  aria-label={card.title}
-                >
-                  <Image
-                    src={card.mobileImage}
-                    alt={card.title}
-                    width={440}
-                    height={264}
-                    className="h-auto w-full"
-                    sizes="46vw"
                   />
                 </Link>
               ))}
@@ -380,6 +334,108 @@ export function HomepageBrowserRoom() {
                   />
                 );
               })}
+            </div>
+          </section>
+
+          <section className="ri-home-section ri-section-objects mx-auto max-w-[86rem] rounded-[1.25rem] px-4 py-7 sm:px-6 lg:px-8">
+            <span className="ri-section-breath ri-section-breath-right" aria-hidden />
+            <div className="mb-5 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[#7d93a7]">Objects</p>
+                <h2 className="mt-2 font-[var(--font-display-serif)] text-2xl leading-tight text-foreground sm:text-3xl">
+                  Objects for daily quiet.
+                </h2>
+              </div>
+              <Link href="/objects" className="text-sm text-foreground/62 hover:text-foreground">
+                View objects -&gt;
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+              {objectShelf.map((item) => (
+                <Link key={item.id} href={`/objects/${item.id}`} className="quiet-air-touch ri-object-card rounded-[0.9rem] border border-[#d7dfe5]/70 bg-white/68 p-3">
+                  <div className="flex aspect-[4/3] items-center justify-center rounded-[0.7rem] bg-[#f0f2f5]/78 p-2">
+                    <Image src={item.photo.src} alt={item.title} width={320} height={240} className="h-full w-full object-contain" sizes="(max-width: 768px) 44vw, 14vw" />
+                  </div>
+                  <p className="mt-3 line-clamp-2 text-sm leading-5 text-foreground">{item.title}</p>
+                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-text-muted">{item.roomTrace}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="ri-home-section ri-section-life-stages mx-auto max-w-[86rem] rounded-[1.35rem] px-4 py-8 sm:px-6 lg:px-8">
+            <span className="ri-section-breath ri-section-breath-left" aria-hidden />
+            <div className="grid gap-6 lg:grid-cols-[0.35fr_0.65fr] lg:items-center">
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[#8a7c6e]">Life Stages, Gentle Paths</p>
+                <h2 className="mt-3 font-[var(--font-display-serif)] text-3xl leading-tight text-foreground sm:text-4xl">
+                  Soft support for every return.
+                </h2>
+                <p className="mt-4 max-w-md text-sm leading-7 text-text-secondary">
+                  Different days ask for different kinds of quiet. Move through the paths without pressure.
+                </p>
+                <Link href="/healing" className="mt-5 inline-flex rounded-full border border-[#cbd9df] bg-white/72 px-5 py-2 text-sm text-foreground/72 hover:text-foreground">
+                  Explore paths
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+                {lifeStageCards.map((card) => (
+                  <Link key={card.title} href={card.href} className="quiet-air-touch rounded-[0.9rem] border border-[#d7dfe5]/70 bg-white/66 p-2">
+                    <Image src={card.image} alt={card.title} width={360} height={220} className="h-auto w-full rounded-[0.7rem]" sizes="(max-width: 768px) 44vw, 10vw" />
+                    <p className="mt-3 text-sm leading-5 text-foreground">{card.title}</p>
+                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-text-muted">{card.body}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="ri-home-section ri-section-find-moment mx-auto max-w-[86rem] rounded-[1.35rem] px-4 py-8 sm:px-6 lg:px-8">
+            <span className="ri-section-breath ri-section-breath-right" aria-hidden />
+            <div className="grid gap-7 lg:grid-cols-[0.42fr_0.58fr] lg:items-end">
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[#7d93a7]">Find Your Moment</p>
+                <h2 className="mt-3 font-[var(--font-display-serif)] text-3xl leading-tight text-foreground sm:text-5xl">
+                  Find your moment, we will walk with you.
+                </h2>
+                <p className="mt-4 max-w-md text-sm leading-7 text-text-secondary">
+                  Little rooms for attention, breath, and ordinary return. Choose a soft beginning and let it stay open.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                {companionMoments.map((card) => (
+                  <Link key={card.title} href={card.href} className="quiet-air-touch rounded-[1rem] border border-[#d7dfe5]/70 bg-white/64 p-3 text-center">
+                    <Image src={card.image} alt={card.title} width={320} height={420} className="mx-auto h-auto max-h-[12rem] w-auto" sizes="(max-width: 768px) 40vw, 10vw" />
+                    <p className="mt-3 text-sm text-foreground">{card.title}</p>
+                    <p className="mt-1 text-xs leading-5 text-text-muted">{card.body}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="ri-home-section ri-section-velune mx-auto max-w-[86rem] rounded-[1.35rem] px-4 py-8 sm:px-6 lg:px-8">
+            <span className="ri-section-breath ri-section-breath-left" aria-hidden />
+            <div className="grid gap-5 lg:grid-cols-[0.58fr_0.42fr] lg:items-center">
+              <Link href="/store" className="quiet-air-touch block rounded-[1.2rem]">
+                <Image src="/velune-storefront/assets/banners/velune-home-banner.jpg" alt="Velune botanical daily tonics" width={1920} height={600} className="h-auto w-full rounded-[1.2rem]" sizes="(max-width: 1024px) 92vw, 50vw" />
+              </Link>
+              <div>
+                <p className="text-xs uppercase tracking-[0.18em] text-[#8a7c6e]">Velune</p>
+                <h2 className="mt-3 font-[var(--font-display-serif)] text-3xl leading-tight text-foreground sm:text-4xl">
+                  Plant air moving through light.
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-text-secondary">
+                  Botanical daily tonics for quiet routines, soft balance, and a calmer everyday rhythm.
+                </p>
+                <div className="mt-5 grid grid-cols-3 gap-3">
+                  {veluneCards.map((card) => (
+                    <Link key={card.title} href={card.href} className="quiet-air-touch rounded-[0.85rem] bg-white/64 p-2">
+                      <Image src={card.image} alt={card.title} width={360} height={360} className="h-auto w-full rounded-[0.7rem]" sizes="10vw" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
 
@@ -454,16 +510,92 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          {humanPresenceLayer}
+          <section className="ri-home-section ri-section-energy-lives mx-auto max-w-[86rem] rounded-[1.35rem] px-4 py-8 sm:px-6 lg:px-8">
+            <span className="ri-section-breath ri-section-breath-left" aria-hidden />
+            <div className="grid gap-5 lg:grid-cols-[0.34fr_0.66fr] lg:items-center">
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-[#8a7c6e]">The Energy Field</p>
+                <h2 className="mt-3 font-[var(--font-display-serif)] text-3xl leading-tight text-foreground sm:text-4xl">
+                  Energy lives where life happens.
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-text-secondary">
+                  Every object holds a frequency. Let the room breathe, and choose one quiet place to begin.
+                </p>
+                <Link href="/healing/elements" className="mt-5 inline-flex text-sm text-foreground/62 hover:text-foreground">
+                  Explore energy layers -&gt;
+                </Link>
+              </div>
+              <Link href="/healing/elements" className="quiet-air-touch block rounded-[1.2rem]">
+                <Image src="/brand/production/homepage/energy-field-section/pc/hero-energy-field.png" alt="Energy lives where life happens" width={1600} height={700} className="h-auto w-full rounded-[1.2rem]" sizes="(max-width: 1024px) 92vw, 56vw" />
+              </Link>
+            </div>
+          </section>
+
+          <section
+            className="ri-home-section ri-section-energy-field mx-auto max-w-[86rem] rounded-[1.35rem] bg-[#f0f2f5]/70 px-4 py-8 sm:px-6 lg:px-8"
+            aria-label="Energy Flows"
+          >
+            <span className="ri-section-breath ri-section-breath-right" aria-hidden />
+            <div className="mb-5 text-center">
+              <p className="text-xs uppercase tracking-[0.16em] text-[#8a7c6e]">Energy Flows</p>
+              <h2 className="mt-2 font-[var(--font-display-serif)] text-3xl leading-tight text-foreground sm:text-4xl">
+                Energy flows. Life aligns.
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-text-secondary">
+                Different places, different moments, one quiet alignment.
+              </p>
+            </div>
+            <div className="hidden grid-cols-5 gap-4 lg:grid">
+              {energyFieldCards.map((card) => (
+                <Link
+                  key={card.title}
+                  href={card.href}
+                  className="quiet-air-touch block rounded-[0.9rem]"
+                  aria-label={card.title}
+                >
+                  <Image
+                    src={card.pcImage}
+                    alt={card.title}
+                    width={640}
+                    height={360}
+                    className="h-auto w-full"
+                    sizes="17vw"
+                  />
+                </Link>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 lg:hidden">
+              {energyFieldCards.map((card) => (
+                <Link
+                  key={card.title}
+                  href={card.href}
+                  className="quiet-air-touch block rounded-[0.8rem]"
+                  aria-label={card.title}
+                >
+                  <Image
+                    src={card.mobileImage}
+                    alt={card.title}
+                    width={440}
+                    height={264}
+                    className="h-auto w-full"
+                    sizes="46vw"
+                  />
+                </Link>
+              ))}
+            </div>
+          </section>
 
           <footer className="ri-home-section ri-section-footer mx-auto grid max-w-[86rem] gap-8 border-t border-border-subtle/70 py-8 text-sm text-text-secondary lg:grid-cols-[1fr_1.2fr_0.8fr]">
             <div>
               <div className="flex items-center gap-3">
-                <span
-                  aria-hidden
-                  className="h-8 w-14 shrink-0 bg-[url('/brand/production/air-mark.svg')] bg-contain bg-center bg-no-repeat opacity-80"
+                <img
+                  src="/brand/production/identity/reverent-inquiry-logo-gradient.png"
+                  alt="Reverent Inquiry"
+                  className="h-auto w-[11rem] object-contain mix-blend-multiply opacity-82"
+                  loading="lazy"
+                  decoding="async"
                 />
-                <p className="font-[var(--font-display-serif)] text-xl text-foreground">{siteConfig.brandEnName}</p>
               </div>
               <p className="mt-4 max-w-xs text-sm leading-7 text-text-secondary">
                 A quiet space in the browser, for healing, presence, and return.

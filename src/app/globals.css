@@ -493,13 +493,22 @@ html[data-open-duration="long"] .long-open-browser-softness {
 
 .ri-section-energy-field,
 .ri-section-explore,
+.ri-section-objects,
+.ri-section-life-stages,
+.ri-section-find-moment,
+.ri-section-velune,
 .ri-section-windkeep,
 .ri-section-moments,
-.ri-section-human {
+.ri-section-energy-lives {
   border-color: rgba(199, 215, 223, 0.5);
 }
 
-.ri-section-energy-field {
+.ri-section-energy-field,
+.ri-section-objects,
+.ri-section-life-stages,
+.ri-section-find-moment,
+.ri-section-velune,
+.ri-section-energy-lives {
   background:
     linear-gradient(180deg, rgba(240, 242, 245, 0.82), rgba(255, 255, 255, 0.58)),
     radial-gradient(ellipse 58% 38% at 82% 0%, rgba(196, 221, 233, 0.24), transparent 70%);
@@ -517,7 +526,12 @@ html[data-open-duration="long"] .long-open-browser-softness {
 .ri-section-windkeep > .relative,
 .ri-section-moments .quiet-air-touch,
 .ri-section-energy-field .quiet-air-touch,
-.ri-section-ways .quiet-air-touch {
+.ri-section-ways .quiet-air-touch,
+.ri-section-objects .quiet-air-touch,
+.ri-section-life-stages .quiet-air-touch,
+.ri-section-find-moment .quiet-air-touch,
+.ri-section-velune .quiet-air-touch,
+.ri-section-energy-lives .quiet-air-touch {
   overflow: visible;
   border-radius: 1.15rem;
   background:
@@ -544,7 +558,13 @@ html[data-open-duration="long"] .long-open-browser-softness {
 
 .ri-section-explore img,
 .ri-section-windkeep img,
-.ri-section-moments img {
+.ri-section-moments img,
+.ri-section-objects img,
+.ri-section-life-stages img,
+.ri-section-find-moment img,
+.ri-section-velune img,
+.ri-section-energy-lives img,
+.ri-section-energy-field img {
   filter: saturate(0.99) contrast(0.995) brightness(1.018);
 }
 
@@ -569,9 +589,28 @@ html[data-open-duration="long"] .long-open-browser-softness {
   padding-inline: clamp(0.8rem, 2vw, 1.8rem);
 }
 
-.ri-section-human {
-  padding-top: clamp(2.2rem, 4vw, 4.2rem);
-  padding-bottom: clamp(2rem, 3.6vw, 3.8rem);
+.ri-section-objects,
+.ri-section-life-stages,
+.ri-section-find-moment,
+.ri-section-velune,
+.ri-section-energy-lives,
+.ri-section-energy-field {
+  border: 1px solid rgba(215, 224, 229, 0.54);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.76),
+    0 22px 58px rgba(38, 61, 78, 0.038);
+}
+
+.ri-section-find-moment {
+  background:
+    radial-gradient(ellipse 70% 46% at 66% 10%, rgba(197, 222, 234, 0.28), transparent 72%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(240, 242, 245, 0.48));
+}
+
+.ri-section-velune {
+  background:
+    linear-gradient(104deg, rgba(255, 255, 255, 0.76), rgba(231, 241, 246, 0.46)),
+    radial-gradient(ellipse 62% 42% at 8% 0%, rgba(196, 174, 132, 0.1), transparent 70%);
 }
 
 .ri-section-footer {
