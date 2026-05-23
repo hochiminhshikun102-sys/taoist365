@@ -64,6 +64,24 @@ export const veluneSeries = [
 
 export const veluneProducts: VeluneProduct[] = [
   {
+    "sku": "VEL-TEST-001",
+    "fileSku": "vel-test-001",
+    "slug": "vel-test-001-stripe-live-payment-test",
+    "series": "WOOD",
+    "seriesLabel": "Test",
+    "productName": "Stripe Live Payment Test",
+    "shortLine": "One dollar checkout item for live payment verification.",
+    "description": "A temporary one dollar item for verifying the live Stripe checkout flow.",
+    "price": 1,
+    "msrp": 1,
+    "featured": false,
+    "bestSeller": false,
+    "images": [
+      "/velune-storefront/assets/products/vel-wd-001/01-main-white.jpg",
+      "/velune-storefront/assets/products/vel-wd-001/02-main-package.jpg"
+    ]
+  },
+  {
     "sku": "VEL-WD-001",
     "fileSku": "vel-wd-001",
     "slug": "vel-wd-001-flow-soft",

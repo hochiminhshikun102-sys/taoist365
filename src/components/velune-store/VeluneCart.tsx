@@ -6,8 +6,9 @@ import Link from "next/link";
 import { formatUsd, type VeluneProduct } from "@/lib/velune-store";
 
 type CartItem = { sku: string; slug: string; name: string; price: number; qty: number };
+type QuietCartItem = { id: string; title: string; priceCents: number; quantity: number; image: string };
+type CheckoutCartItem = { sku: string; slug?: string; name: string; price: number; priceCents: number; qty: number };
 type CheckoutActions = {
-  updateEmail: (email: string) => Promise<{ type?: string; error?: { message?: string } }>;
   confirm: () => Promise<{ error?: { message?: string } }>;
   getSession?: () => { total?: { total?: { amount?: number } } };
 };
@@ -24,6 +25,7 @@ type StripeRuntime = {
 };
 
 const CART_KEY = "velune_audit_cart";
+const QUIET_CART_KEY = "taoist365-quiet-cart";
 const BUILD_STRIPE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "";
 
 declare global {
@@ -87,6 +89,35 @@ function readCart(): CartItem[] {
 function writeCart(cart: CartItem[]) {
   window.localStorage.setItem(CART_KEY, JSON.stringify(cart));
   window.dispatchEvent(new Event("velune-cart-change"));
+}
+
+function readQuietCheckoutCart(): CheckoutCartItem[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const cart = JSON.parse(window.localStorage.getItem(QUIET_CART_KEY) || "[]") as QuietCartItem[];
+    return cart.map((item) => ({
+      sku: item.id,
+      slug: item.id,
+      name: item.title,
+      price: item.priceCents / 100,
+      priceCents: item.priceCents,
+      qty: item.quantity,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function readCheckoutCart(): CheckoutCartItem[] {
+  const quietCart = readQuietCheckoutCart();
+  if (quietCart.length) return quietCart;
+  return readCart().map((item) => ({ ...item, priceCents: item.price * 100 }));
+}
+
+function clearCheckoutCart() {
+  writeCart([]);
+  window.localStorage.removeItem(QUIET_CART_KEY);
+  window.dispatchEvent(new Event("quiet-cart-change"));
 }
 
 export function CartCount() {
@@ -175,8 +206,7 @@ export function CartRuntime() {
 }
 
 export function CheckoutRuntime() {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [email, setEmail] = useState("");
+  const [cart, setCart] = useState<CheckoutCartItem[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "ready" | "submitting" | "paid" | "error">("idle");
   const [message, setMessage] = useState("");
   const [buttonText, setButtonText] = useState("Pay now");
@@ -187,7 +217,7 @@ export function CheckoutRuntime() {
   const subtotal = useMemo(() => cart.reduce((sum, item) => sum + item.price * item.qty, 0), [cart]);
 
   useEffect(() => {
-    queueMicrotask(() => setCart(readCart()));
+    queueMicrotask(() => setCart(readCheckoutCart()));
   }, []);
 
   useEffect(() => {
@@ -207,10 +237,10 @@ export function CheckoutRuntime() {
       .then((data) => {
         if (!active) return;
         if (data.status === "complete" || data.payment_status === "paid") {
-          writeCart([]);
+          clearCheckoutCart();
           setCart([]);
           setStatus("paid");
-          setMessage("Payment received in Stripe sandbox. Your Velune order is ready for review processing.");
+          setMessage("Payment received. Your order is ready for review processing.");
         } else {
           setStatus("error");
           setMessage("Payment was not completed. Please try again or use another test card.");
@@ -234,12 +264,12 @@ export function CheckoutRuntime() {
     async function initializeStripeCheckout() {
       try {
         setStatus("loading");
-        setMessage("Loading secure Stripe sandbox checkout...");
+        setMessage("Loading secure Stripe checkout...");
         const stripe = await loadStripe();
         const clientSecret = fetch("/api/create-checkout-session", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ cart: cart.map(({ sku, qty }) => ({ sku, qty })) }),
+          body: JSON.stringify({ cart: cart.map(({ sku, name, priceCents, qty }) => ({ sku, name, priceCents, qty })) }),
         })
           .then(async (response) => {
             const data = await response.json();
@@ -311,13 +341,6 @@ export function CheckoutRuntime() {
     setStatus("submitting");
     setMessage("");
 
-    const emailResult = await actions.updateEmail(email);
-    if (emailResult.type === "error") {
-      setStatus("ready");
-      setMessage(emailResult.error?.message || "Please enter a valid email address.");
-      return;
-    }
-
     const result = await actions.confirm();
     if (result.error) {
       setStatus("ready");
@@ -356,17 +379,6 @@ export function CheckoutRuntime() {
       </div>
 
       <form className="stripeCheckoutForm" onSubmit={handleSubmit}>
-        <div className="field">
-          <label>Email</label>
-          <input
-            required
-            type="email"
-            autoComplete="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="you@example.com"
-          />
-        </div>
         <div className="paymentBox">
           <h3>Payment</h3>
           <div ref={paymentElementRef} />

@@ -1,6 +1,7 @@
 const STRIPE_API_VERSION = "2026-04-22.dahlia";
 
 const PRODUCT_CATALOG = {
+  "VEL-TEST-001": { name: "Stripe Live Payment Test", price: 1 },
   "VEL-WD-001": { name: "Flow Soft", price: 34 },
   "VEL-WD-002": { name: "Night Ease", price: 34 },
   "VEL-WD-003": { name: "Cycle Calm", price: 34 },
@@ -58,11 +59,23 @@ function normalizeCart(cart) {
     const catalogItem = PRODUCT_CATALOG[sku];
     const qty = Math.max(1, Math.min(12, Number.parseInt(item?.qty, 10) || 1));
 
-    if (!catalogItem) {
+    if (catalogItem) {
+      return { sku, qty, ...catalogItem };
+    }
+
+    const name = String(item?.name || item?.title || "").trim();
+    const priceCents = Number.parseInt(item?.priceCents, 10);
+
+    if (!name || !Number.isInteger(priceCents) || priceCents <= 0) {
       throw new Error(`Unsupported item: ${sku}`);
     }
 
-    return { sku, qty, ...catalogItem };
+    return {
+      sku: sku || String(item?.id || "").trim() || name.slice(0, 64),
+      qty,
+      name,
+      priceCents,
+    };
   });
 }
 
@@ -98,8 +111,9 @@ export async function onRequestPost(context) {
   form.set("metadata[cart_skus]", cart.map((item) => `${item.sku}x${item.qty}`).join(","));
 
   cart.forEach((item, index) => {
+    const unitAmount = item.priceCents || item.price * 100;
     form.set(`line_items[${index}][price_data][currency]`, "usd");
-    form.set(`line_items[${index}][price_data][unit_amount]`, String(item.price * 100));
+    form.set(`line_items[${index}][price_data][unit_amount]`, String(unitAmount));
     form.set(`line_items[${index}][price_data][product_data][name]`, item.name);
     form.set(`line_items[${index}][price_data][product_data][metadata][sku]`, item.sku);
     form.set(`line_items[${index}][quantity]`, String(item.qty));

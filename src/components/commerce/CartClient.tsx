@@ -157,17 +157,17 @@ export function CartClient() {
         <div>
           <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Subtotal</p>
           <p className="mt-2 text-2xl text-foreground">{formatPrice(subtotal)}</p>
-          <p className="mt-2 text-xs leading-6 text-text-muted">Shipping, region, and packaging are confirmed in the order reply.</p>
+          <p className="mt-2 text-xs leading-6 text-text-muted">Shipping, region, and packaging are confirmed during secure checkout.</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link href="/collections" className="rounded-lg border border-border-subtle px-5 py-3 text-center text-sm text-text-secondary hover:bg-white/70">
             Keep browsing
           </Link>
           <Link
-            href="/order"
+            href="/store/checkout"
             className="taoist-quiet-action rounded-lg border border-foreground/12 bg-foreground px-5 py-3 text-center text-sm text-white transition hover:bg-foreground/88"
           >
-            Create order request
+            Proceed to checkout
           </Link>
         </div>
       </div>
