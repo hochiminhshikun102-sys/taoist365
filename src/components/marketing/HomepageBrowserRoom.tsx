@@ -101,39 +101,39 @@ const mobileHeroSlides20260611 = [
   },
 ] as const;
 
-/* S02 Morning 鍗＄墖鍖?*/
+/* S02 Morning 閸楋紕澧栭崠?*/
 const mobileS02Cards = [
   {
-    img: "card-01.png",
+    img: "card-01.webp",
     copy: "The kettle is already warm.",
   },
   {
-    img: "card-02.png",
+    img: "card-02.webp",
     copy: "The day has not decided yet.",
   },
   {
-    img: "card-03.png",
+    img: "card-03.webp",
     copy: "A corner you may miss later.",
   },
 ] as const;
 
 const mobileS03Slides = [
-  { img: "slide-01.png", alt: "A Question Arrives" },
-  { img: "slide-02.png", alt: "Learning The Form" },
-  { img: "slide-03.png", alt: "Learning By Hand" },
-  { img: "slide-04.png", alt: "Moving Slowly" },
-  { img: "slide-05.png", alt: "Back To The Day" },
+  { img: "slide-01.webp", alt: "A Question Arrives" },
+  { img: "slide-02.webp", alt: "Learning The Form" },
+  { img: "slide-03.webp", alt: "Learning By Hand" },
+  { img: "slide-04.webp", alt: "Moving Slowly" },
+  { img: "slide-05.webp", alt: "Back To The Day" },
 ] as const;
 
 const mobileS04Cards = [
-  { img: "state-card-01.png", alt: "Starting Over" },
-  { img: "state-card-02.png", alt: "Looking For Something" },
-  { img: "state-card-03.png", alt: "A Little More Air" },
-  { img: "state-card-04.png", alt: "Letting Go" },
-  { img: "state-card-05.png", alt: "Found Along The Way" },
-  { img: "state-card-06.png", alt: "Between Breaths" },
-  { img: "state-card-07.png", alt: "Room For Whatever Comes" },
-  { img: "state-card-08.png", alt: "Home Feels Like Enough" },
+  { img: "state-card-01.webp", alt: "Starting Over" },
+  { img: "state-card-02.webp", alt: "Looking For Something" },
+  { img: "state-card-03.webp", alt: "A Little More Air" },
+  { img: "state-card-04.webp", alt: "Letting Go" },
+  { img: "state-card-05.webp", alt: "Found Along The Way" },
+  { img: "state-card-06.webp", alt: "Between Breaths" },
+  { img: "state-card-07.webp", alt: "Room For Whatever Comes" },
+  { img: "state-card-08.webp", alt: "Home Feels Like Enough" },
 ] as const;
 
 const guidanceMobileWeather = [
@@ -141,7 +141,7 @@ const guidanceMobileWeather = [
   "One quiet direction is enough for this screen.",
 ] as const;
 
-/* S05 Velune 浜旇棣欐皼 鈥?PSD 鑹插彿 */
+/* S05 Velune 娴滄棁顢戞＃娆愮毤 閳?PSD 閼规彃褰?*/
 const veluneElements = [
   ["WOOD",  "Something New Begins", "#2D5A27"],
   ["FIRE",  "The Light Returns",    "#D8572A"],
@@ -159,17 +159,17 @@ const S11 = "/brand/production/homepage/s11-moments";
 const S12 = "/brand/production/homepage/s12-still-wind";
 
 const mobileS06Cards = [
-  ["moon-sea-bracelet.png", "MOON SEA BRACELET", "Worn often.\nForgotten never."],
-  ["breeze-window.png", "BREEZE & WINDOW", "The room remembers."],
-  ["floral-horse-tee.png", "FLORAL HORSE TEE", "A gift from another year."],
-  ["taiji-fu-tee.png", "TAIJI FU TEE", "Still hanging here."],
+  ["moon-sea-bracelet.webp", "MOON SEA BRACELET", "Worn often.\nForgotten never."],
+  ["breeze-window.webp", "BREEZE & WINDOW", "The room remembers."],
+  ["floral-horse-tee.webp", "FLORAL HORSE TEE", "A gift from another year."],
+  ["taiji-fu-tee.webp", "TAIJI FU TEE", "Still hanging here."],
 ] as const;
 
 const mobileS07Cards = [
-  ["card-01.png", "Little Companions", "A soft reminder you're not alone."],
-  ["card-02.png", "Scented Pause", "One breath can change the moment."],
-  ["card-03.png", "A Page For You", "Thoughts become lighter on paper."],
-  ["card-04.png", "Warmth, Anywhere", "Create a calm space, wherever you are."],
+  ["card-01.webp", "Little Companions", "A soft reminder you're not alone."],
+  ["card-02.webp", "Scented Pause", "One breath can change the moment."],
+  ["card-03.webp", "A Page For You", "Thoughts become lighter on paper."],
+  ["card-04.webp", "Warmth, Anywhere", "Create a calm space, wherever you are."],
 ] as const;
 
 const mobileS08Balloons = [
@@ -188,23 +188,23 @@ const mobileS09Services = [
     title: "PASSING THINGS",
     subtitle: "Exchange Objects.",
     body: "Give one.\nReceive one.",
-    image: "card-passing.png",
+    image: "card-passing.webp",
     tone: "blue",
-    icon: "↔",
+    icon: "exchange",
   },
   {
     title: "QUIET RECEIVING",
     subtitle: "Receive Something\nUnexpected.",
     body: "A gift may arrive quietly.",
-    image: "card-receiving.png",
+    image: "card-receiving.webp",
     tone: "green",
-    icon: "□",
+    icon: "gift",
   },
   {
     title: "DATE SKY",
     subtitle: "The Sky From A Day.",
     body: "Keep the stars from\na moment that mattered.",
-    image: "card-date-sky.png",
+    image: "card-date-sky.webp",
     tone: "gold",
     icon: "*",
   },
@@ -218,25 +218,25 @@ const mobileS09Modules = [
 ] as const;
 
 const mobileS10Cards = [
-  ["card-01.png", "Tea & Pause", "Slow down.", "Be here."],
-  ["card-02.png", "Page & Mind", "Read gently.", "Let thoughts wander."],
-  ["card-03.png", "Flowers & Light", "Beauty in small things.", "Every day."],
-  ["card-04.png", "Soul & Rest", "Rest is not doing less.", "It's choosing well."],
+  ["card-01.webp", "Tea & Pause", "Slow down.", "Be here."],
+  ["card-02.webp", "Page & Mind", "Read gently.", "Let thoughts wander."],
+  ["card-03.webp", "Flowers & Light", "Beauty in small things.", "Every day."],
+  ["card-04.webp", "Soul & Rest", "Rest is not doing less.", "It's choosing well."],
 ] as const;
 
 const mobileS12NavItems = [
-  ["icon-01.png", "About", "/about"],
-  ["icon-02.png", "Objects", "/objects"],
-  ["icon-03.png", "Healing", "/healing"],
-  ["icon-04.png", "Windkeep", "/windkeep"],
-  ["icon-05.png", "Support", "/guidance"],
+  ["icon-01.webp", "About", "/about"],
+  ["icon-02.webp", "Objects", "/objects"],
+  ["icon-03.webp", "Healing", "/healing"],
+  ["icon-04.webp", "Windkeep", "/windkeep"],
+  ["icon-05.webp", "Support", "/guidance"],
 ] as const;
 
 const mobileS11Cards = [
-  ["card-01.png", "Morning Unfolded", "A soft start", "makes a better day."],
-  ["card-02.png", "Doors & Detours", "New paths begin", "in quiet ways."],
-  ["card-03.png", "A Few Good Lines", "Not every question", "needs a reply."],
-  ["card-04.png", "Shared Moments", "Presence is", "often enough."],
+  ["card-01.webp", "Morning Unfolded", "A soft start", "makes a better day."],
+  ["card-02.webp", "Doors & Detours", "New paths begin", "in quiet ways."],
+  ["card-03.webp", "A Few Good Lines", "Not every question", "needs a reply."],
+  ["card-04.webp", "Shared Moments", "Presence is", "often enough."],
 ] as const;
 
 const journal = [
@@ -320,10 +320,10 @@ export function HomepageBrowserRoom() {
 
   return (
     <main className="ri-final-home min-h-full text-[#14213a]">
-      {/* PC 绔?nav 鍗犱綅锛屾槑澶╅噸寤?*/}
+      {/* PC 缁?nav 閸楃姳缍呴敍灞炬婢垛晠鍣稿?*/}
       <nav className="hidden md:block" />
 
-      {/* PC 绔?棣栫劍鍗犱綅锛屾槑澶╅噸寤?*/}
+      {/* PC 缁?妫ｆ牜鍔嶉崡鐘辩秴閿涘本妲戞径鈺呭櫢瀵?*/}
       <section className="hidden md:block">
         <div className="sr-only">
           <p>REVERENT INQUIRY</p>
@@ -338,7 +338,7 @@ export function HomepageBrowserRoom() {
           <div className={styles.mobileHeroNav}>
             <Link href="/" className={styles.mobileHeroLogo} aria-label="VIVLUM home">
               <Image
-                src={`${S01_20260611}/logo.png`}
+                src={`${S01_20260611}/logo.webp`}
                 alt="VIVLUM"
                 width={366}
                 height={266}
@@ -422,12 +422,12 @@ export function HomepageBrowserRoom() {
             ))}
           </nav>
         </div>
-{/* 鈹€鈹€ S05 Velune 浜旇棣欐皼 鈹€鈹€ PSD 2251脳1196px 梅6=375脳199.33px */}
+{/* 閳光偓閳光偓 S05 Velune 娴滄棁顢戞＃娆愮毤 閳光偓閳光偓 PSD 2251鑴?196px 姊?=375鑴?99.33px */}
 
         {/* S02 VIVLUM three-card layer */}
         <section className={styles.mobileMorningCards} aria-label="VIVLUM quiet three-card layer">
           <Image
-            src={`${S02}/top-band.png`}
+            src={`${S02}/top-band.webp`}
             alt=""
             width={2255}
             height={222}
@@ -466,7 +466,7 @@ export function HomepageBrowserRoom() {
 
         <section className={styles.mobileS03Carousel} aria-label="VIVLUM learning carousel">
           <Image
-            src={`${S03}/top-band.png`}
+            src={`${S03}/top-band.webp`}
             alt=""
             width={2255}
             height={200}
@@ -506,7 +506,7 @@ export function HomepageBrowserRoom() {
 
         <section className={styles.mobileS04StateCards} aria-label="State Cards">
           <Image
-            src={`${S04}/top-band.png`}
+            src={`${S04}/top-band.webp`}
             alt=""
             width={2255}
             height={199}
@@ -560,33 +560,33 @@ export function HomepageBrowserRoom() {
           </div>
         </section>
 
-        <section className={styles.mobileVeluneQuiet} aria-label="Velune 浜旇棣欐皼">
+        <section className={styles.mobileVeluneQuiet} aria-label="Velune quiet aroma">
 
-          {/* BG 涓婂眰锛堜袱渚х暀鐧?8.17px/7.17px锛夆€?CSS background */}
+          {/* BG 娑撳﹤鐪伴敍鍫滆⒈娓氀呮殌閻?8.17px/7.17px閿涘鈧?CSS background */}
           <div className={styles.mobileVeluneBgInsetWrap} aria-hidden="true" />
 
-          {/* 椤堕儴鑺辫崏瑁呴グ鏉★細2251脳284px 鈫?CSS 47.33px */}
+          {/* 妞ゅ爼鍎撮懞杈磸鐟佸懘銈伴弶鈽呯窗2251鑴?84px 閳?CSS 47.33px */}
           <div className={styles.mobileVeluneStrip}>
             <Image src={`${V}/top_strip.webp`} alt=""
               width={2251} height={284}
               className={styles.mobileVeluneStripImg} sizes="100vw" priority />
           </div>
 
-          {/* 涓诲唴瀹瑰尯锛?251脳913px 鈫?CSS 152px锛宺elative 渚涙枃瀛楀彔鍔?*/}
+          {/* 娑撹鍞寸€圭懓灏敍?251鑴?13px 閳?CSS 152px閿涘elative 娓氭稒鏋冪€涙褰旈崝?*/}
           <div className={styles.mobileVeluneContent}>
-            <Image src={`${V}/products.webp`} alt="Velune 棣欐皼浜у搧绯诲垪"
+            <Image src={`${V}/products.webp`} alt="Velune quiet aroma products"
               fill sizes="100vw"
               className={styles.mobileVeluneProductsImg} priority />
 
-            {/* Velune 涓绘爣棰橈細left=161/6=26.83px  top=253/6=42.17px  size=130/6=21.67px */}
+            {/* Velune 娑撶粯鐖ｆ０姗堢窗left=161/6=26.83px  top=253/6=42.17px  size=130/6=21.67px */}
             <h2 className={styles.mobileVeluneTitle}>Velune</h2>
 
-            {/* 鍝佺墝 tagline锛氳瑙?5px锛?0px 脳 scale(0.5) */}
+            {/* 閸濅胶澧?tagline閿涙俺顫嬬憴?5px閿?0px 鑴?scale(0.5) */}
             <div className={styles.mobileVeluneTaglineOuter}>
               <p className={styles.mobileVeluneTagline}>For days that ask a little less of you.</p>
             </div>
 
-            {/* 浜旇鍥炬爣 + 鏂囧瓧锛歜ottom鈮?4.67px */}
+            {/* 娴滄棁顢戦崶鐐垼 + 閺傚洤鐡ч敍姝渙ttom閳?4.67px */}
             <div className={styles.mobileVeluneWuxing}>
               {veluneElements.map(([el, sub, color]) => (
                 <div key={el} className={styles.mobileVeluneEl}>
@@ -611,7 +611,7 @@ export function HomepageBrowserRoom() {
         {/* S06 Some things stay with you. PSD 2255x1908 / 6 = 375.83x318px */}
         <section className={styles.mobileStayWithYou} aria-label="Some things stay with you">
           <Image
-            src={`${S06}/top-divider.png`}
+            src={`${S06}/top-divider.webp`}
             alt=""
             width={2255}
             height={199}
@@ -620,7 +620,7 @@ export function HomepageBrowserRoom() {
           />
           <div className={styles.mobileStayScene}>
             <Image
-              src={`${S06}/reference.png`}
+              src={`${S06}/reference.webp`}
               alt="Taiji Fu Tee and quiet kept objects in sunlight"
               fill
               className={styles.mobileStaySceneImage}
@@ -633,7 +633,7 @@ export function HomepageBrowserRoom() {
         {/* S07 Quiet Moments */}
         <section className={styles.mobileQuietMoments07Wrap} aria-label="Quiet Moments">
           <Image
-            src={`${S07}/top-gap.png`}
+            src={`${S07}/top-gap.webp`}
             alt=""
             width={2255}
             height={202}
@@ -642,7 +642,7 @@ export function HomepageBrowserRoom() {
           />
           <div className={styles.mobileQuietMoments07}>
             <Image
-              src={`${S07}/bg-clean.png`}
+              src={`${S07}/bg-clean.webp`}
               alt=""
               fill
               className={styles.mobileQuietMoments07Bg}
@@ -681,7 +681,7 @@ export function HomepageBrowserRoom() {
         {/* S08 Healing Paths */}
         <section className={styles.mobileHealingPaths} aria-label="Healing Paths">
           <Image
-            src={`${S08}/top-band.png`}
+            src={`${S08}/top-band.webp`}
             alt=""
             width={2255}
             height={257}
@@ -692,7 +692,7 @@ export function HomepageBrowserRoom() {
           />
           <div className={styles.mobileHealingScene}>
             <Image
-              src={`${S08}/background.png`}
+              src={`${S08}/background.webp`}
               alt=""
               fill
               className={styles.mobileHealingBgImage}
@@ -706,7 +706,7 @@ export function HomepageBrowserRoom() {
               <p className={styles.mobileHealingBody}>Not tomorrow.<br />Not someday.<br />Today.</p>
               <span className={styles.mobileHealingWave} aria-hidden="true" />
               <p className={styles.mobileHealingCount}>45 quiet paths are waiting.</p>
-              <Link href="/healing" className={styles.mobileHealingCta}>Begin Gently <span aria-hidden="true">→</span></Link>
+              <Link href="/healing" className={styles.mobileHealingCta}>Begin Gently <span aria-hidden="true">-&gt;</span></Link>
             </div>
             {mobileS08Balloons.map((balloon, index) => (
               <div
@@ -727,7 +727,7 @@ export function HomepageBrowserRoom() {
         {/* S09 Windkeep Concept */}
         <section className={styles.mobileWindkeep} aria-label="Windkeep">
           <Image
-            src={`${S09}/top-gap.png`}
+            src={`${S09}/top-gap.webp`}
             alt=""
             width={2255}
             height={200}
@@ -738,7 +738,7 @@ export function HomepageBrowserRoom() {
           />
           <div className={styles.mobileWindkeepScene}>
             <Image
-              src={`${S09}/background.png`}
+              src={`${S09}/background.webp`}
               alt=""
               fill
               className={styles.mobileWindkeepSceneImage}
@@ -776,7 +776,7 @@ export function HomepageBrowserRoom() {
                     aria-label={service.title}
                   >
                     <Image
-                      src={`${S09}/card-arrow-clean.png`}
+                      src={`${S09}/card-arrow-clean.webp`}
                       alt=""
                       width={49}
                       height={49}
@@ -793,7 +793,7 @@ export function HomepageBrowserRoom() {
               {mobileS09Modules.map(([title, body], index) => (
                 <div key={title} className={styles.mobileWindkeepModule}>
                   <Image
-                    src={`${S09}/bottom-icon-0${index + 1}.png`}
+                    src={`${S09}/bottom-icon-0${index + 1}.webp`}
                     alt=""
                     width={120}
                     height={120}
@@ -814,7 +814,7 @@ export function HomepageBrowserRoom() {
             </div>
           </div>
           <Image
-            src={`${S09}/top-gap.png`}
+            src={`${S09}/top-gap.webp`}
             alt=""
             width={2255}
             height={200}
@@ -827,7 +827,7 @@ export function HomepageBrowserRoom() {
         {/* S10 Live with Intention */}
         <section className={styles.mobileLiveIntention} aria-label="Live with Intention">
           <Image
-            src={`${S10}/top-band.png`}
+            src={`${S10}/top-band.webp`}
             alt=""
             width={2252}
             height={95}
@@ -838,7 +838,7 @@ export function HomepageBrowserRoom() {
           />
           <div className={styles.mobileLiveScene}>
             <Image
-              src={`${S10}/background.png`}
+              src={`${S10}/background.webp`}
               alt=""
               fill
               className={styles.mobileLiveBackground}
@@ -881,7 +881,7 @@ export function HomepageBrowserRoom() {
         {/* S11 Moments of Presence */}
         <section className={styles.mobileMomentsPresence} aria-label="Moments of Presence">
           <Image
-            src={`${S11}/top-band.png`}
+            src={`${S11}/top-band.webp`}
             alt=""
             width={2255}
             height={199}
@@ -892,7 +892,7 @@ export function HomepageBrowserRoom() {
           />
           <div className={styles.mobileMomentsHero}>
             <Image
-              src={`${S11}/hero-right.png`}
+              src={`${S11}/hero-right.webp`}
               alt=""
               fill
               className={styles.mobileMomentsHeroImage}
@@ -938,7 +938,7 @@ export function HomepageBrowserRoom() {
         {/* S12 Still near the wind */}
         <section className={styles.mobileS12StillWind} aria-label="Still near the wind">
           <Image
-            src={`${S12}/top-band.png`}
+            src={`${S12}/top-band.webp`}
             alt=""
             width={2254}
             height={201}
@@ -949,7 +949,7 @@ export function HomepageBrowserRoom() {
           />
           <div className={styles.mobileS12Scene}>
             <Image
-              src={`${S12}/background.png`}
+              src={`${S12}/background.webp`}
               alt=""
               fill
               className={styles.mobileS12Background}
@@ -991,7 +991,7 @@ export function HomepageBrowserRoom() {
             <span />
           </div>
           <Image
-            src={`${S12}/closing-ribbon.png`}
+            src={`${S12}/closing-ribbon.webp`}
             alt=""
             width={3531}
             height={1187}
@@ -1001,7 +1001,7 @@ export function HomepageBrowserRoom() {
             unoptimized
           />
           <Image
-            src={`${S12}/closing-logo.png`}
+            src={`${S12}/closing-logo.webp`}
             alt="VIVLUM"
             width={2790}
             height={1502}
@@ -1014,8 +1014,8 @@ export function HomepageBrowserRoom() {
 
       </section>
 
-      {/* 搴曢儴鍥哄畾 Tab 鏍忥紙绉诲姩绔笓灞烇級 */}
-      <nav className={styles.mobileTabBar} aria-label="搴曢儴瀵艰埅">
+      {/* 鎼存洟鍎撮崶鍝勭暰 Tab 閺嶅骏绱欑粔璇插З缁旑垯绗撶仦鐑囩礆 */}
+      <nav className={styles.mobileTabBar} aria-label="Mobile navigation">
         {[
           {
             href: "/",
@@ -1080,3 +1080,4 @@ export function HomepageBrowserRoom() {
     </main>
   );
 }
+

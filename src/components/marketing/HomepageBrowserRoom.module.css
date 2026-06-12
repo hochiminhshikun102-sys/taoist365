@@ -4,10 +4,10 @@
 
 @media (max-width: 767px) {
   .mobileTaskSurface {
-    --s01-unit: calc(min(100vw, 375px) / 2255);
+    --s01-unit: calc(100vw / 2255);
     display: block;
-    width: min(100vw, 375px);
-    max-width: 375px;
+    width: 100vw;
+    max-width: none;
     container-type: inline-size;
     overflow: hidden;
     background: #f0f2f5;
@@ -603,7 +603,7 @@
 
 
   .mobileMorningCards {
-    --s02-unit: calc(min(100vw, 375px) / 2255);
+    --s02-unit: calc(100vw / 2255);
     position: relative;
     width: 100%;
     height: calc(1020 * var(--s02-unit));
@@ -737,7 +737,7 @@
   }
 
   .mobileS03Carousel {
-    --s03-unit: calc(min(100vw, 375px) / 2255);
+    --s03-unit: calc(100vw / 2255);
     --s03-card-height: calc(562 * var(--s03-unit));
     --s03-gap: calc(40 * var(--s03-unit));
     --s03-step: calc((1014 * var(--s03-unit)) + var(--s03-gap));
@@ -1353,7 +1353,7 @@
     position: absolute;
     left: 0;
     top: 148.5px;
-    width: 375px;
+    width: 100vw;
     height: 121.63px;
     bottom: auto;
     z-index: 2;
@@ -1530,7 +1530,7 @@
     position: absolute;
     left: 0;
     top: 125.84px;
-    width: 375px;
+    width: 100vw;
     height: 86.85px;
     z-index: 2;
     overflow: visible;
@@ -1540,8 +1540,8 @@
   .mobileQuietMoments07CardTrack {
     position: relative;
     box-sizing: border-box;
-    width: 375px;
-    min-width: 375px;
+    width: 100vw;
+    min-width: 100vw;
     height: 86.85px;
     padding: 0;
     border-radius: 7px;
@@ -1553,7 +1553,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 375px;
+    width: 100vw;
     height: 86.85px;
     overflow: visible;
     border-radius: 0;
@@ -1758,7 +1758,7 @@
 
 
   .mobileHealingPaths {
-    --s08-unit: calc(min(100vw, 375px) / 2255);
+    --s08-unit: calc(100vw / 2255);
     position: relative;
     width: 100%;
     height: calc(1333 * var(--s08-unit));
@@ -2176,7 +2176,7 @@
 
   /* S09 Windkeep Concept */
   .mobileWindkeep {
-    --s09-unit: calc(min(100vw, 375px) / 2255);
+    --s09-unit: calc(100vw / 2255);
     display: block;
     position: relative;
     width: 100%;
@@ -2605,7 +2605,7 @@
   }
 
   .mobileLiveIntention {
-    --s10-unit: calc(min(100vw, 375px) / 2252);
+    --s10-unit: calc(100vw / 2252);
     position: relative;
     width: 100%;
     height: calc(1804 * var(--s10-unit));
@@ -2796,7 +2796,7 @@
 
   /* S12 Still near the wind */
   .mobileS12StillWind {
-    --s12-unit: calc(min(100vw, 375px) / 2254);
+    --s12-unit: calc(100vw / 2254);
     position: relative;
     width: 100%;
     height: calc(2336 * var(--s12-unit));
@@ -2919,7 +2919,7 @@
   }
 
   .mobileS12Closing {
-    --s12-close-unit: calc(min(100vw, 375px) / 2255);
+    --s12-close-unit: calc(100vw / 2255);
     --s12-logo-left: 50%;
     --s12-logo-top: calc(340 * var(--s12-close-unit));
     --s12-logo-width: calc(520 * var(--s12-close-unit));
@@ -3132,7 +3132,7 @@
 
   /* S11 Moments of Presence */
   .mobileMomentsPresence {
-    --s11-unit: calc(min(100vw, 375px) / 2255);
+    --s11-unit: calc(100vw / 2255);
     display: block;
     width: 100%;
     overflow: hidden;
@@ -3519,3 +3519,4 @@
     display: none;
   }
 }
+
