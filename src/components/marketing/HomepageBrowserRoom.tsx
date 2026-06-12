@@ -64,7 +64,7 @@ const mobileHeroTabs = [
 
 const mobileHeroSlides20260611 = [
   {
-    image: "hero-01-bg.png",
+    image: "hero-01-bg.webp",
     title: ["The rain arrived", "before you did."],
     subtitle: ["There is nowhere", "else to be."],
     left: 194,
@@ -76,7 +76,7 @@ const mobileHeroSlides20260611 = [
     subtitleGap: 45,
   },
   {
-    image: "hero-02-bg.png",
+    image: "hero-02-bg.webp",
     title: ["Something new", "is already unfolding."],
     subtitle: ["You do not need", "to chase it."],
     left: 273,
@@ -88,7 +88,7 @@ const mobileHeroSlides20260611 = [
     subtitleGap: 42,
   },
   {
-    image: "hero-03-bg.png",
+    image: "hero-03-bg.webp",
     title: ["Something new", "is already unfolding."],
     subtitle: ["You do not need", "to chase it."],
     left: 273,
@@ -371,16 +371,18 @@ export function HomepageBrowserRoom() {
                 "--hero-subtitle-gap": `calc(${slide.subtitleGap} * var(--s01-unit))`,
               } as CSSProperties}
             >
-              <Image
-                src={`${S01_20260611}/${slide.image}`}
-                alt=""
-                fill
-                className={styles.mobileHeroImage}
-                sizes="100vw"
-                priority={index === 0}
-                aria-hidden="true"
-                unoptimized
-              />
+              {index === activeMobileHero ? (
+                <Image
+                  src={`${S01_20260611}/${slide.image}`}
+                  alt=""
+                  fill
+                  className={styles.mobileHeroImage}
+                  sizes="100vw"
+                  priority={index === 0}
+                  aria-hidden="true"
+                  unoptimized
+                />
+              ) : null}
               <div className={styles.mobileHeroCopy}>
                 <h1>
                   {slide.title[0]}
