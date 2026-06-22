@@ -1,1083 +1,1213 @@
-"use client";
+﻿"use client";
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./HomepageBrowserRoom.module.css";
 
-const A = "/brand/production/homepage/final-air";
-const S01_20260611 = "/brand/production/homepage/s01-hero-20260611";
-const S02 = "/brand/production/homepage/s02-vivlum";
-const S03 = "/brand/production/homepage/s03-vivlum";
-const S04 = "/brand/production/homepage/s04-state-cards";
+const S01 = "/brand/production/homepage/mobile-v2/s01-first-screen";
+const S02 = "/brand/production/homepage/mobile-v2/s02-second-screen";
+const S03 = "/brand/production/homepage/mobile-v2/s03-third-screen";
+const S04 = "/brand/production/homepage/mobile-v2/s04-fourth-screen";
+const S05 = "/brand/production/homepage/mobile-v2/s05-fifth-screen";
+const S06 = "/brand/production/homepage/mobile-v2/s06-sixth-screen";
 
-const quietEntries = [
-  ["Wind & Bells", "wind-bell.webp", "/objects"],
-  ["Ambient Light", "candle.webp", "/objects"],
-  ["Scent & Care", "scent-care.webp", "/objects"],
-  ["Jewelry", "swan-crystal.webp", "/objects"],
-  ["Textiles", "textile-chair.webp", "/objects"],
-  ["Vases & Flowers", "vase-flower.webp", "/objects"],
-] as const;
-
-const lifeStages = [
-  ["Morning", "Begin with light.", "textile-chair.webp"],
-  ["Working", "Stay focused, stay soft.", "coffee-cup.webp"],
-  ["Resting", "Pause. You deserve it.", "linen-candle.webp"],
-  ["Becoming", "Grow in your own way.", "vase-flower.webp"],
-  ["Remembering", "Honor what stays.", "embroidered-frame.webp"],
-] as const;
-
-const quietObjects = [
-  ["Gramophone of Slow Time", "gramophone.webp"],
-  ["Ivory Flower Vessel", "vase-flower.webp"],
-  ["Embroidered Memory Frame", "embroidered-frame.webp"],
-  ["Matsutake Candle", "candle.webp"],
-  ["Linen Hanging Chair", "textile-chair.webp"],
-  ["Tea Light Care Set", "scent-care.webp"],
-] as const;
-
-const windkeepObjects = [
-  ["Dried Flower Basket", "vase-flower.webp"],
-  ["Small Passing Bell", "wind-bell.webp"],
-  ["Amber Care Bottles", "scent-care.webp"],
-  ["Pillow After Morning", "linen-candle.webp"],
-  ["Flowers Near Light", "vase-flower.webp"],
-] as const;
-
-const guidance = [
-  ["Carefully Made", "Thoughtful materials and timeless quality."],
-  ["Beautiful Packaging", "Every order is wrapped with care."],
-  ["Worldwide Shipping", "Delivering beauty to your door."],
-  ["A Life With Air", "Thank you for supporting slow living."],
-] as const;
-
-const mobileHeroTabs = [
-  ["leaf", "For quiet days"],
-  ["lotus", "For clearer mornings"],
-  ["triangle", "For what is ahead"],
-  ["heart", "Made to stay nearby"],
-  ["wind", "For gentle moments"],
-] as const;
-
-const mobileHeroSlides20260611 = [
+const heroSlides = [
   {
-    image: "hero-01-bg.webp",
-    title: ["The rain arrived", "before you did."],
-    subtitle: ["There is nowhere", "else to be."],
-    left: 194,
-    top: 444,
-    width: 626,
-    titleSize: 64,
-    subtitleSize: 32,
-    ruleGap: 42,
-    subtitleGap: 45,
+    image: "hero_slide_01@3x.png.png",
+    motion: "Rain",
+    title: "Feeling a little lost?",
+    subtitle: "Start with one quiet step.",
+    titleBox: { x: 88, y: 330, w: 660, h: 72 },
+    subtitleBox: { x: 88, y: 414, w: 620, h: 40 },
+    titleColor: "#4F3559",
+    subtitleColor: "#5F4B68",
   },
   {
-    image: "hero-02-bg.webp",
-    title: ["Something new", "is already unfolding."],
-    subtitle: ["You do not need", "to chase it."],
-    left: 273,
-    top: 380,
-    width: 832,
-    titleSize: 94,
-    subtitleSize: 42,
-    ruleGap: 60,
-    subtitleGap: 42,
+    image: "hero_slide_02@3x.png.png",
+    motion: "Cloth",
+    title: "Closer than it feels.",
+    subtitle: "One sign can change the road.",
+    titleBox: { x: 72, y: 405, w: 650, h: 72 },
+    subtitleBox: { x: 72, y: 489, w: 660, h: 40 },
+    titleColor: "#123A68",
+    subtitleColor: "#123A68",
   },
   {
-    image: "hero-03-bg.webp",
-    title: ["Something new", "is already unfolding."],
-    subtitle: ["You do not need", "to chase it."],
-    left: 273,
-    top: 365,
-    width: 783,
-    titleSize: 94,
-    subtitleSize: 42,
-    ruleGap: 60,
-    subtitleGap: 42,
+    image: "hero_slide_03@3x.png.png",
+    motion: "Curtain",
+    title: "Begin where you are.",
+    subtitle: "Let today meet you halfway.",
+    titleBox: { x: 72, y: 324, w: 680, h: 72 },
+    subtitleBox: { x: 72, y: 408, w: 650, h: 40 },
+    titleColor: "#123A68",
+    subtitleColor: "#123A68",
   },
 ] as const;
 
-/* S02 Morning 閸楋紕澧栭崠?*/
-const mobileS02Cards = [
+const topTabs = [
+  { icon: "1.png", label: "For busy days", w: 120, h: 112 },
+  { icon: "2.png", label: "For clearer mornings", w: 185, h: 112 },
+  { icon: "3.png", label: "For what is ahead", w: 150, h: 112 },
+  { icon: "4.png", label: "Made to stay nearby", w: 174, h: 112 },
+] as const;
+
+const cardSlides = [
+  { image: "card_02_01@3x.png.png", copy: "Too much on your mind?" },
+  { image: "card_02_02@3x.png.png", copy: "Need a little direction?" },
+  { image: "card_02_03@3x.png.png", copy: "Feeling stuck?" },
+  { image: "card_02_04@3x.png.png", copy: "Low on energy?" },
+  { image: "card_02_05@3x.png.png", copy: "Not sure what you need?" },
+  { image: "card_02_06@3x.png.png", copy: "Ready for a small shift?" },
+] as const;
+
+const guidanceSlides = [
   {
-    img: "card-01.webp",
-    copy: "The kettle is already warm.",
+    image: "lena_slide_01.png",
+    title: "Meet Lena",
+    subtitle: "A guide for slower hours.",
+    titleBox: { x: 99, y: 65, w: 348, h: 59 },
+    subtitleBox: { x: 99, y: 146, w: 302, h: 32 },
   },
   {
-    img: "card-02.webp",
-    copy: "The day has not decided yet.",
+    image: "lena_slide_02.png",
+    title: "Learn the Form",
+    subtitle: "Rituals help attention settle.",
+    titleBox: { x: 118, y: 52, w: 333, h: 66 },
+    subtitleBox: { x: 118, y: 124, w: 420, h: 36 },
   },
   {
-    img: "card-03.webp",
-    copy: "A corner you may miss later.",
-  },
-] as const;
-
-const mobileS03Slides = [
-  { img: "slide-01.webp", alt: "A Question Arrives" },
-  { img: "slide-02.webp", alt: "Learning The Form" },
-  { img: "slide-03.webp", alt: "Learning By Hand" },
-  { img: "slide-04.webp", alt: "Moving Slowly" },
-  { img: "slide-05.webp", alt: "Back To The Day" },
-] as const;
-
-const mobileS04Cards = [
-  { img: "state-card-01.webp", alt: "Starting Over" },
-  { img: "state-card-02.webp", alt: "Looking For Something" },
-  { img: "state-card-03.webp", alt: "A Little More Air" },
-  { img: "state-card-04.webp", alt: "Letting Go" },
-  { img: "state-card-05.webp", alt: "Found Along The Way" },
-  { img: "state-card-06.webp", alt: "Between Breaths" },
-  { img: "state-card-07.webp", alt: "Room For Whatever Comes" },
-  { img: "state-card-08.webp", alt: "Home Feels Like Enough" },
-] as const;
-
-const guidanceMobileWeather = [
-  "Morning light is thin. Nothing asks for a decision yet.",
-  "One quiet direction is enough for this screen.",
-] as const;
-
-/* S05 Velune 娴滄棁顢戞＃娆愮毤 閳?PSD 閼规彃褰?*/
-const veluneElements = [
-  ["WOOD",  "Something New Begins", "#2D5A27"],
-  ["FIRE",  "The Light Returns",    "#D8572A"],
-  ["EARTH", "Back In Balance",      "#7D6B5D"],
-  ["METAL", "Space To Think",       "#5A5A5A"],
-  ["WATER", "Moving Again",         "#2A78B5"],
-] as const;
-const V = '/brand/production/homepage/velune-section';
-const S06 = "/brand/production/homepage/s06-stay-with-you";
-const S07 = "/brand/production/homepage/s07-quiet-moments";
-const S08 = "/brand/production/homepage/s08-healing-paths";
-const S09 = "/brand/production/homepage/s09-windkeep";
-const S10 = "/brand/production/homepage/s10-live-intention";
-const S11 = "/brand/production/homepage/s11-moments";
-const S12 = "/brand/production/homepage/s12-still-wind";
-
-const mobileS06Cards = [
-  ["moon-sea-bracelet.webp", "MOON SEA BRACELET", "Worn often.\nForgotten never."],
-  ["breeze-window.webp", "BREEZE & WINDOW", "The room remembers."],
-  ["floral-horse-tee.webp", "FLORAL HORSE TEE", "A gift from another year."],
-  ["taiji-fu-tee.webp", "TAIJI FU TEE", "Still hanging here."],
-] as const;
-
-const mobileS07Cards = [
-  ["card-01.webp", "Little Companions", "A soft reminder you're not alone."],
-  ["card-02.webp", "Scented Pause", "One breath can change the moment."],
-  ["card-03.webp", "A Page For You", "Thoughts become lighter on paper."],
-  ["card-04.webp", "Warmth, Anywhere", "Create a calm space, wherever you are."],
-] as const;
-
-const mobileS08Balloons = [
-  { label: "Breathe", icon: "wind", tone: "warm", className: "mobileHealingBalloonBreathe" },
-  { label: "Move", icon: "move", tone: "blue", className: "mobileHealingBalloonMove" },
-  { label: "Reflect", icon: "leaf", tone: "coral", className: "mobileHealingBalloonReflect" },
-  { label: "Create", icon: "pencil", tone: "blue", className: "mobileHealingBalloonCreate" },
-  { label: "Rest", icon: "moon", tone: "blue", className: "mobileHealingBalloonRest" },
-  { label: "Nourish", icon: "bowl", tone: "green", className: "mobileHealingBalloonNourish" },
-  { label: "Gratitude", icon: "heart", tone: "coral", className: "mobileHealingBalloonGratitude" },
-  { label: "Dream", icon: "cloud", tone: "green", className: "mobileHealingBalloonDream" },
-] as const;
-
-const mobileS09Services = [
-  {
-    title: "PASSING THINGS",
-    subtitle: "Exchange Objects.",
-    body: "Give one.\nReceive one.",
-    image: "card-passing.webp",
-    tone: "blue",
-    icon: "exchange",
+    image: "lena_slide_03.png",
+    title: "Make by Hand",
+    subtitle: "Your hands know the way.",
+    titleBox: { x: 110, y: 63, w: 333, h: 56 },
+    subtitleBox: { x: 110, y: 128, w: 249, h: 30 },
   },
   {
-    title: "QUIET RECEIVING",
-    subtitle: "Receive Something\nUnexpected.",
-    body: "A gift may arrive quietly.",
-    image: "card-receiving.webp",
-    tone: "green",
-    icon: "gift",
+    image: "lena_slide_04.png",
+    title: "Move Slowly",
+    subtitle: "Balance is practiced.",
+    titleBox: { x: 99, y: 63, w: 312, h: 74 },
+    subtitleBox: { x: 99, y: 147, w: 231, h: 33 },
   },
   {
-    title: "DATE SKY",
-    subtitle: "The Sky From A Day.",
-    body: "Keep the stars from\na moment that mattered.",
-    image: "card-date-sky.webp",
-    tone: "gold",
-    icon: "*",
+    image: "lena_slide_05.png",
+    title: "Back to the Day",
+    subtitle: "Return a little clearer.",
+    titleBox: { x: 106, y: 79, w: 336, h: 59 },
+    subtitleBox: { x: 106, y: 154, w: 249, h: 26 },
   },
 ] as const;
 
-const mobileS09Modules = [
-  ["ABOUT TIME", "Time is the truest witness.\nWe honor every moment.", "clock"],
-  ["ABOUT GIFTS", "Every gift carries\na piece of someone's heart.", "gift"],
-  ["ABOUT MEMORIES", "Memories make life warmer\nand more meaningful.", "heart"],
-  ["ABOUT KEEPING", "To keep is to cherish.\nTo cherish is to live gently.", "leaf"],
+const shareCards = [
+  { image: "3.5_slide_01.png", copy: "Others have felt this too." },
+  { image: "3.5_slide_02.png", copy: "You are not the only one." },
+  { image: "3.5_slide_03.png", copy: "Nothing here is strange." },
 ] as const;
 
-const mobileS10Cards = [
-  ["card-01.webp", "Tea & Pause", "Slow down.", "Be here."],
-  ["card-02.webp", "Page & Mind", "Read gently.", "Let thoughts wander."],
-  ["card-03.webp", "Flowers & Light", "Beauty in small things.", "Every day."],
-  ["card-04.webp", "Soul & Rest", "Rest is not doing less.", "It's choosing well."],
+const lifeSlides = [
+  {
+    image: "life-01.png",
+    title: "Starting\nOver",
+    subtitle: "Second chances\narrive quietly.",
+    titleBox: { x: 377, y: 1638, w: 187, h: 100 },
+    subtitleBox: { x: 377, y: 1768, w: 142, h: 50 },
+  },
+  {
+    image: "life-02.png",
+    title: "Looking for\nSomething",
+    subtitle: "You are not lost.",
+    titleBox: { x: 373, y: 1672, w: 239, h: 102 },
+    subtitleBox: { x: 373, y: 1789, w: 129, h: 24 },
+  },
+  {
+    image: "life-03.png",
+    title: "A Little\nMore Air",
+    subtitle: "Breathe before deciding.",
+    titleBox: { x: 375, y: 1651, w: 222, h: 96 },
+    subtitleBox: { x: 375, y: 1788, w: 222, h: 30 },
+  },
+  {
+    image: "life-04.png",
+    title: "Letting Go",
+    subtitle: "Some things leave\nso you can move.",
+    titleBox: { x: 334, y: 1704, w: 204, h: 45 },
+    subtitleBox: { x: 334, y: 1769, w: 148, h: 46 },
+  },
+  {
+    image: "life-05.png",
+    title: "Found\nAlong\nthe Way",
+    subtitle: "The right people\narrive in time.",
+    titleBox: { x: 371, y: 1646, w: 183, h: 158 },
+    subtitleBox: { x: 371, y: 1815, w: 163, h: 59 },
+  },
+  {
+    image: "life-06.png",
+    title: "Between\nBreaths",
+    subtitle: "Pause. You do not\nneed all the answers.",
+    titleBox: { x: 388, y: 1584, w: 188, h: 92 },
+    subtitleBox: { x: 388, y: 1798, w: 168, h: 45 },
+  },
 ] as const;
 
-const mobileS12NavItems = [
-  ["icon-01.webp", "About", "/about"],
-  ["icon-02.webp", "Objects", "/objects"],
-  ["icon-03.webp", "Healing", "/healing"],
-  ["icon-04.webp", "Windkeep", "/windkeep"],
-  ["icon-05.webp", "Support", "/guidance"],
+const quietCards = [
+  {
+    image: "quiet-card-01.png",
+    title: "Ceramic Cup",
+    subtitle: "A warm start.",
+  },
+  {
+    image: "quiet-card-02.png",
+    title: "Glass Vase",
+    subtitle: "Something simple nearby.",
+  },
+  {
+    image: "quiet-card-03.png",
+    title: "Candle",
+    subtitle: "Light for slower hours.",
+  },
+  {
+    image: "quiet-card-04.png",
+    title: "Linen Cloth",
+    subtitle: "Softness you can touch.",
+  },
 ] as const;
 
-const mobileS11Cards = [
-  ["card-01.webp", "Morning Unfolded", "A soft start", "makes a better day."],
-  ["card-02.webp", "Doors & Detours", "New paths begin", "in quiet ways."],
-  ["card-03.webp", "A Few Good Lines", "Not every question", "needs a reply."],
-  ["card-04.webp", "Shared Moments", "Presence is", "often enough."],
+const needPaths = [
+  { kind: "calm", label: "Need Calm", icon: "need-calm.png" },
+  { kind: "clarity", label: "Need Clarity", icon: "need-clarity.png" },
+  { kind: "release", label: "Need Release", icon: "need-release.png" },
+  { kind: "protection", label: "Need Protection", icon: "need-protection.png" },
+  { kind: "direction", label: "Need Direction", icon: "need-direction.png" },
 ] as const;
 
-const journal = [
-  ["Let the Wind Carry What You No Longer Need", "May 12, 2024", "candle.webp"],
-  ["A Linen Morning Beside the Window", "May 6, 2024", "textile-chair.webp"],
-  ["The Beauty of Doing Nothing", "April 28, 2024", "vase-flower.webp"],
+const windkeepCards = [
+  {
+    title: "Swap Objects",
+    lines: ["Give one.", "Receive one."],
+  },
+  {
+    title: "Time Auction",
+    lines: ["Bid on objects", "with history."],
+  },
+  {
+    title: "MEMORY SKY",
+    lines: ["Keep a day", "as a sky."],
+  },
 ] as const;
 
+const slowLivingCards = [
+  {
+    title: "TEA & PAUSE",
+    subtitle: "Slow down first.",
+  },
+  {
+    title: "PAGE & MIND",
+    subtitle: "Let thoughts loosen.",
+  },
+  {
+    title: "LIGHT & REST",
+    subtitle: "Rest is a choice.",
+  },
+] as const;
 
-function Drift() {
+const ordinaryLifeCards = [
+  {
+    title: "Morning Unfolded",
+    subtitle: "A quiet start changes the day.",
+  },
+  {
+    title: "A Few Good Lines",
+    subtitle: "Some pages say enough.",
+  },
+  {
+    title: "Shared Moments",
+    subtitle: "Peace is easier together.",
+  },
+] as const;
+
+const footerNavItems = [
+  { kind: "about", label: "About", href: "/about" },
+  { kind: "objects", label: "Objects", href: "/objects" },
+  { kind: "healing", label: "Healing", href: "/healing" },
+  { kind: "windkeep", label: "Windkeep", href: "/windkeep" },
+  { kind: "support", label: "Support", href: "/contact" },
+] as const;
+
+function FooterGlyph({ kind }: { kind: (typeof footerNavItems)[number]["kind"] }) {
+  if (kind === "about") {
+    return (
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M32 10c8 8 14 17 14 28 0 10-6 17-14 17s-14-7-14-17c0-11 6-20 14-28Z" />
+        <path d="M32 24v28M23 36h18" />
+      </svg>
+    );
+  }
+
+  if (kind === "objects") {
+    return (
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M16 20h32v30H16z" />
+        <path d="M21 20c2-7 20-7 22 0M24 31h16M24 40h16" />
+      </svg>
+    );
+  }
+
+  if (kind === "healing") {
+    return (
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M32 11v42M17 32h30" />
+        <path d="M21 18c8 3 15 8 11 18-10-1-15-8-11-18ZM43 18c-8 3-15 8-11 18 10-1 15-8 11-18Z" />
+      </svg>
+    );
+  }
+
+  if (kind === "windkeep") {
+    return (
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M13 34h27c7 0 10-8 5-12-4-3-9-1-10 3" />
+        <path d="M17 44h31c6 0 9 7 5 11-3 3-8 2-11-1" />
+      </svg>
+    );
+  }
+
   return (
-    <div className="browser-air-drift" aria-hidden>
-      <span />
-      <span />
-    </div>
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M32 12a13 13 0 0 1 13 13c0 11-13 27-13 27S19 36 19 25a13 13 0 0 1 13-13Z" />
+      <path d="M32 20v13M32 42v2" />
+    </svg>
   );
 }
 
-function ProductImage({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
-  return (
-    <Image
-      src={`${A}/${src}`}
-      alt={alt}
-      width={720}
-      height={540}
-      className={`sunlight-product h-full w-full object-cover ${className}`}
-      sizes="(max-width: 768px) 50vw, 18vw"
-    />
-  );
+function nextIndex(current: number, total: number) {
+  return (current + 1) % total;
+}
+
+function previousIndex(current: number, total: number) {
+  return (current + total - 1) % total;
+}
+
+function pxVars(box: { x: number; y: number; w: number; h: number }) {
+  return {
+    "--x": `${box.x / 11.7}vw`,
+    "--y": `${box.y / 11.7}vw`,
+    "--w": `${box.w / 11.7}vw`,
+    "--h": `${box.h / 11.7}vw`,
+  } as CSSProperties;
 }
 
 export function HomepageBrowserRoom() {
-  const [activeMobileHero, setActiveMobileHero] = useState(0);
-  const [activeMobileS03, setActiveMobileS03] = useState(0);
-  const [activeMobileS04, setActiveMobileS04] = useState(0);
-  const mobileS04TouchStartX = useRef<number | null>(null);
-  const pathname = usePathname();
+  const [activeHero, setActiveHero] = useState(0);
+  const [activeCard, setActiveCard] = useState(0);
+  const [activeGuidance, setActiveGuidance] = useState(0);
+  const [activeLife, setActiveLife] = useState(0);
+  const heroTouchStartX = useRef<number | null>(null);
+  const cardTouchStartX = useRef<number | null>(null);
+  const guidanceTouchStartX = useRef<number | null>(null);
+  const lifeTouchStartX = useRef<number | null>(null);
+  const heroMouseStartX = useRef<number | null>(null);
+  const cardMouseStartX = useRef<number | null>(null);
+  const guidanceMouseStartX = useRef<number | null>(null);
+  const lifeMouseStartX = useRef<number | null>(null);
 
   useEffect(() => {
-    const previewHero = Number(new URLSearchParams(window.location.search).get("hero"));
-    if (Number.isInteger(previewHero) && previewHero >= 1 && previewHero <= mobileHeroSlides20260611.length) {
-      setActiveMobileHero(previewHero - 1);
-    }
+    const timer = window.setInterval(() => {
+      setActiveHero((current) => nextIndex(current, heroSlides.length));
+    }, 5000);
+
+    return () => window.clearInterval(timer);
   }, []);
 
-  function showPreviousS03() {
-    setActiveMobileS03((current) => (current + mobileS03Slides.length - 1) % mobileS03Slides.length);
+  function settleSwipe(startX: number | null, endX: number, onNext: () => void, onPrevious: () => void) {
+    if (startX === null) return;
+    const delta = endX - startX;
+    if (Math.abs(delta) < 28) return;
+    if (delta < 0) onNext();
+    else onPrevious();
   }
 
-  function showNextS03() {
-    setActiveMobileS03((current) => (current + 1) % mobileS03Slides.length);
-  }
-
-  function showPreviousS04() {
-    setActiveMobileS04((current) => (current + mobileS04Cards.length - 1) % mobileS04Cards.length);
-  }
-
-  function showNextS04() {
-    setActiveMobileS04((current) => (current + 1) % mobileS04Cards.length);
-  }
-
-  function getMobileS04Offset(index: number) {
-    const rawOffset = index - activeMobileS04;
-    const half = Math.floor(mobileS04Cards.length / 2);
-    if (rawOffset > half) return rawOffset - mobileS04Cards.length;
-    if (rawOffset < -half) return rawOffset + mobileS04Cards.length;
-    return rawOffset;
-  }
-
-  function handleMobileS04TouchEnd(clientX: number) {
-    if (mobileS04TouchStartX.current === null) return;
-    const deltaX = clientX - mobileS04TouchStartX.current;
-    mobileS04TouchStartX.current = null;
-    if (Math.abs(deltaX) < 24) return;
-    if (deltaX < 0) {
-      showNextS04();
-    } else {
-      showPreviousS04();
-    }
-  }
+  const visibleCards = [activeCard, nextIndex(activeCard, cardSlides.length)];
+  const previousLife = previousIndex(activeLife, lifeSlides.length);
+  const nextLife = nextIndex(activeLife, lifeSlides.length);
 
   return (
     <main className="ri-final-home min-h-full text-[#14213a]">
-      {/* PC 缁?nav 閸楃姳缍呴敍灞炬婢垛晠鍣稿?*/}
-      <nav className="hidden md:block" />
-
-      {/* PC 缁?妫ｆ牜鍔嶉崡鐘辩秴閿涘本妲戞径鈺呭櫢瀵?*/}
       <section className="hidden md:block">
         <div className="sr-only">
-          <p>REVERENT INQUIRY</p>
-          <h1>A browser room for wind, light, and quiet return.</h1>
+          <p>VIVLUM</p>
+          <h1>A browser room for wind, time, air, and presence.</h1>
         </div>
+
       </section>
 
+      <section className={`${styles.mobileTaskSurface} md:hidden`} aria-label="VIVLUM mobile homepage">
+        <div className={styles.mobileV2FirstScreen}>
+          <Image
+            src={`${S01}/backgrounds/screen-bg.png`}
+            alt=""
+            fill
+            className={styles.mobileV2FirstScreenBg}
+            sizes="100vw"
+            priority
+            aria-hidden="true"
+            unoptimized
+          />
 
-      <section className={`${styles.mobileTaskSurface} md:hidden`} aria-label="Mobile homepage navigation and cards">
-        {/* S01 Hero 20260611 - first slide only */}
-        <div className={styles.mobileHero}>
-          <div className={styles.mobileHeroNav}>
-            <Link href="/" className={styles.mobileHeroLogo} aria-label="VIVLUM home">
-              <Image
-                src={`${S01_20260611}/logo.webp`}
-                alt="VIVLUM"
-                width={366}
-                height={266}
-                className={styles.mobileHeroLogoImage}
-                priority
-                unoptimized
-              />
-            </Link>
-            <div className={styles.mobileNavIconsRight}>
-              <button className={`${styles.mobileHeroTopIcon} ${styles.mobileHeroTopIconSearch}`} aria-label="Search" type="button" />
-              <button className={`${styles.mobileHeroTopIcon} ${styles.mobileHeroTopIconUser}`} aria-label="Account" type="button" />
-              <button className={`${styles.mobileHeroTopIcon} ${styles.mobileHeroTopIconBag}`} aria-label="Cart" type="button">
-                <span>0</span>
-              </button>
-              <button className={`${styles.mobileHeroTopIcon} ${styles.mobileHeroTopIconMenu}`} aria-label="Menu" type="button" />
-            </div>
-          </div>
-          {mobileHeroSlides20260611.map((slide, index) => (
-            <section
-              key={slide.image}
-              className={`${styles.mobileHeroSlide} ${index === activeMobileHero ? styles.mobileHeroSlideActive : ""}`}
-              aria-hidden={index !== activeMobileHero}
-              style={{
-                "--hero-copy-left": `calc(${slide.left} * var(--s01-unit))`,
-                "--hero-copy-top": `calc(${slide.top} * var(--s01-unit))`,
-                "--hero-copy-width": `calc(${slide.width} * var(--s01-unit))`,
-                "--hero-title-size": `calc(${slide.titleSize} * var(--s01-unit))`,
-                "--hero-subtitle-size": `calc(${slide.subtitleSize} * var(--s01-unit))`,
-                "--hero-rule-gap": `calc(${slide.ruleGap} * var(--s01-unit))`,
-                "--hero-subtitle-gap": `calc(${slide.subtitleGap} * var(--s01-unit))`,
-              } as CSSProperties}
-            >
-              {index === activeMobileHero ? (
+          <section
+            className={styles.mobileV2Hero}
+            aria-label="VIVLUM first screen hero carousel"
+            onTouchStart={(event) => {
+              heroTouchStartX.current = event.touches[0]?.clientX ?? null;
+            }}
+            onTouchEnd={(event) => {
+              settleSwipe(
+                heroTouchStartX.current,
+                event.changedTouches[0]?.clientX ?? 0,
+                () => setActiveHero((current) => nextIndex(current, heroSlides.length)),
+                () => setActiveHero((current) => previousIndex(current, heroSlides.length)),
+              );
+              heroTouchStartX.current = null;
+            }}
+            onMouseDown={(event) => {
+              heroMouseStartX.current = event.clientX;
+            }}
+            onMouseUp={(event) => {
+              settleSwipe(
+                heroMouseStartX.current,
+                event.clientX,
+                () => setActiveHero((current) => nextIndex(current, heroSlides.length)),
+                () => setActiveHero((current) => previousIndex(current, heroSlides.length)),
+              );
+              heroMouseStartX.current = null;
+            }}
+          >
+            {heroSlides.map((slide, index) => (
+              <article
+                key={slide.image}
+                className={`${styles.mobileV2HeroSlide} ${styles[`mobileV2HeroMotion${slide.motion}`]} ${index === activeHero ? styles.mobileV2HeroSlideActive : ""}`}
+                aria-hidden={index !== activeHero}
+              >
                 <Image
-                  src={`${S01_20260611}/${slide.image}`}
+                  src={`${S01}/hero/${slide.image}`}
                   alt=""
-                  fill
-                  className={styles.mobileHeroImage}
+                  width={1170}
+                  height={1589}
+                  className={styles.mobileV2HeroImage}
                   sizes="100vw"
                   priority={index === 0}
                   aria-hidden="true"
                   unoptimized
                 />
-              ) : null}
-              <div className={styles.mobileHeroCopy}>
-                <h1>
-                  {slide.title[0]}
-                  <br />
-                  {slide.title[1]}
-                </h1>
-                <span aria-hidden="true" />
-                <p>
-                  {slide.subtitle[0]}
-                  <br />
-                  {slide.subtitle[1]}
+                <span className={styles.mobileV2HeroMotionLayer} aria-hidden="true" />
+                <span className={styles.mobileV2HeroMicroA} aria-hidden="true" />
+                <span className={styles.mobileV2HeroMicroB} aria-hidden="true" />
+                <span className={styles.mobileV2HeroMicroC} aria-hidden="true" />
+                <div
+                  className={styles.mobileV2HeroTitle}
+                  style={{ ...pxVars(slide.titleBox), "--hero-text-color": slide.titleColor } as CSSProperties}
+                >
+                  {slide.title}
+                </div>
+                <p
+                  className={styles.mobileV2HeroSubtitle}
+                  style={{ ...pxVars(slide.subtitleBox), "--hero-text-color": slide.subtitleColor } as CSSProperties}
+                >
+                  {slide.subtitle}
                 </p>
-              </div>
-            </section>
-          ))}
-          <div className={styles.mobileHeroDots}>
-            {[0, 1, 2, 3, 4].map((i) => (
+              </article>
+            ))}
+          </section>
+
+          <nav className={styles.mobileV2TopNav} aria-label="VIVLUM top navigation">
+            <Link href="/" className={styles.mobileV2Logo} aria-label="VIVLUM home">
+              <Image
+                src={`${S01}/chrome/logo.png`}
+                alt="VIVLUM"
+                width={309}
+                height={183}
+                className={styles.mobileV2LogoImage}
+                priority
+                unoptimized
+              />
+            </Link>
+            <div className={styles.mobileV2NavIcons} aria-label="VIVLUM quick actions">
+              <button className={`${styles.mobileV2IconButton} ${styles.mobileV2IconSearch}`} type="button" aria-label="Search" />
+              <button className={`${styles.mobileV2IconButton} ${styles.mobileV2IconBag}`} type="button" aria-label="Cart">
+                <span>0</span>
+              </button>
+              <button className={`${styles.mobileV2IconButton} ${styles.mobileV2IconUser}`} type="button" aria-label="Account" />
+              <button className={`${styles.mobileV2IconButton} ${styles.mobileV2IconMenu}`} type="button" aria-label="Menu" />
+            </div>
+          </nav>
+
+          <div className={styles.mobileV2HeroDots} aria-label="Hero slides">
+            {[0, 1, 2, 3, 4].map((dot) => (
               <button
-                key={i}
+                key={dot}
                 type="button"
-                className={i === activeMobileHero ? styles.mobileHeroDotActive : styles.mobileHeroDot}
-                aria-label={`Hero slide ${i + 1}`}
-                aria-current={i === activeMobileHero ? "true" : undefined}
-                onClick={() => {
-                  if (i < mobileHeroSlides20260611.length) setActiveMobileHero(i);
-                }}
+                className={dot === activeHero ? styles.mobileV2HeroDotActive : styles.mobileV2HeroDot}
+                aria-label={`Hero dot ${dot + 1}`}
+                aria-current={dot === activeHero ? "true" : undefined}
+                onClick={() => setActiveHero(dot % heroSlides.length)}
               />
             ))}
           </div>
-          <nav className={styles.mobileNavTabs} aria-label="Mobile quick navigation">
-            {mobileHeroTabs.map(([icon, label]) => (
-              <button key={label} type="button" className={styles.mobileNavTab}>
-                <span className={styles.mobileHeroTabIcon} data-icon={icon} aria-hidden="true" />
-                <span>{label}</span>
-                <em aria-hidden="true" />
+
+          <nav className={styles.mobileV2Tabs} aria-label="VIVLUM first screen paths">
+            {topTabs.map((tab) => (
+              <button key={tab.label} className={styles.mobileV2Tab} type="button">
+                <Image
+                  src={`${S01}/tabs/${tab.icon}`}
+                  alt=""
+                  width={tab.w}
+                  height={tab.h}
+                  className={styles.mobileV2TabIcon}
+                  aria-hidden="true"
+                  unoptimized
+                />
+                <span>{tab.label}</span>
               </button>
             ))}
           </nav>
-        </div>
-{/* 閳光偓閳光偓 S05 Velune 娴滄棁顢戞＃娆愮毤 閳光偓閳光偓 PSD 2251鑴?196px 姊?=375鑴?99.33px */}
 
-        {/* S02 VIVLUM three-card layer */}
-        <section className={styles.mobileMorningCards} aria-label="VIVLUM quiet three-card layer">
           <Image
-            src={`${S02}/top-band.webp`}
+            src={`${S01}/backgrounds/first-divider.png`}
             alt=""
-            width={2255}
-            height={222}
-            className={styles.mobileMorningTopBand}
+            width={1170}
+            height={158}
+            className={styles.mobileV2FirstDivider}
             sizes="100vw"
             aria-hidden="true"
             unoptimized
           />
-          <div className={styles.mobileMorningCardStage}>
-            {mobileS02Cards.map((card, i) => (
-              <figure key={card.copy} className={styles.mobileMorningCard}>
-                <Image
-                  src={`${S02}/${card.img}`}
-                  alt=""
-                  width={658}
-                  height={630}
-                  className={styles.mobileMorningCardImg}
-                  sizes="33vw"
-                  priority={i === 0}
-                  unoptimized
-                />
-                <figcaption className={styles.mobileMorningCaption}>
-                  {card.copy}
-                  <span aria-hidden="true" />
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-          <button type="button" className={`${styles.mobileMorningArrow} ${styles.mobileMorningArrowLeft}`} aria-label="Previous VIVLUM card">
-            <span aria-hidden="true" />
-          </button>
-          <button type="button" className={`${styles.mobileMorningArrow} ${styles.mobileMorningArrowRight}`} aria-label="Next VIVLUM card">
-            <span aria-hidden="true" />
-          </button>
-        </section>
 
-        <section className={styles.mobileS03Carousel} aria-label="VIVLUM learning carousel">
-          <Image
-            src={`${S03}/top-band.webp`}
-            alt=""
-            width={2255}
-            height={200}
-            className={styles.mobileS03TopBand}
-            sizes="100vw"
-            aria-hidden="true"
-            unoptimized
-          />
-          <div className={styles.mobileS03Viewport}>
-            <div
-              className={styles.mobileS03Track}
-              style={{ transform: `translateX(calc(-${activeMobileS03} * var(--s03-step)))` }}
-            >
-              {mobileS03Slides.map((slide, i) => (
-                <figure key={slide.img} className={styles.mobileS03Slide}>
-                  <Image
-                    src={`${S03}/${slide.img}`}
-                    alt={slide.alt}
-                    width={i === 0 || i === 4 ? 1684 : 1672}
-                    height={i === 0 ? 934 : i === 4 ? 933 : 941}
-                    className={styles.mobileS03SlideImg}
-                    sizes="46vw"
-                    priority={i === 0}
-                    unoptimized
-                  />
-                </figure>
-              ))}
-            </div>
-          </div>
-          <button type="button" className={`${styles.mobileS03Arrow} ${styles.mobileS03ArrowLeft}`} onClick={showPreviousS03} aria-label="Previous VIVLUM learning card">
-            <span aria-hidden="true" />
-          </button>
-          <button type="button" className={`${styles.mobileS03Arrow} ${styles.mobileS03ArrowRight}`} onClick={showNextS03} aria-label="Next VIVLUM learning card">
-            <span aria-hidden="true" />
-          </button>
-        </section>
-
-        <section className={styles.mobileS04StateCards} aria-label="State Cards">
-          <Image
-            src={`${S04}/top-band.webp`}
-            alt=""
-            width={2255}
-            height={199}
-            className={styles.mobileS04TopBand}
-            sizes="100vw"
-            aria-hidden="true"
-          />
-          <div
-            className={styles.mobileS04Stage}
+          <section
+            className={styles.mobileV2CardLayer}
+            aria-label="VIVLUM second layer cards"
             onTouchStart={(event) => {
-              mobileS04TouchStartX.current = event.touches[0]?.clientX ?? null;
+              cardTouchStartX.current = event.touches[0]?.clientX ?? null;
             }}
             onTouchEnd={(event) => {
-              handleMobileS04TouchEnd(event.changedTouches[0]?.clientX ?? 0);
+              settleSwipe(
+                cardTouchStartX.current,
+                event.changedTouches[0]?.clientX ?? 0,
+                () => setActiveCard((current) => nextIndex(current, cardSlides.length)),
+                () => setActiveCard((current) => previousIndex(current, cardSlides.length)),
+              );
+              cardTouchStartX.current = null;
+            }}
+            onMouseDown={(event) => {
+              cardMouseStartX.current = event.clientX;
+            }}
+            onMouseUp={(event) => {
+              settleSwipe(
+                cardMouseStartX.current,
+                event.clientX,
+                () => setActiveCard((current) => nextIndex(current, cardSlides.length)),
+                () => setActiveCard((current) => previousIndex(current, cardSlides.length)),
+              );
+              cardMouseStartX.current = null;
             }}
           >
-            {mobileS04Cards.map((card, i) => (
-              <button
-                key={card.img}
-                type="button"
-                className={styles.mobileS04Card}
-                data-offset={getMobileS04Offset(i)}
-                onClick={() => setActiveMobileS04(i)}
-                aria-label={`Show ${card.alt}`}
-                aria-current={i === activeMobileS04 ? "true" : undefined}
-              >
-                <Image
-                  src={`${S04}/${card.img}`}
-                  alt={card.alt}
-                  width={i === 2 ? 822 : 821}
-                  height={i === 2 ? 1914 : 1915}
-                  className={styles.mobileS04CardImage}
-                  sizes="92px"
-                  priority={i === 0}
-                  unoptimized
-                />
-              </button>
-            ))}
-          </div>
-          <div className={styles.mobileS04Dots} aria-label="State card slides">
-            {mobileS04Cards.map((card, i) => (
-              <button
-                key={card.img}
-                type="button"
-                className={i === activeMobileS04 ? styles.mobileS04DotActive : styles.mobileS04Dot}
-                onClick={() => setActiveMobileS04(i)}
-                aria-label={`Show ${card.alt}`}
-                aria-current={i === activeMobileS04 ? "true" : undefined}
-              />
-            ))}
-          </div>
-        </section>
-
-        <section className={styles.mobileVeluneQuiet} aria-label="Velune quiet aroma">
-
-          {/* BG 娑撳﹤鐪伴敍鍫滆⒈娓氀呮殌閻?8.17px/7.17px閿涘鈧?CSS background */}
-          <div className={styles.mobileVeluneBgInsetWrap} aria-hidden="true" />
-
-          {/* 妞ゅ爼鍎撮懞杈磸鐟佸懘銈伴弶鈽呯窗2251鑴?84px 閳?CSS 47.33px */}
-          <div className={styles.mobileVeluneStrip}>
-            <Image src={`${V}/top_strip.webp`} alt=""
-              width={2251} height={284}
-              className={styles.mobileVeluneStripImg} sizes="100vw" priority />
-          </div>
-
-          {/* 娑撹鍞寸€圭懓灏敍?251鑴?13px 閳?CSS 152px閿涘elative 娓氭稒鏋冪€涙褰旈崝?*/}
-          <div className={styles.mobileVeluneContent}>
-            <Image src={`${V}/products.webp`} alt="Velune quiet aroma products"
-              fill sizes="100vw"
-              className={styles.mobileVeluneProductsImg} priority />
-
-            {/* Velune 娑撶粯鐖ｆ０姗堢窗left=161/6=26.83px  top=253/6=42.17px  size=130/6=21.67px */}
-            <h2 className={styles.mobileVeluneTitle}>Velune</h2>
-
-            {/* 閸濅胶澧?tagline閿涙俺顫嬬憴?5px閿?0px 鑴?scale(0.5) */}
-            <div className={styles.mobileVeluneTaglineOuter}>
-              <p className={styles.mobileVeluneTagline}>For days that ask a little less of you.</p>
-            </div>
-
-            {/* 娴滄棁顢戦崶鐐垼 + 閺傚洤鐡ч敍姝渙ttom閳?4.67px */}
-            <div className={styles.mobileVeluneWuxing}>
-              {veluneElements.map(([el, sub, color]) => (
-                <div key={el} className={styles.mobileVeluneEl}>
-                  <div className={styles.mobileVeluneElIconWrap}>
+            <button
+              type="button"
+              className={`${styles.mobileV2CardArrow} ${styles.mobileV2CardArrowLeft}`}
+              aria-label="Previous card"
+              onClick={() => setActiveCard((current) => previousIndex(current, cardSlides.length))}
+            >
+              <span aria-hidden="true" />
+            </button>
+            <div className={styles.mobileV2CardPair}>
+              {visibleCards.map((cardIndex) => {
+                const card = cardSlides[cardIndex];
+                return (
+                  <article key={card.image} className={styles.mobileV2Card}>
                     <Image
-                      src={`${V}/icon_${el.toLowerCase()}.webp`}
-                      alt={el} width={30} height={30}
-                      className={styles.mobileVeluneElIcon}
+                      src={`${S01}/cards/${card.image}`}
+                      alt=""
+                      width={513}
+                      height={491}
+                      className={styles.mobileV2CardImage}
+                      sizes="46vw"
+                      unoptimized
                     />
-                  </div>
-                  <span className={styles.mobileVeluneElTitle} style={{ color }}>{el}</span>
-                  <div className={styles.mobileVeluneElSubOuter}>
-                    <p className={styles.mobileVeluneElSub}>{sub}</p>
-                  </div>
-                </div>
+                    <div className={styles.mobileV2CardCopy}>
+                      <p>{card.copy}</p>
+                      <span aria-hidden="true" />
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+            <button
+              type="button"
+              className={`${styles.mobileV2CardArrow} ${styles.mobileV2CardArrowRight}`}
+              aria-label="Next card"
+              onClick={() => setActiveCard((current) => nextIndex(current, cardSlides.length))}
+            >
+              <span aria-hidden="true" />
+            </button>
+            <div className={styles.mobileV2CardDots} aria-label="Second layer card slides">
+              {cardSlides.map((card, index) => (
+                <button
+                  key={card.image}
+                  type="button"
+                  className={index === activeCard ? styles.mobileV2CardDotActive : styles.mobileV2CardDot}
+                  aria-label={`Show ${card.copy}`}
+                  aria-current={index === activeCard ? "true" : undefined}
+                  onClick={() => setActiveCard(index)}
+                />
               ))}
             </div>
-          </div>
+          </section>
 
-        </section>
-
-        {/* S06 Some things stay with you. PSD 2255x1908 / 6 = 375.83x318px */}
-        <section className={styles.mobileStayWithYou} aria-label="Some things stay with you">
           <Image
-            src={`${S06}/top-divider.webp`}
+            src={`${S01}/backgrounds/first-buffer.png`}
             alt=""
-            width={2255}
-            height={199}
-            className={styles.mobileStayDivider}
-            sizes="100vw"
-          />
-          <div className={styles.mobileStayScene}>
-            <Image
-              src={`${S06}/reference.webp`}
-              alt="Taiji Fu Tee and quiet kept objects in sunlight"
-              fill
-              className={styles.mobileStaySceneImage}
-              sizes="100vw"
-              priority
-            />
-          </div>
-        </section>
-
-        {/* S07 Quiet Moments */}
-        <section className={styles.mobileQuietMoments07Wrap} aria-label="Quiet Moments">
-          <Image
-            src={`${S07}/top-gap.webp`}
-            alt=""
-            width={2255}
-            height={202}
-            className={styles.mobileQuietMoments07Gap}
-            sizes="100vw"
-          />
-          <div className={styles.mobileQuietMoments07}>
-            <Image
-              src={`${S07}/bg-clean.webp`}
-              alt=""
-              fill
-              className={styles.mobileQuietMoments07Bg}
-              sizes="100vw"
-            />
-            <div className={styles.mobileQuietMoments07Copy}>
-              <h2>Quiet Moments</h2>
-              <p>Little things that bring you back to yourself.</p>
-              <p>Whenever you need them.</p>
-            </div>
-            <div className={styles.mobileQuietMoments07Cards} aria-label="Quiet Moments product cards">
-              <div className={styles.mobileQuietMoments07CardTrack}>
-                {mobileS07Cards.map(([image, title, body], index) => (
-                  <article
-                    key={title}
-                    className={styles.mobileQuietMoments07Card}
-                    data-card-index={index}
-                  >
-                    <Image
-                      src={`${S07}/${image}`}
-                      alt={title}
-                      width={450}
-                      height={350}
-                      className={styles.mobileQuietMoments07Product}
-                      sizes="75px"
-                    />
-                    <h3>{title}</h3>
-                    <p>{body}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* S08 Healing Paths */}
-        <section className={styles.mobileHealingPaths} aria-label="Healing Paths">
-          <Image
-            src={`${S08}/top-band.webp`}
-            alt=""
-            width={2255}
-            height={257}
-            className={styles.mobileHealingTopBand}
+            width={1170}
+            height={170}
+            className={styles.mobileV2Buffer}
             sizes="100vw"
             aria-hidden="true"
             unoptimized
           />
-          <div className={styles.mobileHealingScene}>
+        </div>
+
+        <div className={styles.mobileV2SecondScreen}>
+          <Image
+            src={`${S02}/backgrounds/screen-bg.png`}
+            alt=""
+            fill
+            className={styles.mobileV2SecondBg}
+            sizes="100vw"
+            aria-hidden="true"
+            unoptimized
+          />
+
+          <section
+            className={styles.mobileV2Guidance}
+            aria-label="Meet Lena guidance"
+            onTouchStart={(event) => {
+              guidanceTouchStartX.current = event.touches[0]?.clientX ?? null;
+            }}
+            onTouchEnd={(event) => {
+              settleSwipe(
+                guidanceTouchStartX.current,
+                event.changedTouches[0]?.clientX ?? 0,
+                () => setActiveGuidance((current) => nextIndex(current, guidanceSlides.length)),
+                () => setActiveGuidance((current) => previousIndex(current, guidanceSlides.length)),
+              );
+              guidanceTouchStartX.current = null;
+            }}
+            onMouseDown={(event) => {
+              guidanceMouseStartX.current = event.clientX;
+            }}
+            onMouseUp={(event) => {
+              settleSwipe(
+                guidanceMouseStartX.current,
+                event.clientX,
+                () => setActiveGuidance((current) => nextIndex(current, guidanceSlides.length)),
+                () => setActiveGuidance((current) => previousIndex(current, guidanceSlides.length)),
+              );
+              guidanceMouseStartX.current = null;
+            }}
+          >
+            {guidanceSlides.map((slide, index) => (
+              <article
+                key={slide.image}
+                className={`${styles.mobileV2GuidanceSlide} ${index === activeGuidance ? styles.mobileV2GuidanceSlideActive : ""}`}
+                aria-hidden={index !== activeGuidance}
+              >
+                <Image
+                  src={`${S02}/guidance/${slide.image}`}
+                  alt=""
+                  width={1061}
+                  height={687}
+                  className={styles.mobileV2GuidanceImage}
+                  sizes="91vw"
+                  unoptimized
+                />
+                <span className={styles.mobileV2GuidanceMicroA} aria-hidden="true" />
+                <span className={styles.mobileV2GuidanceMicroB} aria-hidden="true" />
+                <h2 className={styles.mobileV2GuidanceTitle} style={pxVars(slide.titleBox)}>
+                  {slide.title}
+                </h2>
+                <p className={styles.mobileV2GuidanceSubtitle} style={pxVars(slide.subtitleBox)}>
+                  {slide.subtitle}
+                </p>
+              </article>
+            ))}
+            <button
+              type="button"
+              className={`${styles.mobileV2GuidanceArrow} ${styles.mobileV2GuidanceArrowLeft}`}
+              aria-label="Previous Lena slide"
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.stopPropagation();
+                setActiveGuidance((current) => previousIndex(current, guidanceSlides.length));
+              }}
+            >
+              <span aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              className={`${styles.mobileV2GuidanceArrow} ${styles.mobileV2GuidanceArrowRight}`}
+              aria-label="Next Lena slide"
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.stopPropagation();
+                setActiveGuidance((current) => nextIndex(current, guidanceSlides.length));
+              }}
+            >
+              <span aria-hidden="true" />
+            </button>
+          </section>
+
+          <Image
+            src={`${S02}/backgrounds/transition-03-04.png`}
+            alt=""
+            width={1170}
+            height={140}
+            className={styles.mobileV2SecondTransition}
+            sizes="100vw"
+            aria-hidden="true"
+            unoptimized
+          />
+
+          <div className={styles.mobileV2ShareDots} aria-hidden="true">
+            <span className={styles.mobileV2ShareDotActive} />
+            <span className={styles.mobileV2ShareDot} />
+            <span className={styles.mobileV2ShareDot} />
+          </div>
+
+          <section className={styles.mobileV2ShareBuffer} aria-label="Shared gentle reminders">
+            {shareCards.map((card) => (
+              <article key={card.image} className={styles.mobileV2ShareCard}>
+                <Image
+                  src={`${S02}/share-buffer/${card.image}`}
+                  alt=""
+                  width={1101}
+                  height={1429}
+                  className={styles.mobileV2ShareImage}
+                  sizes="29vw"
+                  unoptimized
+                />
+                <p>{card.copy}</p>
+              </article>
+            ))}
+          </section>
+
+          <section
+            className={styles.mobileV2LifeStage}
+            aria-label="Life stages carousel"
+            onTouchStart={(event) => {
+              lifeTouchStartX.current = event.touches[0]?.clientX ?? null;
+            }}
+            onTouchEnd={(event) => {
+              settleSwipe(
+                lifeTouchStartX.current,
+                event.changedTouches[0]?.clientX ?? 0,
+                () => setActiveLife((current) => nextIndex(current, lifeSlides.length)),
+                () => setActiveLife((current) => previousIndex(current, lifeSlides.length)),
+              );
+              lifeTouchStartX.current = null;
+            }}
+            onMouseDown={(event) => {
+              lifeMouseStartX.current = event.clientX;
+            }}
+            onMouseUp={(event) => {
+              settleSwipe(
+                lifeMouseStartX.current,
+                event.clientX,
+                () => setActiveLife((current) => nextIndex(current, lifeSlides.length)),
+                () => setActiveLife((current) => previousIndex(current, lifeSlides.length)),
+              );
+              lifeMouseStartX.current = null;
+            }}
+          >
+            <button
+              type="button"
+              className={`${styles.mobileV2LifeArrow} ${styles.mobileV2LifeArrowLeft}`}
+              aria-label="Previous life stage"
+              onClick={() => setActiveLife((current) => previousIndex(current, lifeSlides.length))}
+            >
+              <span aria-hidden="true" />
+            </button>
             <Image
-              src={`${S08}/background.webp`}
+              src={`${S02}/life-stages/${lifeSlides[previousLife].image}`}
               alt=""
-              fill
-              className={styles.mobileHealingBgImage}
+              width={1106}
+              height={1422}
+              className={`${styles.mobileV2LifeImage} ${styles.mobileV2LifeSideLeft}`}
+              sizes="22vw"
+              unoptimized
+            />
+            <article className={styles.mobileV2LifeCenter}>
+              <Image
+                src={`${S02}/life-stages/${lifeSlides[activeLife].image}`}
+                alt=""
+                width={1106}
+                height={1422}
+                className={styles.mobileV2LifeImage}
+                sizes="43vw"
+                unoptimized
+              />
+              <h2 className={styles.mobileV2LifeTitle} style={pxVars(lifeSlides[activeLife].titleBox)}>
+                {lifeSlides[activeLife].title}
+              </h2>
+              <p className={styles.mobileV2LifeSubtitle} style={pxVars(lifeSlides[activeLife].subtitleBox)}>
+                {lifeSlides[activeLife].subtitle}
+              </p>
+            </article>
+            <Image
+              src={`${S02}/life-stages/${lifeSlides[nextLife].image}`}
+              alt=""
+              width={1106}
+              height={1422}
+              className={`${styles.mobileV2LifeImage} ${styles.mobileV2LifeSideRight}`}
+              sizes="22vw"
+              unoptimized
+            />
+            <button
+              type="button"
+              className={`${styles.mobileV2LifeArrow} ${styles.mobileV2LifeArrowRight}`}
+              aria-label="Next life stage"
+              onClick={() => setActiveLife((current) => nextIndex(current, lifeSlides.length))}
+            >
+              <span aria-hidden="true" />
+            </button>
+          </section>
+
+          <Image
+            src={`${S02}/backgrounds/bottom-buffer.png`}
+            alt=""
+            width={1170}
+            height={307}
+            className={styles.mobileV2SecondBuffer}
+            sizes="100vw"
+            aria-hidden="true"
+            unoptimized
+          />
+          <div className={styles.mobileV2SecondBufferControls} aria-label="Life stages buffer controls">
+            <button
+              type="button"
+              className={`${styles.mobileV2SecondBufferArrow} ${styles.mobileV2SecondBufferArrowLeft}`}
+              aria-label="Previous buffer slide"
+              onClick={() => setActiveLife((current) => previousIndex(current, lifeSlides.length))}
+            >
+              <span aria-hidden="true" />
+            </button>
+            <div className={styles.mobileV2SecondBufferDots} aria-label="Buffer slides">
+              {[0, 1, 2].map((dot) => (
+                <button
+                  key={dot}
+                  type="button"
+                  className={dot === activeLife % 3 ? styles.mobileV2SecondBufferDotActive : styles.mobileV2SecondBufferDot}
+                  aria-label={`Show buffer slide ${dot + 1}`}
+                  aria-current={dot === activeLife % 3 ? "true" : undefined}
+                  onClick={() => setActiveLife(dot)}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              className={`${styles.mobileV2SecondBufferArrow} ${styles.mobileV2SecondBufferArrowRight}`}
+              aria-label="Next buffer slide"
+              onClick={() => setActiveLife((current) => nextIndex(current, lifeSlides.length))}
+            >
+              <span aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.mobileV2ThirdScreen}>
+          <section className={styles.mobileV2VeluneLayer} aria-label="VELUNE product layer">
+            <Image
+              src={`${S03}/backgrounds/velune-bg.png`}
+              alt=""
+              width={1293}
+              height={1217}
+              className={styles.mobileV2VeluneBg}
               sizes="100vw"
               aria-hidden="true"
               unoptimized
             />
-            <div className={styles.mobileHealingCopy}>
-              <h2>Healing<br />Paths</h2>
-              <p className={styles.mobileHealingSubtitle}>What do you need most today?</p>
-              <p className={styles.mobileHealingBody}>Not tomorrow.<br />Not someday.<br />Today.</p>
-              <span className={styles.mobileHealingWave} aria-hidden="true" />
-              <p className={styles.mobileHealingCount}>45 quiet paths are waiting.</p>
-              <Link href="/healing" className={styles.mobileHealingCta}>Begin Gently <span aria-hidden="true">-&gt;</span></Link>
+            <div className={styles.mobileV2VeluneCopy}>
+              <i aria-hidden="true" />
+              <h2>VELUNE</h2>
+              <span aria-hidden="true" />
+              <p>For days when your body feels too loud.</p>
+              <em>Not fixing. Just easing.</em>
             </div>
-            {mobileS08Balloons.map((balloon, index) => (
-              <div
-                key={balloon.label}
-                className={`${styles.mobileHealingBalloon} ${styles[balloon.className]}`}
-                style={{ "--balloon-delay": `${index * -0.55}s` } as CSSProperties}
-              >
-                <span className={styles.mobileHealingString} aria-hidden="true" />
-                <span className={styles.mobileHealingBalloonFace} data-tone={balloon.tone}>
-                  <span className={styles.mobileHealingBalloonIcon} data-icon={balloon.icon} aria-hidden="true" />
-                  <span className={styles.mobileHealingBalloonLabel}>{balloon.label}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
+          </section>
 
-        {/* S09 Windkeep Concept */}
-        <section className={styles.mobileWindkeep} aria-label="Windkeep">
           <Image
-            src={`${S09}/top-gap.webp`}
+            src={`${S03}/backgrounds/third-divider.png`}
             alt=""
-            width={2255}
-            height={200}
-            className={styles.mobileWindkeepTopGap}
+            width={1170}
+            height={132}
+            className={styles.mobileV2ThirdDivider}
             sizes="100vw"
             aria-hidden="true"
             unoptimized
           />
-          <div className={styles.mobileWindkeepScene}>
+
+          <section className={styles.mobileV2ThingsLayer} aria-label="Things that stayed">
             <Image
-              src={`${S09}/background.webp`}
+              src={`${S03}/backgrounds/things-bg.png`}
               alt=""
-              fill
-              className={styles.mobileWindkeepSceneImage}
+              width={1300}
+              height={1209}
+              className={styles.mobileV2ThingsBg}
               sizes="100vw"
-              priority={false}
+              aria-hidden="true"
               unoptimized
             />
-            <div className={styles.mobileWindkeepCopy}>
-              <h2 className={styles.mobileWindkeepTitle}>WINDKEEP</h2>
-              <p className={styles.mobileWindkeepSub}>A place for things that stay.</p>
-              <span className={styles.mobileWindkeepRule} aria-hidden="true" />
-              <p className={styles.mobileWindkeepBody}>When objects meet time,<br />life becomes poetry.</p>
+            <div className={styles.mobileV2ThingsCopy}>
+              <h2>Some Things<br />Stay With You</h2>
+              <p>Not rare. Just yours.</p>
             </div>
-
-            <div className={styles.mobileWindkeepRail} aria-label="Windkeep services">
-              {mobileS09Services.map((service) => (
-                <article key={service.title} className={styles.mobileWindkeepCard}>
-                  <span className={styles.mobileWindkeepIcon} data-tone={service.tone} aria-hidden="true">
-                    {service.icon}
-                  </span>
-                  <div className={styles.mobileWindkeepCardCopy}>
-                    <h3>{service.title}</h3>
-                    <span className={styles.mobileWindkeepCardRule} aria-hidden="true" />
-                    <p className={styles.mobileWindkeepCardSub}>{service.subtitle}</p>
-                    <p className={styles.mobileWindkeepCardBody}>
-                      {service.body.split("\n").map((line) => (
-                        <span key={line}>{line}</span>
-                      ))}
-                    </p>
-                  </div>
-                  <Link
-                    href="/windkeep"
-                    className={styles.mobileWindkeepArrow}
-                    data-tone={service.tone}
-                    aria-label={service.title}
-                  >
-                    <Image
-                      src={`${S09}/card-arrow-clean.webp`}
-                      alt=""
-                      width={49}
-                      height={49}
-                      className={styles.mobileWindkeepArrowImage}
-                      aria-hidden="true"
-                      unoptimized
-                    />
-                  </Link>
-                </article>
-              ))}
+            <div className={styles.mobileV2ThingsCardText} aria-hidden="true">
+              <span><b>Close to You</b></span>
+              <span><b>For Everyday</b></span>
+              <span><b>Carry Meaning</b></span>
             </div>
+          </section>
 
-            <div className={styles.mobileWindkeepModules}>
-              {mobileS09Modules.map(([title, body], index) => (
-                <div key={title} className={styles.mobileWindkeepModule}>
+          <Image
+            src={`${S03}/backgrounds/third-buffer.png`}
+            alt=""
+            width={1170}
+            height={212}
+            className={styles.mobileV2ThirdBuffer}
+            sizes="100vw"
+            aria-hidden="true"
+            unoptimized
+          />
+        </div>
+
+        <div className={styles.mobileV2FourthScreen}>
+          <section className={styles.mobileV2QuietLayer} aria-label="Quiet moments">
+            <Image
+              src={`${S04}/backgrounds/quiet-bg.png`}
+              alt=""
+              width={1209}
+              height={1301}
+              className={styles.mobileV2QuietBg}
+              sizes="100vw"
+              aria-hidden="true"
+              unoptimized
+            />
+            <div className={styles.mobileV2QuietCopy}>
+              <h2>Quiet<br />Moments</h2>
+              <span aria-hidden="true" />
+              <p>Little things that bring you back.</p>
+            </div>
+            <button className={styles.mobileV2QuietCta} type="button" aria-label="Explore quiet moments">
+              <span aria-hidden="true" />
+            </button>
+            <div className={styles.mobileV2QuietCards}>
+              {quietCards.map((card) => (
+                <article key={card.image} className={styles.mobileV2QuietCard}>
                   <Image
-                    src={`${S09}/bottom-icon-0${index + 1}.webp`}
+                    src={`${S04}/quiet-cards/${card.image}`}
                     alt=""
-                    width={120}
-                    height={120}
-                    className={styles.mobileWindkeepModuleIconImage}
+                    width={1296}
+                    height={1213}
+                    className={styles.mobileV2QuietCardImage}
+                    sizes="21vw"
                     aria-hidden="true"
                     unoptimized
                   />
-                  <div>
-                    <h3>{title}</h3>
-                    <p>
-                      {body.split("\n").map((line) => (
-                        <span key={line}>{line}</span>
-                      ))}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <Image
-            src={`${S09}/top-gap.webp`}
-            alt=""
-            width={2255}
-            height={200}
-            className={styles.mobileWindkeepFlowerBand}
-            sizes="100vw"
-            unoptimized
-          />
-        </section>
-
-        {/* S10 Live with Intention */}
-        <section className={styles.mobileLiveIntention} aria-label="Live with Intention">
-          <Image
-            src={`${S10}/top-band.webp`}
-            alt=""
-            width={2252}
-            height={95}
-            className={styles.mobileLiveTopBand}
-            sizes="100vw"
-            aria-hidden="true"
-            unoptimized
-          />
-          <div className={styles.mobileLiveScene}>
-            <Image
-              src={`${S10}/background.webp`}
-              alt=""
-              fill
-              className={styles.mobileLiveBackground}
-              sizes="100vw"
-              aria-hidden="true"
-              unoptimized
-            />
-            <span className={styles.mobileLiveVeilMotion} aria-hidden="true" />
-            <span className={styles.mobileLiveBranchMotion} aria-hidden="true" />
-            <span className={styles.mobileLiveFlowerMotion} aria-hidden="true" />
-            <div className={styles.mobileLiveCopy}>
-              <h2>Live with<br />Intention.</h2>
-              <span className={styles.mobileLiveRule} aria-hidden="true" />
-              <p>Simple rhythms.<br />Meaningful days.</p>
-              <span className={styles.mobileLiveWave} aria-hidden="true" />
-            </div>
-            <div className={styles.mobileLiveCards}>
-              {mobileS10Cards.map(([image, title, line1, line2], index) => (
-                <article key={title} className={styles.mobileLiveCard}>
-                  <Image
-                    src={`${S10}/${image}`}
-                    alt={title}
-                    width={index === 2 ? 470 : index === 3 ? 1362 : 487}
-                    height={index === 1 ? 408 : index === 2 ? 411 : index === 3 ? 1155 : 407}
-                    className={styles.mobileLiveCardImage}
-                    sizes="25vw"
-                    unoptimized
-                  />
-                  <div className={styles.mobileLiveCardCopy}>
-                    <h3>{title}</h3>
-                    <span aria-hidden="true" />
-                    <p>{line1}<br />{line2}</p>
-                  </div>
+                  <h3>{card.title}</h3>
+                  <p>{card.subtitle}</p>
+                  <span aria-hidden="true" />
                 </article>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* S11 Moments of Presence */}
-        <section className={styles.mobileMomentsPresence} aria-label="Moments of Presence">
-          <Image
-            src={`${S11}/top-band.webp`}
-            alt=""
-            width={2255}
-            height={199}
-            className={styles.mobileMomentsTopBand}
-            sizes="100vw"
-            aria-hidden="true"
-            unoptimized
-          />
-          <div className={styles.mobileMomentsHero}>
+          <section className={styles.mobileV2NeedsLayer} aria-label="What do you need today">
             <Image
-              src={`${S11}/hero-right.webp`}
+              src={`${S04}/backgrounds/needs-bg.png`}
               alt=""
-              fill
-              className={styles.mobileMomentsHeroImage}
-              sizes="60vw"
-              aria-hidden="true"
-              unoptimized
-            />
-            <div className={styles.mobileMomentsHeroCopy}>
-              <h2>Moments of Presence</h2>
-              <span aria-hidden="true" />
-              <p>Simple moments.<br />Remembered gently.</p>
-            </div>
-          </div>
-          <div className={styles.mobileMomentsCards}>
-            {mobileS11Cards.map(([img, title, line1, line2]) => (
-              <article key={title} className={styles.mobileMomentsCard}>
-                <div className={styles.mobileMomentsImageWrap}>
-                  <Image
-                    src={`${S11}/${img}`}
-                    alt={title}
-                    fill
-                    className={styles.mobileMomentsCardImage}
-                    sizes="83px"
-                    unoptimized
-                  />
-                  <span className={styles.mobileMomentsPlay} aria-hidden="true" />
-                </div>
-                <div className={styles.mobileMomentsCardCopy}>
-                  <h3>{title}</h3>
-                  <span aria-hidden="true" />
-                  <p>{line1}<br />{line2}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div className={styles.mobileMomentsQuote}>
-            <span className={styles.mobileMomentsLeaf} aria-hidden="true" />
-            <p>Let the ordinary be enough.<br />It holds more than we think.</p>
-            <span className={styles.mobileMomentsQuoteRule} aria-hidden="true" />
-          </div>
-        </section>
-
-        {/* S12 Still near the wind */}
-        <section className={styles.mobileS12StillWind} aria-label="Still near the wind">
-          <Image
-            src={`${S12}/top-band.webp`}
-            alt=""
-            width={2254}
-            height={201}
-            className={styles.mobileS12TopBand}
-            sizes="100vw"
-            aria-hidden="true"
-            unoptimized
-          />
-          <div className={styles.mobileS12Scene}>
-            <Image
-              src={`${S12}/background.webp`}
-              alt=""
-              fill
-              className={styles.mobileS12Background}
+              width={1293}
+              height={1217}
+              className={styles.mobileV2NeedsBg}
               sizes="100vw"
               aria-hidden="true"
               unoptimized
             />
-            <div className={styles.mobileS12BranchMotion} aria-hidden="true" />
-            <div className={styles.mobileS12Copy}>
-              <h2>Still near<br />the wind.</h2>
-              <span className={styles.mobileS12Wave} aria-hidden="true" />
+            <div className={styles.mobileV2NeedsCopy}>
+              <h2>What Do<br />You Need Today</h2>
+              <div className={styles.mobileV2NeedsSupport}>
+                <p>Choose one small path.</p>
+                <p>Explore Yourself in 45 Ways<br />Tests. Signs. Reflections.</p>
+              </div>
+              <button type="button">
+                Begin Gently
+                <span aria-hidden="true" />
+              </button>
             </div>
-            <nav className={styles.mobileS12Nav} aria-label="Still near the wind navigation">
-              {mobileS12NavItems.map(([icon, label, href]) => (
-                <Link href={href} key={label} className={styles.mobileS12NavItem}>
-                  <Image
-                    src={`${S12}/${icon}`}
-                    alt=""
-                    width={300}
-                    height={300}
-                    className={styles.mobileS12NavIcon}
-                    sizes="15vw"
-                    unoptimized
-                  />
-                  <span>{label}</span>
-                  <em aria-hidden="true">+</em>
-                </Link>
+            <div className={styles.mobileV2NeedIcons}>
+              {needPaths.map((path) => (
+                <button
+                  key={path.label}
+                  type="button"
+                  className={`${styles.mobileV2NeedIcon} ${styles[`mobileV2NeedIcon${path.kind[0].toUpperCase()}${path.kind.slice(1)}`]}`}
+                  aria-label={path.label}
+                >
+                  <span className={styles.mobileV2NeedCircle}>
+                    <Image
+                      src={`${S04}/need-icons/${path.icon}`}
+                      alt=""
+                      width={220}
+                      height={220}
+                      className={styles.mobileV2NeedIconImage}
+                      aria-hidden="true"
+                      unoptimized
+                    />
+                  </span>
+                  <span className={styles.mobileV2NeedLabel}>{path.label}</span>
+                </button>
               ))}
-            </nav>
-          </div>
-        </section>
+            </div>
+          </section>
 
-        <section className={styles.mobileS12Closing} aria-label="VIVLUM closing">
-          <div className={styles.mobileS12ClosingLeaves} aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
           <Image
-            src={`${S12}/closing-ribbon.webp`}
+            src={`${S04}/backgrounds/bottom-buffer.png`}
             alt=""
-            width={3531}
-            height={1187}
-            className={styles.mobileS12ClosingRibbon}
+            width={1170}
+            height={178}
+            className={styles.mobileV2FourthBuffer}
             sizes="100vw"
             aria-hidden="true"
             unoptimized
           />
+        </div>
+
+        <div className={styles.mobileV2FifthScreen}>
           <Image
-            src={`${S12}/closing-logo.webp`}
-            alt="VIVLUM"
-            width={2790}
-            height={1502}
-            className={styles.mobileS12ClosingLogo}
-            sizes="55vw"
+            src={`${S05}/backgrounds/screen-bg.png`}
+            alt=""
+            fill
+            className={styles.mobileV2FifthBg}
+            sizes="100vw"
+            aria-hidden="true"
             unoptimized
           />
-          <p className={styles.mobileS12ClosingCopyright}>© 2025 RI WIND Studio. All rights reserved.</p>
-        </section>
 
+          <section className={styles.mobileV2WindkeepLayer} aria-label="Windkeep exchange layer">
+            <Image
+              src={`${S05}/backgrounds/windkeep-bg-1170.png`}
+              alt=""
+              width={1170}
+              height={1358}
+              className={styles.mobileV2WindkeepBg}
+              sizes="100vw"
+              aria-hidden="true"
+              unoptimized
+            />
+            <div className={styles.mobileV2WindkeepCopy}>
+              <h2>WINDKEEP</h2>
+              <span aria-hidden="true" />
+              <div className={styles.mobileV2WindkeepSupport}>
+                <p>Exchange. Auction. Memory Sky.</p>
+                <p>Things carry stories.</p>
+                <p>Here, they move again.</p>
+              </div>
+            </div>
+            <div className={styles.mobileV2WindkeepCards}>
+              {windkeepCards.map((card) => (
+                <article key={card.title} className={styles.mobileV2WindkeepCardText}>
+                  <h3>{card.title}</h3>
+                  <span aria-hidden="true" />
+                  {card.lines.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </article>
+              ))}
+            </div>
+            <div className={styles.mobileV2WindkeepFooterMarks} aria-hidden="true">
+              <span>
+                <FooterGlyph kind="about" />
+                <b>About Time</b>
+                <small>Objects hold calm.</small>
+              </span>
+              <span>
+                <FooterGlyph kind="objects" />
+                <b>About Gifts</b>
+                <small>Every gift carries a story.</small>
+              </span>
+              <span>
+                <FooterGlyph kind="support" />
+                <b>About Memories</b>
+                <small>Memories return through things.</small>
+              </span>
+              <span>
+                <FooterGlyph kind="healing" />
+                <b>About Keeping</b>
+                <small>Some things stay by moving on.</small>
+              </span>
+            </div>
+          </section>
+
+          <Image
+            src={`${S05}/backgrounds/top-band.png`}
+            alt=""
+            width={1170}
+            height={83}
+            className={styles.mobileV2WindkeepToSlowBand}
+            sizes="100vw"
+            aria-hidden="true"
+            unoptimized
+          />
+
+          <section className={styles.mobileV2SlowLivingLayer} aria-label="Slow Living">
+            <Image
+              src={`${S05}/backgrounds/slow-living-bg.png`}
+              alt=""
+              width={1392}
+              height={1130}
+              className={styles.mobileV2SlowLivingBg}
+              sizes="100vw"
+              aria-hidden="true"
+              unoptimized
+            />
+            <div className={styles.mobileV2SlowLivingCopy}>
+              <h2>Slow Living</h2>
+              <span aria-hidden="true" />
+              <p>Less rush. More room.</p>
+              <button type="button">
+                Stay Awhile
+                <span aria-hidden="true" />
+              </button>
+            </div>
+            <div className={styles.mobileV2SlowLivingCards}>
+              {slowLivingCards.map((card) => (
+                <article key={card.title} className={styles.mobileV2SlowLivingCardCopy}>
+                  <h3>{card.title}</h3>
+                  <p>{card.subtitle}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <Image
+            src={`${S05}/backgrounds/bottom-buffer.png`}
+            alt=""
+            width={1170}
+            height={138}
+            className={styles.mobileV2FifthBuffer}
+            sizes="100vw"
+            aria-hidden="true"
+            unoptimized
+          />
+        </div>
+
+        <div className={styles.mobileV2SixthScreen}>
+          <Image
+            src={`${S06}/backgrounds/screen-bg.png`}
+            alt=""
+            fill
+            className={styles.mobileV2SixthBg}
+            sizes="100vw"
+            aria-hidden="true"
+            unoptimized
+          />
+
+          <section className={styles.mobileV2OrdinaryLayer} aria-label="Ordinary Life">
+            <Image
+              src={`${S06}/backgrounds/ordinary-life-bg.png`}
+              alt=""
+              width={1181}
+              height={1331}
+              className={styles.mobileV2OrdinaryBg}
+              sizes="100vw"
+              aria-hidden="true"
+              unoptimized
+            />
+            <div className={styles.mobileV2OrdinaryCopy}>
+              <span aria-hidden="true" />
+              <h2>Let the ordinary be enough.</h2>
+              <i aria-hidden="true" />
+              <p>Small moments.<br />A more peaceful you.</p>
+            </div>
+            <div className={styles.mobileV2OrdinaryCards}>
+              {ordinaryLifeCards.map((card) => (
+                <article key={card.title} className={styles.mobileV2OrdinaryCardCopy}>
+                  <i aria-hidden="true" />
+                  <h3>{card.title}</h3>
+                  <p>{card.subtitle}</p>
+                </article>
+              ))}
+            </div>
+            <p className={styles.mobileV2OrdinarySummary}>
+              <span aria-hidden="true" />
+              Real life is where it lands.
+              <span aria-hidden="true" />
+            </p>
+          </section>
+
+          <section className={styles.mobileV2ObjectTraceLayer} aria-label="Object trace buffer">
+            <Image
+              src={`${S06}/backgrounds/object-trace-buffer-bg.png`}
+              alt=""
+              width={2169}
+              height={725}
+              className={styles.mobileV2ObjectTraceBg}
+              sizes="100vw"
+              aria-hidden="true"
+              unoptimized
+            />
+            <div className={styles.mobileV2ObjectTraceCopy}>
+              <span aria-hidden="true" />
+              <p>Objects drift. Quiet traces remain.</p>
+            </div>
+          </section>
+
+          <footer className={styles.mobileV2FooterLayer} aria-label="VIVLUM footer">
+            <Image
+              src={`${S06}/backgrounds/footer-bg.png`}
+              alt=""
+              width={1501}
+              height={1048}
+              className={styles.mobileV2FooterBg}
+              sizes="100vw"
+              aria-hidden="true"
+              unoptimized
+            />
+            <div className={styles.mobileV2FooterCopy}>
+              <span aria-hidden="true" />
+              <h2>
+                Still near
+                <br />
+                the wind.
+              </h2>
+              <i aria-hidden="true" />
+              <p>
+                Wherever you are,
+                <br />
+                breathe gently.
+              </p>
+            </div>
+            <nav className={styles.mobileV2FooterNav} aria-label="VIVLUM footer navigation">
+              {footerNavItems.map((item) => (
+                <Link key={item.label} href={item.href} className={styles.mobileV2FooterNavItem}>
+                  <FooterGlyph kind={item.kind} />
+                  <span>{item.label}</span>
+                </Link>
+              ))}
+            </nav>
+            <div className={styles.mobileV2FooterBrand}>
+              <p>VIVLUM</p>
+              <span aria-hidden="true" />
+            </div>
+            <p className={styles.mobileV2FooterCopyright}>© 2025 VIVLUM Studio. All rights reserved.</p>
+          </footer>
+        </div>
       </section>
-
-      {/* 鎼存洟鍎撮崶鍝勭暰 Tab 閺嶅骏绱欑粔璇插З缁旑垯绗撶仦鐑囩礆 */}
-      <nav className={styles.mobileTabBar} aria-label="Mobile navigation">
-        {[
-          {
-            href: "/",
-            label: "Home",
-            icon: (
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" strokeWidth="1.4" fill="none"/>
-                <rect x="7.5" y="12" width="5" height="6" rx="0.5" stroke="currentColor" strokeWidth="1.4" fill="none"/>
-              </svg>
-            ),
-          },
-          {
-            href: "/objects",
-            label: "Objects",
-            icon: (
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.4"/>
-              </svg>
-            ),
-          },
-          {
-            href: "/healing",
-            label: "Healing",
-            icon: (
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 16s-7-4.5-7-8.5A4 4 0 0110 5.5 4 4 0 0117 7.5C17 11.5 10 16 10 16z" stroke="currentColor" strokeWidth="1.4" fill="none"/>
-              </svg>
-            ),
-          },
-          {
-            href: "/windkeep",
-            label: "Windkeep",
-            icon: (
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 3l8 14H2L10 3z" stroke="currentColor" strokeWidth="1.4" fill="none"/>
-              </svg>
-            ),
-          },
-          {
-            href: "/guidance",
-            label: "Support",
-            icon: (
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="6" cy="10" r="1.2" fill="currentColor"/>
-                <circle cx="10" cy="10" r="1.2" fill="currentColor"/>
-                <circle cx="14" cy="10" r="1.2" fill="currentColor"/>
-              </svg>
-            ),
-          },
-        ].map(({ href, label, icon }) => (
-          <Link
-            key={href}
-            href={href}
-            className={pathname === href ? styles.mobileTabItemActive : styles.mobileTabItem}
-          >
-            {icon}
-            <span className={styles.mobileTabLabel}>{label}</span>
-          </Link>
-        ))}
-      </nav>
-
     </main>
   );
 }
-
