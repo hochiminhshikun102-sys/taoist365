@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { PublishedIntakeObjects } from "@/components/object-intake/PublishedIntakeObjects";
 import { commerceCollections, formatPrice, objectsForCollection } from "@/config/operational-commerce";
 import { newArrivalObjects, seasonalThemes } from "@/config/frontstage-operations";
 
@@ -85,6 +86,8 @@ export default function CollectionsPage() {
             ))}
           </div>
         </section>
+
+        <PublishedIntakeObjects />
 
         <section className="mt-12 border-t border-border-subtle pt-8">
           <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Seasonal themes</p>
