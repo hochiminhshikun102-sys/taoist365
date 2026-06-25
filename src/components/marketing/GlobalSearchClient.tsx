@@ -2,21 +2,71 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { frontstageSearchEntries } from "@/config/frontstage-operations";
+import type { PublishedObject } from "@/components/object-intake/ObjectIntakeTypes";
 
 const entries = frontstageSearchEntries();
 
+type SearchEntry = {
+  id: string;
+  type: string;
+  title: string;
+  summary: string;
+  href: string;
+  image?: string;
+};
+
 export function GlobalSearchClient() {
   const [query, setQuery] = useState("");
+  const [publishedObjects, setPublishedObjects] = useState<SearchEntry[]>([]);
   const normalizedQuery = query.trim().toLowerCase();
-  const results = useMemo(() => {
-    if (!normalizedQuery) return entries.slice(0, 18);
 
-    return entries
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch("/api/public/objects", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : { rows: [] }))
+      .then((data: { rows?: PublishedObject[] }) => {
+        if (cancelled) return;
+
+        setPublishedObjects(
+          (data.rows || []).map((object) => ({
+            id: `published-${object.object_id}`,
+            type: `Published object / ${object.object_id}`,
+            title: object.title,
+            summary: [
+              object.subtitle,
+              object.description,
+              object.category,
+              object.tags?.join(" "),
+              object.object_id,
+            ]
+              .filter(Boolean)
+              .join(" "),
+            href: `/objects/${object.object_id}`,
+            image: object.primary_image_url,
+          })),
+        );
+      })
+      .catch(() => {
+        if (!cancelled) setPublishedObjects([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const allEntries = useMemo(() => [...publishedObjects, ...entries], [publishedObjects]);
+
+  const results = useMemo(() => {
+    if (!normalizedQuery) return allEntries.slice(0, 18);
+
+    return allEntries
       .filter((entry) => `${entry.type} ${entry.title} ${entry.summary}`.toLowerCase().includes(normalizedQuery))
       .slice(0, 36);
-  }, [normalizedQuery]);
+  }, [allEntries, normalizedQuery]);
 
   return (
     <section className="space-y-6">
