@@ -549,7 +549,7 @@ export function HomepageBrowserRoom() {
             ))}
             <nav className={styles.pcTopNav} aria-label="Dohara desktop navigation">
               <Link href="/" className={styles.pcLogoLink} aria-label="Dohara Home">
-                <Image src={`${PCV2}/dohara-logo-transparent.png`} alt="Dohara" width={3356} height={1079} className={styles.pcLogoImage} priority unoptimized />
+                <Image src={`${PCV2}/dohara-logo-transparent.webp`} alt="Dohara" width={3356} height={1079} className={styles.pcLogoImage} priority unoptimized />
               </Link>
               {pcNavItems.map((item) => (
                 <Link key={item.href} href={item.href} className={`${styles.pcNavItem} ${styles[item.className]}`}>{item.label}</Link>
@@ -566,7 +566,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-ways-to-begin" className={`${styles.pcLayer} ${styles.pcLayer02}`} aria-label="Ways to Begin">
-            <Image src={`${PCV2}/02-02.png`} alt="" width={1920} height={1081} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/02-02.webp`} alt="" width={1920} height={1081} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <h2 className={styles.pcWaysTitle}>Ways to Begin</h2>
             <p className={styles.pcWaysSubtitle}>Choose what feels closest</p>
             <Link href="/guidance" className={styles.pcWaysViewAll} aria-label="View all ways to begin">View all</Link>
@@ -582,17 +582,17 @@ export function HomepageBrowserRoom() {
             ))}
           </section>
           <section id="home-guidance-entry" className={`${styles.pcLayer} ${styles.pcLayer03}`} aria-label="Bring one question">
-            <Image src={`${PCV2}/03-02.png`} alt="" width={1920} height={1282} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/03-02.webp`} alt="" width={1920} height={1282} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <h2 className={styles.pcGuidanceTitle}>Bring one question.<br />Start with one small sign.</h2>
             <p className={styles.pcGuidanceSubtitle}>A small sign can be enough to begin.</p>
             <Link href="/guidance/session" className={styles.pcGuidancePrimary} aria-label="Start your guidance session">Start Your Day</Link>
-            <Link href="/healing" className={styles.pcGuidanceSecondary} aria-label="See the healing paths">See the Paths <b aria-hidden="true">→</b></Link>
+            <Link href="/healing" className={styles.pcGuidanceSecondary} aria-label="See the healing paths">See the Paths <b aria-hidden="true">-&gt;</b></Link>
             <div className={styles.pcGuidanceCards}>
               {pcGuidancePaths.map(([title, body, href, ariaLabel, className]) => (
                 <Link key={title} href={href} aria-label={ariaLabel} className={`${styles.pcGuidanceCard} ${styles[className]}`}>
                   <h3>{title}</h3>
                   <p>{body}</p>
-                  <i aria-hidden="true">→</i>
+                  <i aria-hidden="true">-&gt;</i>
                 </Link>
               ))}
             </div>
@@ -604,7 +604,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-life-stages" className={`${styles.pcLayer} ${styles.pcLayer04}`} aria-label="Life Stages">
-            <Image src={`${PCV2}/04-02.png`} alt="" width={1920} height={1012} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/04-02.webp`} alt="" width={1920} height={1012} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <h2 className={styles.pcLifeTitle}>Some years change you quietly.</h2>
             <p className={styles.pcLifeSubtitle}>Find support for the season you are in.</p>
             <p className={styles.pcLifeSupport}>It meets you in a softer, wiser version of you.</p>
@@ -617,7 +617,7 @@ export function HomepageBrowserRoom() {
                   <small>{age}</small>
                   <h3>{title}</h3>
                   <p>{body}</p>
-                  <b>Learn More →</b>
+                  <b>Learn More -&gt;</b>
                 </Link>
               ))}
             </div>
@@ -655,7 +655,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-things-that-stayed" className={`${styles.pcLayer} ${styles.pcLayer06}`} aria-label="Some things stay with you">
-            <Image src={`${PCV2}/06-02.png`} alt="" width={1920} height={2136} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/06-02.webp`} alt="" width={1920} height={2136} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <div className={styles.pcLayer06Hero}>
               <h2>Some things<br />stay with you.</h2>
               <span aria-hidden="true" />
@@ -678,7 +678,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-quiet-objects" className={`${styles.pcLayer} ${styles.pcLayer07}`} aria-label="Quiet Objects">
-            <Image src={`${PCV2}/07-02.png`} alt="" width={1920} height={1306} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/07-02.webp`} alt="" width={1920} height={1306} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <div className={styles.pcLayer07Hero}>
               <h2>Quiet<br />Objects</h2>
               <span aria-hidden="true" />
@@ -698,7 +698,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-healing-paths" className={`${styles.pcLayer} ${styles.pcLayer08}`} aria-label="Healing Paths">
-            <Image src={`${PCV2}/08-02.png`} alt="" width={1920} height={1392} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/08-02.webp`} alt="" width={1920} height={1392} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <div className={styles.pcLayer08Intro}>
               <h2>Healing<br />Paths</h2>
               <span className={styles.pcLayer08Rule} aria-hidden="true" />
@@ -721,7 +721,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-windkeep" className={`${styles.pcLayer} ${styles.pcLayer09}`} aria-label="Windkeep">
-            <Image src={`${PCV2}/09-02.png`} alt="" width={1920} height={1480} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/09-02.webp`} alt="" width={1920} height={1480} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <div className={styles.pcLayer09Intro}>
               <h2>WINDKEEP</h2>
               <p className={styles.pcLayer09Subtitle}>Exchange. Auction. Memory Sky.</p>
@@ -749,7 +749,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-slow-living" className={`${styles.pcLayer} ${styles.pcLayer10}`} aria-label="Slow Living">
-            <Image src={`${PCV2}/10-02.png`} alt="" width={1920} height={1543} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/10-02.webp`} alt="" width={1920} height={1543} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <div className={styles.pcLayer10Left}>
               <h2>Slow Living</h2>
               <i aria-hidden="true" />
@@ -784,7 +784,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-moments-of-presence" className={`${styles.pcLayer} ${styles.pcLayer11}`} aria-label="Moments of Presence">
-            <Image src={`${PCV2}/11-02.png`} alt="" width={1920} height={1448} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/11-02.webp`} alt="" width={1920} height={1448} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <div className={styles.pcLayer11Intro}>
               <h2>Moments of Presence</h2>
               <span aria-hidden="true" />
@@ -805,7 +805,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-journal-notes" className={`${styles.pcLayer} ${styles.pcLayer12}`} aria-label="Journal Notes">
-            <Image src={`${PCV2}/12-02.png`} alt="" width={1920} height={1235} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/12-02.webp`} alt="" width={1920} height={1235} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <div className={styles.pcLayer12Intro}>
               <h2>Journal / Notes</h2>
               <span aria-hidden="true" />
@@ -829,7 +829,7 @@ export function HomepageBrowserRoom() {
           </section>
 
           <section id="home-wind-passed" className={`${styles.pcLayer} ${styles.pcLayer13}`} aria-label="The wind passed softly again">
-            <Image src={`${PCV2}/13-02.png`} alt="" width={1920} height={891} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/13-02.webp`} alt="" width={1920} height={891} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <div className={styles.pcLayer13Copy}>
               <h2>The wind passed<br />softly again.</h2>
               <span aria-hidden="true" />
@@ -838,9 +838,9 @@ export function HomepageBrowserRoom() {
           </section>
 
           <footer id="home-footer" className={`${styles.pcLayer} ${styles.pcLayer14}`} aria-label="Dohara footer">
-            <Image src={`${PCV2}/14-02.png`} alt="" width={1920} height={884} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <Image src={`${PCV2}/14-02.webp`} alt="" width={1920} height={884} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
             <div className={styles.pcLayer14Brand}>
-              <Image src={`${PCV2}/dohara-footer-logo-transparent.png`} alt="Dohara" width={732} height={231} className={styles.pcLayer14LogoImage} unoptimized />
+              <Image src={`${PCV2}/dohara-footer-logo-transparent.webp`} alt="Dohara" width={732} height={231} className={styles.pcLayer14LogoImage} unoptimized />
               <p>A place you can return to<br />when the world feels too loud.</p>
               <p>Sometimes for quiet.<br />Sometimes just to breathe again.</p>
             </div>
@@ -1740,7 +1740,7 @@ export function HomepageBrowserRoom() {
               <p>VIVLUM</p>
               <span aria-hidden="true" />
             </div>
-            <p className={styles.mobileV2FooterCopyright}>婕?2025 VIVLUM Studio. All rights reserved.</p>
+            <p className={styles.mobileV2FooterCopyright}>婵?2025 VIVLUM Studio. All rights reserved.</p>
           </footer>
         </div>
       </section>

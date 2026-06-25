@@ -1,4 +1,5 @@
 .pcTaskSurface {
+  --pc-scale: min(1, calc(100vw / 1920));
   --vl-blue-title: #123a68;
   --vl-blue-body: #2d527a;
   --vl-blue-secondary: #163d8c;
@@ -18,10 +19,11 @@
   --title-font: var(--vl-font-title);
   --body-font: var(--vl-font-body);
   display: block;
+  position: relative;
   width: 100%;
+  height: calc(18641px * var(--pc-scale));
   min-height: 100vh;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   background: var(--vl-air-bg);
   color: var(--vl-text-body);
   font-synthesis: none;
@@ -34,9 +36,12 @@
   position: relative;
   width: 1920px;
   height: 18641px;
+  margin: 0 auto;
   overflow: hidden;
   background: var(--vl-air-bg);
   font-family: var(--body-font);
+  transform: scale(var(--pc-scale));
+  transform-origin: top left;
 }
 
 .pcLayer {
@@ -70,7 +75,7 @@
 .pcLayer05 {
   top: 4703px;
   height: 1623px;
-  background: var(--vl-air-bg) url("/brand/production/homepage/pc-v2/05-02.png") center top / cover no-repeat;
+  background: var(--vl-air-bg) url("/brand/production/homepage/pc-v2/05-02.webp") center top / cover no-repeat;
 }
 
 .pcLayer06 {
