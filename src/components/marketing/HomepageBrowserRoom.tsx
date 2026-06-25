@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
@@ -12,7 +12,201 @@ const S03 = "/brand/production/homepage/mobile-v2/s03-third-screen";
 const S04 = "/brand/production/homepage/mobile-v2/s04-fourth-screen";
 const S05 = "/brand/production/homepage/mobile-v2/s05-fifth-screen";
 const S06 = "/brand/production/homepage/mobile-v2/s06-sixth-screen";
+const PCV2 = "/brand/production/homepage/pc-v2";
 
+const pcHeroSlides = [
+  {
+    image: "01-01-02.png",
+    href: "/journal",
+    ariaLabel: "Begin with stillness",
+    title: "Wait where\nthe wind can\nreach you.",
+    subtitle: "Some mornings begin in stillness.\nA gentler day can start here.",
+    className: "pcHeroSlideOne",
+  },
+  {
+    image: "01-02-02.png",
+    href: "/windkeep",
+    ariaLabel: "Follow what still calls you",
+    title: "Follow what\nstill calls you.",
+    subtitle: "One quiet sign can change\nthe road ahead.",
+    className: "pcHeroSlideTwo",
+  },
+  {
+    image: "01-03-02.png",
+    href: "/collections",
+    ariaLabel: "Let life return gently",
+    title: "Let life\nreturn gently.",
+    subtitle: "Small rituals can make a day\nfeel lived in again.",
+    className: "pcHeroSlideThree",
+  },
+] as const;
+
+const pcNavItems = [
+  { label: "Journal", href: "/journal", className: "pcNavJournal" },
+  { label: "Objects", href: "/objects", className: "pcNavObjects" },
+  { label: "Windkeep", href: "/windkeep", className: "pcNavWindkeep" },
+  { label: "Collections", href: "/collections", className: "pcNavCollections" },
+  { label: "About", href: "/about", className: "pcNavAbout" },
+] as const;
+
+const pcLayerLinks = [
+  { className: "pcLayer03Hotspot", href: "/healing", ariaLabel: "Open Healing" },
+  { className: "pcLayer04Hotspot", href: "/healing/paths", ariaLabel: "Open Healing Paths" },
+] as const;
+
+
+const pcWaysCards = [
+  ["Daily\nGuidance", "/rituals/daily-guidance", "Open Daily Guidance", "pcWaysCardOne"],
+  ["Find Still\nSpace", "/healing/meditation", "Open Find Still Space", "pcWaysCardTwo"],
+  ["Draw\na Sign", "/guidance", "Open Draw a Sign", "pcWaysCardThree"],
+  ["Driftbox", "/driftbox", "Open Driftbox", "pcWaysCardFour"],
+] as const;
+
+const pcWaysFeatures = [
+  ["Thoughtful Guidance\nFor everyday life", "/guidance", "Open Thoughtful Guidance", "pcWaysFeatureOne"],
+  ["Rituals of Breath,\nFor steadier balance", "/healing/meditation", "Open Rituals of Breath", "pcWaysFeatureTwo"],
+  ["Gentle Living\nFor a lighter tomorrow", "/healing", "Open Gentle Living", "pcWaysFeatureThree"],
+  ["Lasting Beauty,\nCrafted to stay near", "/objects", "Open Lasting Beauty Objects", "pcWaysFeatureFour"],
+] as const;
+
+const pcGuidancePaths = [
+  ["Wind", "Flow with change.", "/healing/elements", "Open Wind guidance", "pcGuidanceCardOne"],
+  ["Love", "Return to your compass.", "/guidance", "Open Love guidance", "pcGuidanceCardTwo"],
+  ["Becoming", "Small steps still count.", "/healing/stories", "Open Becoming guidance", "pcGuidanceCardThree"],
+  ["Guidance", "Find one sign for today.", "/guidance", "Open Guidance", "pcGuidanceCardFour"],
+  ["Objects", "Keep beauty close.", "/objects", "Open Objects", "pcGuidanceCardFive"],
+  ["Notes", "Hear yourself clearly.", "/quiet-notes", "Open Quiet Notes", "pcGuidanceCardSix"],
+  ["Still Point", "Come back to steady.", "/healing/meditation", "Open Still Point", "pcGuidanceCardSeven"],
+] as const;
+
+const pcLifeStageCards = [
+  ["BEFORE 25", "Wandering", "Try things. Follow your curiosity.", "/healing/life-stages/wandering", "Open Wandering Life Stage", "pcLifeCardOne"],
+  ["25-35", "Growing", "Build habits that can hold you.", "/healing/life-stages/growing", "Open Growing Life Stage", "pcLifeCardTwo"],
+  ["35-45", "Becoming", "Step into your balance.", "/healing/life-stages/becoming", "Open Becoming Life Stage", "pcLifeCardThree"],
+  ["55-65", "Belonging", "Nourish what still matters.", "/healing/life-stages/belonging", "Open Belonging Life Stage", "pcLifeCardFour"],
+  ["65+", "Homecoming", "Leave something kind behind.", "/healing/life-stages/homecoming", "Open Homecoming Life Stage", "pcLifeCardFive"],
+] as const;
+
+const pcVeluneElements = [
+  ["WOOD", "After the rain.", "/velune/elements/wood", "Open Velune wood element", "pcVeluneElementWood"],
+  ["FIRE", "Warmth returns.", "/velune/elements/fire", "Open Velune fire element", "pcVeluneElementFire"],
+  ["EARTH", "Held together.", "/velune/elements/earth", "Open Velune earth element", "pcVeluneElementEarth"],
+  ["METAL", "Clearer air.", "/velune/elements/metal", "Open Velune metal element", "pcVeluneElementMetal"],
+  ["WATER", "The body eases.", "/velune/elements/water", "Open Velune water element", "pcVeluneElementWater"],
+] as const;
+
+const pcVeluneStates = [
+  ["LEFT BY\nTHE WINDOW", "Some things stayed\nwhen almost nothing\nfelt steady.", "/velune", "Open Velune window story", "pcVeluneStateWindow"],
+  ["FOR QUIETER\nEVENINGS", "For nights when\nyour body asks\nfor less.", "/velune", "Open Velune evening story", "pcVeluneStateEvenings"],
+  ["NOTHING HERE\nNEEDS URGENCY", "You can stop\nholding everything\ntogether now.", "/velune", "Open Velune no urgency story", "pcVeluneStateUrgency"],
+] as const;
+
+const pcLayer06Notes = [
+  [
+    "THINGS THAT STAYED\nDURING DIFFICULT YEARS.",
+    "They stayed through\nthe seasons\nyou thought you\nwould not make it.",
+    "pcLayer06NoteOne",
+  ],
+  [
+    "NOT DECORATION,\nJUST SOMETHING\nTHAT KEPT SHOWING UP\nBESIDE YOU.",
+    "Not for others.\nJust for the person\nliving the real days.",
+    "pcLayer06NoteTwo",
+  ],
+  [
+    "NO NEED TO BECOME\nSOMEONE ELSE IN THESE.",
+    "They do not ask you\nto perform.\nThey just let you be.",
+    "pcLayer06NoteThree",
+  ],
+  [
+    "SOME OBJECTS\nREMEMBER\nWHO YOU WERE.",
+    "Long before the world\nasked you to change.",
+    "pcLayer06NoteFour",
+  ],
+] as const;
+
+const pcLayer07Categories = [
+  ["Wearables", "Pieces that\nstay close.", "/objects", "Open Wearables objects", "pcLayer07CategoryOne"],
+  ["Home Objects", "For the spaces\nthat hold you.", "/objects", "Open Home Objects", "pcLayer07CategoryTwo"],
+  ["Ritual Objects", "Small things\nthat ground you.", "/objects", "Open Ritual Objects", "pcLayer07CategoryThree"],
+  ["Journals & Paper", "For thoughts\nworth keeping.", "/objects", "Open Journals and Paper", "pcLayer07CategoryFour"],
+  ["Scents & Ease", "Fragrance that\nsoftens the day.", "/objects", "Open Scents and Ease", "pcLayer07CategoryFive"],
+] as const;
+
+const pcLayer08Paths = [
+  ["Breathe", "For the moments\nyour chest\nfelt heavy.", "/healing/paths/breathe", "Open Breathe healing path", "pcLayer08PathOne", "pcLayer08PathSage"],
+  ["Move", "When staying still\nbecame\ntoo much.", "/healing/paths/move", "Open Move healing path", "pcLayer08PathTwo", "pcLayer08PathSage"],
+  ["Reflect", "Some thoughts\nneed softer\nlight.", "/healing/paths/reflect", "Open Reflect healing path", "pcLayer08PathThree", "pcLayer08PathCoral"],
+  ["Create", "Not to impress\nanyone. Just to\nfeel alive again.", "/healing/paths/create", "Open Create healing path", "pcLayer08PathFour", "pcLayer08PathBlue"],
+  ["Rest", "You were never\nmeant to carry\nevery season\nawake.", "/healing/paths/rest", "Open Rest healing path", "pcLayer08PathFive", "pcLayer08PathViolet"],
+  ["Dream", "Some futures\nreturn slowly.", "/healing/paths/dream", "Open Dream healing path", "pcLayer08PathSix", "pcLayer08PathAzure"],
+] as const;
+
+const pcLayer09Cards = [
+  ["Swap\nObjects", "Give one.\nReceive one.", "/windkeep", "Open Swap Objects", "pcLayer09CardOne"],
+  ["Time\nAuction", "Bid on objects\nwith history.", "/windkeep", "Open Time Auction", "pcLayer09CardTwo"],
+  ["Memory\nSky", "Keep a day\nas a sky.", "/windkeep", "Open Memory Sky", "pcLayer09CardThree"],
+] as const;
+
+const pcLayer09Benefits = [
+  ["Save Time", "Good things come\nwhen they are meant to.", "pcLayer09BenefitOne"],
+  ["Give Better", "Thoughtful gifts\nleave a lasting impression.", "pcLayer09BenefitTwo"],
+  ["Keep Memories", "Every moment\ndeserves to be remembered.", "pcLayer09BenefitThree"],
+  ["Shop Safely", "Trusted community.\nSecure transactions.\nPeace of mind.", "pcLayer09BenefitFour"],
+] as const;
+
+const pcLayer10Cards = [
+  ["Tea & Pause", "The tea went cold slowly.\nNo one rushed you.", "pcLayer10Tea"],
+  ["Room & Light", "The room looked\nlived in again.", "pcLayer10Room"],
+  ["Page & Mind", "Some thoughts\nfelt light in the sun", "pcLayer10Page"],
+  ["Evening Ease", "Evening arrived\nwithout pressure", "pcLayer10Evening"],
+  ["Small Things", "You noticed\nsmall things again.", "pcLayer10Small"],
+  ["Settled Room", "Something in the room\nfinally settled.", "pcLayer10Settled"],
+] as const;
+
+const pcLayer11Cards = [
+  ["Late Kitchen Light", "The day began\nwithout rushing.", "06:12"],
+  ["Someone Still Awake", "For a while,\nthe world got still.", "07:45"],
+  ["Notes Left Open", "Morning returned\nlightly.", "05:30"],
+  ["Tea After Rain", "Some days\nfelt less heavy.", "04:50"],
+  ["A Slower Morning", "She stayed with\nwhat mattered.", "08:20"],
+  ["The Lamp Was Still On", "Not every night\nends the same.", "09:15"],
+] as const;
+
+const pcLayer12Cards = [
+  ["12-card-01.png", "A window stayed open\nafter the room went quiet.", "pcLayer12CardOne"],
+  ["12-card-02.png", "A thought became softer\nonce it reached the page.", "pcLayer12CardTwo"],
+  ["12-card-03.png", "The day left something\nyou did not have to name.", "pcLayer12CardThree"],
+  ["12-card-04.png", "A slower hour\nkept a little light behind.", "pcLayer12CardFour"],
+] as const;
+
+const pcFooterColumns = [
+  {
+    title: "EXPLORE",
+    links: [
+      ["Healing Paths", "/healing/paths"],
+      ["Windkeep", "/windkeep"],
+      ["Driftbox", "/driftbox"],
+      ["Slow Living", "/journal/slow-living"],
+      ["Objects", "/objects"],
+    ],
+  },
+  {
+    title: "JOURNAL",
+    links: [
+      ["Journal / Notes", "/journal"],
+      ["Stories", "/journal"],
+      ["Reflections", "/journal"],
+    ],
+  },
+  {
+    title: "ABOUT",
+    links: [
+      ["About", "/about"],
+      ["Our Intentions", "/about"],
+      ["Contact", "/contact"],
+    ],
+  },
+] as const;
 const heroSlides = [
   {
     image: "hero_slide_01@3x.png.png",
@@ -333,12 +527,354 @@ export function HomepageBrowserRoom() {
 
   return (
     <main className="ri-final-home min-h-full text-[#14213a]">
-      <section className="hidden md:block">
-        <div className="sr-only">
-          <p>VIVLUM</p>
-          <h1>A browser room for wind, time, air, and presence.</h1>
-        </div>
+      <section className={styles.pcTaskSurface} aria-label="VIVLUM desktop homepage V2.1">
+        <div className={styles.pcFixedCanvas}>
+          <section id="home-hero-carousel" className={`${styles.pcLayer} ${styles.pcLayer01}`} aria-label="Hero Carousel">
+            {pcHeroSlides.map((slide, index) => (
+              <Link
+                key={slide.image}
+                href={slide.href}
+                className={`${styles.pcHeroSlide} ${styles[slide.className]} ${index === activeHero ? styles.pcHeroSlideActive : ""}`}
+                aria-label={slide.ariaLabel}
+                aria-hidden={index !== activeHero}
+                tabIndex={index === activeHero ? 0 : -1}
+              >
+                <Image src={`${PCV2}/${slide.image}`} alt="" width={1920} height={1333} className={styles.pcLayerImage} sizes="1920px" priority={index === 0} aria-hidden="true" unoptimized />
+                <div className={styles.pcHeroCopy}>
+                  <h1>{slide.title}</h1>
+                  <span aria-hidden="true" />
+                  <p>{slide.subtitle}</p>
+                </div>
+              </Link>
+            ))}
+            <nav className={styles.pcTopNav} aria-label="Dohara desktop navigation">
+              <Link href="/" className={styles.pcLogoLink} aria-label="Dohara Home">
+                <Image src={`${PCV2}/dohara-logo-transparent.png`} alt="Dohara" width={3356} height={1079} className={styles.pcLogoImage} priority unoptimized />
+              </Link>
+              {pcNavItems.map((item) => (
+                <Link key={item.href} href={item.href} className={`${styles.pcNavItem} ${styles[item.className]}`}>{item.label}</Link>
+              ))}
+              <Link href="/search" className={styles.pcNavSearch} aria-label="Search">
+                <i className={styles.pcSearchIcon} aria-hidden="true" />
+                <span>Search</span>
+              </Link>
+              <Link href="/cart" className={styles.pcNavBag} aria-label="Bag">
+                <i className={styles.pcBagIcon} aria-hidden="true" />
+                <span>Bag</span>
+              </Link>
+            </nav>
+          </section>
 
+          <section id="home-ways-to-begin" className={`${styles.pcLayer} ${styles.pcLayer02}`} aria-label="Ways to Begin">
+            <Image src={`${PCV2}/02-02.png`} alt="" width={1920} height={1081} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <h2 className={styles.pcWaysTitle}>Ways to Begin</h2>
+            <p className={styles.pcWaysSubtitle}>Choose what feels closest</p>
+            <Link href="/guidance" className={styles.pcWaysViewAll} aria-label="View all ways to begin">View all</Link>
+            {pcWaysCards.map(([title, href, ariaLabel, className]) => (
+              <Link key={title} href={href} aria-label={ariaLabel} className={`${styles.pcWaysCard} ${styles[className]}`}>
+                <span>{title.split("\n").map((line) => <b key={line}>{line}</b>)}</span>
+              </Link>
+            ))}
+            {pcWaysFeatures.map(([text, href, ariaLabel, className]) => (
+              <Link key={text} href={href} aria-label={ariaLabel} className={`${styles.pcWaysFeature} ${styles[className]}`}>
+                {text.split("\n").map((line) => <span key={line}>{line}</span>)}
+              </Link>
+            ))}
+          </section>
+          <section id="home-guidance-entry" className={`${styles.pcLayer} ${styles.pcLayer03}`} aria-label="Bring one question">
+            <Image src={`${PCV2}/03-02.png`} alt="" width={1920} height={1282} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <h2 className={styles.pcGuidanceTitle}>Bring one question.<br />Start with one small sign.</h2>
+            <p className={styles.pcGuidanceSubtitle}>A small sign can be enough to begin.</p>
+            <Link href="/guidance/session" className={styles.pcGuidancePrimary} aria-label="Start your guidance session">Start Your Day</Link>
+            <Link href="/healing" className={styles.pcGuidanceSecondary} aria-label="See the healing paths">See the Paths <b aria-hidden="true">→</b></Link>
+            <div className={styles.pcGuidanceCards}>
+              {pcGuidancePaths.map(([title, body, href, ariaLabel, className]) => (
+                <Link key={title} href={href} aria-label={ariaLabel} className={`${styles.pcGuidanceCard} ${styles[className]}`}>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                  <i aria-hidden="true">→</i>
+                </Link>
+              ))}
+            </div>
+            <div className={styles.pcGuidanceQuote}>
+              <p>You do not have to carry it all.<br />You just have to take the next small step.</p>
+              <p>A quiet answer can arrive<br />without force.</p>
+            </div>
+            <Link href="/guidance/session" className={styles.pcGuidanceRound} aria-label="Continue to guidance session">-&gt;</Link>
+          </section>
+
+          <section id="home-life-stages" className={`${styles.pcLayer} ${styles.pcLayer04}`} aria-label="Life Stages">
+            <Image src={`${PCV2}/04-02.png`} alt="" width={1920} height={1012} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <h2 className={styles.pcLifeTitle}>Some years change you quietly.</h2>
+            <p className={styles.pcLifeSubtitle}>Find support for the season you are in.</p>
+            <p className={styles.pcLifeSupport}>It meets you in a softer, wiser version of you.</p>
+            <div className={styles.pcLifeTimeline} aria-hidden="true">
+              {pcLifeStageCards.map(([age]) => <span key={age}>{age}</span>)}
+            </div>
+            <div className={styles.pcLifeCards}>
+              {pcLifeStageCards.map(([age, title, body, href, ariaLabel, className]) => (
+                <Link key={title} href={href} aria-label={ariaLabel} className={`${styles.pcLifeCard} ${styles[className]}`}>
+                  <small>{age}</small>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                  <b>Learn More →</b>
+                </Link>
+              ))}
+            </div>
+            <p className={styles.pcLifeBottomNote}>Not every season is easy.<br />But you are not walking alone.</p>
+          </section>
+
+          <section id="home-velune" className={`${styles.pcLayer} ${styles.pcLayer05}`} aria-label="Velune">
+            <div className={styles.pcVeluneCopy}>
+              <strong className={styles.pcVeluneBrand}>VIVLUM</strong>
+              <small className={styles.pcVeluneTagline}>BOTANICAL THINGS<br />FOR SLOWER HOURS</small>
+              <h2>When your body<br />feels too loud.</h2>
+              <p>Not fixing. Just easing.</p>
+              <em>A slower evening.<br />Water near the window.<br />A body slowly unclenching.</em>
+              <Link href="/velune" className={styles.pcVelunePrimary} aria-label="Explore Velune">Explore Velune</Link>
+              <Link href="/velune#intent" className={styles.pcVeluneSecondary} aria-label="Learn more about Velune">Learn More</Link>
+            </div>
+            <div className={styles.pcVeluneElements}>
+              <h3>FIVE ELEMENTS</h3>
+              {pcVeluneElements.map(([title, body, href, ariaLabel, className]) => (
+                <Link key={title} href={href} aria-label={ariaLabel} className={`${styles.pcVeluneElement} ${styles[className]}`}>
+                  <strong>{title}</strong>
+                  <span>{body}</span>
+                </Link>
+              ))}
+            </div>
+            <div className={styles.pcVeluneStates}>
+              {pcVeluneStates.map(([title, body, href, ariaLabel, className]) => (
+                <Link key={title} href={href} aria-label={ariaLabel} className={`${styles.pcVeluneState} ${styles[className]}`}>
+                  <strong>{title}</strong>
+                  <span>{body}</span>
+                </Link>
+              ))}
+            </div>
+            <p className={styles.pcVeluneQuote}>Your body has been trying<br />to tell you something for a long time.</p>
+          </section>
+
+          <section id="home-things-that-stayed" className={`${styles.pcLayer} ${styles.pcLayer06}`} aria-label="Some things stay with you">
+            <Image src={`${PCV2}/06-02.png`} alt="" width={1920} height={2136} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <div className={styles.pcLayer06Hero}>
+              <h2>Some things<br />stay with you.</h2>
+              <span aria-hidden="true" />
+              <p>You do not notice it at first.<br />Then one day,<br />you realize<br />it followed you through everything.</p>
+              <p>A shirt after a hard winter.<br />Something worn<br />during the years<br />you barely made it through.</p>
+              <p>Not everything has to feel loud.</p>
+              <p>Sometimes a quiet thing<br />feels lucky to keep near.<br />Maybe it was never magic.<br />Maybe you just survived<br />more than you thought.</p>
+              <small>Rooted in patience. Woven for time.<br />From the land where craftsmanship began.<br />From Potiao, the birthplace of our legacy.</small>
+            </div>
+            <Link href="/objects" className={styles.pcLayer06HeroHotspot} aria-label="Explore objects that stayed" />
+            <div className={styles.pcLayer06Notes}>
+              {pcLayer06Notes.map(([title, body, className]) => (
+                <Link key={title} href="/objects" className={`${styles.pcLayer06Note} ${styles[className]}`}>
+                  <strong>{title}</strong>
+                  <span>{body}</span>
+                </Link>
+              ))}
+            </div>
+            <p className={styles.pcLayer06Quote}>Some things stay long after<br />the version of you that wore them is gone.<br />They become part of your story.</p>
+          </section>
+
+          <section id="home-quiet-objects" className={`${styles.pcLayer} ${styles.pcLayer07}`} aria-label="Quiet Objects">
+            <Image src={`${PCV2}/07-02.png`} alt="" width={1920} height={1306} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <div className={styles.pcLayer07Hero}>
+              <h2>Quiet<br />Objects</h2>
+              <span aria-hidden="true" />
+              <p>Small things that make a<br />room feel easier to return to.</p>
+              <Link href="/objects" className={styles.pcLayer07Cta}>Explore the Collection</Link>
+            </div>
+            <Link href="/objects" className={styles.pcLayer07HeroHotspot} aria-label="Explore the Quiet Objects collection" />
+            <Link href="/objects" className={styles.pcLayer07Explore} aria-label="Explore Quiet Objects">EXPLORE<br />QUIET OBJECTS</Link>
+            <div className={styles.pcLayer07Categories}>
+              {pcLayer07Categories.map(([title, body, href, ariaLabel, className]) => (
+                <Link key={title} href={href} className={`${styles.pcLayer07Category} ${styles[className]}`} aria-label={ariaLabel}>
+                  <strong>{title}</strong>
+                  <span>{body}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section id="home-healing-paths" className={`${styles.pcLayer} ${styles.pcLayer08}`} aria-label="Healing Paths">
+            <Image src={`${PCV2}/08-02.png`} alt="" width={1920} height={1392} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <div className={styles.pcLayer08Intro}>
+              <h2>Healing<br />Paths</h2>
+              <span className={styles.pcLayer08Rule} aria-hidden="true" />
+              <p className={styles.pcLayer08Body}>You do not have to change<br />your whole life today.<br /><br />Sometimes healing begins<br />with one quieter choice.</p>
+              <p className={styles.pcLayer08Ways}>45 quiet ways<br />to come back to yourself.</p>
+              <Link href="/healing/paths" className={styles.pcLayer08Cta} aria-label="Begin gently with healing paths">Begin Gently <b aria-hidden="true">-&gt;</b></Link>
+            </div>
+            <div className={styles.pcLayer08Grid}>
+              {pcLayer08Paths.map(([title, body, href, ariaLabel, positionClass, toneClass]) => (
+                <Link key={title} href={href} aria-label={ariaLabel} className={`${styles.pcLayer08PathCard} ${styles[positionClass]} ${styles[toneClass]}`}>
+                  <strong>{title}</strong>
+                  <span>{body}</span>
+                </Link>
+              ))}
+            </div>
+            <p className={styles.pcLayer08Quote}>
+              <strong>Maybe your life does not need fixing.</strong>
+              <span>Maybe it only needs<br />a softer way forward.</span>
+            </p>
+          </section>
+
+          <section id="home-windkeep" className={`${styles.pcLayer} ${styles.pcLayer09}`} aria-label="Windkeep">
+            <Image src={`${PCV2}/09-02.png`} alt="" width={1920} height={1480} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <div className={styles.pcLayer09Intro}>
+              <h2>WINDKEEP</h2>
+              <p className={styles.pcLayer09Subtitle}>Exchange. Auction. Memory Sky.</p>
+              <span className={styles.pcLayer09Rule} aria-hidden="true" />
+              <p className={styles.pcLayer09Body}>Things carry stories.<br />Here, they move again.</p>
+            </div>
+            <div className={styles.pcLayer09Cards}>
+              {pcLayer09Cards.map(([title, body, href, ariaLabel, className]) => (
+                <Link key={title} href={href} aria-label={ariaLabel} className={`${styles.pcLayer09Card} ${styles[className]}`}>
+                  <strong>{title}</strong>
+                  <i aria-hidden="true" />
+                  <span>{body}</span>
+                </Link>
+              ))}
+            </div>
+            <div className={styles.pcLayer09Benefits}>
+              {pcLayer09Benefits.map(([title, body, className]) => (
+                <div key={title} className={`${styles.pcLayer09Benefit} ${styles[className]}`}>
+                  <strong>{title}</strong>
+                  <span>{body}</span>
+                </div>
+              ))}
+            </div>
+            <p className={styles.pcLayer09Quote}>Maybe nothing truly disappears<br />when it has been loved long enough.</p>
+          </section>
+
+          <section id="home-slow-living" className={`${styles.pcLayer} ${styles.pcLayer10}`} aria-label="Slow Living">
+            <Image src={`${PCV2}/10-02.png`} alt="" width={1920} height={1543} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <div className={styles.pcLayer10Left}>
+              <h2>Slow Living</h2>
+              <i aria-hidden="true" />
+              <p>Less rush. More room.</p>
+              <small>A few ordinary things can change<br />the pace of a day.</small>
+              <span>Stay Awhile</span>
+              <b aria-hidden="true">-&gt;</b>
+              <Link href="/journal/slow-living" className={styles.pcLayer10CtaHotspot} aria-label="Open Slow Living" />
+            </div>
+            <div className={styles.pcLayer10CardHotspots}>
+              {pcLayer10Cards.map(([title, , className]) => (
+                <Link key={title} href="/journal/slow-living" className={`${styles.pcLayer10CardHotspot} ${styles[className]}`} aria-label={`Open ${title}`} />
+              ))}
+            </div>
+            <div className={styles.pcLayer10CardTexts} aria-hidden="true">
+              {pcLayer10Cards.map(([title, body, className]) => (
+                <article key={title} className={`${styles.pcLayer10CardText} ${styles[className]}`}>
+                  <h3>{title}</h3>
+                  <p>
+                    {body.split("\n").map((line) => (
+                      <span key={line}>{line}</span>
+                    ))}
+                  </p>
+                  <em>-&gt;</em>
+                </article>
+              ))}
+            </div>
+            <div className={styles.pcLayer10Quote} aria-hidden="true">
+              <span className={styles.pcLayer10QuoteLineOne}>Maybe peace is not a destination.</span>
+              <span className={styles.pcLayer10QuoteLineTwo}>Maybe it is a quieter way to spend ordinary days.</span>
+            </div>
+          </section>
+
+          <section id="home-moments-of-presence" className={`${styles.pcLayer} ${styles.pcLayer11}`} aria-label="Moments of Presence">
+            <Image src={`${PCV2}/11-02.png`} alt="" width={1920} height={1448} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <div className={styles.pcLayer11Intro}>
+              <h2>Moments of Presence</h2>
+              <span aria-hidden="true" />
+              <p>Small moments.<br />Real people.<br />Life as it happens.</p>
+            </div>
+            <Link href="/journal" className={styles.pcLayer11ViewAll}>View all <b aria-hidden="true">-&gt;</b></Link>
+            <div className={styles.pcLayer11Cards}>
+              {pcLayer11Cards.map(([title, body, time], index) => (
+                <Link key={title} href="/journal" className={styles.pcLayer11Card} style={{ "--card-index": index } as CSSProperties}>
+                  <h3>{title}</h3>
+                  <i aria-hidden="true" />
+                  <p>{body}</p>
+                  <small>{time}</small>
+                </Link>
+              ))}
+            </div>
+            <p className={styles.pcLayer11Summary}>Some windows stay lit<br />a little longer at night.</p>
+          </section>
+
+          <section id="home-journal-notes" className={`${styles.pcLayer} ${styles.pcLayer12}`} aria-label="Journal Notes">
+            <Image src={`${PCV2}/12-02.png`} alt="" width={1920} height={1235} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <div className={styles.pcLayer12Intro}>
+              <h2>Journal / Notes</h2>
+              <span aria-hidden="true" />
+              <p>Some days do not need to be explained.<br />They only need a place to land.</p>
+              <Link href="/journal" className={styles.pcLayer12Cta}>Open a Few Pages <b aria-hidden="true">-&gt;</b></Link>
+            </div>
+            <div className={styles.pcLayer12Cards}>
+              {pcLayer12Cards.map(([image, copy, className]) => (
+                <Link key={image} href="/journal" className={`${styles.pcLayer12Card} ${styles[className]}`}>
+                  <Image src={`${PCV2}/${image}`} alt="" width={825} height={1907} className={styles.pcLayer12CardImage} sizes="284px" aria-hidden="true" unoptimized />
+                  <p>{copy}</p>
+                </Link>
+              ))}
+            </div>
+            <div className={styles.pcLayer12Notes}>
+              <p>Not every feeling<br />has to stay inside you.</p>
+              <p>Some pages are only<br />meant for one season.</p>
+              <p>What leaves gently<br />can still belong to your story.</p>
+            </div>
+            <p className={styles.pcLayer12Summary}>Every day leaves a small trace.<br />Some are kept. Some are released.</p>
+          </section>
+
+          <section id="home-wind-passed" className={`${styles.pcLayer} ${styles.pcLayer13}`} aria-label="The wind passed softly again">
+            <Image src={`${PCV2}/13-02.png`} alt="" width={1920} height={891} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <div className={styles.pcLayer13Copy}>
+              <h2>The wind passed<br />softly again.</h2>
+              <span aria-hidden="true" />
+              <p>A little quiet still remains here.</p>
+            </div>
+          </section>
+
+          <footer id="home-footer" className={`${styles.pcLayer} ${styles.pcLayer14}`} aria-label="Dohara footer">
+            <Image src={`${PCV2}/14-02.png`} alt="" width={1920} height={884} className={styles.pcLayerImage} sizes="1920px" aria-hidden="true" unoptimized />
+            <div className={styles.pcLayer14Brand}>
+              <Image src={`${PCV2}/dohara-footer-logo-transparent.png`} alt="Dohara" width={732} height={231} className={styles.pcLayer14LogoImage} unoptimized />
+              <p>A place you can return to<br />when the world feels too loud.</p>
+              <p>Sometimes for quiet.<br />Sometimes just to breathe again.</p>
+            </div>
+            <nav className={styles.pcLayer14Nav} aria-label="Footer navigation">
+              {pcFooterColumns.map((column, columnIndex) => (
+                <div key={column.title} className={styles.pcLayer14Column} style={{ "--column-index": columnIndex } as CSSProperties}>
+                  <h3>{column.title}</h3>
+                  {column.links.map(([label, href]) => (
+                    <Link key={label} href={href}>{label}</Link>
+                  ))}
+                </div>
+              ))}
+            </nav>
+            <form className={styles.pcLayer14Subscribe} onSubmit={(event) => event.preventDefault()}>
+              <h3>QUIET SUBSCRIPTION</h3>
+              <p>Only gentle letters.</p>
+              <p>Only when they matter.</p>
+              <input type="email" aria-label="Email address" placeholder="you@example.com" />
+              <button type="submit">Stay near the wind</button>
+            </form>
+            <div className={styles.pcLayer14Bottom}>
+              <p>The wind will still be here.</p>
+              <Link href="/privacy">Privacy</Link>
+              <Link href="/terms">Terms</Link>
+              <Link href="/sitemap.xml">Sitemap</Link>
+            </div>
+          </footer>
+
+          <div className={styles.pcHotspots} aria-label="VIVLUM desktop page links">
+            {pcLayerLinks.map((link) => (
+              <Link key={link.className} href={link.href} className={styles[link.className]} aria-label={link.ariaLabel} />
+            ))}
+          </div>
+        </div>
       </section>
 
       <section className={`${styles.mobileTaskSurface} md:hidden`} aria-label="VIVLUM mobile homepage">
@@ -1204,7 +1740,7 @@ export function HomepageBrowserRoom() {
               <p>VIVLUM</p>
               <span aria-hidden="true" />
             </div>
-            <p className={styles.mobileV2FooterCopyright}>© 2025 VIVLUM Studio. All rights reserved.</p>
+            <p className={styles.mobileV2FooterCopyright}>婕?2025 VIVLUM Studio. All rights reserved.</p>
           </footer>
         </div>
       </section>
