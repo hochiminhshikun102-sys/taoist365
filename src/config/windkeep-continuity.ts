@@ -326,7 +326,21 @@ export const quietReceivingObjects: readonly QuietReceivingObject[] = windkeepPa
   acceptanceFlow: ["Notice the object", "Write one plain reason", "Wait for a human reply"],
 }));
 
-export const windkeepObjects = windkeepPassingObjects;
+export const windkeepObjects = windkeepPassingObjects.map((object) => ({
+  object: {
+    id: object.id,
+    title: object.title,
+    media: {
+      placement: object.image.src,
+      alt: object.image.alt,
+    },
+  },
+  memory: {
+    passingTime: object.timeMark,
+    cities: [object.city],
+    shortStory: object.storyFragment,
+  },
+}));
 
 export const windkeepArrivalLines = [
   "Things rest here before moving on.",
