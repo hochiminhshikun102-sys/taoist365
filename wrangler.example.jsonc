@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "taoist365",
+  "pages_build_output_dir": "./out",
+  "compatibility_date": "2026-06-25",
+  "kv_namespaces": [
+    {
+      "binding": "OBJECT_INTAKE_KV",
+      "id": "<PRODUCTION_KV_NAMESPACE_ID>",
+      "preview_id": "<PREVIEW_KV_NAMESPACE_ID>"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "OBJECT_MEDIA_BUCKET",
+      "bucket_name": "vl-object-media",
+      "preview_bucket_name": "vl-object-media-preview"
+    }
+  ],
+  "vars": {
+    "NEXT_PUBLIC_QUIET_ADMIN_PHRASE": "replace-in-dashboard"
+  }
+}

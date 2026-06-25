@@ -1,0 +1,131 @@
+"use client";
+
+import { useState } from "react";
+
+type UploadState = "idle" | "creating" | "uploading" | "drafting" | "submitting" | "done" | "error";
+
+const sourceTypes = ["admin_upload", "boss_upload", "buyer_upload", "external_link", "supplier_batch"] as const;
+const sourcePlatforms = ["manual", "taobao", "tmall", "1688", "shopify", "etsy", "other"] as const;
+
+export function ObjectIntakeAdminNew() {
+  const [state, setState] = useState<UploadState>("idle");
+  const [note, setNote] = useState("");
+  const [files, setFiles] = useState<FileList | null>(null);
+  const [created, setCreated] = useState<{ intake_id: string; intake_no: string; status: string } | null>(null);
+  const [form, setForm] = useState({
+    source_type: "admin_upload",
+    source_platform: "manual",
+    source_url: "",
+    submitted_by: "admin-os",
+    buyer_id: "",
+    country: "",
+    original_title: "",
+    original_description: "",
+    original_price: "",
+    currency: "USD",
+    category_hint: "wind-objects",
+    supplier: "",
+    location: "",
+    logistics_method: "platform_logistics",
+    inventory: "1",
+    is_one_of_one: true,
+  });
+
+  function update(key: keyof typeof form, value: string | boolean) {
+    setForm((current) => ({ ...current, [key]: value }));
+  }
+
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setNote("");
+    setCreated(null);
+
+    try {
+      setState("creating");
+      const createResponse = await fetch("/api/object-intakes", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ ...form, inventory: Number.parseInt(form.inventory, 10) || 1 }),
+      });
+      const createData = await createResponse.json();
+      if (!createResponse.ok) throw new Error(createData.error || "Unable to create intake.");
+      setCreated(createData);
+
+      if (files && files.length > 0) {
+        setState("uploading");
+        const mediaForm = new FormData();
+        Array.from(files).forEach((file) => mediaForm.append("files", file));
+        mediaForm.append("media_type", "original");
+        const mediaResponse = await fetch(`/api/object-intakes/${createData.intake_id}/media`, { method: "POST", body: mediaForm });
+        const mediaData = await mediaResponse.json();
+        if (!mediaResponse.ok) throw new Error(mediaData.error || "Unable to upload media.");
+      }
+
+      setState("drafting");
+      const draftResponse = await fetch(`/api/object-intakes/${createData.intake_id}/ai-draft`, { method: "POST" });
+      const draftData = await draftResponse.json();
+      if (!draftResponse.ok) throw new Error(draftData.error || "Unable to generate AI draft.");
+
+      setState("submitting");
+      const reviewResponse = await fetch(`/api/object-intakes/${createData.intake_id}/submit-review`, { method: "POST" });
+      const reviewData = await reviewResponse.json();
+      if (!reviewResponse.ok) throw new Error(reviewData.error || "Unable to submit review.");
+
+      setState("done");
+      setNote(`Intake ${createData.intake_no} entered review queue.`);
+    } catch (error) {
+      setState("error");
+      setNote(error instanceof Error ? error.message : "Object intake failed.");
+    }
+  }
+
+  return (
+    <main className="min-h-dvh bg-[#F5F6F8] px-5 py-8 text-[#2D333A]">
+      <section className="mx-auto grid w-full max-w-6xl gap-6">
+        <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
+          <div>
+            <p className="text-sm text-[#6B7280]">VL Object Intake Pipeline</p>
+            <h1 className="mt-2 text-4xl font-semibold">Admin Upload</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">后台宝贝上传进入统一 object_intakes，不再作为孤立工具。</p>
+          </div>
+          <a href="/admin/object-intakes" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">Review Queue</a>
+        </header>
+
+        <form onSubmit={submit} className="grid gap-5 rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(45,51,58,0.08)]">
+          <div className="grid gap-4 md:grid-cols-3">
+            <label className="grid gap-2 text-sm">Source Type<select value={form.source_type} onChange={(event) => update("source_type", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">{sourceTypes.map((item) => <option key={item}>{item}</option>)}</select></label>
+            <label className="grid gap-2 text-sm">Source Platform<select value={form.source_platform} onChange={(event) => update("source_platform", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">{sourcePlatforms.map((item) => <option key={item}>{item}</option>)}</select></label>
+            <label className="grid gap-2 text-sm">Source URL<input value={form.source_url} onChange={(event) => update("source_url", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" placeholder="Optional link, first version saves only" /></label>
+          </div>
+
+          <label className="grid gap-2 text-sm">Product Images<input type="file" multiple accept="image/*,video/*" onChange={(event) => setFiles(event.target.files)} className="rounded-xl border border-dashed border-[#947A66]/60 bg-[#F3ECE2] px-4 py-5" /></label>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="grid gap-2 text-sm">Original Title<input required value={form.original_title} onChange={(event) => update("original_title", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
+            <label className="grid gap-2 text-sm">Price<input value={form.original_price} onChange={(event) => update("original_price", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" placeholder="$48.00" /></label>
+            <label className="grid gap-2 text-sm">Country / Place<input value={form.country} onChange={(event) => update("country", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
+            <label className="grid gap-2 text-sm">Location<input value={form.location} onChange={(event) => update("location", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
+            <label className="grid gap-2 text-sm">Category Hint<input value={form.category_hint} onChange={(event) => update("category_hint", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
+            <label className="grid gap-2 text-sm">Inventory<input value={form.inventory} onChange={(event) => update("inventory", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
+            <label className="grid gap-2 text-sm">Supplier<input value={form.supplier} onChange={(event) => update("supplier", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
+            <label className="grid gap-2 text-sm">Buyer ID<input value={form.buyer_id} onChange={(event) => update("buyer_id", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
+          </div>
+
+          <label className="grid gap-2 text-sm">Original Description<textarea value={form.original_description} onChange={(event) => update("original_description", event.target.value)} className="min-h-28 rounded-xl border border-[#D9DCE0] px-4 py-3 leading-7" /></label>
+
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <label className="flex items-center gap-3 text-sm"><input type="checkbox" checked={form.is_one_of_one} onChange={(event) => update("is_one_of_one", event.target.checked)} /> One-of-one object</label>
+            <button disabled={state !== "idle" && state !== "done" && state !== "error"} type="submit" className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">Create Intake + Submit Review</button>
+          </div>
+        </form>
+
+        <aside className="rounded-2xl border border-[#D9DCE0] bg-white p-5 text-sm leading-7 text-[#6B7280]">
+          <p>Status: <strong className="text-[#2D333A]">{state}</strong></p>
+          {created ? <p>Created: {created.intake_no} / {created.intake_id}</p> : null}
+          {note ? <p>{note}</p> : null}
+          <p className="mt-3">Air Engine first version reserves status only. Link parsing first version stores source_url and source_platform only.</p>
+        </aside>
+      </section>
+    </main>
+  );
+}
