@@ -339,6 +339,11 @@ export const windkeepObjects = windkeepPassingObjects.map((object) => ({
     passingTime: object.timeMark,
     cities: [object.city],
     shortStory: object.storyFragment,
+    previousKeeper: object.previousHolderNote || "Previous keeper note not recorded.",
+    years: [object.timeMark],
+    continuityNotes: [object.emotionalResidue, object.passingStatus],
+    traces: [object.objectType, object.city],
+    quietPairing: object.emotionalResidue,
   },
 }));
 
