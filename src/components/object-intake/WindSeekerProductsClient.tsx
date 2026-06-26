@@ -11,6 +11,7 @@ const windkeepMemberSupplySourceTypeSet = new Set<string>(windkeepMemberSupplySo
 function isWindSeekerIntake(row: EnrichedIntake) {
   const sourceType = row.intake.source_type;
   if (windkeepMemberSupplySourceTypeSet.has(sourceType)) return false;
+  if (row.intake.commerce_channel === "windkeep_secondhand") return false;
   if (row.intake.supply_program === "windkeep" || row.intake.entry_surface === "member_center") return false;
 
   return windSeekerSourceTypeSet.has(sourceType) || row.intake.supply_program === "wind_seeker" || row.intake.submitted_by === "wind-seeker";

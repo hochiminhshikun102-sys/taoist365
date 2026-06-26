@@ -16,6 +16,8 @@ export type ObjectIntake = {
   identity_scope?: string;
   entry_surface?: string;
   supply_program?: string;
+  commerce_channel?: string;
+  goods_condition?: string;
   source_label?: string;
   source_note?: string;
   reward_eligible?: boolean;
@@ -68,6 +70,12 @@ export type ObjectAiDraft = {
   material: string;
   size_text: string;
   category: string;
+  source_type?: string;
+  identity_scope?: string;
+  entry_surface?: string;
+  supply_program?: string;
+  commerce_channel?: string;
+  goods_condition?: string;
   tags: string[];
   seo_title: string;
   seo_description: string;

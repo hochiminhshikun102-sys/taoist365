@@ -2,47 +2,40 @@
 
 This is the operating rule for shared object intake data.
 
-Wind Seeker and Windkeep share the same `object_intakes` pipeline, review queue, media table, AI draft table, and final `objects` publishing path. They do not share identity, entry surface, or member permissions.
+Wind Seeker and Windkeep share the same `object_intakes` pipeline, review queue, media table, AI draft table, and final `objects` publishing path. They do not share channel, identity, entry surface, or page runtime.
 
 ## Core rule
 
-Wind Seeker is the professional global buyer network.
+Wind Seeker is the professional global buyer network for new-goods commerce.
 
-Windkeep Supply is the future member-center supply path for members, consignment, referrals, neighbors, and reward programs.
+Windkeep Supply is the future secondhand continuity path for members, consignment, referrals, neighbors, and reward programs.
 
-Windkeep members must not be routed into the Wind Seeker buyer upload or buyer product center.
+Think of the split as Tmall / Xianyu style: shared company infrastructure, separate market channel and page experience.
 
 ## Source Types
 
-| source_type | identity_scope | entry_surface | supply_program | reward_eligible | Guardrail |
-| --- | --- | --- | --- | --- | --- |
-| `admin_upload` | `admin` | `admin_os` | `commerce` | false | OA operations upload. |
-| `boss_upload` | `admin` | `admin_os` | `commerce` | false | Owner upload. |
-| `external_link` | `admin` | `admin_os` | `commerce` | false | Link saved first; parsing later. |
-| `supplier_batch` | `supplier` | `admin_os` | `supplier` | false | Supplier material batch. |
-| `buyer_upload` | `wind_seeker` | `wind_seeker` | `wind_seeker` | false | Professional buyer only. |
-| `windkeep_member` | `windkeep_member` | `member_center` | `windkeep` | true | Future member-center supply entry. |
-| `member_consignment` | `windkeep_member` | `member_center` | `windkeep` | true | Future member consignment entry. |
-| `neighbor_referral` | `windkeep_referral` | `member_center` | `windkeep` | true | Future friend / neighbor referral entry. |
+| source_type | commerce_channel | goods_condition | identity_scope | entry_surface | supply_program | reward_eligible |
+| --- | --- | --- | --- | --- | --- | --- |
+| `admin_upload` | `commerce_new` | `new` | `admin` | `admin_os` | `commerce` | false |
+| `boss_upload` | `commerce_new` | `new` | `admin` | `admin_os` | `commerce` | false |
+| `external_link` | `commerce_new` | `new` | `admin` | `admin_os` | `commerce` | false |
+| `supplier_batch` | `commerce_new` | `new` | `supplier` | `admin_os` | `supplier` | false |
+| `buyer_upload` | `commerce_new` | `new` | `wind_seeker` | `wind_seeker` | `wind_seeker` | false |
+| `windkeep_member` | `windkeep_secondhand` | `preowned` | `windkeep_member` | `member_center` | `windkeep` | true |
+| `member_consignment` | `windkeep_secondhand` | `preowned` | `windkeep_member` | `member_center` | `windkeep` | true |
+| `neighbor_referral` | `windkeep_secondhand` | `preowned` | `windkeep_referral` | `member_center` | `windkeep` | true |
 
-## Filtering Contract
+## Channel Contract
 
-Wind Seeker buyer pages may show only:
+New-goods commerce pages use:
 
-- `source_type = buyer_upload`
-- or `supply_program = wind_seeker`
+- `commerce_channel = commerce_new`
+- `goods_condition = new`
 
-Wind Seeker buyer pages must exclude:
+Windkeep secondhand pages use:
 
-- `entry_surface = member_center`
-- `supply_program = windkeep`
-- `source_type = windkeep_member`
-- `source_type = member_consignment`
-- `source_type = neighbor_referral`
-
-Future Windkeep member-center supply pages may show only:
-
-- `entry_surface = member_center`
+- `commerce_channel = windkeep_secondhand`
+- `goods_condition = preowned`
 - `supply_program = windkeep`
 
 ## Future Member Center Entry
@@ -71,9 +64,9 @@ source_type = neighbor_referral
 
 ## Acceptance Rule
 
-One object pipeline, two identity gates:
+One object pipeline, two market channels:
 
-- Global buyers use Wind Seeker.
-- Members use the member center Windkeep Supply entry.
+- Global buyers use Wind Seeker for new-goods commerce.
+- Members use Windkeep Supply for secondhand continuity.
 
 They meet only at review, object publishing, audit logs, and final `object_id`.

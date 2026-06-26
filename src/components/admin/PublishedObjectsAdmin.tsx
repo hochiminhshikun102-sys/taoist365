@@ -14,6 +14,8 @@ type PublishedAdminObject = {
   inventory: number;
   category: string;
   collection?: string;
+  commerce_channel?: string;
+  goods_condition?: string;
   tags?: string[];
   status: string;
   buyer_id?: string;
@@ -150,7 +152,7 @@ export function PublishedObjectsAdmin() {
                 <div>
                   <p className="text-sm text-[#6B7280]">{active.object_id} / {active.category}</p>
                   <h2 className="mt-2 text-3xl font-semibold">{active.title}</h2>
-                  <p className="mt-2 text-sm text-[#6B7280]">{active.status || "published"} / {active.collection || "unset"} / {active.published_at || "no publish time"}</p>
+                  <p className="mt-2 text-sm text-[#6B7280]">{active.status || "published"} / {active.collection || "unset"} / {active.commerce_channel || "commerce_new"} / {active.goods_condition || "new"}</p>
                 </div>
                 <a href={`/objects/${active.object_id}`} className="rounded-xl border border-[#2D333A] px-4 py-3 text-sm">打开前台</a>
               </div>

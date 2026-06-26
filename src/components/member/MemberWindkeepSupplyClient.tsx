@@ -74,7 +74,7 @@ export function MemberWindkeepSupplyClient() {
           <p className="mt-5 text-sm text-[#6B7280]">Member Center / Windkeep</p>
           <h1 className="mt-2 text-4xl font-semibold">Windkeep Supply</h1>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">
-            Member supply, consignment, and neighbor referral enter the same object intake pipeline, but never enter the Wind Seeker buyer center.
+            Member supply, consignment, and neighbor referral enter the secondhand Windkeep channel. New-goods commerce stays with OA and Wind Seeker.
           </p>
         </header>
 
@@ -104,7 +104,7 @@ export function MemberWindkeepSupplyClient() {
             {created ? <Link href={`/account/windkeep-supply/detail?intakeId=${encodeURIComponent(created.intake_id)}`} className="text-[#947A66]">Open {created.intake_no}</Link> : null}
             <div className="rounded-xl bg-[#F5F6F8] p-4">
               <p className="font-semibold text-[#2D333A]">Identity guardrail</p>
-              <p className="mt-2">This page writes `entry_surface=member_center` and `supply_program=windkeep`. Wind Seeker pages filter it out.</p>
+              <p className="mt-2">This page writes `commerce_channel=windkeep_secondhand`, `goods_condition=preowned`, and `supply_program=windkeep`.</p>
             </div>
           </aside>
         </div>

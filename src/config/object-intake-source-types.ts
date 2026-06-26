@@ -11,6 +11,8 @@ export type ObjectIntakeSourceType =
 export type ObjectIntakeIdentityScope = "admin" | "supplier" | "wind_seeker" | "windkeep_member" | "windkeep_referral";
 export type ObjectIntakeEntrySurface = "admin_os" | "wind_seeker" | "member_center";
 export type ObjectIntakeSupplyProgram = "commerce" | "supplier" | "wind_seeker" | "windkeep";
+export type ObjectIntakeCommerceChannel = "commerce_new" | "windkeep_secondhand";
+export type ObjectIntakeGoodsCondition = "new" | "preowned";
 
 export type ObjectIntakeSourceDefinition = {
   type: ObjectIntakeSourceType;
@@ -18,6 +20,8 @@ export type ObjectIntakeSourceDefinition = {
   identity_scope: ObjectIntakeIdentityScope;
   entry_surface: ObjectIntakeEntrySurface;
   supply_program: ObjectIntakeSupplyProgram;
+  commerce_channel: ObjectIntakeCommerceChannel;
+  goods_condition: ObjectIntakeGoodsCondition;
   reward_eligible: boolean;
   professional_buyer_required: boolean;
   member_supply_locked: boolean;
@@ -31,6 +35,8 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     identity_scope: "admin",
     entry_surface: "admin_os",
     supply_program: "commerce",
+    commerce_channel: "commerce_new",
+    goods_condition: "new",
     reward_eligible: false,
     professional_buyer_required: false,
     member_supply_locked: false,
@@ -42,6 +48,8 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     identity_scope: "admin",
     entry_surface: "admin_os",
     supply_program: "commerce",
+    commerce_channel: "commerce_new",
+    goods_condition: "new",
     reward_eligible: false,
     professional_buyer_required: false,
     member_supply_locked: false,
@@ -53,6 +61,8 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     identity_scope: "admin",
     entry_surface: "admin_os",
     supply_program: "commerce",
+    commerce_channel: "commerce_new",
+    goods_condition: "new",
     reward_eligible: false,
     professional_buyer_required: false,
     member_supply_locked: false,
@@ -64,6 +74,8 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     identity_scope: "supplier",
     entry_surface: "admin_os",
     supply_program: "supplier",
+    commerce_channel: "commerce_new",
+    goods_condition: "new",
     reward_eligible: false,
     professional_buyer_required: false,
     member_supply_locked: false,
@@ -75,10 +87,12 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     identity_scope: "wind_seeker",
     entry_surface: "wind_seeker",
     supply_program: "wind_seeker",
+    commerce_channel: "commerce_new",
+    goods_condition: "new",
     reward_eligible: false,
     professional_buyer_required: true,
     member_supply_locked: false,
-    note: "Professional Wind Seeker entry. Do not expose this entry to Windkeep members.",
+    note: "Professional Wind Seeker entry for new-goods commerce.",
   },
   {
     type: "windkeep_member",
@@ -86,10 +100,12 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     identity_scope: "windkeep_member",
     entry_surface: "member_center",
     supply_program: "windkeep",
+    commerce_channel: "windkeep_secondhand",
+    goods_condition: "preowned",
     reward_eligible: true,
     professional_buyer_required: false,
     member_supply_locked: true,
-    note: "Future Windkeep member supply entry inside the account center.",
+    note: "Future Windkeep secondhand continuity entry inside the account center.",
   },
   {
     type: "member_consignment",
@@ -97,6 +113,8 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     identity_scope: "windkeep_member",
     entry_surface: "member_center",
     supply_program: "windkeep",
+    commerce_channel: "windkeep_secondhand",
+    goods_condition: "preowned",
     reward_eligible: true,
     professional_buyer_required: false,
     member_supply_locked: true,
@@ -108,6 +126,8 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     identity_scope: "windkeep_referral",
     entry_surface: "member_center",
     supply_program: "windkeep",
+    commerce_channel: "windkeep_secondhand",
+    goods_condition: "preowned",
     reward_eligible: true,
     professional_buyer_required: false,
     member_supply_locked: true,
@@ -131,6 +151,8 @@ export const futureMemberCenterSupplyEntry = {
   plannedHref: "/account/windkeep-supply",
   entry_surface: "member_center" as const,
   supply_program: "windkeep" as const,
+  commerce_channel: "windkeep_secondhand" as const,
+  goods_condition: "preowned" as const,
   allowedSourceTypes: windkeepMemberSupplySourceTypes,
-  guardrail: "Windkeep member supply stays inside the account center and never routes into Wind Seeker.",
+  guardrail: "Windkeep member supply is a secondhand continuity channel, separate from new-goods commerce.",
 };

@@ -14,10 +14,10 @@ const windkeepMemberSupplySourceTypeSet = new Set<string>(windkeepMemberSupplySo
 
 function isAllowed(row: EnrichedIntake, mode: DetailMode) {
   if (mode === "windkeep") {
-    return row.intake.supply_program === "windkeep" || row.intake.entry_surface === "member_center" || windkeepMemberSupplySourceTypeSet.has(row.intake.source_type);
+    return row.intake.commerce_channel === "windkeep_secondhand" || row.intake.supply_program === "windkeep" || row.intake.entry_surface === "member_center" || windkeepMemberSupplySourceTypeSet.has(row.intake.source_type);
   }
 
-  if (row.intake.supply_program === "windkeep" || row.intake.entry_surface === "member_center" || windkeepMemberSupplySourceTypeSet.has(row.intake.source_type)) return false;
+  if (row.intake.commerce_channel === "windkeep_secondhand" || row.intake.supply_program === "windkeep" || row.intake.entry_surface === "member_center" || windkeepMemberSupplySourceTypeSet.has(row.intake.source_type)) return false;
   return row.intake.supply_program === "wind_seeker" || windSeekerSourceTypeSet.has(row.intake.source_type) || row.intake.submitted_by === "wind-seeker";
 }
 
@@ -41,7 +41,7 @@ export function IntakeStatusDetailClient({ intakeId, mode }: Readonly<{ intakeId
         return;
       }
       if (!isAllowed(data, mode)) {
-        setNote(mode === "windkeep" ? "This intake does not belong to Windkeep member supply." : "This intake does not belong to Wind Seeker.");
+        setNote(mode === "windkeep" ? "This is not a Windkeep secondhand intake." : "This is not a Wind Seeker new-goods intake.");
         return;
       }
       setRow(data);
@@ -75,6 +75,7 @@ export function IntakeStatusDetailClient({ intakeId, mode }: Readonly<{ intakeId
               <div className="mt-4 grid gap-2 text-sm leading-7 text-[#6B7280]">
                 <p>{row.intake.intake_no} / {row.intake.source_type}</p>
                 <p>{row.intake.entry_surface || "legacy"} / {row.intake.supply_program || "legacy"}</p>
+                <p>{row.intake.commerce_channel || "commerce_new"} / {row.intake.goods_condition || "new"}</p>
                 <p>Status: {row.intake.status}</p>
                 <p>Air Engine: {row.intake.air_engine_status}</p>
               </div>

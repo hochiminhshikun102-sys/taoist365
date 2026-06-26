@@ -110,6 +110,7 @@ export function ObjectIntakeAdminQueue() {
                   <p className="text-sm text-[#6B7280]">{active.intake.intake_no} / {active.intake.source_type}</p>
                   <h2 className="mt-2 text-3xl font-semibold">{active.draft?.draft_title || active.intake.original_title}</h2>
                   <p className="mt-2 text-sm text-[#6B7280]">Air Engine: {active.intake.air_engine_status} / Status: {active.intake.status}</p>
+                  <p className="mt-2 text-sm text-[#6B7280]">{active.intake.commerce_channel || "commerce_new"} / {active.intake.goods_condition || "new"}</p>
                 </div>
                 {active.object ? <a href={`/objects/${active.object.object_id}`} className="rounded-xl border border-[#2D333A] px-4 py-3 text-sm">Open {active.object.object_id}</a> : null}
               </div>

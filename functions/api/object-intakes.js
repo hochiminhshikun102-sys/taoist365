@@ -39,6 +39,8 @@ export async function onRequestPost(context) {
     identity_scope: source.identity_scope,
     entry_surface: source.entry_surface,
     supply_program: source.supply_program,
+    commerce_channel: source.commerce_channel,
+    goods_condition: source.goods_condition,
     source_label: source.source_label,
     source_note: source.source_note,
     reward_eligible: source.reward_eligible,

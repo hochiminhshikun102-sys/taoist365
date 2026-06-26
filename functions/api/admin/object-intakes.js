@@ -4,6 +4,9 @@ export async function onRequestGet(context) {
   const url = new URL(context.request.url);
   const status = url.searchParams.get("status");
   const intakeId = url.searchParams.get("intake_id");
+  const sourceType = url.searchParams.get("source_type");
+  const supplyProgram = url.searchParams.get("supply_program");
+  const commerceChannel = url.searchParams.get("commerce_channel");
   const store = await readStore(context.env);
 
   if (intakeId) {
@@ -14,6 +17,9 @@ export async function onRequestGet(context) {
 
   let rows = [...store.objectIntakes].sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
   if (status && status !== "all") rows = rows.filter((row) => row.status === status);
+  if (sourceType) rows = rows.filter((row) => row.source_type === sourceType);
+  if (supplyProgram) rows = rows.filter((row) => row.supply_program === supplyProgram);
+  if (commerceChannel) rows = rows.filter((row) => (row.commerce_channel || "commerce_new") === commerceChannel);
 
   return json({
     rows: rows.map((intake) => enrichIntake(store, intake)),

@@ -4,8 +4,9 @@ export async function onRequestGet(context) {
   const url = new URL(context.request.url);
   const objectId = url.searchParams.get("object_id");
   const includeTests = url.searchParams.get("include_tests") === "1";
+  const commerceChannel = url.searchParams.get("commerce_channel") || "commerce_new";
   const store = await readStore(context.env);
-  const published = store.objects.filter((item) => item.status === "published");
+  const published = store.objects.filter((item) => item.status === "published" && (item.commerce_channel || "commerce_new") === commerceChannel);
 
   if (objectId) {
     const object = published.find((item) => item.object_id === objectId || item.slug === objectId);

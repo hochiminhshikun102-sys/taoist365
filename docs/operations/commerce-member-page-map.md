@@ -33,7 +33,7 @@ This is the current page map for the object commerce MVP and related member / bu
 | L1 | `/wind-seeker` | Professional buyer center. |
 | L2 | `/wind-seeker/upload` | Professional buyer object upload. |
 | L2 | `/wind-seeker/products` | Professional buyer object list. |
-| L3 | `/wind-seeker/products/detail?intakeId=...` | Professional buyer intake status. Excludes Windkeep member sources. Static-export compatible. |
+| L3 | `/wind-seeker/products/detail?intakeId=...` | Professional buyer new-goods intake status. Static-export compatible. |
 
 ## Account / Windkeep Supply
 
@@ -44,13 +44,13 @@ This is the current page map for the object commerce MVP and related member / bu
 | L2 | `/account/orders` | Reserved member order state. |
 | L2 | `/account/rewards` | Reserved levels, discounts, referral, and rebate state. |
 | L2 | `/account/windkeep-supply` | Member supply / consignment / referral intake. |
-| L3 | `/account/windkeep-supply/detail?intakeId=...` | Member supply intake status. Excludes Wind Seeker sources. Static-export compatible. |
+| L3 | `/account/windkeep-supply/detail?intakeId=...` | Member secondhand continuity intake status. Static-export compatible. |
 
 ## Identity Rule
 
-All supply sources enter `object_intakes`, but entry pages are separated:
+All supply sources enter `object_intakes`, but market channels and page runtimes are separated:
 
-- `buyer_upload` uses Wind Seeker.
-- `windkeep_member`, `member_consignment`, and `neighbor_referral` use Account / Windkeep Supply.
+- `buyer_upload` uses Wind Seeker and `commerce_channel=commerce_new`.
+- `windkeep_member`, `member_consignment`, and `neighbor_referral` use Account / Windkeep Supply and `commerce_channel=windkeep_secondhand`.
 
 They meet only in OA review, object publishing, audit logs, and final `object_id`.
