@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { AdminOSAccess } from "@/components/admin/AdminOSAccess";
-import { AdminCommerceOpsNav } from "@/components/admin/AdminCommerceOpsNav";
-import { AssetRegistryAdmin } from "@/components/admin/AssetRegistryAdmin";
+import { AdminOSConsole } from "@/components/admin/AdminOSConsole";
 
 export const metadata: Metadata = {
   title: "Admin Product Media - Reverent Inquiry",
@@ -11,8 +10,7 @@ export const metadata: Metadata = {
 export default function AdminProductMediaPage() {
   return (
     <AdminOSAccess>
-      <AdminCommerceOpsNav />
-      <AssetRegistryAdmin />
+      <AdminOSConsole activeWorkspace="product-media" />
     </AdminOSAccess>
   );
 }

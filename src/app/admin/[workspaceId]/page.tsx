@@ -1,7 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AdminOSAccess } from "@/components/admin/AdminOSAccess";
-import { AdminCommerceOpsNav } from "@/components/admin/AdminCommerceOpsNav";
 import { AdminOSConsole, type AdminWorkspaceId } from "@/components/admin/AdminOSConsole";
 
 const adminWorkspaceIds = [
@@ -152,7 +151,6 @@ export default async function AdminWorkspacePage({ params }: AdminWorkspacePageP
 
   return (
     <AdminOSAccess>
-      <AdminCommerceOpsNav />
       <AdminOSConsole activeWorkspace={workspaceId} />
     </AdminOSAccess>
   );

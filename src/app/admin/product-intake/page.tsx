@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { AdminOSAccess } from "@/components/admin/AdminOSAccess";
-import { AdminCommerceOpsNav } from "@/components/admin/AdminCommerceOpsNav";
-import { ObjectIntakeAdminNew } from "@/components/object-intake/ObjectIntakeAdminNew";
+import { AdminOSConsole } from "@/components/admin/AdminOSConsole";
 
 export const metadata: Metadata = {
   title: "Product Intake - Reverent Inquiry",
@@ -11,8 +10,7 @@ export const metadata: Metadata = {
 export default function AdminProductIntakePage() {
   return (
     <AdminOSAccess>
-      <AdminCommerceOpsNav />
-      <ObjectIntakeAdminNew />
+      <AdminOSConsole activeWorkspace="product-intake" />
     </AdminOSAccess>
   );
 }

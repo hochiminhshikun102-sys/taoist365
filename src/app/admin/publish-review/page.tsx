@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { AdminOSAccess } from "@/components/admin/AdminOSAccess";
-import { AdminCommerceOpsNav } from "@/components/admin/AdminCommerceOpsNav";
-import { ObjectIntakeAdminQueue } from "@/components/object-intake/ObjectIntakeAdminQueue";
+import { AdminOSConsole } from "@/components/admin/AdminOSConsole";
 
 export const metadata: Metadata = {
   title: "Publish Review - Reverent Inquiry",
@@ -11,8 +10,7 @@ export const metadata: Metadata = {
 export default function AdminPublishReviewPage() {
   return (
     <AdminOSAccess>
-      <AdminCommerceOpsNav />
-      <ObjectIntakeAdminQueue />
+      <AdminOSConsole activeWorkspace="publish-review" />
     </AdminOSAccess>
   );
 }

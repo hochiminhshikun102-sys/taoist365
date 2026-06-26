@@ -5,6 +5,10 @@ import type { CSSProperties } from "react";
 import { useState } from "react";
 import { locales, localeDefinitions } from "@/config/locales";
 import { siteConfig } from "@/config/site";
+import { AssetRegistryAdmin } from "@/components/admin/AssetRegistryAdmin";
+import { GlobalBuyerAdminRuntime, isGlobalBuyerAdminWorkspace } from "@/components/admin/GlobalBuyerAdminRuntime";
+import { ObjectIntakeAdminNew } from "@/components/object-intake/ObjectIntakeAdminNew";
+import { ObjectIntakeAdminQueue } from "@/components/object-intake/ObjectIntakeAdminQueue";
 
 const t = {
   adminSystem: "\u540e\u53f0\u7cfb\u7edf",
@@ -39,6 +43,8 @@ const t = {
 
 export type AdminWorkspaceId =
   | "overview"
+  | "product-intake"
+  | "publish-review"
   | "objects"
   | "orders"
   | "payments"
@@ -173,6 +179,20 @@ const workspaceMap = {
     en: "Operating Overview",
     state: "Runtime workspace active",
     work: ["Workspace switch", "Module status", "Rules binding", "Mobile essentials", "AI lanes", "Asset governance"],
+  },
+  "product-intake": {
+    id: "product-intake",
+    cn: "宝贝入库",
+    en: "Product Intake",
+    state: "Object intake pipeline",
+    work: ["Source", "Media modules", "AI draft", "Human supplement", "Submit review", "Audit log"],
+  },
+  "publish-review": {
+    id: "publish-review",
+    cn: "发布审核",
+    en: "Publish Review",
+    state: "Review and publish queue",
+    work: ["Review pending", "Approve", "Revision required", "Reject", "Publish object_id", "Audit log"],
   },
   objects: {
     id: "objects",
@@ -1034,6 +1054,12 @@ const workspaceMap = {
   },
 } satisfies Record<AdminWorkspaceId, Workspace>;
 
+const objectIntakeAdminWorkspaces = new Set<AdminWorkspaceId>([
+  "wind-seeker-approval",
+  "ai-product-moderation",
+  "wind-seeker-moderation-runtime",
+]);
+
 const navGroups = [
   {
     id: "frontstage",
@@ -1047,7 +1073,7 @@ const navGroups = [
     icon: "CO",
     cn: t.commerce,
     en: "Commerce",
-    items: ["objects", "orders", "payments"] satisfies AdminWorkspaceId[],
+    items: ["product-intake", "product-media", "publish-review", "objects", "orders", "payments"] satisfies AdminWorkspaceId[],
   },
   {
     id: "wind-seeker",
@@ -1149,6 +1175,9 @@ export function isAdminWorkspaceId(value: string): value is AdminWorkspaceId {
 }
 
 function workspaceHref(id: AdminWorkspaceId) {
+  if (id === "product-intake") return "/admin/product-intake";
+  if (id === "publish-review") return "/admin/publish-review";
+  if (id === "product-media") return "/admin/product-media";
   return id === "overview" ? "/admin" : `/admin/${id}`;
 }
 
@@ -1172,9 +1201,10 @@ const ruleBindings = [
 ] as const;
 
 function StatusPill({ children }: Readonly<{ children: React.ReactNode }>) {
+  const bilingual = typeof children === "string" && children in statusText ? statusText[children as RuntimeStatus] : null;
   return (
     <span className="rounded-full border border-[#947A66]/55 bg-[#947A66] px-3 py-1 text-xs text-white">
-      {children}
+      {bilingual ? <BilingualText cn={bilingual.cn} en={bilingual.en} align="center" /> : children}
     </span>
   );
 }
@@ -1189,6 +1219,41 @@ function RuntimeCard({ children }: Readonly<{ children: React.ReactNode }>) {
 
 const runtimeStatuses = ["Draft", "Open", "Review", "Scheduled", "Published", "Archived", "Failed"] as const;
 const pageSize = 5;
+
+const statusText: Record<(typeof runtimeStatuses)[number], { cn: string; en: string }> = {
+  Draft: { cn: "草稿", en: "Draft" },
+  Open: { cn: "进行中", en: "Open" },
+  Review: { cn: "审核中", en: "Review" },
+  Scheduled: { cn: "已计划", en: "Scheduled" },
+  Published: { cn: "已发布", en: "Published" },
+  Archived: { cn: "已归档", en: "Archived" },
+  Failed: { cn: "失败", en: "Failed" },
+};
+
+const tabText = {
+  records: { cn: "记录", en: "Records" },
+  form: { cn: "表单", en: "Form" },
+  logs: { cn: "日志", en: "Logs" },
+} as const;
+
+const actionText = {
+  open: { cn: "打开", en: "Open" },
+  edit: { cn: "编辑", en: "Edit" },
+  publish: { cn: "发布", en: "Publish" },
+  archive: { cn: "归档", en: "Archive" },
+  delete: { cn: "删除", en: "Delete" },
+  create: { cn: "新建", en: "Create" },
+  export: { cn: "导出", en: "Export" },
+  save: { cn: "保存", en: "Save" },
+  clear: { cn: "清空", en: "Clear" },
+  previous: { cn: "上一页", en: "Previous" },
+  next: { cn: "下一页", en: "Next" },
+  cancel: { cn: "取消", en: "Cancel" },
+  confirm: { cn: "确认", en: "Confirm" },
+  preview: { cn: "预览", en: "Preview" },
+  schedule: { cn: "计划", en: "Schedule" },
+  rollback: { cn: "回滚", en: "Rollback" },
+} as const;
 
 type RuntimeStatus = (typeof runtimeStatuses)[number];
 type RuntimeKind = "general" | "media" | "ai" | "logistics" | "supply" | "finance" | "moderation" | "publishing" | "windseeker";
@@ -1220,6 +1285,15 @@ type RuntimeForm = {
   note: string;
   amount: string;
 };
+
+function BilingualText({ cn, en, align = "left" }: Readonly<{ cn: string; en: string; align?: "left" | "center" }>) {
+  return (
+    <span className={`block leading-tight ${align === "center" ? "text-center" : "text-left"}`}>
+      <span className="block text-[0.95rem] font-semibold">{cn}</span>
+      <span className="mt-0.5 block text-[0.72rem] font-normal opacity-70">{en}</span>
+    </span>
+  );
+}
 
 const emptyRuntimeForm: RuntimeForm = {
   name: "",
@@ -1436,30 +1510,30 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
 
         <div className="mt-5 grid gap-3 lg:grid-cols-[1fr_auto_auto_auto]">
           <label className="block">
-            <span className="text-xs uppercase tracking-[0.22em] text-[#9CA3AF]">Search</span>
+            <span className="text-[#9CA3AF]"><BilingualText cn="搜索" en="Search" /></span>
             <input value={query} onChange={(event) => { setQuery(event.target.value); setPage(1); }} className="mt-2 w-full rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder="Search runtime records" type="search" />
           </label>
           <label className="block">
-            <span className="text-xs uppercase tracking-[0.22em] text-[#9CA3AF]">Filter</span>
+            <span className="text-[#9CA3AF]"><BilingualText cn="筛选" en="Filter" /></span>
             <select value={statusFilter} onChange={(event) => { setStatusFilter(event.target.value); setPage(1); }} className="mt-2 w-full rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]">
-              <option>All</option>
-              {runtimeStatuses.map((status) => <option key={status}>{status}</option>)}
+              <option value="All">全部 / All</option>
+              {runtimeStatuses.map((status) => <option key={status} value={status}>{statusText[status].cn} / {statusText[status].en}</option>)}
             </select>
           </label>
           <label className="block">
-            <span className="text-xs uppercase tracking-[0.22em] text-[#9CA3AF]">Upload</span>
+            <span className="text-[#9CA3AF]"><BilingualText cn="上传" en="Upload" /></span>
             <input onChange={(event) => handleUpload(event.target.files)} className="mt-2 block w-full text-sm text-[#6B7280] file:mr-3 file:rounded-lg file:border file:border-[#D9DCE0] file:bg-[#EBEDEF] file:px-3 file:py-2 file:text-[#2D333A]" type="file" multiple />
           </label>
           <div className="flex items-end gap-2">
-            <RuntimeButton tone="primary" onClick={() => setActiveTab("form")}>Create</RuntimeButton>
-            <RuntimeButton onClick={() => writeLogs("Export requested")}>Export</RuntimeButton>
+            <RuntimeButton tone="primary" onClick={() => setActiveTab("form")}><BilingualText {...actionText.create} /></RuntimeButton>
+            <RuntimeButton onClick={() => writeLogs("Export requested")}><BilingualText {...actionText.export} /></RuntimeButton>
           </div>
         </div>
 
         <div className="mt-5 flex flex-wrap gap-2">
           {(["records", "form", "logs"] as const).map((tab) => (
-            <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`rounded-full border px-4 py-2 text-sm capitalize ${activeTab === tab ? "border-[#947A66] bg-[#947A66] text-white" : "border-[#D9DCE0] bg-[#EBEDEF] text-[#6B7280]"}`}>
-              {tab}
+            <button key={tab} type="button" onClick={() => setActiveTab(tab)} className={`rounded-full border px-4 py-2 text-sm ${activeTab === tab ? "border-[#947A66] bg-[#947A66] text-white" : "border-[#D9DCE0] bg-[#EBEDEF] text-[#6B7280]"}`}>
+              <BilingualText {...tabText[tab]} align="center" />
             </button>
           ))}
         </div>
@@ -1472,19 +1546,19 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
 
         {activeTab === "form" ? (
           <RuntimeCard>
-            <p className="text-sm text-[#6B7280]">Create / edit / save</p>
+            <p className="text-sm text-[#6B7280]"><BilingualText cn="新建 / 编辑 / 保存" en="Create / Edit / Save" /></p>
             <form className="mt-4 grid gap-3 md:grid-cols-2" onSubmit={saveRow}>
-              <input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder={kind === "logistics" ? "Tracking number or shipment name" : "Runtime title"} />
-              <input value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder={kind === "logistics" ? "Carrier / DHL / UPS / SF" : "Category"} />
-              <input value={form.owner} onChange={(event) => setForm({ ...form, owner: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder="Owner" />
-              <input value={form.amount} onChange={(event) => setForm({ ...form, amount: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder={kind === "finance" ? "Amount / settlement value" : "Optional value"} />
+              <input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder={kind === "logistics" ? "运单号或发货名称 / Tracking number or shipment name" : "运行标题 / Runtime title"} />
+              <input value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder={kind === "logistics" ? "物流商 / Carrier / DHL / UPS / SF" : "分类 / Category"} />
+              <input value={form.owner} onChange={(event) => setForm({ ...form, owner: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder="负责人 / Owner" />
+              <input value={form.amount} onChange={(event) => setForm({ ...form, amount: event.target.value })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]" placeholder={kind === "finance" ? "金额 / 结算值 / Amount / settlement value" : "可选金额 / Optional value"} />
               <select value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value as RuntimeStatus })} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66]">
-                {runtimeStatuses.map((status) => <option key={status}>{status}</option>)}
+                {runtimeStatuses.map((status) => <option key={status} value={status}>{statusText[status].cn} / {statusText[status].en}</option>)}
               </select>
-              <textarea value={form.note} onChange={(event) => setForm({ ...form, note: event.target.value })} className="min-h-24 rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66] md:col-span-2" placeholder="Operational note" />
+              <textarea value={form.note} onChange={(event) => setForm({ ...form, note: event.target.value })} className="min-h-24 rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-4 py-3 text-sm text-[#2D333A] outline-none focus:border-[#947A66] md:col-span-2" placeholder="运营备注 / Operational note" />
               <div className="flex flex-wrap gap-2 md:col-span-2">
-                <RuntimeButton type="submit" tone="primary">Save</RuntimeButton>
-                <RuntimeButton onClick={() => setForm(emptyRuntimeForm)}>Clear</RuntimeButton>
+                <RuntimeButton type="submit" tone="primary"><BilingualText {...actionText.save} /></RuntimeButton>
+                <RuntimeButton onClick={() => setForm(emptyRuntimeForm)}><BilingualText {...actionText.clear} /></RuntimeButton>
               </div>
             </form>
           </RuntimeCard>
@@ -1493,40 +1567,40 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
         {activeTab === "logs" ? <RuntimeLogs logs={logs} /> : null}
 
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-[#6B7280]">Pagination 路 Page {page} / {totalPages} 路 {filteredRows.length} records</p>
+          <p className="text-sm text-[#6B7280]">分页 / Pagination · 第 {page} 页 / Page {page} of {totalPages} · {filteredRows.length} 条记录 / records</p>
           <div className="flex gap-2">
-            <RuntimeButton onClick={() => setPage(Math.max(1, page - 1))}>Previous</RuntimeButton>
-            <RuntimeButton onClick={() => setPage(Math.min(totalPages, page + 1))}>Next</RuntimeButton>
+            <RuntimeButton onClick={() => setPage(Math.max(1, page - 1))}><BilingualText {...actionText.previous} /></RuntimeButton>
+            <RuntimeButton onClick={() => setPage(Math.min(totalPages, page + 1))}><BilingualText {...actionText.next} /></RuntimeButton>
           </div>
         </div>
       </section>
 
       <aside className="grid gap-5">
         <RuntimeCard>
-          <p className="text-sm text-[#6B7280]">Drawer / record detail</p>
-          <h3 className="mt-2 text-2xl font-semibold text-[#2D333A]">{drawerItem?.name ?? "No item selected"}</h3>
+          <p className="text-sm text-[#6B7280]"><BilingualText cn="抽屉 / 记录详情" en="Drawer / Record Detail" /></p>
+          <h3 className="mt-2 text-2xl font-semibold text-[#2D333A]">{drawerItem?.name ?? "未选择记录 / No item selected"}</h3>
           {drawerItem ? (
             <div className="mt-4 grid gap-3 text-sm text-[#6B7280]">
-              <p>Status: {drawerItem.status}</p>
-              <p>Category: {drawerItem.category}</p>
-              <p>Owner: {drawerItem.owner}</p>
+              <p>状态 / Status: {statusText[drawerItem.status].cn} / {statusText[drawerItem.status].en}</p>
+              <p>分类 / Category: {drawerItem.category}</p>
+              <p>负责人 / Owner: {drawerItem.owner}</p>
               <p>{drawerItem.note}</p>
               {drawerItem.previewUrl ? <object data={drawerItem.previewUrl} aria-label="Uploaded asset preview" className="h-48 w-full rounded-xl border border-[#D9DCE0] object-contain" /> : null}
               <div className="flex flex-wrap gap-2">
-                <RuntimeButton onClick={() => editRow(drawerItem)}>Edit</RuntimeButton>
-                <RuntimeButton tone="primary" onClick={() => updateRow(drawerItem.id, { status: "Published" }, `Published ${drawerItem.name}`)}>Publish</RuntimeButton>
-                <RuntimeButton onClick={() => updateRow(drawerItem.id, { status: "Archived" }, `Archived ${drawerItem.name}`)}>Archive</RuntimeButton>
-                <RuntimeButton tone="danger" onClick={() => deleteRow(drawerItem)}>Delete</RuntimeButton>
+                <RuntimeButton onClick={() => editRow(drawerItem)}><BilingualText {...actionText.edit} /></RuntimeButton>
+                <RuntimeButton tone="primary" onClick={() => updateRow(drawerItem.id, { status: "Published" }, `Published ${drawerItem.name}`)}><BilingualText {...actionText.publish} /></RuntimeButton>
+                <RuntimeButton onClick={() => updateRow(drawerItem.id, { status: "Archived" }, `Archived ${drawerItem.name}`)}><BilingualText {...actionText.archive} /></RuntimeButton>
+                <RuntimeButton tone="danger" onClick={() => deleteRow(drawerItem)}><BilingualText {...actionText.delete} /></RuntimeButton>
               </div>
             </div>
           ) : (
-            <p className="mt-3 text-sm leading-6 text-[#6B7280]">Open a row to inspect, edit, publish, archive, delete, preview, and review history.</p>
+            <p className="mt-3 text-sm leading-6 text-[#6B7280]">打开一条记录后可查看、编辑、发布、归档、删除、预览与查看历史。 / Open a row to inspect, edit, publish, archive, delete, preview, and review history.</p>
           )}
         </RuntimeCard>
 
         {workspace.mobile ? (
           <RuntimeCard>
-            <p className="text-sm text-[#6B7280]">{t.quick} / Mobile high-frequency actions</p>
+            <p className="text-sm text-[#6B7280]"><BilingualText cn={t.quick} en="Mobile High-Frequency Actions" /></p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               {workspace.mobile.map((item) => (
                 <button key={item} type="button" onClick={() => writeLogs(`Mobile action: ${item}`)} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] px-3 py-3 text-left text-sm text-[#6B7280] hover:border-[#A88C75]">{item}</button>
@@ -1539,12 +1613,12 @@ function WorkspacePanel({ workspace }: Readonly<{ workspace: Workspace }>) {
       {modalAction ? (
         <div className="fixed inset-0 z-50 grid place-items-center bg-[#2D333A]/35 px-4">
           <div className="w-full max-w-md rounded-3xl border border-[#947A66] bg-white p-6 shadow-[0_28px_80px_rgba(0,0,0,0.5)]">
-            <p className="text-sm text-[#6B7280]">Modal / confirmation</p>
+            <p className="text-sm text-[#6B7280]"><BilingualText cn="弹窗 / 确认" en="Modal / Confirmation" /></p>
             <h3 className="mt-2 text-2xl font-semibold text-[#2D333A]">{modalAction.label}</h3>
-            <p className="mt-3 text-sm leading-6 text-[#6B7280]">This operation writes to the current Runtime state and adds an audit log entry.</p>
+            <p className="mt-3 text-sm leading-6 text-[#6B7280]">此操作会写入当前 Runtime 状态，并增加一条审计日志。 / This operation writes to the current Runtime state and adds an audit log entry.</p>
             <div className="mt-6 flex justify-end gap-2">
-              <RuntimeButton onClick={() => setModalAction(null)}>Cancel</RuntimeButton>
-              <RuntimeButton tone="primary" onClick={() => { modalAction.run(); setModalAction(null); }}>Confirm</RuntimeButton>
+              <RuntimeButton onClick={() => setModalAction(null)}><BilingualText {...actionText.cancel} /></RuntimeButton>
+              <RuntimeButton tone="primary" onClick={() => { modalAction.run(); setModalAction(null); }}><BilingualText {...actionText.confirm} /></RuntimeButton>
             </div>
           </div>
         </div>
@@ -1559,14 +1633,14 @@ function RuntimeRecordsTable({ rows, editRow, deleteRow, setDrawerItem, updateRo
       <table className="w-full min-w-[62rem] border-collapse text-left text-sm">
         <thead className="bg-[#EBEDEF] text-[#6B7280]">
           <tr>
-            <th className="border-b border-[#D9DCE0] px-3 py-3">Name</th>
-            <th className="border-b border-[#D9DCE0] px-3 py-3">Status</th>
-            <th className="border-b border-[#D9DCE0] px-3 py-3">Category</th>
-            <th className="border-b border-[#D9DCE0] px-3 py-3">Owner</th>
-            <th className="border-b border-[#D9DCE0] px-3 py-3">Progress</th>
-            <th className="border-b border-[#D9DCE0] px-3 py-3">Amount</th>
-            <th className="border-b border-[#D9DCE0] px-3 py-3">Updated</th>
-            <th className="border-b border-[#D9DCE0] px-3 py-3">Actions</th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="名称" en="Name" /></th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="状态" en="Status" /></th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="分类" en="Category" /></th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="负责人" en="Owner" /></th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="进度" en="Progress" /></th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="金额" en="Amount" /></th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="更新时间" en="Updated" /></th>
+            <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="操作" en="Actions" /></th>
           </tr>
         </thead>
         <tbody>
@@ -1581,11 +1655,11 @@ function RuntimeRecordsTable({ rows, editRow, deleteRow, setDrawerItem, updateRo
               <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{row.updated}</td>
               <td className="border-b border-[#D9DCE0] px-3 py-3">
                 <div className="flex flex-wrap gap-2">
-                  <RuntimeButton onClick={() => setDrawerItem(row)}>Open</RuntimeButton>
-                  <RuntimeButton onClick={() => editRow(row)}>Edit</RuntimeButton>
-                  <RuntimeButton tone="primary" onClick={() => updateRow(row.id, { status: "Published", progress: 100 }, `Published ${row.name}`)}>Publish</RuntimeButton>
-                  <RuntimeButton onClick={() => updateRow(row.id, { status: "Archived" }, `Archived ${row.name}`)}>Archive</RuntimeButton>
-                  <RuntimeButton tone="danger" onClick={() => deleteRow(row)}>Delete</RuntimeButton>
+                  <RuntimeButton onClick={() => setDrawerItem(row)}><BilingualText {...actionText.open} /></RuntimeButton>
+                  <RuntimeButton onClick={() => editRow(row)}><BilingualText {...actionText.edit} /></RuntimeButton>
+                  <RuntimeButton tone="primary" onClick={() => updateRow(row.id, { status: "Published", progress: 100 }, `Published ${row.name}`)}><BilingualText {...actionText.publish} /></RuntimeButton>
+                  <RuntimeButton onClick={() => updateRow(row.id, { status: "Archived" }, `Archived ${row.name}`)}><BilingualText {...actionText.archive} /></RuntimeButton>
+                  <RuntimeButton tone="danger" onClick={() => deleteRow(row)}><BilingualText {...actionText.delete} /></RuntimeButton>
                 </div>
               </td>
             </tr>
@@ -1599,7 +1673,7 @@ function RuntimeRecordsTable({ rows, editRow, deleteRow, setDrawerItem, updateRo
 function RuntimeLogs({ logs }: Readonly<{ logs: RuntimeLog[] }>) {
   return (
     <RuntimeCard>
-      <p className="text-sm text-[#6B7280]">Logs / history</p>
+      <p className="text-sm text-[#6B7280]"><BilingualText cn="日志 / 历史" en="Logs / History" /></p>
       <div className="mt-4 grid gap-3">
         {logs.map((log) => (
           <div key={log.id} className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] p-3">
@@ -1620,10 +1694,10 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
     const tokenUsage = rows.reduce((sum, row) => sum + row.tokens, 0);
     return (
       <div className="mt-5 grid gap-3 md:grid-cols-4">
-        <RuntimeMetric label="Queue" value={`${rows.length}`} />
-        <RuntimeMetric label="Token usage" value={`${tokenUsage}`} />
-        <RuntimeMetric label="Progress" value={`${Math.round(rows.reduce((sum, row) => sum + row.progress, 0) / rows.length)}%`} />
-        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Open", progress: Math.min(100, firstRow.progress + 20), tokens: firstRow.tokens + 260 }, `Retried ${firstRow.name}`)}>Retry first queue</RuntimeButton>
+        <RuntimeMetric label={<BilingualText cn="队列" en="Queue" />} value={`${rows.length}`} />
+        <RuntimeMetric label={<BilingualText cn="Token 用量" en="Token Usage" />} value={`${tokenUsage}`} />
+        <RuntimeMetric label={<BilingualText cn="进度" en="Progress" />} value={`${Math.round(rows.reduce((sum, row) => sum + row.progress, 0) / rows.length)}%`} />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Open", progress: Math.min(100, firstRow.progress + 20), tokens: firstRow.tokens + 260 }, `Retried ${firstRow.name}`)}><BilingualText cn="重跑首条队列" en="Retry First Queue" /></RuntimeButton>
       </div>
     );
   }
@@ -1631,10 +1705,10 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
   if (kind === "media") {
     return (
       <div className="mt-5 grid gap-3 md:grid-cols-4">
-        <RuntimeMetric label="Files" value={`${rows.length}`} />
-        <RuntimeMetric label="Categories" value="Brand / Product / Social" />
-        <RuntimeMetric label="Safe Area" value="PC + Mobile" />
-        <RuntimeButton onClick={() => writeLogs("Safe Area preview opened")}>Safe Area Preview</RuntimeButton>
+        <RuntimeMetric label={<BilingualText cn="文件" en="Files" />} value={`${rows.length}`} />
+        <RuntimeMetric label={<BilingualText cn="分类" en="Categories" />} value="Brand / Product / Social" />
+        <RuntimeMetric label={<BilingualText cn="安全区" en="Safe Area" />} value="PC + Mobile" />
+        <RuntimeButton onClick={() => writeLogs("Safe Area preview opened")}><BilingualText cn="安全区预览" en="Safe Area Preview" /></RuntimeButton>
       </div>
     );
   }
@@ -1642,10 +1716,10 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
   if (kind === "logistics") {
     return (
       <div className="mt-5 grid gap-3 md:grid-cols-4">
-        <RuntimeMetric label="Tracking input" value="Ready" />
-        <RuntimeMetric label="Carrier select" value="DHL / UPS / SF" />
-        <RuntimeMetric label="Returns" value={`${rows.filter((row) => row.name.toLowerCase().includes("return")).length}`} />
-        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Open", progress: 65 }, `Updated shipment ${firstRow.name}`)}>Update shipment</RuntimeButton>
+        <RuntimeMetric label={<BilingualText cn="单号录入" en="Tracking Input" />} value="Ready" />
+        <RuntimeMetric label={<BilingualText cn="物流商选择" en="Carrier Select" />} value="DHL / UPS / SF" />
+        <RuntimeMetric label={<BilingualText cn="退货" en="Returns" />} value={`${rows.filter((row) => row.name.toLowerCase().includes("return")).length}`} />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Open", progress: 65 }, `Updated shipment ${firstRow.name}`)}><BilingualText cn="更新物流" en="Update Shipment" /></RuntimeButton>
       </div>
     );
   }
@@ -1653,10 +1727,10 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
   if (kind === "supply") {
     return (
       <div className="mt-5 grid gap-3 md:grid-cols-4">
-        <RuntimeMetric label="Suppliers" value={`${rows.length}`} />
-        <RuntimeMetric label="Warning states" value={`${rows.filter((row) => row.status === "Failed").length}`} />
-        <RuntimeMetric label="Procurement" value="Records active" />
-        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Review" }, `Inventory warning reviewed: ${firstRow.name}`)}>Review warning</RuntimeButton>
+        <RuntimeMetric label={<BilingualText cn="供应商" en="Suppliers" />} value={`${rows.length}`} />
+        <RuntimeMetric label={<BilingualText cn="预警状态" en="Warning States" />} value={`${rows.filter((row) => row.status === "Failed").length}`} />
+        <RuntimeMetric label={<BilingualText cn="采购" en="Procurement" />} value="Records active" />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Review" }, `Inventory warning reviewed: ${firstRow.name}`)}><BilingualText cn="复核预警" en="Review Warning" /></RuntimeButton>
       </div>
     );
   }
@@ -1664,10 +1738,10 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
   if (kind === "finance") {
     return (
       <div className="mt-5 grid gap-3 md:grid-cols-4">
-        <RuntimeMetric label="Settlement" value={`${rows.length} records`} />
-        <RuntimeMetric label="Refunds" value={`${rows.filter((row) => row.name.toLowerCase().includes("refund")).length}`} />
-        <RuntimeMetric label="Audit logs" value="Active" />
-        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Review" }, `Freeze / unfreeze reviewed: ${firstRow.name}`)}>Freeze / unfreeze</RuntimeButton>
+        <RuntimeMetric label={<BilingualText cn="结算" en="Settlement" />} value={`${rows.length} records`} />
+        <RuntimeMetric label={<BilingualText cn="退款" en="Refunds" />} value={`${rows.filter((row) => row.name.toLowerCase().includes("refund")).length}`} />
+        <RuntimeMetric label={<BilingualText cn="审计日志" en="Audit Logs" />} value="Active" />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Review" }, `Freeze / unfreeze reviewed: ${firstRow.name}`)}><BilingualText cn="冻结 / 解冻" en="Freeze / Unfreeze" /></RuntimeButton>
       </div>
     );
   }
@@ -1675,10 +1749,10 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
   if (kind === "moderation") {
     return (
       <div className="mt-5 grid gap-3 md:grid-cols-4">
-        <RuntimeMetric label="Review queue" value={`${rows.length}`} />
-        <RuntimeMetric label="Reports" value={`${rows.filter((row) => row.status === "Review").length}`} />
-        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Approved ${firstRow.name}`)}>Approve</RuntimeButton>
-        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Archived" }, `Rejected ${firstRow.name}`)}>Reject</RuntimeButton>
+        <RuntimeMetric label={<BilingualText cn="审核队列" en="Review Queue" />} value={`${rows.length}`} />
+        <RuntimeMetric label={<BilingualText cn="举报" en="Reports" />} value={`${rows.filter((row) => row.status === "Review").length}`} />
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Approved ${firstRow.name}`)}><BilingualText cn="通过" en="Approve" /></RuntimeButton>
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Archived" }, `Rejected ${firstRow.name}`)}><BilingualText cn="驳回" en="Reject" /></RuntimeButton>
       </div>
     );
   }
@@ -1686,11 +1760,11 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
   if (kind === "publishing") {
     return (
       <div className="mt-5 grid gap-3 md:grid-cols-5">
-        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Draft" }, `Draft saved: ${firstRow.name}`)}>Draft</RuntimeButton>
-        <RuntimeButton onClick={() => writeLogs(`Preview opened: ${firstRow.name}`)}>Preview</RuntimeButton>
-        <RuntimeButton tone="primary" onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Published ${firstRow.name}`)}>Publish</RuntimeButton>
-        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Scheduled", progress: 50 }, `Scheduled ${firstRow.name}`)}>Schedule</RuntimeButton>
-        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Archived" }, `Rollback ${firstRow.name}`)}>Rollback</RuntimeButton>
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Draft" }, `Draft saved: ${firstRow.name}`)}><BilingualText cn="草稿" en="Draft" /></RuntimeButton>
+        <RuntimeButton onClick={() => writeLogs(`Preview opened: ${firstRow.name}`)}><BilingualText {...actionText.preview} /></RuntimeButton>
+        <RuntimeButton tone="primary" onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Published ${firstRow.name}`)}><BilingualText {...actionText.publish} /></RuntimeButton>
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Scheduled", progress: 50 }, `Scheduled ${firstRow.name}`)}><BilingualText {...actionText.schedule} /></RuntimeButton>
+        <RuntimeButton onClick={() => updateRow(firstRow.id, { status: "Archived" }, `Rollback ${firstRow.name}`)}><BilingualText {...actionText.rollback} /></RuntimeButton>
       </div>
     );
   }
@@ -1698,29 +1772,29 @@ function SpecializedRuntimePanel({ kind, rows, updateRow, writeLogs }: Readonly<
   if (kind === "windseeker") {
     return (
       <div className="mt-5 grid gap-3 md:grid-cols-4">
-        <RuntimeMetric label="3-minute flow" value="Discover / photo / AI / review" />
-        <RuntimeMetric label="AI generated" value="Title / SEO / GEO / price" />
-        <RuntimeMetric label="Deposit" value="Hold / release / refund" />
-        <RuntimeMetric label="Global controls" value="AML / KYC / country / sanctions" />
-        <RuntimeButton tone="primary" onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Wind Seeker approved: ${firstRow.name}`)}>Approve listing</RuntimeButton>
+        <RuntimeMetric label={<BilingualText cn="3分钟流程" en="3-Minute Flow" />} value="Discover / photo / AI / review" />
+        <RuntimeMetric label={<BilingualText cn="AI 生成" en="AI Generated" />} value="Title / SEO / GEO / price" />
+        <RuntimeMetric label={<BilingualText cn="保证金" en="Deposit" />} value="Hold / release / refund" />
+        <RuntimeMetric label={<BilingualText cn="全球控制" en="Global Controls" />} value="AML / KYC / country / sanctions" />
+        <RuntimeButton tone="primary" onClick={() => updateRow(firstRow.id, { status: "Published", progress: 100 }, `Wind Seeker approved: ${firstRow.name}`)}><BilingualText cn="通过上架" en="Approve Listing" /></RuntimeButton>
       </div>
     );
   }
 
   return (
     <div className="mt-5 grid gap-3 md:grid-cols-4">
-      <RuntimeMetric label="Create" value="Ready" />
-      <RuntimeMetric label="Edit / save" value="Ready" />
-      <RuntimeMetric label="Publish / archive" value="Ready" />
-      <RuntimeMetric label="History" value="Active" />
+      <RuntimeMetric label={<BilingualText cn="新建" en="Create" />} value="Ready" />
+      <RuntimeMetric label={<BilingualText cn="编辑 / 保存" en="Edit / Save" />} value="Ready" />
+      <RuntimeMetric label={<BilingualText cn="发布 / 归档" en="Publish / Archive" />} value="Ready" />
+      <RuntimeMetric label={<BilingualText cn="历史" en="History" />} value="Active" />
     </div>
   );
 }
 
-function RuntimeMetric({ label, value }: Readonly<{ label: string; value: string }>) {
+function RuntimeMetric({ label, value }: Readonly<{ label: React.ReactNode; value: React.ReactNode }>) {
   return (
     <div className="rounded-xl border border-[#D9DCE0] bg-[#EBEDEF] p-4">
-      <p className="text-xs uppercase tracking-[0.22em] text-[#9CA3AF]">{label}</p>
+      <p className="text-[#9CA3AF]">{label}</p>
       <p className="mt-3 text-lg text-[#2D333A]">{value}</p>
     </div>
   );
@@ -1756,10 +1830,10 @@ function OverviewWorkspace() {
                   <p className="text-sm text-[#6B7280]">{en}</p>
                 </div>
                 <dl className="mt-4 grid gap-2 text-sm text-[#6B7280] sm:grid-cols-2">
-                  <div><dt className="text-[#9CA3AF]">Size</dt><dd>{size}</dd></div>
-                  <div><dt className="text-[#9CA3AF]">Ratio</dt><dd>{ratio}</dd></div>
-                  <div><dt className="text-[#9CA3AF]">Safe Area</dt><dd>{safe}</dd></div>
-                  <div><dt className="text-[#9CA3AF]">Limits</dt><dd>{limits}</dd></div>
+                  <div><dt className="text-[#9CA3AF]"><BilingualText cn="尺寸" en="Size" /></dt><dd>{size}</dd></div>
+                  <div><dt className="text-[#9CA3AF]"><BilingualText cn="比例" en="Ratio" /></dt><dd>{ratio}</dd></div>
+                  <div><dt className="text-[#9CA3AF]"><BilingualText cn="安全区" en="Safe Area" /></dt><dd>{safe}</dd></div>
+                  <div><dt className="text-[#9CA3AF]"><BilingualText cn="限制" en="Limits" /></dt><dd>{limits}</dd></div>
                 </dl>
               </article>
             ))}
@@ -1786,15 +1860,15 @@ function LocaleWorkspace() {
   return (
     <RuntimeCard>
       <h3 className="text-2xl font-semibold text-[#2D333A]">{t.localeGeo}</h3>
-      <p className="mt-1 text-sm text-[#6B7280]">Locale routing, canonical localization, hreflang, and region readiness.</p>
+      <p className="mt-1 text-sm text-[#6B7280]">语言路由、canonical 本地化、hreflang 与区域准备。 / Locale routing, canonical localization, hreflang, and region readiness.</p>
       <div className="mt-5 max-h-[32rem] overflow-auto rounded-xl border border-[#D9DCE0]">
         <table className="w-full min-w-[44rem] border-collapse text-left text-sm">
           <thead className="bg-[#EBEDEF] text-[#6B7280]">
             <tr>
-              <th className="border-b border-[#D9DCE0] px-3 py-3">Route</th>
-              <th className="border-b border-[#D9DCE0] px-3 py-3">Language</th>
-              <th className="border-b border-[#D9DCE0] px-3 py-3">Direction</th>
-              <th className="border-b border-[#D9DCE0] px-3 py-3">Status</th>
+              <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="路由" en="Route" /></th>
+              <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="语言" en="Language" /></th>
+              <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="方向" en="Direction" /></th>
+              <th className="border-b border-[#D9DCE0] px-3 py-3"><BilingualText cn="状态" en="Status" /></th>
             </tr>
           </thead>
           <tbody>
@@ -1805,7 +1879,7 @@ function LocaleWorkspace() {
                   <td className="border-b border-[#D9DCE0] px-3 py-3 font-mono text-[#2D333A]">/{locale}</td>
                   <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{definition.label}</td>
                   <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">{definition.dir.toUpperCase()}</td>
-                  <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">Reserved</td>
+                  <td className="border-b border-[#D9DCE0] px-3 py-3 text-[#6B7280]">已预留 / Reserved</td>
                 </tr>
               );
             })}
@@ -1820,6 +1894,10 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
   const workspace = workspaceMap[activeWorkspace];
   const activeGroup = navGroups.find((group) => (group.items as readonly AdminWorkspaceId[]).includes(activeWorkspace));
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const usesObjectIntakeRuntime = objectIntakeAdminWorkspaces.has(activeWorkspace);
+  const usesAssetRegistryRuntime = activeWorkspace === "product-media";
+  const usesProductIntakeRuntime = activeWorkspace === "product-intake";
+  const usesPublishReviewRuntime = activeWorkspace === "publish-review";
 
   return (
     <main className="min-h-screen bg-[#F5F6F8] text-[#2D333A]">
@@ -1831,17 +1909,17 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
                 <p className="text-2xl font-semibold leading-tight text-[#2D333A]">{t.adminSystem}</p>
                 <p className="mt-1 text-sm text-[#6B7280]">Admin OS</p>
               </div>
-              <button type="button" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#D9DCE0] bg-white text-sm text-[#2D333A] hover:border-[#A88C75]" aria-label="Collapse sidebar">
+              <button type="button" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[#D9DCE0] bg-white text-sm text-[#2D333A] hover:border-[#A88C75]" aria-label="折叠侧边栏 / Collapse sidebar">
                 {sidebarCollapsed ? ">" : "<"}
               </button>
             </div>
             <p className={`mt-4 text-sm leading-6 text-[#6B7280] ${sidebarCollapsed ? "sr-only" : ""}`}>{siteConfig.siteName}</p>
             <Link
               href="/admin"
-              title="Runtime Overview"
+              title="运行总览 / Runtime Overview"
               className={`mt-5 block w-full rounded-xl border px-3 py-3 text-left text-sm ${activeWorkspace === "overview" ? "border-[#947A66] bg-[#947A66] text-white" : "border-[#D9DCE0] bg-white text-[#6B7280]"}`}
             >
-              {sidebarCollapsed ? "OV" : "Runtime Overview"}
+              {sidebarCollapsed ? "OV" : <BilingualText cn="运行总览" en="Runtime Overview" />}
             </Link>
           </div>
 
@@ -1901,7 +1979,13 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
           </header>
 
           <div className="min-h-0 flex-1 overflow-auto px-4 py-5 lg:px-7">
-            {activeWorkspace === "overview" ? <OverviewWorkspace /> : activeWorkspace === "locale-geo" ? <LocaleWorkspace /> : <WorkspacePanel workspace={workspace} />}
+            {activeWorkspace === "overview" ? <OverviewWorkspace /> : null}
+            {activeWorkspace === "locale-geo" ? <LocaleWorkspace /> : null}
+            {usesProductIntakeRuntime ? <ObjectIntakeAdminNew /> : null}
+            {usesAssetRegistryRuntime ? <AssetRegistryAdmin /> : null}
+            {usesPublishReviewRuntime || usesObjectIntakeRuntime ? <ObjectIntakeAdminQueue /> : null}
+            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesObjectIntakeRuntime && isGlobalBuyerAdminWorkspace(activeWorkspace) ? <GlobalBuyerAdminRuntime workspaceId={activeWorkspace} /> : null}
+            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesObjectIntakeRuntime && !isGlobalBuyerAdminWorkspace(activeWorkspace) ? <WorkspacePanel workspace={workspace} /> : null}
           </div>
         </section>
       </div>
