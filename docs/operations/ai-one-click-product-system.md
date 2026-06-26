@@ -89,6 +89,34 @@ For Taobao SKU import, every imported link should create:
 
 The job queue is intentionally separate from the final AI image generator. This lets operations import 100+ SKUs now while the real beautification runner is connected later.
 
+## OA Air Engine Queue
+
+Use:
+
+```txt
+/admin/ai-queue
+```
+
+The queue shows:
+
+- source platform
+- source URL
+- commerce channel
+- goods condition
+- rights status
+- transform requirement
+- requested output media types
+- job status
+
+Supported first-stage actions:
+
+- mark pending
+- mark processing
+- mark ready
+- mark failed
+
+Updating a job also syncs the linked intake `air_engine_status`, so publish review can see whether media processing is still pending or ready.
+
 ## Platform Defaults
 
 | Platform | Default channel |

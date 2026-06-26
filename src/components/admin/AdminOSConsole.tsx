@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { useState } from "react";
 import { locales, localeDefinitions } from "@/config/locales";
 import { siteConfig } from "@/config/site";
+import { AirEngineJobQueue } from "@/components/admin/AirEngineJobQueue";
 import { AssetRegistryAdmin } from "@/components/admin/AssetRegistryAdmin";
 import { GlobalBuyerAdminRuntime, isGlobalBuyerAdminWorkspace } from "@/components/admin/GlobalBuyerAdminRuntime";
 import { OrderAdminQueue } from "@/components/admin/OrderAdminQueue";
@@ -866,11 +867,11 @@ const workspaceMap = {
   },
   "ai-queue": {
     id: "ai-queue",
-    cn: "AI \u961f\u5217",
-    en: "AI Queue Runtime",
-    state: "Queue reserved",
-    work: ["Queue", "Status", "Tokens", "Cost", "Errors", "Retry"],
-    ai: ["Asset Review", "Product Draft", "Logistics Routing", "Inventory Forecast", "Risk Score", "Fraud Prediction", "Failed Retry"],
+    cn: "AI素材处理",
+    en: "Air Engine Queue",
+    state: "Source rebuild queue",
+    work: ["Source fetch", "Rights marker", "Rebuild required", "Output targets", "Ready state", "Failed retry"],
+    ai: ["Reference-only media", "Product draft", "Image rebuild", "Atmosphere rendering", "Quality control", "Publish gate"],
   },
   "ai-image": {
     id: "ai-image",
@@ -1902,6 +1903,7 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
   const usesPublishReviewRuntime = activeWorkspace === "publish-review";
   const usesOrderRuntime = activeWorkspace === "orders";
   const usesPublishedObjectsRuntime = activeWorkspace === "objects";
+  const usesAirEngineQueueRuntime = activeWorkspace === "ai-queue";
 
   return (
     <main className="min-h-screen bg-[#F5F6F8] text-[#2D333A]">
@@ -1990,8 +1992,9 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
             {usesPublishReviewRuntime || usesObjectIntakeRuntime ? <ObjectIntakeAdminQueue /> : null}
             {usesOrderRuntime ? <OrderAdminQueue /> : null}
             {usesPublishedObjectsRuntime ? <PublishedObjectsAdmin /> : null}
-            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesOrderRuntime && !usesPublishedObjectsRuntime && !usesObjectIntakeRuntime && isGlobalBuyerAdminWorkspace(activeWorkspace) ? <GlobalBuyerAdminRuntime workspaceId={activeWorkspace} /> : null}
-            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesOrderRuntime && !usesPublishedObjectsRuntime && !usesObjectIntakeRuntime && !isGlobalBuyerAdminWorkspace(activeWorkspace) ? <WorkspacePanel workspace={workspace} /> : null}
+            {usesAirEngineQueueRuntime ? <AirEngineJobQueue /> : null}
+            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesOrderRuntime && !usesPublishedObjectsRuntime && !usesAirEngineQueueRuntime && !usesObjectIntakeRuntime && isGlobalBuyerAdminWorkspace(activeWorkspace) ? <GlobalBuyerAdminRuntime workspaceId={activeWorkspace} /> : null}
+            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesOrderRuntime && !usesPublishedObjectsRuntime && !usesAirEngineQueueRuntime && !usesObjectIntakeRuntime && !isGlobalBuyerAdminWorkspace(activeWorkspace) ? <WorkspacePanel workspace={workspace} /> : null}
           </div>
         </section>
       </div>
