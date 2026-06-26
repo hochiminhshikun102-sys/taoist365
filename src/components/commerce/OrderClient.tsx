@@ -8,6 +8,8 @@ import { formatPrice } from "@/config/operational-commerce";
 export function OrderClient() {
   const [items, setItems] = useState<QuietCartItem[]>(() => readQuietCart());
   const [submittedOrder, setSubmittedOrder] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitNote, setSubmitNote] = useState("");
 
   const subtotal = cartSubtotal(items);
   const orderBody = useMemo(() => {
@@ -15,14 +17,42 @@ export function OrderClient() {
     return [`Order request ${submittedOrder ?? ""}`, "", ...lines, "", `Subtotal: ${formatPrice(subtotal)}`].join("\n");
   }, [items, submittedOrder, subtotal]);
 
-  function submitOrder(event: FormEvent<HTMLFormElement>) {
+  async function submitOrder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const id = `T365-${Date.now().toString(36).toUpperCase()}`;
-    setSubmittedOrder(id);
-    window.localStorage.setItem(
-      "taoist365-last-order",
-      JSON.stringify({ id, items, subtotal, createdAt: new Date().toISOString() }),
-    );
+    const formData = new FormData(event.currentTarget);
+    setIsSubmitting(true);
+    setSubmitNote("");
+
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          contact: {
+            name: formData.get("name"),
+            email: formData.get("email"),
+            address: formData.get("address"),
+            note: formData.get("note"),
+          },
+          items,
+          subtotal,
+          note: formData.get("note"),
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to create order request.");
+
+      const id = data.order_no || data.order?.id;
+      setSubmittedOrder(id);
+      window.localStorage.setItem(
+        "taoist365-last-order",
+        JSON.stringify({ id, items, subtotal, contact: data.order?.contact, createdAt: new Date().toISOString() }),
+      );
+    } catch (error) {
+      setSubmitNote(error instanceof Error ? error.message : "Order request failed.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   if (items.length === 0 && !submittedOrder) {
@@ -44,8 +74,8 @@ export function OrderClient() {
         <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Order request</p>
         <h2 className="mt-3 text-2xl text-foreground">{submittedOrder}</h2>
         <p className="mt-4 text-sm leading-7 text-text-secondary">
-          The order request is saved in this browser. Send it by mail now; payment and shipping confirmation happen by
-          human reply until a payment provider is connected.
+          The order request is saved to the operations queue. Mail remains available as a manual handoff while payment
+          provider confirmation is pending.
         </p>
         <div className="mt-5 whitespace-pre-wrap rounded-md border border-border-subtle bg-white/62 p-4 text-xs leading-6 text-text-muted">
           {orderBody}
@@ -105,10 +135,12 @@ export function OrderClient() {
         </div>
         <button
           type="submit"
+          disabled={isSubmitting}
           className="taoist-quiet-action mt-5 w-full rounded-lg border border-foreground/12 bg-foreground px-5 py-3 text-sm text-white transition hover:bg-foreground/88"
         >
-          Create order request
+          {isSubmitting ? "Creating..." : "Create order request"}
         </button>
+        {submitNote ? <p className="mt-3 text-xs leading-6 text-text-muted">{submitNote}</p> : null}
       </section>
     </form>
   );

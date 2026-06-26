@@ -7,6 +7,7 @@ import { locales, localeDefinitions } from "@/config/locales";
 import { siteConfig } from "@/config/site";
 import { AssetRegistryAdmin } from "@/components/admin/AssetRegistryAdmin";
 import { GlobalBuyerAdminRuntime, isGlobalBuyerAdminWorkspace } from "@/components/admin/GlobalBuyerAdminRuntime";
+import { OrderAdminQueue } from "@/components/admin/OrderAdminQueue";
 import { ObjectIntakeAdminNew } from "@/components/object-intake/ObjectIntakeAdminNew";
 import { ObjectIntakeAdminQueue } from "@/components/object-intake/ObjectIntakeAdminQueue";
 
@@ -1898,6 +1899,7 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
   const usesAssetRegistryRuntime = activeWorkspace === "product-media";
   const usesProductIntakeRuntime = activeWorkspace === "product-intake";
   const usesPublishReviewRuntime = activeWorkspace === "publish-review";
+  const usesOrderRuntime = activeWorkspace === "orders";
 
   return (
     <main className="min-h-screen bg-[#F5F6F8] text-[#2D333A]">
@@ -1984,8 +1986,9 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
             {usesProductIntakeRuntime ? <ObjectIntakeAdminNew /> : null}
             {usesAssetRegistryRuntime ? <AssetRegistryAdmin /> : null}
             {usesPublishReviewRuntime || usesObjectIntakeRuntime ? <ObjectIntakeAdminQueue /> : null}
-            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesObjectIntakeRuntime && isGlobalBuyerAdminWorkspace(activeWorkspace) ? <GlobalBuyerAdminRuntime workspaceId={activeWorkspace} /> : null}
-            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesObjectIntakeRuntime && !isGlobalBuyerAdminWorkspace(activeWorkspace) ? <WorkspacePanel workspace={workspace} /> : null}
+            {usesOrderRuntime ? <OrderAdminQueue /> : null}
+            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesOrderRuntime && !usesObjectIntakeRuntime && isGlobalBuyerAdminWorkspace(activeWorkspace) ? <GlobalBuyerAdminRuntime workspaceId={activeWorkspace} /> : null}
+            {activeWorkspace !== "overview" && activeWorkspace !== "locale-geo" && !usesProductIntakeRuntime && !usesAssetRegistryRuntime && !usesPublishReviewRuntime && !usesOrderRuntime && !usesObjectIntakeRuntime && !isGlobalBuyerAdminWorkspace(activeWorkspace) ? <WorkspacePanel workspace={workspace} /> : null}
           </div>
         </section>
       </div>

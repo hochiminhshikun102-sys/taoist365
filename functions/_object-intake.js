@@ -7,6 +7,7 @@ const emptyStore = {
   objectReviewQueue: [],
   objects: [],
   assetRegistry: [],
+  commerceOrders: [],
   buyerProfiles: [],
   adminAuditLogs: [],
 };
@@ -60,6 +61,7 @@ function cloneStore(value) {
     objectReviewQueue: Array.isArray(value?.objectReviewQueue) ? value.objectReviewQueue : [],
     objects: Array.isArray(value?.objects) ? value.objects : [],
     assetRegistry: Array.isArray(value?.assetRegistry) ? value.assetRegistry : [],
+    commerceOrders: Array.isArray(value?.commerceOrders) ? value.commerceOrders : [],
     buyerProfiles: Array.isArray(value?.buyerProfiles) ? value.buyerProfiles : [],
     adminAuditLogs: Array.isArray(value?.adminAuditLogs) ? value.adminAuditLogs : [],
   };

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { productMediaUploadSpecs } from "@/config/product-media-upload-specs";
 
 type AssetScope = "all" | "brand" | "product_media" | "social" | "prompt_pack" | "safe_area" | "object_intake" | "air_engine";
 
@@ -159,8 +160,9 @@ export function AssetRegistryAdmin() {
             </label>
 
             <label className="grid gap-2 text-sm">
-              Alt text
+              Notes / alt text
               <textarea value={form.alt_text} onChange={(event) => setForm({ ...form, alt_text: event.target.value })} className="min-h-24 rounded-xl border border-[#D9DCE0] px-4 py-3 text-sm leading-7" />
+              <span className="text-xs leading-5 text-[#6B7280]">写清楚素材用途、真实尺寸、是否白底、是否需 Air Engine 补边/换背景/低饱和处理。</span>
             </label>
 
             <label className="grid gap-2 text-sm">
@@ -174,6 +176,29 @@ export function AssetRegistryAdmin() {
 
             {note ? <p className="rounded-xl border border-[#D9DCE0] bg-[#F5F6F8] p-3 text-sm leading-6 text-[#6B7280]">{note}</p> : null}
           </form>
+
+          <section className="grid gap-5">
+          <section className="rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(45,51,58,0.08)]">
+            <div className="border-b border-[#D9DCE0] pb-4">
+              <p className="text-sm text-[#6B7280]">RI Real Asset System</p>
+              <h2 className="mt-2 text-2xl font-semibold">素材尺寸锁死标准</h2>
+              <p className="mt-2 text-sm leading-6 text-[#6B7280]">所有真实素材尽量按此上传。RI 靠光、空气、留白、呼吸、风和真实感，不靠单纯高清。</p>
+            </div>
+            <div className="mt-4 grid gap-3 lg:grid-cols-2">
+              {productMediaUploadSpecs.map((spec) => (
+                <article key={spec.type} className="rounded-xl border border-[#D9DCE0] bg-[#F5F6F8] p-4 text-sm">
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="font-semibold">{spec.title}</h3>
+                    <span className="rounded-full bg-white px-2 py-1 text-xs text-[#6B7280]">{spec.type}</span>
+                  </div>
+                  <p className="mt-2 text-xs leading-5 text-[#6B7280]">{spec.usage}</p>
+                  <ul className="mt-3 grid gap-1 text-xs leading-5 text-[#6B7280]">
+                    {spec.specs.map((item) => <li key={item}>- {item}</li>)}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </section>
 
           <section className="rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(45,51,58,0.08)]">
             <div className="flex flex-col gap-3 border-b border-[#D9DCE0] pb-5 lg:flex-row lg:items-end lg:justify-between">
@@ -219,6 +244,7 @@ export function AssetRegistryAdmin() {
             </div>
 
             {rows.length === 0 ? <div className="mt-5 rounded-2xl border border-[#D9DCE0] bg-[#F5F6F8] p-5 text-sm text-[#6B7280]">No assets in this scope yet.</div> : null}
+          </section>
           </section>
         </section>
       </section>

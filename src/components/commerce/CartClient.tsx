@@ -2,12 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cartSubtotal, readQuietCart, type QuietCartItem, writeQuietCart } from "@/lib/quiet-cart";
 import { formatPrice, quietPairingsForCart } from "@/config/operational-commerce";
+import { productRuntimeIdForSourceId } from "@/config/product-runtime";
 
 export function CartClient() {
-  const [items, setItems] = useState<QuietCartItem[]>(() => readQuietCart());
+  const [items, setItems] = useState<QuietCartItem[]>([]);
+
+  useEffect(() => {
+    setItems(readQuietCart());
+  }, []);
 
   function updateItems(nextItems: QuietCartItem[]) {
     setItems(nextItems);
@@ -125,7 +130,7 @@ export function CartClient() {
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {pairings.map((object) => (
               <article key={object.id} className="rounded-lg border border-border-subtle bg-white/54 p-3">
-                <Link href={`/objects/${object.id}`} className="block">
+                <Link href={`/objects/${productRuntimeIdForSourceId(object.id)}`} className="block">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-md border border-border-subtle bg-white">
                     <Image src={object.media.hero} alt={object.media.alt} fill className="object-cover opacity-[0.9]" sizes="14rem" />
                   </div>
@@ -164,10 +169,10 @@ export function CartClient() {
             Keep browsing
           </Link>
           <Link
-            href="/store/checkout"
+            href="/order"
             className="taoist-quiet-action rounded-lg border border-foreground/12 bg-foreground px-5 py-3 text-center text-sm text-white transition hover:bg-foreground/88"
           >
-            Proceed to checkout
+            Create order request
           </Link>
         </div>
       </div>

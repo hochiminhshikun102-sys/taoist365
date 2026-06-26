@@ -1,27 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { productMediaUploadSpecs, type ProductMediaType } from "@/config/product-media-upload-specs";
 
 type UploadState = "idle" | "creating" | "uploading" | "drafting" | "submitting" | "done" | "error";
-type MediaType = "original" | "main" | "detail" | "scene" | "pc" | "mobile" | "social" | "motion";
 
 const sourceTypes = ["admin_upload", "boss_upload", "buyer_upload", "external_link", "supplier_batch"] as const;
 const sourcePlatforms = ["manual", "taobao", "tmall", "1688", "shopify", "etsy", "other"] as const;
-const mediaUploadGroups: { type: MediaType; title: string; note: string }[] = [
-  { type: "main", title: "Main image / 主图", note: "First product image for listing, search, collection, and cart." },
-  { type: "original", title: "Original source / 原始素材", note: "Raw buyer, supplier, link, or boss upload files retained for trace." },
-  { type: "detail", title: "Detail images / 细节图", note: "Material, texture, defects, package details, closeups." },
-  { type: "scene", title: "Scene images / 场景图", note: "Room, desk, shelf, usage, atmosphere, placement." },
-  { type: "pc", title: "PC page images / PC详情图", note: "Wide detail page sections and desktop marketing blocks." },
-  { type: "mobile", title: "Mobile page images / 手机详情图", note: "Vertical mobile sections for product detail." },
-  { type: "social", title: "Social exports / 社媒图", note: "Pinterest, Xiaohongshu, Instagram, ad/export versions." },
-  { type: "motion", title: "Video or motion / 视频动效", note: "Short video, slow loop, product movement, packaging proof." },
-];
+const mediaUploadGroups = productMediaUploadSpecs;
 
 export function ObjectIntakeAdminNew() {
   const [state, setState] = useState<UploadState>("idle");
   const [note, setNote] = useState("");
-  const [mediaFiles, setMediaFiles] = useState<Partial<Record<MediaType, FileList | null>>>({});
+  const [mediaFiles, setMediaFiles] = useState<Partial<Record<ProductMediaType, FileList | null>>>({});
   const [created, setCreated] = useState<{ intake_id: string; intake_no: string; status: string } | null>(null);
   const [form, setForm] = useState({
     source_type: "admin_upload",
@@ -46,7 +37,7 @@ export function ObjectIntakeAdminNew() {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
-  function updateMedia(type: MediaType, files: FileList | null) {
+  function updateMedia(type: ProductMediaType, files: FileList | null) {
     setMediaFiles((current) => ({ ...current, [type]: files }));
   }
 
@@ -128,9 +119,15 @@ export function ObjectIntakeAdminNew() {
             <div className="grid gap-3 md:grid-cols-2">
               {mediaUploadGroups.map((group) => (
                 <label key={group.type} className="grid gap-2 rounded-xl border border-[#D9DCE0] bg-white p-4 text-sm">
-                  <span className="font-semibold">{group.title}</span>
-                  <span className="text-xs leading-5 text-[#6B7280]">{group.note}</span>
-                  <input type="file" multiple accept="image/*,video/*" onChange={(event) => updateMedia(group.type, event.target.files)} className="mt-1 block w-full text-sm text-[#6B7280] file:mr-3 file:rounded-lg file:border file:border-[#D9DCE0] file:bg-[#EBEDEF] file:px-3 file:py-2 file:text-[#2D333A]" />
+                  <span className="flex items-center justify-between gap-3 font-semibold">
+                    {group.title}
+                    {group.required ? <span className="rounded-full bg-[#2D333A] px-2 py-1 text-[11px] text-white">必传</span> : null}
+                  </span>
+                  <span className="text-xs leading-5 text-[#6B7280]">{group.usage}</span>
+                  <ul className="grid gap-1 text-xs leading-5 text-[#6B7280]">
+                    {group.specs.map((spec) => <li key={spec}>- {spec}</li>)}
+                  </ul>
+                  <input type="file" multiple accept={group.accept} onChange={(event) => updateMedia(group.type, event.target.files)} className="mt-1 block w-full text-sm text-[#6B7280] file:mr-3 file:rounded-lg file:border file:border-[#D9DCE0] file:bg-[#EBEDEF] file:px-3 file:py-2 file:text-[#2D333A]" />
                 </label>
               ))}
             </div>
