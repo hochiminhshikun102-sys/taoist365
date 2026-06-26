@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { objectIntakeSourceDefinitions } from "@/config/object-intake-source-types";
+import { marketplaceSourcePolicies, type MarketplaceSourcePlatform } from "@/config/marketplace-source-platforms";
 import { productMediaUploadSpecs, type ProductMediaType } from "@/config/product-media-upload-specs";
 import { ObjectIntakeBatchLinkImport } from "@/components/object-intake/ObjectIntakeBatchLinkImport";
 
 type UploadState = "idle" | "creating" | "uploading" | "drafting" | "submitting" | "done" | "error";
 
-const sourcePlatforms = ["manual", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "other"] as const;
+const sourcePlatforms = marketplaceSourcePolicies.map((policy) => policy.platform).filter((platform) => platform !== "auto");
 const mediaUploadGroups = productMediaUploadSpecs;
 
 export function ObjectIntakeAdminNew() {
@@ -17,7 +18,7 @@ export function ObjectIntakeAdminNew() {
   const [created, setCreated] = useState<{ intake_id: string; intake_no: string; status: string } | null>(null);
   const [form, setForm] = useState({
     source_type: "admin_upload",
-    source_platform: "manual",
+    source_platform: "manual" as MarketplaceSourcePlatform,
     source_url: "",
     submitted_by: "admin-os",
     buyer_id: "",
@@ -98,9 +99,9 @@ export function ObjectIntakeAdminNew() {
       <section className="mx-auto grid w-full max-w-6xl gap-6">
         <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
           <div>
-            <p className="text-sm text-[#6B7280]">VL Object Intake Pipeline</p>
+            <p className="text-sm text-[#6B7280]">Dohara Object Intake Pipeline</p>
             <h1 className="mt-2 text-4xl font-semibold">宝贝入库</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">后台宝贝上传进入统一 object_intakes，不再作为孤立工具。</p>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">后台宝贝上传进入统一 object_intakes，不再作为孤立工具。链接导入的外部图片只做来源参考，必须经过授权、重拍、替换或 Air Engine 重建后才能发布。</p>
           </div>
           <a href="/admin/publish-review" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">发布审核</a>
         </header>
@@ -117,7 +118,7 @@ export function ObjectIntakeAdminNew() {
           <section className="grid gap-4 rounded-2xl border border-[#D9DCE0] bg-[#F8F5EF] p-4">
             <div>
               <p className="text-sm font-semibold">Product media modules / 商品图片模块</p>
-              <p className="mt-2 text-xs leading-6 text-[#6B7280]">Upload by page purpose. These files enter object_media first and can later be reused by the asset center and Air Engine.</p>
+              <p className="mt-2 text-xs leading-6 text-[#6B7280]">按页面用途上传素材。文件先进入 object_media，后续可被素材中心、Air Engine、商品详情页和社媒输出复用。</p>
             </div>
             <div className="grid gap-3 md:grid-cols-2">
               {mediaUploadGroups.map((group) => (
@@ -159,7 +160,7 @@ export function ObjectIntakeAdminNew() {
           <p>Status: <strong className="text-[#2D333A]">{state}</strong></p>
           {created ? <p>Created: {created.intake_no} / {created.intake_id}</p> : null}
           {note ? <p>{note}</p> : null}
-          <p className="mt-3">Air Engine first version reserves status only. Link parsing first version stores source_url and source_platform only.</p>
+          <p className="mt-3">Air Engine 第一版先保留处理状态和审核字段。链接导入先保存 source_url、source_platform、rights policy 和 rebuild policy，后续再接真实抓取与图片重建。</p>
         </aside>
       </section>
     </main>

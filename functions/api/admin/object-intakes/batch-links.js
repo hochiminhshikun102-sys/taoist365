@@ -9,7 +9,7 @@ import {
   updateStore,
 } from "../../../_object-intake.js";
 
-const supportedPlatforms = new Set(["auto", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "other"]);
+const supportedPlatforms = new Set(["auto", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "jd", "other"]);
 const secondhandPlatforms = new Set(["xianyu"]);
 
 export async function onRequestPost(context) {
@@ -83,12 +83,15 @@ export async function onRequestPost(context) {
           raw_line: line,
           import_mode: "batch_links",
           source_usage_policy: "reference_only",
-          publish_policy: "source media must be rebuilt or replaced before publication",
+          publish_policy: "source media must be licensed, re-shot, rebuilt, or replaced before publication",
           detected_platform: platform,
+          rights_review_required: true,
+          source_capture_status: "pending",
+          legal_note: "External marketplace images are source references only and must not be published directly.",
         },
         media_rights_status: "reference_only",
         media_transform_required: true,
-        air_engine_policy: "rebuild_before_publish",
+        air_engine_policy: "rebuild_or_replace_before_publish",
         submitted_by: actorId,
         buyer_id: "",
         member_id: "",
@@ -116,7 +119,7 @@ export async function onRequestPost(context) {
             intake_id: id,
             ...makeProductDraft(baseIntake),
             risk_notes:
-              "External source import. Source images are reference-only. Rights, material, price, inventory, shipping, and final RI media must be confirmed before publication.",
+              "External source import. Source images are reference-only. Rights, material, price, inventory, shipping, and final Dohara media must be confirmed before publication.",
             created_at: now,
             updated_at: now,
           }
@@ -156,8 +159,11 @@ export async function onRequestPost(context) {
         priority: "normal",
         media_rights_status: "reference_only",
         transform_required: true,
+        rights_review_required: true,
+        source_capture_status: "pending",
+        air_engine_policy: "rebuild_or_replace_before_publish",
         requested_outputs: ["original", "main", "detail", "scene", "pc", "mobile", "social"],
-        notes: "Fetch source metadata first. Third-party source images are references only; final publish media must be rebuilt, replaced, or transformed.",
+        notes: "Fetch source metadata first. Third-party source images are references only; final publish media must be licensed, re-shot, rebuilt, replaced, or transformed.",
         created_at: now,
         updated_at: now,
       };
@@ -216,7 +222,7 @@ function parseImportLine(line, index) {
   const sourceUrl = extractUrl(line);
   const withoutUrl = sourceUrl ? line.replace(sourceUrl, " ").trim() : line.trim();
   const parts = withoutUrl.split(/\t|,/).map((part) => part.trim()).filter(Boolean);
-  const price = parts.find((part) => /[$¥￥]?\s*\d+(\.\d+)?/.test(part)) || "";
+  const price = parts.find((part) => /(?:[$¥￥]|USD|CNY|RMB)?\s*\d+(\.\d+)?/i.test(part)) || "";
   const title = parts.find((part) => part !== price) || `${detectPlatform(sourceUrl).toUpperCase()} SKU ${String(index).padStart(3, "0")}`;
 
   return {
@@ -229,7 +235,7 @@ function parseImportLine(line, index) {
 }
 
 function extractUrl(value) {
-  const match = String(value || "").match(/https?:\/\/[^\s,，]+/i);
+  const match = String(value || "").match(/https?:\/\/[^\s,，。]+/i);
   return match ? match[0].trim() : "";
 }
 
@@ -244,6 +250,7 @@ function detectPlatform(url) {
   if (/temu/.test(value)) return "temu";
   if (/amazon|amzn\.to/.test(value)) return "amazon";
   if (/etsy/.test(value)) return "etsy";
+  if (/jd\.com|360buy/.test(value)) return "jd";
   if (/myshopify|shopify/.test(value)) return "shopify";
   return "other";
 }

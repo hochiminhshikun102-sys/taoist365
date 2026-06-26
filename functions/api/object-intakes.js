@@ -1,6 +1,6 @@
 import { intakeStatuses, json, makeId, nowIso, readStore, resolveObjectIntakeSource, updateStore } from "../_object-intake.js";
 
-const sourcePlatforms = new Set(["manual", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "other"]);
+const sourcePlatforms = new Set(["manual", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "jd", "other"]);
 
 export async function onRequestGet(context) {
   const url = new URL(context.request.url);
@@ -49,6 +49,9 @@ export async function onRequestPost(context) {
     source_platform: sourcePlatform,
     source_url: String(payload.source_url || "").trim(),
     source_snapshot: payload.source_snapshot || null,
+    media_rights_status: payload.source_url ? "reference_only" : "owned_or_original",
+    media_transform_required: Boolean(payload.source_url),
+    air_engine_policy: payload.source_url ? "rebuild_or_replace_before_publish" : "direct_review",
     submitted_by: String(payload.submitted_by || "admin-os").trim(),
     buyer_id: String(payload.buyer_id || "").trim(),
     member_id: String(payload.member_id || "").trim(),

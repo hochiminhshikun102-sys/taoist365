@@ -262,7 +262,7 @@ export function makeProductDraft(input = {}) {
     size_text: "Size to confirm after measuring.",
     category,
     tags,
-    seo_title: `${title} - Reverent Inquiry`,
+    seo_title: `${title} - Dohara`,
     seo_description: `${title} prepared through the VL object intake pipeline with quiet material presence.`,
     geo_summary: `${title} is a VL object candidate with source, media, review, and publication state attached to one object_id.`,
     product_story: input.original_description || "It looked useful before it looked special. The final story should stay close to ordinary life.",

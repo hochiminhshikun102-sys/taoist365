@@ -25,6 +25,14 @@ export type ObjectIntake = {
   member_supply_locked?: boolean;
   source_platform: string;
   source_url: string;
+  source_snapshot?: {
+    raw_line?: string;
+    import_mode?: string;
+    source_usage_policy?: string;
+    publish_policy?: string;
+    detected_platform?: string;
+    rights_review_required?: boolean;
+  } | null;
   media_rights_status?: string;
   media_transform_required?: boolean;
   air_engine_policy?: string;

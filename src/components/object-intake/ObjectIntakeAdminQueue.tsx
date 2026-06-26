@@ -71,7 +71,7 @@ export function ObjectIntakeAdminQueue() {
       <section className="mx-auto grid w-full max-w-7xl gap-6">
         <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
           <div>
-            <p className="text-sm text-[#6B7280]">VL Object Intake Pipeline</p>
+            <p className="text-sm text-[#6B7280]">Dohara Object Intake Pipeline</p>
             <h1 className="mt-2 text-4xl font-semibold">发布审核</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">统一治理全球买手、后台、老板和链接导入的物件。</p>
           </div>

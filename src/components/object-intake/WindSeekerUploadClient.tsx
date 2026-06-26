@@ -92,13 +92,13 @@ export function WindSeekerUploadClient() {
         <header className="border-b border-[#D9DCE0] pb-6">
           <a href="/wind-seeker" className="text-sm text-[#6B7280]">Wind Seeker</a>
           <h1 className="mt-3 text-4xl font-semibold">Upload Object</h1>
-          <p className="mt-3 text-sm leading-7 text-[#6B7280]">买手上传进入同一条 VL Object Intake Pipeline。</p>
+          <p className="mt-3 text-sm leading-7 text-[#6B7280]">买手上传进入同一条 Dohara Object Intake Pipeline。</p>
         </header>
 
         <form onSubmit={submit} className="grid gap-4 rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(45,51,58,0.08)]">
           <section className="grid gap-3 rounded-2xl border border-[#D9DCE0] bg-[#F8F5EF] p-4">
             <div>
-              <p className="text-sm font-semibold">RI media standard</p>
+              <p className="text-sm font-semibold">Dohara media standard</p>
               <p className="mt-2 text-xs leading-6 text-[#6B7280]">白底产品图优先按 2400 x 2400 上传；场景、细节和视频按用途分开，审核会更快。</p>
             </div>
             <div className="grid gap-3">

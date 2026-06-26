@@ -125,7 +125,7 @@ function renderObjectHtml(object) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${title} - Reverent Inquiry</title>
+  <title>${title} - Dohara</title>
   <meta name="description" content="${description}" />
   <style>
     body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #24313a; background: linear-gradient(180deg,#f3fbff,#fffefb 48%,#f7faf8); }
@@ -180,7 +180,7 @@ function renderObjectHtml(object) {
 </head>
 <body>
   <main>
-    <a class="back" href="/objects">Reverent Inquiry / Objects</a>
+    <a class="back" href="/objects">Dohara / Objects</a>
     <section class="hero">
       <div class="gallery-stack">
         <figure class="image">${renderMedia(primaryMedia, object.title)}</figure>

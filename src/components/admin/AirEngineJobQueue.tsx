@@ -84,7 +84,7 @@ export function AirEngineJobQueue() {
             <p className="text-sm text-[#6B7280]">Dohara Air Engine</p>
             <h1 className="mt-2 text-4xl font-semibold">AI素材处理队列</h1>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-[#6B7280]">
-              External marketplace images are source references. This queue tracks source fetch, rights checks, rebuild requirements, and RI media outputs before publication.
+              External marketplace images are source references. This queue tracks source fetch, rights checks, rebuild requirements, and Dohara media outputs before publication.
             </p>
           </div>
           <div className="flex flex-wrap gap-2 text-sm">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { marketplaceSourcePlatformOptions, marketplaceSourcePolicies, type MarketplaceSourcePlatform } from "@/config/marketplace-source-platforms";
 
 type BatchResult = {
   created?: Array<{
@@ -16,16 +17,16 @@ type BatchResult = {
   error?: string;
 };
 
-const sourcePlatforms = ["auto", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "other"] as const;
 const importChannels = [
   ["auto", "Auto channel"],
   ["commerce_new", "New goods commerce"],
   ["windkeep_secondhand", "Windkeep secondhand"],
 ] as const;
+const batchSourcePlatforms = marketplaceSourcePlatformOptions.filter((platform) => platform !== "manual");
 
 export function ObjectIntakeBatchLinkImport() {
   const [text, setText] = useState("");
-  const [sourcePlatform, setSourcePlatform] = useState<(typeof sourcePlatforms)[number]>("auto");
+  const [sourcePlatform, setSourcePlatform] = useState<MarketplaceSourcePlatform>("auto");
   const [importChannel, setImportChannel] = useState<(typeof importChannels)[number][0]>("auto");
   const [categoryHint, setCategoryHint] = useState("wind-objects");
   const [supplier, setSupplier] = useState("");
@@ -63,7 +64,7 @@ export function ObjectIntakeBatchLinkImport() {
           <p className="text-sm text-[#6B7280]">Batch source import</p>
           <h2 className="mt-2 text-2xl font-semibold">Marketplace SKU link import</h2>
           <p className="mt-2 max-w-3xl text-sm leading-7 text-[#6B7280]">
-            Paste one source per line from Taobao, Tmall, 1688, Pinduoduo, Xianyu, TikTok, Temu, Amazon, Etsy, Shopify, or other marketplaces. External product images are reference-only sources; publish-ready media must be rebuilt, replaced, or transformed through RI/Air Engine before listing.
+            Paste one source per line from Taobao, Tmall, 1688, Pinduoduo, Xianyu, TikTok Shop, Temu, Amazon, Etsy, Shopify, JD, or other marketplaces. External marketplace images are reference-only sources; publish-ready media must be re-shot, licensed, replaced, or rebuilt through Air Engine before listing.
           </p>
         </div>
         <span className="rounded-full bg-[#F5F6F8] px-3 py-1 text-xs text-[#6B7280]">{lineCount} rows</span>
@@ -72,8 +73,8 @@ export function ObjectIntakeBatchLinkImport() {
       <div className="grid gap-4 md:grid-cols-5">
         <label className="grid gap-2 text-sm">
           Platform
-          <select value={sourcePlatform} onChange={(event) => setSourcePlatform(event.target.value as typeof sourcePlatform)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">
-            {sourcePlatforms.map((item) => <option key={item}>{item}</option>)}
+          <select value={sourcePlatform} onChange={(event) => setSourcePlatform(event.target.value as MarketplaceSourcePlatform)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">
+            {batchSourcePlatforms.map((item) => <option key={item}>{item}</option>)}
           </select>
         </label>
         <label className="grid gap-2 text-sm">
@@ -104,7 +105,7 @@ export function ObjectIntakeBatchLinkImport() {
       />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="text-xs leading-6 text-[#6B7280]">Auto channel sends Xianyu to `windkeep_secondhand/preowned`; other marketplaces default to `commerce_new/new`. All external media remains `reference_only` and must be rebuilt before listing.</p>
+        <p className="text-xs leading-6 text-[#6B7280]">Auto channel sends Xianyu to `windkeep_secondhand/preowned`; other marketplaces default to `commerce_new/new`. External marketplace media is stored as `reference_only` and must be rebuilt, replaced, licensed, or re-shot before publication.</p>
         <button type="button" disabled={busy || lineCount === 0} onClick={submit} className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">
           {busy ? "Importing..." : "Import Links"}
         </button>
@@ -120,6 +121,12 @@ export function ObjectIntakeBatchLinkImport() {
           {(result.skipped || []).length > 0 ? <p className="text-xs text-[#A05D4E]">Skipped rows are usually duplicates or missing URLs.</p> : null}
         </div>
       ) : null}
+
+      <div className="grid gap-2 rounded-2xl border border-[#D9DCE0] bg-[#F8F5EF] p-4 text-xs leading-6 text-[#6B7280] md:grid-cols-2">
+        {marketplaceSourcePolicies.filter((policy) => policy.platform !== "manual").slice(0, 6).map((policy) => (
+          <p key={policy.platform}><strong className="text-[#2D333A]">{policy.label}:</strong> {policy.note}</p>
+        ))}
+      </div>
     </section>
   );
 }

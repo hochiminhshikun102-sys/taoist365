@@ -4,7 +4,7 @@ import { buildSeoGeoMetadata } from "@/lib/seo-geo-runtime";
 
 export const metadata: Metadata = buildSeoGeoMetadata({
   title: "Wind Seeker Products - Dohara",
-  description: "Review buyer-submitted objects moving through the VL Object Intake Pipeline.",
+  description: "Review buyer-submitted objects moving through the Dohara Object Intake Pipeline.",
   path: "/wind-seeker/products",
   kind: "wind-seeker",
   phrases: ["Wind Seeker products", "buyer submitted objects", "object review status"],
