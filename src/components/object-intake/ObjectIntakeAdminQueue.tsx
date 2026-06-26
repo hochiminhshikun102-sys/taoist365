@@ -3,8 +3,10 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import type { EnrichedIntake } from "@/components/object-intake/ObjectIntakeTypes";
+import { productMediaUploadSpecs } from "@/config/product-media-upload-specs";
 
 const statuses = ["all", "review_pending", "approved", "revision_required", "rejected", "published"] as const;
+const reviewMediaTypes = ["main", "scene", "detail", "mobile", "pc", "social", "motion"] as const;
 
 export function ObjectIntakeAdminQueue() {
   const [rows, setRows] = useState<EnrichedIntake[]>([]);
@@ -125,6 +127,31 @@ export function ObjectIntakeAdminQueue() {
                 </div>
 
                 <div className="grid gap-4">
+                  <section className="rounded-2xl border border-[#D9DCE0] bg-[#F5F6F8] p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-semibold">RI Media Check</p>
+                        <p className="mt-2 text-xs leading-5 text-[#6B7280]">主图按 2400 x 2400 白底产品图；视频可做首屏，但仍需白底图做缩略图和合成打底。</p>
+                      </div>
+                      <span className="rounded-full bg-white px-3 py-1 text-xs text-[#6B7280]">{active.media.length} files</span>
+                    </div>
+                    <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                      {reviewMediaTypes.map((type) => {
+                        const spec = productMediaUploadSpecs.find((item) => item.type === type);
+                        const count = active.media.filter((media) => media.media_type === type).length;
+                        return (
+                          <div key={type} className="rounded-xl border border-[#D9DCE0] bg-white p-3 text-xs leading-5">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="font-semibold">{spec?.title || type}</span>
+                              <span className={count > 0 ? "text-[#3E6446]" : "text-[#A05D4E]"}>{count > 0 ? `${count} uploaded` : "missing"}</span>
+                            </div>
+                            <p className="mt-2 text-[#6B7280]">{spec?.specs[0]}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+
                   <section className="rounded-2xl border border-[#D9DCE0] bg-[#F5F6F8] p-4">
                     <p className="text-sm font-semibold">AI Draft</p>
                     <p className="mt-3 text-sm leading-7">{active.draft?.draft_description || "No AI draft yet."}</p>

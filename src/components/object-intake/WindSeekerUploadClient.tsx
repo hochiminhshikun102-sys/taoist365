@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { productMediaUploadSpecs, type ProductMediaType } from "@/config/product-media-upload-specs";
+
+const buyerMediaTypes: ProductMediaType[] = ["main", "original", "scene", "detail", "motion"];
+const buyerMediaGroups = productMediaUploadSpecs.filter((spec) => buyerMediaTypes.includes(spec.type));
 
 export function WindSeekerUploadClient() {
-  const [files, setFiles] = useState<FileList | null>(null);
+  const [mediaFiles, setMediaFiles] = useState<Partial<Record<ProductMediaType, FileList | null>>>({});
   const [state, setState] = useState("ready");
   const [note, setNote] = useState("");
   const [form, setForm] = useState({
@@ -19,6 +23,10 @@ export function WindSeekerUploadClient() {
 
   function update(key: keyof typeof form, value: string) {
     setForm((current) => ({ ...current, [key]: value }));
+  }
+
+  function updateMedia(type: ProductMediaType, files: FileList | null) {
+    setMediaFiles((current) => ({ ...current, [type]: files }));
   }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -44,14 +52,20 @@ export function WindSeekerUploadClient() {
       const createData = await createResponse.json();
       if (!createResponse.ok) throw new Error(createData.error || "Unable to create buyer intake.");
 
-      if (files && files.length > 0) {
-        setState("uploading");
-        const mediaForm = new FormData();
-        Array.from(files).forEach((file) => mediaForm.append("files", file));
-        mediaForm.append("media_type", "original");
-        const mediaResponse = await fetch(`/api/object-intakes/${createData.intake_id}/media`, { method: "POST", body: mediaForm });
-        const mediaData = await mediaResponse.json();
-        if (!mediaResponse.ok) throw new Error(mediaData.error || "Unable to upload buyer media.");
+      const uploadEntries = buyerMediaGroups
+        .map((group) => ({ type: group.type, files: mediaFiles[group.type] }))
+        .filter((entry) => entry.files && entry.files.length > 0);
+
+      if (uploadEntries.length > 0) {
+        for (const entry of uploadEntries) {
+          setState("uploading");
+          const mediaForm = new FormData();
+          Array.from(entry.files || []).forEach((file) => mediaForm.append("files", file));
+          mediaForm.append("media_type", entry.type);
+          const mediaResponse = await fetch(`/api/object-intakes/${createData.intake_id}/media`, { method: "POST", body: mediaForm });
+          const mediaData = await mediaResponse.json();
+          if (!mediaResponse.ok) throw new Error(mediaData.error || `Unable to upload ${entry.type} media.`);
+        }
       }
 
       setState("drafting");
@@ -82,7 +96,27 @@ export function WindSeekerUploadClient() {
         </header>
 
         <form onSubmit={submit} className="grid gap-4 rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(45,51,58,0.08)]">
-          <label className="grid gap-2 text-sm">Photos<input type="file" multiple accept="image/*,video/*" onChange={(event) => setFiles(event.target.files)} className="rounded-xl border border-dashed border-[#947A66]/60 bg-[#F3ECE2] px-4 py-5" /></label>
+          <section className="grid gap-3 rounded-2xl border border-[#D9DCE0] bg-[#F8F5EF] p-4">
+            <div>
+              <p className="text-sm font-semibold">RI media standard</p>
+              <p className="mt-2 text-xs leading-6 text-[#6B7280]">白底产品图优先按 2400 x 2400 上传；场景、细节和视频按用途分开，审核会更快。</p>
+            </div>
+            <div className="grid gap-3">
+              {buyerMediaGroups.map((group) => (
+                <label key={group.type} className="grid gap-2 rounded-xl border border-[#D9DCE0] bg-white p-4 text-sm">
+                  <span className="flex items-center justify-between gap-3 font-semibold">
+                    {group.title}
+                    {group.required ? <span className="rounded-full bg-[#2D333A] px-2 py-1 text-[11px] text-white">优先</span> : null}
+                  </span>
+                  <span className="text-xs leading-5 text-[#6B7280]">{group.usage}</span>
+                  <ul className="grid gap-1 text-xs leading-5 text-[#6B7280]">
+                    {group.specs.slice(0, 3).map((spec) => <li key={spec}>- {spec}</li>)}
+                  </ul>
+                  <input type="file" multiple accept={group.accept} onChange={(event) => updateMedia(group.type, event.target.files)} className="rounded-xl border border-dashed border-[#947A66]/60 bg-[#F3ECE2] px-4 py-4 text-sm" />
+                </label>
+              ))}
+            </div>
+          </section>
           <label className="grid gap-2 text-sm">Object Title<input required value={form.original_title} onChange={(event) => update("original_title", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
           <label className="grid gap-2 text-sm">Story / Source Note<textarea value={form.original_description} onChange={(event) => update("original_description", event.target.value)} className="min-h-28 rounded-xl border border-[#D9DCE0] px-4 py-3 leading-7" /></label>
           <div className="grid gap-4 md:grid-cols-2">
