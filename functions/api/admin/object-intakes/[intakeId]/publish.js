@@ -30,6 +30,12 @@ export async function onRequestPost(context) {
     const now = nowIso();
     const draft = latestAiDraft(store, intakeId);
     const media = mediaForIntake(store, intakeId);
+    const gateErrors = validatePublishGate(intake, draft, media);
+    if (gateErrors.length > 0) {
+      invalid = `Publish blocked: ${gateErrors.join(" / ")}`;
+      return store;
+    }
+
     const primary = media.find((item) => item.media_type === "main") || media[0] || null;
     const primaryImage = media.find((item) => !isVideoMedia(item) && item.media_type === "main") || media.find((item) => !isVideoMedia(item)) || primary;
     const publishedMedia = media.map((item) => ({
@@ -137,4 +143,30 @@ function makeDetailModules(intake, draft, media) {
 function isVideoMedia(media) {
   const value = `${media?.mime_type || ""} ${media?.storage_key || ""}`.toLowerCase();
   return value.includes("video/") || /\.(mp4|webm|mov|m4v)(\?|$)/.test(value);
+}
+
+function validatePublishGate(intake, draft, media) {
+  const errors = [];
+  const title = String(draft?.draft_title || intake.original_title || "").trim();
+  const description = String(draft?.draft_description || intake.original_description || "").trim();
+  const price = priceNumber(intake.original_price || draft?.price_suggestion || "");
+  const inventory = Number.parseInt(intake.inventory, 10) || 0;
+  const mainStillImage = media.find((item) => item.media_type === "main" && !isVideoMedia(item) && publicUrlForMedia(item));
+  const publishableMedia = media.filter((item) => item.media_type !== "original" && publicUrlForMedia(item));
+  const isExternalReference = Boolean(intake.source_url) || intake.media_rights_status === "reference_only" || intake.media_transform_required;
+
+  if (!title) errors.push("title required");
+  if (!description) errors.push("description required");
+  if (!Number.isFinite(price) || price <= 0) errors.push("valid price required");
+  if (inventory <= 0) errors.push("inventory must be greater than 0");
+  if (!mainStillImage) errors.push("main white product image required");
+  if (publishableMedia.length === 0) errors.push("publishable product media required");
+  if (isExternalReference && intake.air_engine_status !== "ready") errors.push("external source must be Air Engine ready");
+
+  return errors;
+}
+
+function priceNumber(value) {
+  const numeric = Number.parseFloat(String(value || "").replace(/[^0-9.]/g, ""));
+  return Number.isFinite(numeric) ? numeric : 0;
 }
