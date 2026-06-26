@@ -3,6 +3,18 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { EnrichedIntake } from "@/components/object-intake/ObjectIntakeTypes";
+import { windkeepMemberSupplySourceTypes, windSeekerSourceTypes } from "@/config/object-intake-source-types";
+
+const windSeekerSourceTypeSet = new Set<string>(windSeekerSourceTypes);
+const windkeepMemberSupplySourceTypeSet = new Set<string>(windkeepMemberSupplySourceTypes);
+
+function isWindSeekerIntake(row: EnrichedIntake) {
+  const sourceType = row.intake.source_type;
+  if (windkeepMemberSupplySourceTypeSet.has(sourceType)) return false;
+  if (row.intake.supply_program === "windkeep" || row.intake.entry_surface === "member_center") return false;
+
+  return windSeekerSourceTypeSet.has(sourceType) || row.intake.supply_program === "wind_seeker" || row.intake.submitted_by === "wind-seeker";
+}
 
 export function WindSeekerProductsClient() {
   const [rows, setRows] = useState<EnrichedIntake[]>([]);
@@ -16,7 +28,7 @@ export function WindSeekerProductsClient() {
         setNote(data.error || "Unable to read products.");
         return;
       }
-      setRows((data.rows || []).filter((row: EnrichedIntake) => row.intake.submitted_by === "wind-seeker" || row.intake.source_type === "buyer_upload"));
+      setRows((data.rows || []).filter(isWindSeekerIntake));
     }
     void load();
   }, []);

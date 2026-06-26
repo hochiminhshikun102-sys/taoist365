@@ -1,6 +1,5 @@
-import { intakeStatuses, json, makeId, nowIso, readStore, updateStore } from "../_object-intake.js";
+import { intakeStatuses, json, makeId, nowIso, readStore, resolveObjectIntakeSource, updateStore } from "../_object-intake.js";
 
-const sourceTypes = new Set(["admin_upload", "buyer_upload", "boss_upload", "supplier_batch", "external_link"]);
 const sourcePlatforms = new Set(["manual", "taobao", "tmall", "1688", "shopify", "etsy", "other"]);
 
 export async function onRequestGet(context) {
@@ -30,18 +29,28 @@ export async function onRequestPost(context) {
   const now = nowIso();
   const id = makeId("intake");
   const intakeNo = `OI-${Date.now().toString().slice(-8)}`;
-  const sourceType = sourceTypes.has(payload.source_type) ? payload.source_type : "admin_upload";
+  const source = resolveObjectIntakeSource(payload.source_type);
   const sourcePlatform = sourcePlatforms.has(payload.source_platform) ? payload.source_platform : "manual";
 
   const intake = {
     id,
     intake_no: intakeNo,
-    source_type: sourceType,
+    source_type: source.source_type,
+    identity_scope: source.identity_scope,
+    entry_surface: source.entry_surface,
+    supply_program: source.supply_program,
+    source_label: source.source_label,
+    source_note: source.source_note,
+    reward_eligible: source.reward_eligible,
+    professional_buyer_required: source.professional_buyer_required,
+    member_supply_locked: source.member_supply_locked,
     source_platform: sourcePlatform,
     source_url: String(payload.source_url || "").trim(),
     source_snapshot: payload.source_snapshot || null,
     submitted_by: String(payload.submitted_by || "admin-os").trim(),
     buyer_id: String(payload.buyer_id || "").trim(),
+    member_id: String(payload.member_id || "").trim(),
+    referral_code: String(payload.referral_code || "").trim(),
     country: String(payload.country || "").trim(),
     original_title: String(payload.original_title || "").trim(),
     original_description: String(payload.original_description || "").trim(),

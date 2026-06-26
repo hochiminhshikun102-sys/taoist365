@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { objectIntakeSourceDefinitions } from "@/config/object-intake-source-types";
 import { productMediaUploadSpecs, type ProductMediaType } from "@/config/product-media-upload-specs";
 
 type UploadState = "idle" | "creating" | "uploading" | "drafting" | "submitting" | "done" | "error";
 
-const sourceTypes = ["admin_upload", "boss_upload", "buyer_upload", "external_link", "supplier_batch"] as const;
 const sourcePlatforms = ["manual", "taobao", "tmall", "1688", "shopify", "etsy", "other"] as const;
 const mediaUploadGroups = productMediaUploadSpecs;
 
@@ -106,7 +106,7 @@ export function ObjectIntakeAdminNew() {
 
         <form onSubmit={submit} className="grid gap-5 rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(45,51,58,0.08)]">
           <div className="grid gap-4 md:grid-cols-3">
-            <label className="grid gap-2 text-sm">Source Type<select value={form.source_type} onChange={(event) => update("source_type", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">{sourceTypes.map((item) => <option key={item}>{item}</option>)}</select></label>
+            <label className="grid gap-2 text-sm">Source Type<select value={form.source_type} onChange={(event) => update("source_type", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">{objectIntakeSourceDefinitions.map((item) => <option key={item.type} value={item.type}>{item.type} - {item.label}</option>)}</select></label>
             <label className="grid gap-2 text-sm">Source Platform<select value={form.source_platform} onChange={(event) => update("source_platform", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">{sourcePlatforms.map((item) => <option key={item}>{item}</option>)}</select></label>
             <label className="grid gap-2 text-sm">Source URL<input value={form.source_url} onChange={(event) => update("source_url", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" placeholder="Optional link, first version saves only" /></label>
           </div>

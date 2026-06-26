@@ -24,6 +24,101 @@ export const intakeStatuses = {
   PUBLISHED: "published",
 };
 
+export const objectIntakeSourceDefinitions = {
+  admin_upload: {
+    identity_scope: "admin",
+    entry_surface: "admin_os",
+    supply_program: "commerce",
+    source_label: "OA admin upload",
+    source_note: "Operations uploads a product candidate from the OA product intake.",
+    reward_eligible: false,
+    professional_buyer_required: false,
+    member_supply_locked: false,
+  },
+  boss_upload: {
+    identity_scope: "admin",
+    entry_surface: "admin_os",
+    supply_program: "commerce",
+    source_label: "Boss upload",
+    source_note: "Owner uploads a product candidate from the OA product intake.",
+    reward_eligible: false,
+    professional_buyer_required: false,
+    member_supply_locked: false,
+  },
+  external_link: {
+    identity_scope: "admin",
+    entry_surface: "admin_os",
+    supply_program: "commerce",
+    source_label: "External link",
+    source_note: "A source URL is stored first; parsing and scraping are later pipeline steps.",
+    reward_eligible: false,
+    professional_buyer_required: false,
+    member_supply_locked: false,
+  },
+  supplier_batch: {
+    identity_scope: "supplier",
+    entry_surface: "admin_os",
+    supply_program: "supplier",
+    source_label: "Supplier batch",
+    source_note: "Supplier materials enter the same review and publish pipeline.",
+    reward_eligible: false,
+    professional_buyer_required: false,
+    member_supply_locked: false,
+  },
+  buyer_upload: {
+    identity_scope: "wind_seeker",
+    entry_surface: "wind_seeker",
+    supply_program: "wind_seeker",
+    source_label: "Wind Seeker buyer upload",
+    source_note: "Professional global buyer intake. This must stay separate from Windkeep member supply.",
+    reward_eligible: false,
+    professional_buyer_required: true,
+    member_supply_locked: false,
+  },
+  windkeep_member: {
+    identity_scope: "windkeep_member",
+    entry_surface: "member_center",
+    supply_program: "windkeep",
+    source_label: "Windkeep member supply",
+    source_note: "Future member-center object supply entry. It must not route members into Wind Seeker.",
+    reward_eligible: true,
+    professional_buyer_required: false,
+    member_supply_locked: true,
+  },
+  member_consignment: {
+    identity_scope: "windkeep_member",
+    entry_surface: "member_center",
+    supply_program: "windkeep",
+    source_label: "Member consignment",
+    source_note: "Future member consignment entry inside the member center.",
+    reward_eligible: true,
+    professional_buyer_required: false,
+    member_supply_locked: true,
+  },
+  neighbor_referral: {
+    identity_scope: "windkeep_referral",
+    entry_surface: "member_center",
+    supply_program: "windkeep",
+    source_label: "Neighbor referral",
+    source_note: "Future referral and neighborhood supply entry inside the member center.",
+    reward_eligible: true,
+    professional_buyer_required: false,
+    member_supply_locked: true,
+  },
+};
+
+export const objectIntakeSourceTypes = new Set(Object.keys(objectIntakeSourceDefinitions));
+
+export function resolveObjectIntakeSource(sourceType) {
+  const normalized = String(sourceType || "").trim();
+  const resolvedType = objectIntakeSourceDefinitions[normalized] ? normalized : "admin_upload";
+
+  return {
+    source_type: resolvedType,
+    ...objectIntakeSourceDefinitions[resolvedType],
+  };
+}
+
 export const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store",
