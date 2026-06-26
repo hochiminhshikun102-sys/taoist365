@@ -68,11 +68,22 @@ function renderMediaGrid(items, title) {
   return items.map((item) => `<figure class="media-card">${renderMedia(item, title)}<figcaption>${escapeHtml(item.type || "media")}</figcaption></figure>`).join("");
 }
 
+function renderMediaStrip(object) {
+  const media = Array.isArray(object.media) ? object.media.slice(0, 8) : [];
+  if (!media.length) return "";
+  return `<div class="media-strip">${media.map((item) => `
+    <figure>
+      ${renderMedia(item, object.title)}
+      <figcaption>${escapeHtml(item.type || "media")}</figcaption>
+    </figure>
+  `).join("")}</div>`;
+}
+
 function renderDetailModules(object) {
   const modules = [
-    ["Gallery", "Main listing images and source traces.", mediaByTypes(object, ["main", "original"])],
-    ["Material details", "Texture, condition, closeups, defects, scale, and handmade evidence.", mediaByTypes(object, ["detail"])],
-    ["Placed in life", "Room, desk, shelf, PC detail, and mobile detail scenes.", mediaByTypes(object, ["scene", "pc", "mobile"])],
+    ["Gallery", "White object image, source traces, and first-screen media.", mediaByTypes(object, ["main", "original"])],
+    ["Material details", object.material || "Texture, condition, closeups, defects, scale, and handmade evidence.", mediaByTypes(object, ["detail"])],
+    ["Placed in life", object.placement_suggestion || "Room, desk, shelf, PC detail, and mobile detail scenes.", mediaByTypes(object, ["scene", "pc", "mobile"])],
     ["Video / social / proof", "Motion, social exports, packaging proof, and after-sales evidence slots.", mediaByTypes(object, ["motion", "social"])],
   ];
 
@@ -91,6 +102,11 @@ function renderDetailModules(object) {
 function renderObjectHtml(object) {
   const title = escapeHtml(object.title);
   const description = escapeHtml(object.description);
+  const productStory = escapeHtml(object.product_story || object.description || "The story is confirmed during human review.");
+  const material = escapeHtml(object.material || "Material to confirm after human review.");
+  const sizeText = escapeHtml(object.size_text || "Size to confirm after measuring.");
+  const shippingNote = escapeHtml(object.shipping_note || "Shipping method, packaging, and region are confirmed before payment.");
+  const riskNotes = escapeHtml(object.risk_notes || "Final purchase is reviewed by a human before payment.");
   const primaryMedia = primaryMediaForObject(object);
   const priceCents = priceCentsForObject(object);
   const inventory = Number.isFinite(Number(object.inventory)) ? Number(object.inventory) : 0;
@@ -113,15 +129,22 @@ function renderObjectHtml(object) {
   <meta name="description" content="${description}" />
   <style>
     body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #24313a; background: linear-gradient(180deg,#f3fbff,#fffefb 48%,#f7faf8); }
-    main { max-width: 1120px; margin: 0 auto; padding: 44px 24px 72px; }
+    main { max-width: 1180px; margin: 0 auto; padding: 44px 24px 72px; }
     a { color: inherit; text-decoration: none; }
     .back { color: #6f7f88; font-size: 14px; }
-    .hero { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(320px, .82fr); gap: 40px; align-items: center; margin-top: 38px; }
-    .image { min-height: 520px; border: 1px solid rgba(199,215,223,.5); border-radius: 18px; overflow: hidden; background: rgba(255,255,255,.72); box-shadow: 0 24px 70px rgba(38,61,78,.055); }
-    .image img, .image video { width: 100%; height: 100%; min-height: 520px; object-fit: cover; opacity: .92; display: block; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(340px, .8fr); gap: 34px; align-items: start; margin-top: 38px; }
+    .gallery-stack { display: grid; gap: 14px; }
+    .image { min-height: 560px; border: 1px solid rgba(199,215,223,.5); border-radius: 18px; overflow: hidden; background: rgba(255,255,255,.72); box-shadow: 0 24px 70px rgba(38,61,78,.055); }
+    .image img, .image video { width: 100%; height: 100%; min-height: 560px; object-fit: cover; opacity: .92; display: block; }
     .image video { background: #111; }
+    .media-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .media-strip figure { margin: 0; overflow: hidden; border: 1px solid rgba(199,215,223,.48); border-radius: 12px; background: rgba(255,255,255,.64); }
+    .media-strip img, .media-strip video { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; background: #111; }
+    .media-strip figcaption { padding: 7px 8px; color: #7b8990; font-size: 11px; }
+    .buy-box { position: sticky; top: 20px; border: 1px solid rgba(199,215,223,.56); border-radius: 18px; background: rgba(255,255,255,.72); padding: 24px; box-shadow: 0 20px 60px rgba(38,61,78,.05); }
     .eyebrow { color: #7b8990; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
     h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(44px, 6vw, 76px); line-height: 1.04; font-weight: 400; margin: 18px 0; }
+    h2 { font-family: Georgia, "Times New Roman", serif; font-size: 32px; line-height: 1.18; font-weight: 400; margin: 10px 0 0; }
     .copy { color: #61727d; font-size: 15px; line-height: 2; }
     .price { font-size: 26px; margin-top: 28px; }
     .commerce { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 28px; }
@@ -132,7 +155,16 @@ function renderObjectHtml(object) {
     .state { width: 100%; color: #6f7f88; font-size: 12px; }
     .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
     .tags span { border: 1px solid rgba(215,229,234,.8); border-radius: 999px; background: rgba(255,255,255,.62); padding: 7px 12px; color: #6f7f88; font-size: 12px; }
+    .buy-facts { display: grid; gap: 10px; margin-top: 24px; }
+    .buy-fact { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid rgba(215,229,234,.58); padding-top: 10px; color: #61727d; font-size: 13px; }
+    .buy-fact strong { color: #24313a; font-weight: 500; text-align: right; }
     .panel { border-top: 1px solid rgba(215,229,234,.72); margin-top: 48px; padding-top: 32px; display: grid; grid-template-columns: .36fr .64fr; gap: 28px; }
+    .story-section { border-top: 1px solid rgba(215,229,234,.72); margin-top: 44px; padding-top: 34px; display: grid; grid-template-columns: .32fr .68fr; gap: 32px; }
+    .story-copy { display: grid; gap: 16px; }
+    .info-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 44px; }
+    .info-card { border: 1px solid rgba(199,215,223,.46); border-radius: 14px; background: rgba(255,255,255,.62); padding: 18px; }
+    .info-card h3 { margin: 0; font-size: 15px; color: #24313a; }
+    .info-card p { margin: 12px 0 0; color: #61727d; font-size: 13px; line-height: 1.8; }
     .detail-module { border-top: 1px solid rgba(215,229,234,.72); margin-top: 44px; padding-top: 32px; display: grid; grid-template-columns: .34fr .66fr; gap: 28px; }
     .media-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
     .media-card { margin: 0; overflow: hidden; border: 1px solid rgba(199,215,223,.46); border-radius: 14px; background: rgba(255,255,255,.72); }
@@ -143,15 +175,18 @@ function renderObjectHtml(object) {
     .spec { border: 1px solid rgba(199,215,223,.46); border-radius: 14px; background: rgba(255,255,255,.58); padding: 16px; }
     .spec dt { color: #7b8990; font-size: 12px; }
     .spec dd { margin: 8px 0 0; color: #24313a; font-size: 14px; line-height: 1.7; }
-    @media (max-width: 860px) { .hero, .panel, .detail-module { grid-template-columns: 1fr; } .image, .image img, .image video { min-height: 360px; } .media-grid, .specs { grid-template-columns: 1fr; } }
+    @media (max-width: 860px) { .hero, .panel, .detail-module, .story-section { grid-template-columns: 1fr; } .buy-box { position: static; } .image, .image img, .image video { min-height: 360px; } .media-grid, .specs, .info-grid { grid-template-columns: 1fr; } .media-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   </style>
 </head>
 <body>
   <main>
     <a class="back" href="/objects">Reverent Inquiry / Objects</a>
     <section class="hero">
-      <figure class="image">${renderMedia(primaryMedia, object.title)}</figure>
-      <aside>
+      <div class="gallery-stack">
+        <figure class="image">${renderMedia(primaryMedia, object.title)}</figure>
+        ${renderMediaStrip(object)}
+      </div>
+      <aside class="buy-box">
         <p class="eyebrow">${escapeHtml(object.object_id)}</p>
         <h1>${title}</h1>
         <p class="copy">${description}</p>
@@ -162,21 +197,50 @@ function renderObjectHtml(object) {
           <p id="cart-state" class="state">${inventory > 0 ? `${inventory} available. Order request is reviewed by a human before payment.` : "Inventory unavailable."}</p>
         </div>
         <div class="tags">${tags}</div>
+        <div class="buy-facts">
+          <div class="buy-fact"><span>Status</span><strong>${inventory > 0 ? "Available" : "Unavailable"}</strong></div>
+          <div class="buy-fact"><span>Inventory</span><strong>${escapeHtml(inventory)}</strong></div>
+          <div class="buy-fact"><span>Category</span><strong>${escapeHtml(object.category || object.collection || "wind-objects")}</strong></div>
+          <div class="buy-fact"><span>Human review</span><strong>Before payment</strong></div>
+        </div>
       </aside>
     </section>
+
     <section class="panel">
       <div>
-        <p class="eyebrow">Object Intake</p>
-        <h2>Published through the VL object pipeline.</h2>
+        <p class="eyebrow">Product Detail Runtime</p>
+        <h2>One object_id, one operational product page.</h2>
       </div>
-      <p class="copy">This object was uploaded, reviewed, and published as a standard object_id. Main media supports either image or video. Air Engine media generation is reserved at the object runtime level.</p>
+      <p class="copy">This object was uploaded, reviewed, and published as a standard object_id. The page separates first-screen media, purchase facts, story, material truth, scene evidence, shipping, after-sales, and media proof so operations can keep selling details clear.</p>
     </section>
+
     <dl class="specs">
       <div class="spec"><dt>Source</dt><dd>${escapeHtml(object.intake_id || "object-intake")}</dd></div>
       <div class="spec"><dt>Category</dt><dd>${escapeHtml(object.category || object.collection || "wind-objects")}</dd></div>
       <div class="spec"><dt>Inventory</dt><dd>${escapeHtml(object.inventory || 0)}</dd></div>
       <div class="spec"><dt>Shipping</dt><dd>Confirmed before payment.</dd></div>
     </dl>
+
+    <section class="story-section">
+      <div>
+        <p class="eyebrow">Object Story</p>
+        <h2>Why this object is here.</h2>
+      </div>
+      <div class="story-copy">
+        <p class="copy">${productStory}</p>
+        <p class="copy">${escapeHtml(object.placement_suggestion || "Placement is reviewed against real room use, not only product photography.")}</p>
+      </div>
+    </section>
+
+    <section class="info-grid" aria-label="Product facts">
+      <article class="info-card"><h3>Material & condition</h3><p>${material}</p></article>
+      <article class="info-card"><h3>Size & scale</h3><p>${sizeText}</p></article>
+      <article class="info-card"><h3>Shipping & after-sales</h3><p>${shippingNote}</p></article>
+      <article class="info-card"><h3>Purchase review</h3><p>${riskNotes}</p></article>
+      <article class="info-card"><h3>Media standard</h3><p>White object image uses the RI 2400 x 2400 base when available. Video can lead the page, but image fallback remains required.</p></article>
+      <article class="info-card"><h3>Order flow</h3><p>Add to cart creates an order request first. Payment, address, stock, packaging, and shipping are confirmed by operations.</p></article>
+    </section>
+
     ${renderDetailModules(object)}
   </main>
   <script>
