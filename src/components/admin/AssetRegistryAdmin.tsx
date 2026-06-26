@@ -146,7 +146,7 @@ export function AssetRegistryAdmin() {
 
             <label className="grid gap-2 text-sm">
               Linked object_id
-              <input value={form.object_id} onChange={(event) => setForm({ ...form, object_id: event.target.value })} className="rounded-xl border border-[#D9DCE0] px-4 py-3" placeholder="VL-OBJ-..." />
+              <input value={form.object_id} onChange={(event) => setForm({ ...form, object_id: event.target.value })} className="rounded-xl border border-[#D9DCE0] px-4 py-3" placeholder="DH-OBJ-..." />
             </label>
 
             <label className="grid gap-2 text-sm">

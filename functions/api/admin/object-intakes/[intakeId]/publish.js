@@ -40,7 +40,7 @@ export async function onRequestPost(context) {
       storage_key: item.storage_key,
       sort_order: item.sort_order || 0,
     }));
-    const objectId = intake.object_id || `VL-OBJ-${Date.now().toString().slice(-7)}`;
+    const objectId = intake.object_id || `DH-OBJ-${Date.now().toString().slice(-7)}`;
     const title = draft?.draft_title || intake.original_title || "Quiet room object";
     const object = {
       id: objectId,

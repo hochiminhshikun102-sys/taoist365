@@ -209,7 +209,7 @@ function renderObjectHtml(object) {
     <section class="panel">
       <div>
         <p class="eyebrow">Product Detail Runtime</p>
-        <h2>One object_id, one operational product page.</h2>
+    <h2>One object_id, one operational product page.</h2>
       </div>
       <p class="copy">This object was uploaded, reviewed, and published as a standard object_id. The page separates first-screen media, purchase facts, story, material truth, scene evidence, shipping, after-sales, and media proof so operations can keep selling details clear.</p>
     </section>
@@ -237,7 +237,7 @@ function renderObjectHtml(object) {
       <article class="info-card"><h3>Size & scale</h3><p>${sizeText}</p></article>
       <article class="info-card"><h3>Shipping & after-sales</h3><p>${shippingNote}</p></article>
       <article class="info-card"><h3>Purchase review</h3><p>${riskNotes}</p></article>
-      <article class="info-card"><h3>Media standard</h3><p>White object image uses the RI 2400 x 2400 base when available. Video can lead the page, but image fallback remains required.</p></article>
+      <article class="info-card"><h3>Media standard</h3><p>White object image uses the Dohara 2400 x 2400 base when available. Video can lead the page, but image fallback remains required.</p></article>
       <article class="info-card"><h3>Order flow</h3><p>Add to cart creates an order request first. Payment, address, stock, packaging, and shipping are confirmed by operations.</p></article>
     </section>
 
