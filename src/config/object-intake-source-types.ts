@@ -1,6 +1,7 @@
 export type ObjectIntakeSourceType =
   | "admin_upload"
   | "boss_upload"
+  | "legacy_product_sample"
   | "external_link"
   | "windkeep_external_link"
   | "supplier_batch"
@@ -55,6 +56,19 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     professional_buyer_required: false,
     member_supply_locked: false,
     note: "Owner manual product intake.",
+  },
+  {
+    type: "legacy_product_sample",
+    label: "Legacy product sample",
+    identity_scope: "admin",
+    entry_surface: "admin_os",
+    supply_program: "commerce",
+    commerce_channel: "commerce_new",
+    goods_condition: "new",
+    reward_eligible: false,
+    professional_buyer_required: false,
+    member_supply_locked: false,
+    note: "One existing commerce object copied into Object Intake for a single-SKU test.",
   },
   {
     type: "external_link",

@@ -5,6 +5,7 @@ import { objectIntakeSourceDefinitions } from "@/config/object-intake-source-typ
 import { marketplaceSourcePolicies, type MarketplaceSourcePlatform } from "@/config/marketplace-source-platforms";
 import { productMediaUploadSpecs, type ProductMediaType } from "@/config/product-media-upload-specs";
 import { ObjectIntakeBatchLinkImport } from "@/components/object-intake/ObjectIntakeBatchLinkImport";
+import { LegacyProductSampleTest } from "@/components/object-intake/LegacyProductSampleTest";
 
 type UploadState = "idle" | "creating" | "uploading" | "drafting" | "submitting" | "done" | "error";
 
@@ -107,6 +108,8 @@ export function ObjectIntakeAdminNew() {
         </header>
 
         <ObjectIntakeBatchLinkImport />
+
+        <LegacyProductSampleTest />
 
         <form onSubmit={submit} className="grid gap-5 rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(45,51,58,0.08)]">
           <div className="grid gap-4 md:grid-cols-3">

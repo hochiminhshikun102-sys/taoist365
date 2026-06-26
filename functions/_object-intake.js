@@ -50,6 +50,18 @@ export const objectIntakeSourceDefinitions = {
     professional_buyer_required: false,
     member_supply_locked: false,
   },
+  legacy_product_sample: {
+    identity_scope: "admin",
+    entry_surface: "admin_os",
+    supply_program: "commerce",
+    commerce_channel: "commerce_new",
+    goods_condition: "new",
+    source_label: "Legacy product sample",
+    source_note: "One existing commerce object is copied into Object Intake for a single-SKU pipeline test.",
+    reward_eligible: false,
+    professional_buyer_required: false,
+    member_supply_locked: false,
+  },
   external_link: {
     identity_scope: "admin",
     entry_surface: "admin_os",
