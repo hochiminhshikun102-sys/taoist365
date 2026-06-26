@@ -25,7 +25,7 @@ export function GlobalSearchClient() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch("/api/public/objects", { cache: "no-store" })
+    fetch("/api/public/objects?include_tests=1", { cache: "no-store" })
       .then((response) => (response.ok ? response.json() : { rows: [] }))
       .then((data: { rows?: PublishedObject[] }) => {
         if (cancelled) return;
