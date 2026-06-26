@@ -1,6 +1,6 @@
 import { intakeStatuses, json, makeId, nowIso, readStore, resolveObjectIntakeSource, updateStore } from "../_object-intake.js";
 
-const sourcePlatforms = new Set(["manual", "taobao", "tmall", "1688", "shopify", "etsy", "other"]);
+const sourcePlatforms = new Set(["manual", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "other"]);
 
 export async function onRequestGet(context) {
   const url = new URL(context.request.url);

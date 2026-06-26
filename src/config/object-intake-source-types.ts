@@ -2,6 +2,7 @@ export type ObjectIntakeSourceType =
   | "admin_upload"
   | "boss_upload"
   | "external_link"
+  | "windkeep_external_link"
   | "supplier_batch"
   | "buyer_upload"
   | "windkeep_member"
@@ -67,6 +68,19 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     professional_buyer_required: false,
     member_supply_locked: false,
     note: "External source link intake. First version stores the link only.",
+  },
+  {
+    type: "windkeep_external_link",
+    label: "Windkeep external link",
+    identity_scope: "admin",
+    entry_surface: "admin_os",
+    supply_program: "windkeep",
+    commerce_channel: "windkeep_secondhand",
+    goods_condition: "preowned",
+    reward_eligible: false,
+    professional_buyer_required: false,
+    member_supply_locked: true,
+    note: "External secondhand source reference for Windkeep continuity.",
   },
   {
     type: "supplier_batch",

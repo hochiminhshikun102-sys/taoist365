@@ -7,7 +7,7 @@ import { ObjectIntakeBatchLinkImport } from "@/components/object-intake/ObjectIn
 
 type UploadState = "idle" | "creating" | "uploading" | "drafting" | "submitting" | "done" | "error";
 
-const sourcePlatforms = ["manual", "taobao", "tmall", "1688", "shopify", "etsy", "other"] as const;
+const sourcePlatforms = ["manual", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "other"] as const;
 const mediaUploadGroups = productMediaUploadSpecs;
 
 export function ObjectIntakeAdminNew() {

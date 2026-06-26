@@ -21,14 +21,16 @@ source input
 | --- | --- | --- | --- |
 | OA manual upload | `admin_upload` | `manual` | Owned or manually uploaded media can be reviewed directly. |
 | Boss upload | `boss_upload` | `manual` | Owned or manually uploaded media can be reviewed directly. |
-| Taobao / Tmall / 1688 link | `external_link` | `taobao` / `tmall` / `1688` | Source media is reference-only. It must be rebuilt, replaced, or transformed before publication. |
+| Domestic marketplace link | `external_link` | `taobao` / `tmall` / `1688` / `pdd` | Source media is reference-only. It must be rebuilt, replaced, or transformed before publication. |
+| Xianyu secondhand link | `windkeep_external_link` | `xianyu` | Windkeep secondhand source reference. Source media is reference-only and must be rebuilt or replaced. |
+| Overseas marketplace link | `external_link` | `tiktok` / `temu` / `amazon` / `etsy` / `shopify` | Source media is reference-only. It must be rebuilt, replaced, or transformed before publication. |
 | Wind Seeker buyer upload | `buyer_upload` | `manual` / `other` | Buyer-shot media enters review and RI media standards. |
 | Supplier batch | `supplier_batch` | `manual` / `other` | Supplier media needs rights confirmation and RI media standards. |
 | Windkeep member supply | `windkeep_member` / `member_consignment` / `neighbor_referral` | `manual` | Secondhand continuity channel, not new-goods commerce. |
 
 ## External Link Rule
 
-For Taobao, Tmall, 1688, and similar product links:
+For Taobao, Tmall, 1688, Pinduoduo, Xianyu, TikTok, Temu, Amazon, Etsy, Shopify, and similar product links:
 
 - The link is a source reference.
 - Original third-party images are not publish-ready assets.
@@ -86,3 +88,12 @@ For Taobao SKU import, every imported link should create:
 - `airEngineJobs` item with `job_type=source_fetch_and_rebuild`
 
 The job queue is intentionally separate from the final AI image generator. This lets operations import 100+ SKUs now while the real beautification runner is connected later.
+
+## Platform Defaults
+
+| Platform | Default channel |
+| --- | --- |
+| Taobao / Tmall / 1688 / Pinduoduo | `commerce_new` |
+| TikTok / Temu / Amazon / Etsy / Shopify | `commerce_new` |
+| Xianyu | `windkeep_secondhand` |
+| Other | `commerce_new` unless manually changed |

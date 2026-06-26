@@ -9,7 +9,8 @@ import {
   updateStore,
 } from "../../../_object-intake.js";
 
-const sourcePlatforms = new Set(["taobao", "tmall", "1688", "shopify", "etsy", "other"]);
+const supportedPlatforms = new Set(["auto", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "other"]);
+const secondhandPlatforms = new Set(["xianyu"]);
 
 export async function onRequestPost(context) {
   let payload;
@@ -23,13 +24,13 @@ export async function onRequestPost(context) {
   if (lines.length === 0) return json({ error: "No source links found." }, 400);
   if (lines.length > 300) return json({ error: "Batch limit is 300 rows per import." }, 400);
 
-  const sourcePlatform = sourcePlatforms.has(payload.source_platform) ? payload.source_platform : "taobao";
+  const selectedPlatform = supportedPlatforms.has(payload.source_platform) ? payload.source_platform : "auto";
+  const selectedChannel = ["auto", "commerce_new", "windkeep_secondhand"].includes(payload.import_channel) ? payload.import_channel : "auto";
   const submitReview = payload.submit_review !== false;
   const generateDraft = payload.generate_ai_draft !== false;
   const categoryHint = String(payload.category_hint || "wind-objects").trim();
   const supplier = String(payload.supplier || "").trim();
   const actorId = String(payload.actor_id || "admin-os").trim();
-  const source = resolveObjectIntakeSource("external_link");
   const now = nowIso();
 
   const result = {
@@ -57,6 +58,9 @@ export async function onRequestPost(context) {
         return;
       }
 
+      const platform = selectedPlatform === "auto" ? detectPlatform(parsed.source_url) : selectedPlatform;
+      const importChannel = resolveImportChannel(selectedChannel, platform);
+      const source = resolveObjectIntakeSource(importChannel === "windkeep_secondhand" ? "windkeep_external_link" : "external_link");
       const id = makeId("intake");
       const intakeNo = `OI-${Date.now().toString().slice(-7)}-${String(index + 1).padStart(3, "0")}`;
       const baseIntake = {
@@ -69,17 +73,18 @@ export async function onRequestPost(context) {
         commerce_channel: source.commerce_channel,
         goods_condition: source.goods_condition,
         source_label: source.source_label,
-        source_note: "Batch Taobao link import for new-goods commerce. Source parsing and media fetch are later Air Engine jobs.",
+        source_note: makeSourceNote(platform, source.commerce_channel),
         reward_eligible: source.reward_eligible,
         professional_buyer_required: source.professional_buyer_required,
         member_supply_locked: source.member_supply_locked,
-        source_platform: sourcePlatform,
+        source_platform: platform,
         source_url: parsed.source_url,
         source_snapshot: {
           raw_line: line,
           import_mode: "batch_links",
           source_usage_policy: "reference_only",
           publish_policy: "source media must be rebuilt or replaced before publication",
+          detected_platform: platform,
         },
         media_rights_status: "reference_only",
         media_transform_required: true,
@@ -90,7 +95,7 @@ export async function onRequestPost(context) {
         referral_code: "",
         country: "",
         original_title: parsed.original_title,
-        original_description: parsed.original_description,
+        original_description: parsed.original_description || `Imported from ${platform} source link: ${parsed.source_url}`,
         original_price: parsed.original_price,
         currency: "USD",
         category_hint: categoryHint,
@@ -98,7 +103,7 @@ export async function onRequestPost(context) {
         location: "",
         logistics_method: "platform_logistics",
         inventory: parsed.inventory,
-        is_one_of_one: false,
+        is_one_of_one: importChannel === "windkeep_secondhand",
         air_engine_status: "pending",
         status: generateDraft ? intakeStatuses.AI_DRAFT_READY : intakeStatuses.DRAFT,
         created_at: now,
@@ -111,7 +116,7 @@ export async function onRequestPost(context) {
             intake_id: id,
             ...makeProductDraft(baseIntake),
             risk_notes:
-              "Batch link import. Taobao source, image rights, material, price, inventory, shipping, and compliance must be confirmed before publication.",
+              "External source import. Source images are reference-only. Rights, material, price, inventory, shipping, and final RI media must be confirmed before publication.",
             created_at: now,
             updated_at: now,
           }
@@ -131,19 +136,22 @@ export async function onRequestPost(context) {
             intake_id: id,
             assigned_admin: "",
             review_status: "pending",
-            review_notes: "Batch Taobao link import. Await source parsing, media preparation, and human review.",
-            risk_level: "medium",
+            review_notes: "External link import. Await source parsing, media rebuilding, and human review.",
+            risk_level: platform === "xianyu" ? "medium" : "medium",
             created_at: now,
             updated_at: now,
           }
         : null;
+
       const airJob = {
         id: makeId("airjob"),
         intake_id: id,
         object_id: "",
         job_type: "source_fetch_and_rebuild",
-        source_platform: sourcePlatform,
+        source_platform: platform,
         source_url: parsed.source_url,
+        commerce_channel: source.commerce_channel,
+        goods_condition: source.goods_condition,
         status: "pending",
         priority: "normal",
         media_rights_status: "reference_only",
@@ -165,12 +173,19 @@ export async function onRequestPost(context) {
           id,
           null,
           finalIntake,
-          `Batch imported ${sourcePlatform} link into ${finalIntake.commerce_channel}.`,
+          `Batch imported ${platform} link into ${finalIntake.commerce_channel}.`,
           actorId,
         ),
       );
       existingUrls.add(parsed.source_url);
-      result.created.push({ intake_id: id, intake_no: intakeNo, source_url: parsed.source_url, title: parsed.original_title });
+      result.created.push({
+        intake_id: id,
+        intake_no: intakeNo,
+        source_url: parsed.source_url,
+        title: parsed.original_title,
+        source_platform: platform,
+        commerce_channel: source.commerce_channel,
+      });
     });
 
     return {
@@ -202,12 +217,12 @@ function parseImportLine(line, index) {
   const withoutUrl = sourceUrl ? line.replace(sourceUrl, " ").trim() : line.trim();
   const parts = withoutUrl.split(/\t|,/).map((part) => part.trim()).filter(Boolean);
   const price = parts.find((part) => /[$¥￥]?\s*\d+(\.\d+)?/.test(part)) || "";
-  const title = parts.find((part) => part !== price) || `Taobao SKU ${String(index).padStart(3, "0")}`;
+  const title = parts.find((part) => part !== price) || `${detectPlatform(sourceUrl).toUpperCase()} SKU ${String(index).padStart(3, "0")}`;
 
   return {
     source_url: sourceUrl,
     original_title: cleanText(title, 96),
-    original_description: sourceUrl ? `Imported from Taobao source link: ${sourceUrl}` : "",
+    original_description: sourceUrl ? `Imported source reference: ${sourceUrl}` : "",
     original_price: cleanText(price, 32),
     inventory: 1,
   };
@@ -216,6 +231,33 @@ function parseImportLine(line, index) {
 function extractUrl(value) {
   const match = String(value || "").match(/https?:\/\/[^\s,，]+/i);
   return match ? match[0].trim() : "";
+}
+
+function detectPlatform(url) {
+  const value = String(url || "").toLowerCase();
+  if (/xianyu|goofish|2\.taobao/.test(value)) return "xianyu";
+  if (/tmall|detail\.tmall/.test(value)) return "tmall";
+  if (/taobao|item\.taobao/.test(value)) return "taobao";
+  if (/1688\.com|alibaba/.test(value)) return "1688";
+  if (/pinduoduo|yangkeduo|pdd/.test(value)) return "pdd";
+  if (/tiktok|tokopedia/.test(value)) return "tiktok";
+  if (/temu/.test(value)) return "temu";
+  if (/amazon|amzn\.to/.test(value)) return "amazon";
+  if (/etsy/.test(value)) return "etsy";
+  if (/myshopify|shopify/.test(value)) return "shopify";
+  return "other";
+}
+
+function resolveImportChannel(selectedChannel, platform) {
+  if (selectedChannel === "commerce_new" || selectedChannel === "windkeep_secondhand") return selectedChannel;
+  return secondhandPlatforms.has(platform) ? "windkeep_secondhand" : "commerce_new";
+}
+
+function makeSourceNote(platform, channel) {
+  if (channel === "windkeep_secondhand") {
+    return `Batch ${platform} link import for Windkeep secondhand continuity. Source media is reference-only and must be rebuilt or replaced.`;
+  }
+  return `Batch ${platform} link import for new-goods commerce. Source parsing and media rebuilding are later Air Engine jobs.`;
 }
 
 function cleanText(value, limit) {

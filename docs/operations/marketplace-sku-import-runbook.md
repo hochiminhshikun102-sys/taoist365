@@ -1,6 +1,6 @@
-# Taobao SKU Import Runbook
+# Marketplace SKU Import Runbook
 
-This is the first commerce import path for the 100+ Taobao SKU batch.
+This is the first import path for 100+ marketplace SKU batches across domestic and overseas platforms.
 
 ## Current Scope
 
@@ -10,9 +10,10 @@ It does:
 
 - Create one `object_intake` per source link.
 - Set `source_type=external_link`.
-- Set `source_platform=taobao` by default.
-- Set `commerce_channel=commerce_new`.
-- Set `goods_condition=new`.
+- Auto-detect `source_platform` when possible.
+- Support `taobao`, `tmall`, `1688`, `pdd`, `xianyu`, `tiktok`, `temu`, `amazon`, `etsy`, `shopify`, and `other`.
+- Set `commerce_channel=commerce_new` and `goods_condition=new` for new-goods marketplaces.
+- Set `commerce_channel=windkeep_secondhand` and `goods_condition=preowned` for Xianyu by default.
 - Set `media_rights_status=reference_only`.
 - Set `media_transform_required=true`.
 - Generate a local AI draft placeholder.
@@ -41,10 +42,27 @@ Supported formats:
 
 ```txt
 https://item.taobao.com/item.htm?id=...
-Handmade ceramic vase    https://item.taobao.com/item.htm?id=...    $48
+https://mobile.yangkeduo.com/goods.html?goods_id=...
+https://2.taobao.com/item.htm?id=...
+Handmade ceramic vase    https://www.etsy.com/listing/...    $48
 ```
 
 Tabs are preferred between title, URL, and price. Plain URLs are also accepted.
+
+## Platform Defaults
+
+| Platform | Default channel | Notes |
+| --- | --- | --- |
+| Taobao | `commerce_new` | New-goods commerce source reference. |
+| Tmall | `commerce_new` | New-goods commerce source reference. |
+| 1688 | `commerce_new` | Supplier/new-goods source reference. |
+| Pinduoduo | `commerce_new` | New-goods commerce source reference. |
+| Xianyu | `windkeep_secondhand` | Windkeep secondhand source reference. |
+| TikTok | `commerce_new` | New-goods commerce source reference. |
+| Temu | `commerce_new` | New-goods commerce source reference. |
+| Amazon | `commerce_new` | New-goods commerce source reference. |
+| Etsy | `commerce_new` | New-goods commerce source reference. |
+| Shopify | `commerce_new` | New-goods commerce source reference. |
 
 ## Next Air Engine Step
 

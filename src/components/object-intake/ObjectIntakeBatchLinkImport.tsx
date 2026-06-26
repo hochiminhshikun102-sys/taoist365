@@ -3,17 +3,30 @@
 import { useMemo, useState } from "react";
 
 type BatchResult = {
-  created?: Array<{ intake_id: string; intake_no: string; source_url: string; title: string }>;
+  created?: Array<{
+    intake_id: string;
+    intake_no: string;
+    source_url: string;
+    title: string;
+    source_platform?: string;
+    commerce_channel?: string;
+  }>;
   skipped?: Array<{ line: string; source_url?: string; reason: string }>;
   total?: number;
   error?: string;
 };
 
-const sourcePlatforms = ["taobao", "tmall", "1688", "other"] as const;
+const sourcePlatforms = ["auto", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "other"] as const;
+const importChannels = [
+  ["auto", "Auto channel"],
+  ["commerce_new", "New goods commerce"],
+  ["windkeep_secondhand", "Windkeep secondhand"],
+] as const;
 
 export function ObjectIntakeBatchLinkImport() {
   const [text, setText] = useState("");
-  const [sourcePlatform, setSourcePlatform] = useState<(typeof sourcePlatforms)[number]>("taobao");
+  const [sourcePlatform, setSourcePlatform] = useState<(typeof sourcePlatforms)[number]>("auto");
+  const [importChannel, setImportChannel] = useState<(typeof importChannels)[number][0]>("auto");
   const [categoryHint, setCategoryHint] = useState("wind-objects");
   const [supplier, setSupplier] = useState("");
   const [submitReview, setSubmitReview] = useState(true);
@@ -31,6 +44,7 @@ export function ObjectIntakeBatchLinkImport() {
       body: JSON.stringify({
         text,
         source_platform: sourcePlatform,
+        import_channel: importChannel,
         category_hint: categoryHint,
         supplier,
         submit_review: submitReview,
@@ -47,19 +61,25 @@ export function ObjectIntakeBatchLinkImport() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-sm text-[#6B7280]">Batch source import</p>
-          <h2 className="mt-2 text-2xl font-semibold">Taobao SKU link import</h2>
+          <h2 className="mt-2 text-2xl font-semibold">Marketplace SKU link import</h2>
           <p className="mt-2 max-w-3xl text-sm leading-7 text-[#6B7280]">
-            Paste one source per line. Format can be a plain URL, or title + tab + URL + tab + price. External product images are treated as reference-only sources; publish-ready media must be rebuilt, replaced, or transformed through RI/Air Engine before listing.
+            Paste one source per line from Taobao, Tmall, 1688, Pinduoduo, Xianyu, TikTok, Temu, Amazon, Etsy, Shopify, or other marketplaces. External product images are reference-only sources; publish-ready media must be rebuilt, replaced, or transformed through RI/Air Engine before listing.
           </p>
         </div>
         <span className="rounded-full bg-[#F5F6F8] px-3 py-1 text-xs text-[#6B7280]">{lineCount} rows</span>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-5">
         <label className="grid gap-2 text-sm">
           Platform
           <select value={sourcePlatform} onChange={(event) => setSourcePlatform(event.target.value as typeof sourcePlatform)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">
             {sourcePlatforms.map((item) => <option key={item}>{item}</option>)}
+          </select>
+        </label>
+        <label className="grid gap-2 text-sm">
+          Channel
+          <select value={importChannel} onChange={(event) => setImportChannel(event.target.value as typeof importChannel)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">
+            {importChannels.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
           </select>
         </label>
         <label className="grid gap-2 text-sm">
@@ -80,11 +100,11 @@ export function ObjectIntakeBatchLinkImport() {
         value={text}
         onChange={(event) => setText(event.target.value)}
         className="min-h-56 rounded-2xl border border-[#D9DCE0] p-4 font-mono text-sm leading-7"
-        placeholder={"https://item.taobao.com/item.htm?id=...\nHandmade ceramic vase\thttps://item.taobao.com/item.htm?id=...\t$48"}
+        placeholder={"https://item.taobao.com/item.htm?id=...\nhttps://mobile.yangkeduo.com/goods.html?goods_id=...\nhttps://2.taobao.com/item.htm?id=...\nHandmade ceramic vase\thttps://www.etsy.com/listing/...\t$48"}
       />
 
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="text-xs leading-6 text-[#6B7280]">Created rows are marked `commerce_channel=commerce_new`, `goods_condition=new`, `media_rights_status=reference_only`, and `media_transform_required=true`.</p>
+        <p className="text-xs leading-6 text-[#6B7280]">Auto channel sends Xianyu to `windkeep_secondhand/preowned`; other marketplaces default to `commerce_new/new`. All external media remains `reference_only` and must be rebuilt before listing.</p>
         <button type="button" disabled={busy || lineCount === 0} onClick={submit} className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">
           {busy ? "Importing..." : "Import Links"}
         </button>
@@ -95,7 +115,7 @@ export function ObjectIntakeBatchLinkImport() {
           {result.error ? <p className="text-[#A05D4E]">{result.error}</p> : null}
           <p>Created: <strong>{result.created?.length || 0}</strong> / Skipped: <strong>{result.skipped?.length || 0}</strong> / Total: <strong>{result.total || 0}</strong></p>
           {(result.created || []).slice(0, 8).map((item) => (
-            <p key={item.intake_id} className="rounded-xl bg-white p-3 text-xs">{item.intake_no} / {item.title} / {item.source_url}</p>
+            <p key={item.intake_id} className="rounded-xl bg-white p-3 text-xs">{item.intake_no} / {item.source_platform} / {item.commerce_channel} / {item.title} / {item.source_url}</p>
           ))}
           {(result.skipped || []).length > 0 ? <p className="text-xs text-[#A05D4E]">Skipped rows are usually duplicates or missing URLs.</p> : null}
         </div>

@@ -62,6 +62,18 @@ export const objectIntakeSourceDefinitions = {
     professional_buyer_required: false,
     member_supply_locked: false,
   },
+  windkeep_external_link: {
+    identity_scope: "admin",
+    entry_surface: "admin_os",
+    supply_program: "windkeep",
+    commerce_channel: "windkeep_secondhand",
+    goods_condition: "preowned",
+    source_label: "Windkeep external link",
+    source_note: "External secondhand source reference for Windkeep continuity. Source media must be rebuilt or replaced before publication.",
+    reward_eligible: false,
+    professional_buyer_required: false,
+    member_supply_locked: true,
+  },
   supplier_batch: {
     identity_scope: "supplier",
     entry_surface: "admin_os",
