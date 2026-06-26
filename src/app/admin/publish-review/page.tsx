@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 import { AdminOSAccess } from "@/components/admin/AdminOSAccess";
 import { AdminCommerceOpsNav } from "@/components/admin/AdminCommerceOpsNav";
-import { AssetRegistryAdmin } from "@/components/admin/AssetRegistryAdmin";
+import { ObjectIntakeAdminQueue } from "@/components/object-intake/ObjectIntakeAdminQueue";
 
 export const metadata: Metadata = {
-  title: "Admin Product Media - Reverent Inquiry",
+  title: "Publish Review - Reverent Inquiry",
   robots: { index: false, follow: false },
 };
 
-export default function AdminProductMediaPage() {
+export default function AdminPublishReviewPage() {
   return (
     <AdminOSAccess>
       <AdminCommerceOpsNav />
-      <AssetRegistryAdmin />
+      <ObjectIntakeAdminQueue />
     </AdminOSAccess>
   );
 }

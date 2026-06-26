@@ -70,10 +70,10 @@ export function ObjectIntakeAdminQueue() {
         <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
           <div>
             <p className="text-sm text-[#6B7280]">VL Object Intake Pipeline</p>
-            <h1 className="mt-2 text-4xl font-semibold">Review Queue</h1>
+            <h1 className="mt-2 text-4xl font-semibold">发布审核</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">统一治理全球买手、后台、老板和链接导入的物件。</p>
           </div>
-          <a href="/admin/object-intakes/new" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">New Intake</a>
+          <a href="/admin/product-intake" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">宝贝入库</a>
         </header>
 
         <div className="flex flex-wrap gap-2">

@@ -107,10 +107,10 @@ export function ObjectIntakeAdminNew() {
         <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
           <div>
             <p className="text-sm text-[#6B7280]">VL Object Intake Pipeline</p>
-            <h1 className="mt-2 text-4xl font-semibold">Admin Upload</h1>
+            <h1 className="mt-2 text-4xl font-semibold">宝贝入库</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">后台宝贝上传进入统一 object_intakes，不再作为孤立工具。</p>
           </div>
-          <a href="/admin/object-intakes" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">Review Queue</a>
+          <a href="/admin/publish-review" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">发布审核</a>
         </header>
 
         <form onSubmit={submit} className="grid gap-5 rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(45,51,58,0.08)]">
