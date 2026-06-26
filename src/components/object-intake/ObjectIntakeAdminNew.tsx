@@ -3,14 +3,25 @@
 import { useState } from "react";
 
 type UploadState = "idle" | "creating" | "uploading" | "drafting" | "submitting" | "done" | "error";
+type MediaType = "original" | "main" | "detail" | "scene" | "pc" | "mobile" | "social" | "motion";
 
 const sourceTypes = ["admin_upload", "boss_upload", "buyer_upload", "external_link", "supplier_batch"] as const;
 const sourcePlatforms = ["manual", "taobao", "tmall", "1688", "shopify", "etsy", "other"] as const;
+const mediaUploadGroups: { type: MediaType; title: string; note: string }[] = [
+  { type: "main", title: "Main image / 主图", note: "First product image for listing, search, collection, and cart." },
+  { type: "original", title: "Original source / 原始素材", note: "Raw buyer, supplier, link, or boss upload files retained for trace." },
+  { type: "detail", title: "Detail images / 细节图", note: "Material, texture, defects, package details, closeups." },
+  { type: "scene", title: "Scene images / 场景图", note: "Room, desk, shelf, usage, atmosphere, placement." },
+  { type: "pc", title: "PC page images / PC详情图", note: "Wide detail page sections and desktop marketing blocks." },
+  { type: "mobile", title: "Mobile page images / 手机详情图", note: "Vertical mobile sections for product detail." },
+  { type: "social", title: "Social exports / 社媒图", note: "Pinterest, Xiaohongshu, Instagram, ad/export versions." },
+  { type: "motion", title: "Video or motion / 视频动效", note: "Short video, slow loop, product movement, packaging proof." },
+];
 
 export function ObjectIntakeAdminNew() {
   const [state, setState] = useState<UploadState>("idle");
   const [note, setNote] = useState("");
-  const [files, setFiles] = useState<FileList | null>(null);
+  const [mediaFiles, setMediaFiles] = useState<Partial<Record<MediaType, FileList | null>>>({});
   const [created, setCreated] = useState<{ intake_id: string; intake_no: string; status: string } | null>(null);
   const [form, setForm] = useState({
     source_type: "admin_upload",
@@ -35,6 +46,10 @@ export function ObjectIntakeAdminNew() {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
+  function updateMedia(type: MediaType, files: FileList | null) {
+    setMediaFiles((current) => ({ ...current, [type]: files }));
+  }
+
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setNote("");
@@ -51,14 +66,21 @@ export function ObjectIntakeAdminNew() {
       if (!createResponse.ok) throw new Error(createData.error || "Unable to create intake.");
       setCreated(createData);
 
-      if (files && files.length > 0) {
-        setState("uploading");
+      const uploadEntries = mediaUploadGroups
+        .map((group) => ({ type: group.type, files: mediaFiles[group.type] }))
+        .filter((entry) => entry.files && entry.files.length > 0);
+
+      if (uploadEntries.length > 0) {
         const mediaForm = new FormData();
-        Array.from(files).forEach((file) => mediaForm.append("files", file));
-        mediaForm.append("media_type", "original");
-        const mediaResponse = await fetch(`/api/object-intakes/${createData.intake_id}/media`, { method: "POST", body: mediaForm });
-        const mediaData = await mediaResponse.json();
-        if (!mediaResponse.ok) throw new Error(mediaData.error || "Unable to upload media.");
+        for (const entry of uploadEntries) {
+          setState("uploading");
+          mediaForm.delete("files");
+          mediaForm.set("media_type", entry.type);
+          Array.from(entry.files || []).forEach((file) => mediaForm.append("files", file));
+          const mediaResponse = await fetch(`/api/object-intakes/${createData.intake_id}/media`, { method: "POST", body: mediaForm });
+          const mediaData = await mediaResponse.json();
+          if (!mediaResponse.ok) throw new Error(mediaData.error || `Unable to upload ${entry.type} media.`);
+        }
       }
 
       setState("drafting");
@@ -98,7 +120,21 @@ export function ObjectIntakeAdminNew() {
             <label className="grid gap-2 text-sm">Source URL<input value={form.source_url} onChange={(event) => update("source_url", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" placeholder="Optional link, first version saves only" /></label>
           </div>
 
-          <label className="grid gap-2 text-sm">Product Images<input type="file" multiple accept="image/*,video/*" onChange={(event) => setFiles(event.target.files)} className="rounded-xl border border-dashed border-[#947A66]/60 bg-[#F3ECE2] px-4 py-5" /></label>
+          <section className="grid gap-4 rounded-2xl border border-[#D9DCE0] bg-[#F8F5EF] p-4">
+            <div>
+              <p className="text-sm font-semibold">Product media modules / 商品图片模块</p>
+              <p className="mt-2 text-xs leading-6 text-[#6B7280]">Upload by page purpose. These files enter object_media first and can later be reused by the asset center and Air Engine.</p>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              {mediaUploadGroups.map((group) => (
+                <label key={group.type} className="grid gap-2 rounded-xl border border-[#D9DCE0] bg-white p-4 text-sm">
+                  <span className="font-semibold">{group.title}</span>
+                  <span className="text-xs leading-5 text-[#6B7280]">{group.note}</span>
+                  <input type="file" multiple accept="image/*,video/*" onChange={(event) => updateMedia(group.type, event.target.files)} className="mt-1 block w-full text-sm text-[#6B7280] file:mr-3 file:rounded-lg file:border file:border-[#D9DCE0] file:bg-[#EBEDEF] file:px-3 file:py-2 file:text-[#2D333A]" />
+                </label>
+              ))}
+            </div>
+          </section>
 
           <div className="grid gap-4 md:grid-cols-2">
             <label className="grid gap-2 text-sm">Original Title<input required value={form.original_title} onChange={(event) => update("original_title", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>

@@ -26,7 +26,10 @@ function enrichIntake(store, intake) {
   const draft = latestAiDraft(store, intake.id);
   const review = store.objectReviewQueue.find((item) => item.intake_id === intake.id) || null;
   const publishedObject = store.objects.find((item) => item.intake_id === intake.id) || null;
-  const primary = media.find((item) => item.media_type === "main") || media[0] || null;
+  const primary =
+    media.find((item) => item.media_type === "main" && !isVideoMedia(item)) ||
+    media.find((item) => !isVideoMedia(item)) ||
+    null;
 
   return {
     intake,
@@ -37,4 +40,9 @@ function enrichIntake(store, intake) {
     thumbnail_url: publicUrlForMedia(primary),
     audit_logs: store.adminAuditLogs.filter((item) => item.target_id === intake.id).slice(0, 20),
   };
+}
+
+function isVideoMedia(media) {
+  const value = `${media?.mime_type || ""} ${media?.storage_key || ""}`.toLowerCase();
+  return value.includes("video/") || /\.(mp4|webm|mov|m4v)(\?|$)/.test(value);
 }

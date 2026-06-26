@@ -31,6 +31,15 @@ export async function onRequestPost(context) {
     const draft = latestAiDraft(store, intakeId);
     const media = mediaForIntake(store, intakeId);
     const primary = media.find((item) => item.media_type === "main") || media[0] || null;
+    const primaryImage = media.find((item) => !isVideoMedia(item) && item.media_type === "main") || media.find((item) => !isVideoMedia(item)) || primary;
+    const publishedMedia = media.map((item) => ({
+      id: item.id,
+      type: item.media_type,
+      url: publicUrlForMedia(item),
+      mime_type: item.mime_type,
+      storage_key: item.storage_key,
+      sort_order: item.sort_order || 0,
+    }));
     const objectId = intake.object_id || `VL-OBJ-${Date.now().toString().slice(-7)}`;
     const title = draft?.draft_title || intake.original_title || "Quiet room object";
     const object = {
@@ -48,8 +57,12 @@ export async function onRequestPost(context) {
       collection: draft?.category || "wind-objects",
       tags: draft?.tags || [],
       buyer_id: intake.buyer_id || "",
-      primary_image_url: publicUrlForMedia(primary),
+      primary_media_url: publicUrlForMedia(primary),
+      primary_media_type: primary?.mime_type || "",
+      primary_image_url: publicUrlForMedia(primaryImage),
       media_ids: media.map((item) => item.id),
+      media: publishedMedia,
+      detail_modules: makeDetailModules(intake, draft, publishedMedia),
       status: "published",
       published_at: now,
       created_at: now,
@@ -75,4 +88,41 @@ export async function onRequestPost(context) {
   if (missing) return json({ error: "Intake not found." }, 404);
   if (invalid) return json({ error: invalid }, 400);
   return json({ object: published, object_id: published.object_id, path: `/objects/${published.object_id}` }, 201);
+}
+
+function makeDetailModules(intake, draft, media) {
+  return [
+    {
+      id: "gallery",
+      title: "Product gallery",
+      media_types: ["main", "original"],
+      note: "Main listing images and source traces.",
+    },
+    {
+      id: "detail",
+      title: "Material and detail",
+      media_types: ["detail"],
+      note: draft?.material || "Material, closeups, condition, and handmade details.",
+    },
+    {
+      id: "scene",
+      title: "Placed in life",
+      media_types: ["scene", "pc", "mobile"],
+      note: draft?.placement_suggestion || "Room, desk, shelf, window, or use scene.",
+    },
+    {
+      id: "shipping",
+      title: "Shipping and after-sales",
+      media_types: ["social", "motion"],
+      note: intake.logistics_method || "Packaging, route, video proof, and after-sales evidence slots.",
+    },
+  ].map((module) => ({
+    ...module,
+    media: media.filter((item) => module.media_types.includes(item.type)),
+  }));
+}
+
+function isVideoMedia(media) {
+  const value = `${media?.mime_type || ""} ${media?.storage_key || ""}`.toLowerCase();
+  return value.includes("video/") || /\.(mp4|webm|mov|m4v)(\?|$)/.test(value);
 }
