@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
@@ -11,8 +11,9 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isWindkeepRoom = pathname === "/windkeep" || pathname === "/quiet-receiving";
-  const isObjectsRoom = pathname === "/objects";
-  const ownsPageChrome = isHome || isWindkeepRoom || isObjectsRoom;
+  const isObjectsRoom = pathname === "/objects" || pathname.startsWith("/objects/");
+  const isCommerceCheckout = pathname === "/order" || pathname.startsWith("/order/");
+  const ownsPageChrome = isHome || isWindkeepRoom || isObjectsRoom || isCommerceCheckout;
 
   return (
     <>
@@ -24,4 +25,3 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
     </>
   );
 }
-

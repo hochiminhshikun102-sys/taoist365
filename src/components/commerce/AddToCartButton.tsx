@@ -9,9 +9,21 @@ type AddToCartButtonProps = {
   priceCents: number;
   image: string;
   disabled?: boolean;
+  label?: string;
+  addedLabel?: string;
+  className?: string;
 };
 
-export function AddToCartButton({ id, title, priceCents, image, disabled = false }: AddToCartButtonProps) {
+export function AddToCartButton({
+  id,
+  title,
+  priceCents,
+  image,
+  disabled = false,
+  label = "Keep Nearby",
+  addedLabel = "Kept Nearby",
+  className = "",
+}: AddToCartButtonProps) {
   const [state, setState] = useState<"idle" | "added">("idle");
 
   return (
@@ -23,9 +35,9 @@ export function AddToCartButton({ id, title, priceCents, image, disabled = false
         setState("added");
         window.setTimeout(() => setState("idle"), 1800);
       }}
-      className="taoist-quiet-action rounded-lg border border-foreground/12 bg-foreground px-4 py-2.5 text-sm text-white transition hover:bg-foreground/88 disabled:cursor-not-allowed disabled:border-border-subtle disabled:bg-white/50 disabled:text-text-muted"
+      className={`taoist-quiet-action rounded-lg border border-foreground/12 bg-foreground px-4 py-2.5 text-sm text-white transition hover:bg-foreground/88 disabled:cursor-not-allowed disabled:border-border-subtle disabled:bg-white/50 disabled:text-text-muted ${className}`}
     >
-      {disabled ? "Unavailable" : state === "added" ? "Added" : "Add to cart"}
+      {disabled ? "Unavailable" : state === "added" ? addedLabel : label}
     </button>
   );
 }
