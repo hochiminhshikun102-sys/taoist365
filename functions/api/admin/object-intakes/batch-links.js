@@ -59,6 +59,7 @@ export async function onRequestPost(context) {
       }
 
       const platform = selectedPlatform === "auto" ? detectPlatform(parsed.source_url) : selectedPlatform;
+      const sourceMeta = parseSourceMeta(parsed.source_url, platform);
       const importChannel = resolveImportChannel(selectedChannel, platform);
       const source = resolveObjectIntakeSource(importChannel === "windkeep_secondhand" ? "windkeep_external_link" : "external_link");
       const id = makeId("intake");
@@ -85,8 +86,12 @@ export async function onRequestPost(context) {
           source_usage_policy: "reference_only",
           publish_policy: "source media must be licensed, re-shot, rebuilt, or replaced before publication",
           detected_platform: platform,
+          source_item_id: sourceMeta.source_item_id,
+          canonical_source_url: sourceMeta.canonical_source_url,
+          source_parse_status: sourceMeta.source_parse_status,
+          parser_version: sourceMeta.parser_version,
           rights_review_required: true,
-          source_capture_status: "pending",
+          source_capture_status: "metadata_pending",
           legal_note: "External marketplace images are source references only and must not be published directly.",
         },
         media_rights_status: "reference_only",
@@ -153,6 +158,8 @@ export async function onRequestPost(context) {
         job_type: "source_fetch_and_rebuild",
         source_platform: platform,
         source_url: parsed.source_url,
+        source_item_id: sourceMeta.source_item_id,
+        canonical_source_url: sourceMeta.canonical_source_url,
         commerce_channel: source.commerce_channel,
         goods_condition: source.goods_condition,
         status: "pending",
@@ -160,7 +167,8 @@ export async function onRequestPost(context) {
         media_rights_status: "reference_only",
         transform_required: true,
         rights_review_required: true,
-        source_capture_status: "pending",
+        source_capture_status: "metadata_pending",
+        source_parse_status: sourceMeta.source_parse_status,
         air_engine_policy: "rebuild_or_replace_before_publish",
         requested_outputs: ["original", "main", "detail", "scene", "pc", "mobile", "social"],
         notes: "Fetch source metadata first. Third-party source images are references only; final publish media must be licensed, re-shot, rebuilt, replaced, or transformed.",
@@ -190,6 +198,7 @@ export async function onRequestPost(context) {
         source_url: parsed.source_url,
         title: parsed.original_title,
         source_platform: platform,
+        source_item_id: sourceMeta.source_item_id,
         commerce_channel: source.commerce_channel,
       });
     });
@@ -253,6 +262,50 @@ function detectPlatform(url) {
   if (/jd\.com|360buy/.test(value)) return "jd";
   if (/myshopify|shopify/.test(value)) return "shopify";
   return "other";
+}
+
+function parseSourceMeta(sourceUrl, platform) {
+  const fallback = {
+    source_item_id: "",
+    canonical_source_url: sourceUrl,
+    source_parse_status: "url_only",
+    parser_version: "source-url-v1",
+  };
+
+  try {
+    const parsed = new URL(sourceUrl);
+    const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+    const path = parsed.pathname;
+    const search = parsed.searchParams;
+    const itemId =
+      search.get("id") ||
+      search.get("itemId") ||
+      search.get("item_id") ||
+      search.get("goods_id") ||
+      search.get("goodsId") ||
+      search.get("offerId") ||
+      search.get("offer_id") ||
+      matchPath(path, /\/listing\/(\d+)/) ||
+      matchPath(path, /\/dp\/([A-Z0-9]{10})/i) ||
+      matchPath(path, /\/gp\/product\/([A-Z0-9]{10})/i) ||
+      matchPath(path, /\/offer\/(\d+)/) ||
+      matchPath(path, /\/item\/(\d+)/) ||
+      "";
+
+    return {
+      source_item_id: itemId,
+      canonical_source_url: `${parsed.protocol}//${host}${path}${itemId ? `?source_id=${encodeURIComponent(itemId)}` : ""}`,
+      source_parse_status: itemId ? "parsed" : "url_only",
+      parser_version: `source-url-v1:${platform}`,
+    };
+  } catch {
+    return fallback;
+  }
+}
+
+function matchPath(path, pattern) {
+  const match = String(path || "").match(pattern);
+  return match ? match[1] : "";
 }
 
 function resolveImportChannel(selectedChannel, platform) {

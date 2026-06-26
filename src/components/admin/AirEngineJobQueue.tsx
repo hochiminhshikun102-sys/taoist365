@@ -15,6 +15,12 @@ type AirEngineJob = {
   priority?: string;
   media_rights_status?: string;
   transform_required?: boolean;
+  rights_review_required?: boolean;
+  source_capture_status?: string;
+  source_parse_status?: string;
+  source_item_id?: string;
+  canonical_source_url?: string;
+  air_engine_policy?: string;
   requested_outputs?: string[];
   notes?: string;
   created_at: string;
@@ -82,7 +88,7 @@ export function AirEngineJobQueue() {
         <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
           <div>
             <p className="text-sm text-[#6B7280]">Dohara Air Engine</p>
-            <h1 className="mt-2 text-4xl font-semibold">AI素材处理队列</h1>
+            <h1 className="mt-2 text-4xl font-semibold">AI 素材处理队列</h1>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-[#6B7280]">
               External marketplace images are source references. This queue tracks source fetch, rights checks, rebuild requirements, and Dohara media outputs before publication.
             </p>
@@ -136,9 +142,13 @@ export function AirEngineJobQueue() {
                   <div className="mt-3 grid gap-2 text-sm leading-7 text-[#6B7280]">
                     <p>Intake: {active.intake_id}</p>
                     <p>Platform: {active.source_platform}</p>
+                    <p>Source ID: {active.source_item_id || "unparsed"}</p>
+                    <p>Parse: {active.source_parse_status || "unset"} / Capture: {active.source_capture_status || "unset"}</p>
                     <a href={active.source_url} target="_blank" rel="noreferrer" className="break-all text-[#947A66]">{active.source_url}</a>
+                    {active.canonical_source_url ? <a href={active.canonical_source_url} target="_blank" rel="noreferrer" className="break-all text-[#947A66]">Canonical: {active.canonical_source_url}</a> : null}
                     <p>Rights: {active.media_rights_status || "reference_only"}</p>
                     <p>Transform required: {active.transform_required ? "yes" : "no"}</p>
+                    <p>Policy: {active.air_engine_policy || "rebuild_or_replace_before_publish"}</p>
                   </div>
                 </section>
 

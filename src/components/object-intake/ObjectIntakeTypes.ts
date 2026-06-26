@@ -31,7 +31,13 @@ export type ObjectIntake = {
     source_usage_policy?: string;
     publish_policy?: string;
     detected_platform?: string;
+    source_item_id?: string;
+    canonical_source_url?: string;
+    source_parse_status?: string;
+    parser_version?: string;
     rights_review_required?: boolean;
+    source_capture_status?: string;
+    legal_note?: string;
   } | null;
   media_rights_status?: string;
   media_transform_required?: boolean;

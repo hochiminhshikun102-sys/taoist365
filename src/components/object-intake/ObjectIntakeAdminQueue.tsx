@@ -73,7 +73,7 @@ export function ObjectIntakeAdminQueue() {
           <div>
             <p className="text-sm text-[#6B7280]">Dohara Object Intake Pipeline</p>
             <h1 className="mt-2 text-4xl font-semibold">发布审核</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">统一治理全球买手、后台、老板和链接导入的物件。</p>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">统一治理全球买手、后台、老板上传和链接导入的物件。外部平台素材只作来源参考，必须完成授权、重拍、替换或 Air Engine 重建后再发布。</p>
           </div>
           <a href="/admin/product-intake" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">宝贝入库</a>
         </header>
@@ -122,6 +122,8 @@ export function ObjectIntakeAdminQueue() {
                   </div>
                   <div className="mt-4 grid gap-2 text-sm text-[#6B7280]">
                     <p>Source: {active.intake.source_platform} {active.intake.source_url ? `/ ${active.intake.source_url}` : ""}</p>
+                    <p>Source ID: {active.intake.source_snapshot?.source_item_id || "unparsed"} / Parse: {active.intake.source_snapshot?.source_parse_status || "unset"}</p>
+                    <p>Rights: {active.intake.media_rights_status || "unset"} / Policy: {active.intake.air_engine_policy || "unset"}</p>
                     <p>Price: {active.intake.original_price || active.draft?.price_suggestion} {active.intake.currency}</p>
                     <p>Inventory: {active.intake.inventory} / Location: {active.intake.location || active.intake.country || "unset"}</p>
                   </div>
@@ -131,7 +133,7 @@ export function ObjectIntakeAdminQueue() {
                   <section className="rounded-2xl border border-[#D9DCE0] bg-[#F5F6F8] p-4">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
-                        <p className="text-sm font-semibold">RI Media Check</p>
+                        <p className="text-sm font-semibold">Dohara Media Check</p>
                         <p className="mt-2 text-xs leading-5 text-[#6B7280]">主图按 2400 x 2400 白底产品图；视频可做首屏，但仍需白底图做缩略图和合成打底。</p>
                       </div>
                       <span className="rounded-full bg-white px-3 py-1 text-xs text-[#6B7280]">{active.media.length} files</span>
