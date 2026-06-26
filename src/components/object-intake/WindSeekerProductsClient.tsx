@@ -56,7 +56,8 @@ export function WindSeekerProductsClient() {
                 <p className="text-xs text-[#6B7280]">{row.intake.intake_no} / {row.intake.status}</p>
                 <h2 className="mt-2 text-xl font-semibold">{row.draft?.draft_title || row.intake.original_title}</h2>
                 <p className="mt-2 text-sm text-[#6B7280]">{row.draft?.price_suggestion || row.intake.original_price}</p>
-                {row.object ? <a href={`/objects/${row.object.object_id}`} className="mt-3 inline-flex text-sm text-[#947A66]">Open {row.object.object_id}</a> : null}
+                <a href={`/wind-seeker/products/detail?intakeId=${encodeURIComponent(row.intake.id)}`} className="mt-3 inline-flex text-sm text-[#947A66]">Open intake</a>
+                {row.object ? <a href={`/objects/${row.object.object_id}`} className="ml-4 mt-3 inline-flex text-sm text-[#947A66]">Open {row.object.object_id}</a> : null}
               </div>
             </article>
           ))}

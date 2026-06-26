@@ -15,17 +15,27 @@ const primaryMenu = [
   {
     title: "My Objects",
     note: "Objects kept, received, requested, or continuing through Windkeep.",
-    href: "#objects",
+    href: "/account/objects",
   },
   {
     title: "My Orders",
     note: "Orders, shipping states, return notes, and human support.",
-    href: "#orders",
+    href: "/account/orders",
   },
   {
     title: "Membership",
     note: "Level, benefits, verification status, and reserved sharing points.",
     href: "#membership",
+  },
+  {
+    title: "Windkeep Supply",
+    note: "Member supply, consignment, and neighbor referral intake without entering Wind Seeker.",
+    href: "/account/windkeep-supply",
+  },
+  {
+    title: "Rewards",
+    note: "Verification, levels, shopping benefits, referral rewards, and future rebate state.",
+    href: "/account/rewards",
   },
   {
     title: "Driftbox",
@@ -44,7 +54,13 @@ const primaryMenu = [
   },
 ] as const;
 
-const mobileEssentials = ["Orders", "Objects", "Membership", "Driftbox", "Verification"];
+const mobileEssentials = [
+  ["Orders", "/account/orders"],
+  ["Objects", "/account/objects"],
+  ["Windkeep Supply", "/account/windkeep-supply"],
+  ["Rewards", "/account/rewards"],
+  ["Membership", "#membership"],
+] as const;
 
 const riskAllowed = ["Verification submission", "Status display", "Notifications"];
 
@@ -94,8 +110,8 @@ export default function AccountRuntimePage() {
             </p>
           </div>
           <div className="grid min-w-0 gap-2 rounded-3xl border border-[#d8e2e6] bg-white/72 p-4 text-sm text-[#53666f] sm:min-w-72">
-            {mobileEssentials.map((item) => (
-              <a key={item} href={`#${item.toLowerCase().replaceAll(" ", "-")}`} className="rounded-2xl border border-transparent px-3 py-2 hover:border-[#cbd9de] hover:bg-[#f7fafb]">
+            {mobileEssentials.map(([item, href]) => (
+              <a key={item} href={href} className="rounded-2xl border border-transparent px-3 py-2 hover:border-[#cbd9de] hover:bg-[#f7fafb]">
                 {item}
               </a>
             ))}

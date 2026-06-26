@@ -34,7 +34,7 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     reward_eligible: false,
     professional_buyer_required: false,
     member_supply_locked: false,
-    note: "OA后台运营入库。",
+    note: "OA operations product intake.",
   },
   {
     type: "boss_upload",
@@ -45,7 +45,7 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     reward_eligible: false,
     professional_buyer_required: false,
     member_supply_locked: false,
-    note: "老板手动入库。",
+    note: "Owner manual product intake.",
   },
   {
     type: "external_link",
@@ -56,7 +56,7 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     reward_eligible: false,
     professional_buyer_required: false,
     member_supply_locked: false,
-    note: "淘宝、天猫、1688等链接导入；第一版只保存链接。",
+    note: "External source link intake. First version stores the link only.",
   },
   {
     type: "supplier_batch",
@@ -67,7 +67,7 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     reward_eligible: false,
     professional_buyer_required: false,
     member_supply_locked: false,
-    note: "供应商批量资料入口。",
+    note: "Supplier batch material intake.",
   },
   {
     type: "buyer_upload",
@@ -78,7 +78,7 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     reward_eligible: false,
     professional_buyer_required: true,
     member_supply_locked: false,
-    note: "全球买手专业端入口，不能给 Windkeep 普通会员使用。",
+    note: "Professional Wind Seeker entry. Do not expose this entry to Windkeep members.",
   },
   {
     type: "windkeep_member",
@@ -89,7 +89,7 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     reward_eligible: true,
     professional_buyer_required: false,
     member_supply_locked: true,
-    note: "未来会员中心里的 Windkeep 供应入口。",
+    note: "Future Windkeep member supply entry inside the account center.",
   },
   {
     type: "member_consignment",
@@ -100,7 +100,7 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     reward_eligible: true,
     professional_buyer_required: false,
     member_supply_locked: true,
-    note: "未来会员寄售入口。",
+    note: "Future member consignment entry inside the account center.",
   },
   {
     type: "neighbor_referral",
@@ -111,7 +111,7 @@ export const objectIntakeSourceDefinitions: readonly ObjectIntakeSourceDefinitio
     reward_eligible: true,
     professional_buyer_required: false,
     member_supply_locked: true,
-    note: "未来朋友、邻居、裂变推荐入口。",
+    note: "Future friend, neighbor, and referral supply entry.",
   },
 ];
 
@@ -132,5 +132,5 @@ export const futureMemberCenterSupplyEntry = {
   entry_surface: "member_center" as const,
   supply_program: "windkeep" as const,
   allowedSourceTypes: windkeepMemberSupplySourceTypes,
-  guardrail: "Windkeep会员供应入口嵌入会员中心，不跳转全球买手端。",
+  guardrail: "Windkeep member supply stays inside the account center and never routes into Wind Seeker.",
 };
