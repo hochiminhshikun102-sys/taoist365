@@ -2,6 +2,20 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+type AirEngineOutput = {
+  media_type: string;
+  label: string;
+  dimensions: string;
+  ratio: string;
+  publishable: boolean;
+  required: boolean;
+  status: "ready" | "missing" | "blocked_reference_only" | string;
+  media_id?: string;
+  source_media_id?: string;
+  url?: string;
+  note?: string;
+};
+
 type AirEngineJob = {
   id: string;
   intake_id: string;
@@ -22,6 +36,11 @@ type AirEngineJob = {
   canonical_source_url?: string;
   air_engine_policy?: string;
   requested_outputs?: string[];
+  output_manifest?: AirEngineOutput[];
+  ready_outputs?: string[];
+  blocked_outputs?: string[];
+  missing_outputs?: string[];
+  generated_media_ids?: string[];
   notes?: string;
   created_at: string;
   updated_at?: string;
@@ -30,6 +49,16 @@ type AirEngineJob = {
 
 const statuses = ["all", "pending", "processing", "ready", "failed"] as const;
 const mutableStatuses = ["pending", "processing", "ready", "failed"] as const;
+
+const fallbackOutputs: AirEngineOutput[] = [
+  { media_type: "original", label: "Source reference", dimensions: "source", ratio: "source", publishable: false, required: false, status: "missing" },
+  { media_type: "main", label: "White product image", dimensions: "2400x2400", ratio: "1:1", publishable: true, required: true, status: "missing" },
+  { media_type: "detail", label: "Detail image", dimensions: "1800x2400", ratio: "3:4", publishable: true, required: false, status: "missing" },
+  { media_type: "scene", label: "Room scene image", dimensions: "2400x1600", ratio: "3:2", publishable: true, required: false, status: "missing" },
+  { media_type: "pc", label: "Desktop hero image", dimensions: "3200x1800", ratio: "16:9", publishable: true, required: false, status: "missing" },
+  { media_type: "mobile", label: "Mobile atmosphere image", dimensions: "1600x2400", ratio: "2:3", publishable: true, required: false, status: "missing" },
+  { media_type: "social", label: "Social image", dimensions: "2400x1600", ratio: "3:2", publishable: true, required: false, status: "missing" },
+];
 
 export function AirEngineJobQueue() {
   const [rows, setRows] = useState<AirEngineJob[]>([]);
@@ -40,6 +69,7 @@ export function AirEngineJobQueue() {
   const [counts, setCounts] = useState<Record<string, number>>({});
 
   const active = useMemo(() => rows.find((row) => row.id === activeId) ?? rows[0] ?? null, [activeId, rows]);
+  const activeOutputs = active?.output_manifest?.length ? active.output_manifest : fallbackOutputs;
 
   async function loadRows(nextStatus = status) {
     setNote("");
@@ -78,7 +108,9 @@ export function AirEngineJobQueue() {
       setNote(data.error || "Unable to update Air Engine job.");
       return;
     }
-    setNote(`Updated ${data.job.id} to ${data.job.status}.`);
+    const readyCount = data.job.ready_outputs?.length ?? 0;
+    const blockedCount = data.job.blocked_outputs?.length ?? 0;
+    setNote(`Updated ${data.job.id} to ${data.job.status}. Ready outputs: ${readyCount}; blocked: ${blockedCount}.`);
     await loadRows(status);
   }
 
@@ -90,7 +122,7 @@ export function AirEngineJobQueue() {
             <p className="text-sm text-[#6B7280]">Dohara Air Engine</p>
             <h1 className="mt-2 text-4xl font-semibold">AI 素材处理队列</h1>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-[#6B7280]">
-              External marketplace images are source references. This queue tracks source fetch, rights checks, rebuild requirements, and Dohara media outputs before publication.
+              外部平台图片只作为参考源。这里统一管理抓取、版权检查、重做要求和 Dohara 发布素材输出，避免淘宝、闲鱼、亚马逊等来源素材直接污染商城。
             </p>
           </div>
           <div className="flex flex-wrap gap-2 text-sm">
@@ -117,9 +149,14 @@ export function AirEngineJobQueue() {
                     <p className="truncate text-sm font-semibold">{job.source_platform} / {job.job_type}</p>
                     <p className="mt-1 truncate text-xs text-[#6B7280]">{job.intake_id}</p>
                   </div>
-                  <span className="rounded-full bg-white px-2 py-1 text-xs text-[#6B7280]">{job.status}</span>
+                  <span className={statusClass(job.status)}>{job.status}</span>
                 </div>
                 <p className="mt-3 line-clamp-2 text-xs leading-5 text-[#6B7280]">{job.source_url}</p>
+                <div className="mt-3 flex flex-wrap gap-2 text-[11px]">
+                  <span className="rounded-full bg-white px-2 py-1 text-[#557C5D]">ready {job.ready_outputs?.length ?? 0}</span>
+                  <span className="rounded-full bg-white px-2 py-1 text-[#9B4B4B]">blocked {job.blocked_outputs?.length ?? 0}</span>
+                  <span className="rounded-full bg-white px-2 py-1 text-[#6B7280]">missing {job.missing_outputs?.length ?? 0}</span>
+                </div>
               </button>
             ))}
             {rows.length === 0 ? <div className="rounded-2xl border border-[#D9DCE0] bg-white p-5 text-sm text-[#6B7280]">No Air Engine jobs for this status.</div> : null}
@@ -130,15 +167,15 @@ export function AirEngineJobQueue() {
               <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#D9DCE0] pb-5">
                 <div>
                   <p className="text-sm text-[#6B7280]">{active.id} / {active.status}</p>
-                  <h2 className="mt-2 text-3xl font-semibold">{active.source_platform} source rebuild</h2>
+                  <h2 className="mt-2 text-3xl font-semibold">{active.source_platform} 素材重做</h2>
                   <p className="mt-2 text-sm text-[#6B7280]">{active.commerce_channel || "commerce_new"} / {active.goods_condition || "new"} / {active.priority || "normal"}</p>
                 </div>
-                <a href={`/admin/publish-review`} className="rounded-xl border border-[#2D333A] px-4 py-3 text-sm">Open Review</a>
+                <a href="/admin/publish-review" className="rounded-xl border border-[#2D333A] px-4 py-3 text-sm">打开发布审核</a>
               </div>
 
               <div className="mt-5 grid gap-5 xl:grid-cols-[0.48fr_0.52fr]">
                 <section className="rounded-2xl border border-[#D9DCE0] bg-[#F5F6F8] p-4">
-                  <p className="text-sm font-semibold">Source</p>
+                  <p className="text-sm font-semibold">来源与版权口径</p>
                   <div className="mt-3 grid gap-2 text-sm leading-7 text-[#6B7280]">
                     <p>Intake: {active.intake_id}</p>
                     <p>Platform: {active.source_platform}</p>
@@ -153,9 +190,20 @@ export function AirEngineJobQueue() {
                 </section>
 
                 <section className="rounded-2xl border border-[#D9DCE0] bg-[#F5F6F8] p-4">
-                  <p className="text-sm font-semibold">Requested Outputs</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {(active.requested_outputs || []).map((item) => <span key={item} className="rounded-full bg-white px-3 py-1 text-xs text-[#6B7280]">{item}</span>)}
+                  <p className="text-sm font-semibold">输出验收</p>
+                  <div className="mt-3 grid gap-2">
+                    {activeOutputs.map((item) => (
+                      <div key={item.media_type} className="rounded-xl border border-[#D9DCE0] bg-white p-3">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div>
+                            <p className="text-sm font-semibold">{item.media_type} · {item.label}</p>
+                            <p className="mt-1 text-xs text-[#6B7280]">{item.dimensions} / {item.ratio}{item.required ? " / required" : ""}</p>
+                          </div>
+                          <span className={outputStatusClass(item.status)}>{formatOutputStatus(item.status)}</span>
+                        </div>
+                        {item.note ? <p className="mt-2 text-xs leading-5 text-[#6B7280]">{item.note}</p> : null}
+                      </div>
+                    ))}
                   </div>
                   <p className="mt-4 text-sm leading-7 text-[#6B7280]">{active.notes || "No notes."}</p>
                 </section>
@@ -175,4 +223,22 @@ export function AirEngineJobQueue() {
       </section>
     </main>
   );
+}
+
+function statusClass(status: AirEngineJob["status"]) {
+  if (status === "ready") return "rounded-full bg-[#E7F2E7] px-2 py-1 text-xs text-[#557C5D]";
+  if (status === "failed") return "rounded-full bg-[#F7E4E4] px-2 py-1 text-xs text-[#9B4B4B]";
+  if (status === "processing") return "rounded-full bg-[#FFF1D6] px-2 py-1 text-xs text-[#947A66]";
+  return "rounded-full bg-white px-2 py-1 text-xs text-[#6B7280]";
+}
+
+function outputStatusClass(status: string) {
+  if (status === "ready") return "rounded-full bg-[#E7F2E7] px-3 py-1 text-xs text-[#557C5D]";
+  if (status === "blocked_reference_only") return "rounded-full bg-[#F7E4E4] px-3 py-1 text-xs text-[#9B4B4B]";
+  return "rounded-full bg-[#F5F6F8] px-3 py-1 text-xs text-[#6B7280]";
+}
+
+function formatOutputStatus(status: string) {
+  if (status === "blocked_reference_only") return "blocked";
+  return status || "missing";
 }
