@@ -25,6 +25,9 @@ export type ObjectIntake = {
   member_supply_locked?: boolean;
   source_platform: string;
   source_url: string;
+  media_rights_status?: string;
+  media_transform_required?: boolean;
+  air_engine_policy?: string;
   submitted_by: string;
   buyer_id: string;
   member_id?: string;

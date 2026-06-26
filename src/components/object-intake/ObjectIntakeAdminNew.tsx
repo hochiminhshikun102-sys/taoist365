@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { objectIntakeSourceDefinitions } from "@/config/object-intake-source-types";
 import { productMediaUploadSpecs, type ProductMediaType } from "@/config/product-media-upload-specs";
+import { ObjectIntakeBatchLinkImport } from "@/components/object-intake/ObjectIntakeBatchLinkImport";
 
 type UploadState = "idle" | "creating" | "uploading" | "drafting" | "submitting" | "done" | "error";
 
@@ -103,6 +104,8 @@ export function ObjectIntakeAdminNew() {
           </div>
           <a href="/admin/publish-review" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">发布审核</a>
         </header>
+
+        <ObjectIntakeBatchLinkImport />
 
         <form onSubmit={submit} className="grid gap-5 rounded-2xl border border-[#D9DCE0] bg-white p-5 shadow-[0_18px_50px_rgba(45,51,58,0.08)]">
           <div className="grid gap-4 md:grid-cols-3">
