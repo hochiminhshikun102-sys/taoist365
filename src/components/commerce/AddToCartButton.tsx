@@ -12,6 +12,7 @@ type AddToCartButtonProps = {
   label?: string;
   addedLabel?: string;
   className?: string;
+  redirectHref?: string;
 };
 
 export function AddToCartButton({
@@ -23,6 +24,7 @@ export function AddToCartButton({
   label = "Keep Nearby",
   addedLabel = "Kept Nearby",
   className = "",
+  redirectHref,
 }: AddToCartButtonProps) {
   const [state, setState] = useState<"idle" | "added">("idle");
 
@@ -33,6 +35,10 @@ export function AddToCartButton({
       onClick={() => {
         addQuietCartItem({ id, title, priceCents, image, quantity: 1 });
         setState("added");
+        if (redirectHref) {
+          window.location.href = redirectHref;
+          return;
+        }
         window.setTimeout(() => setState("idle"), 1800);
       }}
       className={`taoist-quiet-action rounded-lg border border-foreground/12 bg-foreground px-4 py-2.5 text-sm text-white transition hover:bg-foreground/88 disabled:cursor-not-allowed disabled:border-border-subtle disabled:bg-white/50 disabled:text-text-muted ${className}`}

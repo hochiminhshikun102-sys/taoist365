@@ -169,10 +169,10 @@ export function CartClient() {
             Keep browsing
           </Link>
           <Link
-            href="/order"
+            href="/checkout"
             className="taoist-quiet-action rounded-lg border border-foreground/12 bg-foreground px-5 py-3 text-center text-sm text-white transition hover:bg-foreground/88"
           >
-            Create order request
+            Secure checkout
           </Link>
         </div>
       </div>

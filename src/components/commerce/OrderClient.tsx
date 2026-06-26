@@ -22,7 +22,7 @@ export function OrderClient() {
   const subtotal = cartSubtotal(items);
   const orderBody = useMemo(() => {
     const lines = items.map((item) => `${item.quantity} x ${item.title} - ${formatPrice(item.priceCents * item.quantity)}`);
-    return [`Dohara order request ${submittedOrder ?? ""}`, "", ...lines, "", `Subtotal: ${formatPrice(subtotal)}`].join("\n");
+    return [`Dohara order ${submittedOrder ?? ""}`, "", ...lines, "", `Subtotal: ${formatPrice(subtotal)}`].join("\n");
   }, [items, submittedOrder, subtotal]);
 
   async function submitOrder(event: FormEvent<HTMLFormElement>) {
@@ -47,6 +47,10 @@ export function OrderClient() {
           note: formData.get("note"),
         }),
       });
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error("ORDER_API_UNAVAILABLE");
+      }
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Unable to create order request.");
 
@@ -56,8 +60,26 @@ export function OrderClient() {
         "taoist365-last-order",
         JSON.stringify({ id, items, subtotal, contact: data.order?.contact, createdAt: new Date().toISOString() }),
       );
+      window.location.href = "/checkout";
     } catch (error) {
-      setSubmitNote(error instanceof Error ? error.message : "Order request failed.");
+      const fallbackId = `DH-ORD-${Date.now().toString().slice(-7)}`;
+      window.localStorage.setItem(
+        "taoist365-last-order",
+        JSON.stringify({
+          id: fallbackId,
+          items,
+          subtotal,
+          contact: {
+            name: formData.get("name"),
+            email: formData.get("email"),
+            address: formData.get("address"),
+            note: formData.get("note"),
+          },
+          createdAt: new Date().toISOString(),
+          localFallback: true,
+        }),
+      );
+      window.location.href = "/checkout";
     } finally {
       setIsSubmitting(false);
     }
@@ -77,14 +99,14 @@ export function OrderClient() {
   }
 
   if (submittedOrder) {
-    const href = `mailto:hello@taoist365.com?subject=${encodeURIComponent(`Dohara order request ${submittedOrder}`)}&body=${encodeURIComponent(orderBody)}`;
+    const href = `mailto:hello@taoist365.com?subject=${encodeURIComponent(`Dohara order ${submittedOrder}`)}&body=${encodeURIComponent(orderBody)}`;
 
     return (
       <section className="rounded-2xl border border-[#e6eaf0] bg-white p-6 shadow-[0_12px_32px_rgba(13,32,64,0.06)] md:p-8">
         <p className="text-[13px] leading-5 text-[#6b778c]">Order request</p>
         <h2 className="mt-2 font-[var(--font-display-serif)] text-[32px] font-semibold leading-10 text-[#0b1b33]">{submittedOrder}</h2>
         <p className="mt-4 max-w-2xl text-[15px] leading-6 text-[#3b4556]">
-          Your order request is saved. Dohara operations can now review stock, delivery, packaging, and payment connection.
+          Your order is saved. Dohara operations can now review stock, delivery, packaging, and payment confirmation.
         </p>
         <div className="mt-6 whitespace-pre-wrap rounded-xl border border-[#e6eaf0] bg-[#f7f9fc] p-4 text-[13px] leading-6 text-[#6b778c]">
           {orderBody}
@@ -168,7 +190,7 @@ export function OrderClient() {
         </div>
 
         <p className="mt-4 rounded-lg bg-[#eef3fa] p-3 text-[12px] leading-5 text-[#3b4556]">
-          Payment provider is prepared but not live on this MVP page. The order request saves first, then operations confirms payment and fulfillment.
+          You will continue to secure payment after the order is saved. Shipping and fulfillment are reviewed after payment confirmation.
         </p>
 
         <button
@@ -176,7 +198,7 @@ export function OrderClient() {
           disabled={isSubmitting}
           className="mt-5 grid h-12 w-full place-items-center rounded-lg bg-[#0b1b33] text-[15px] font-semibold leading-5 text-white transition hover:bg-[#123a68] disabled:cursor-not-allowed disabled:bg-[#b8c4d4]"
         >
-          {isSubmitting ? "Creating..." : "Create order request"}
+          {isSubmitting ? "Opening checkout..." : "Continue to secure payment"}
         </button>
         {submitNote ? <p className="mt-3 text-[13px] leading-5 text-[#b42318]">{submitNote}</p> : null}
       </aside>

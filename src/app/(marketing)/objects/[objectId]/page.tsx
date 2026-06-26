@@ -250,7 +250,17 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
               addedLabel="ADDED"
               className="grid h-12 w-full place-items-center rounded-lg bg-[#0b1b33] text-[15px] font-semibold leading-5 text-white"
             />
-            <Link href="/order" className="grid h-12 place-items-center rounded-lg border border-[#2e4a7d] bg-white text-[15px] font-semibold leading-5 text-[#2e4a7d]">BUY IT NOW</Link>
+            <AddToCartButton
+              id={object.object_id}
+              title={object.name}
+              priceCents={object.commerce?.priceCents ?? 0}
+              image={mainMedia.src}
+              disabled={stock <= 0}
+              label="BUY IT NOW"
+              addedLabel="OPENING CHECKOUT"
+              redirectHref="/checkout"
+              className="grid h-12 w-full place-items-center rounded-lg border border-[#2e4a7d] bg-white text-[15px] font-semibold leading-5 text-[#2e4a7d] hover:bg-[#f7f9fc]"
+            />
             <button type="button" className="flex h-11 items-center gap-3 text-[14px] leading-[22px] text-[#3b4556]">
               <span className="text-[18px] text-[#2e4a7d]">♡</span> Save to Wishlist
             </button>

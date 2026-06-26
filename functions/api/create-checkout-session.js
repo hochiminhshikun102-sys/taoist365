@@ -103,11 +103,11 @@ export async function onRequestPost(context) {
   const form = new URLSearchParams();
   form.set("ui_mode", "elements");
   form.set("mode", "payment");
-  form.set("return_url", `${origin}/store/checkout?session_id={CHECKOUT_SESSION_ID}`);
+  form.set("return_url", `${origin}/checkout?session_id={CHECKOUT_SESSION_ID}`);
   form.set("billing_address_collection", "required");
   form.set("phone_number_collection[enabled]", "true");
   form.set("shipping_address_collection[allowed_countries][0]", "US");
-  form.set("metadata[source]", "velune_storefront");
+  form.set("metadata[source]", payload.source === "dohara_objects" ? "dohara_objects" : "dohara_storefront");
   form.set("metadata[cart_skus]", cart.map((item) => `${item.sku}x${item.qty}`).join(","));
 
   cart.forEach((item, index) => {

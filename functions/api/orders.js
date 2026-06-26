@@ -69,5 +69,5 @@ function normalizeItem(value) {
 }
 
 function makeOrderNo() {
-  return `VL-ORD-${Date.now().toString().slice(-7)}`;
+  return `DH-ORD-${Date.now().toString().slice(-7)}`;
 }

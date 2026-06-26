@@ -13,7 +13,8 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
   const isWindkeepRoom = pathname === "/windkeep" || pathname === "/quiet-receiving";
   const isObjectsRoom = pathname === "/objects" || pathname.startsWith("/objects/");
   const isCommerceCheckout = pathname === "/order" || pathname.startsWith("/order/");
-  const ownsPageChrome = isHome || isWindkeepRoom || isObjectsRoom || isCommerceCheckout;
+  const isStripeCheckout = pathname === "/checkout" || pathname.startsWith("/checkout/");
+  const ownsPageChrome = isHome || isWindkeepRoom || isObjectsRoom || isCommerceCheckout || isStripeCheckout;
 
   return (
     <>
