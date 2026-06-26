@@ -6,10 +6,10 @@ import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "The quiet human presence behind Reverent Inquiry.",
+  description: "The quiet human presence behind Dohara.",
   openGraph: {
     title: `About - ${siteConfig.siteName}`,
-    description: "Lila Vukovic keeps Reverent Inquiry close to ordinary light, useful objects, and human notes.",
+    description: "Lila Vukovic keeps Dohara close to ordinary light, useful objects, and human notes.",
     url: `${siteConfig.metadataBase}/about`,
   },
 };
@@ -26,7 +26,7 @@ export default function AboutPage() {
             </h1>
             <p className="mt-3 text-sm text-text-muted">{lilaHumanPresence.role}</p>
             <p className="mt-7 max-w-md text-sm leading-8 text-text-secondary">
-              {lilaHumanPresence.shortLine} Reverent Inquiry is kept as a gentle browser place for objects, letters, quiet rooms, and small returns.
+              {lilaHumanPresence.shortLine} Dohara is kept as a gentle browser place for objects, letters, quiet rooms, and small returns.
             </p>
             <p className="mt-5 max-w-md text-sm leading-8 text-text-secondary">
               The work stays ordinary on purpose: sunlight, useful things, handwritten notes, and enough space for a visitor to breathe.

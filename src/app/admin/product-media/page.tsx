@@ -3,7 +3,7 @@ import { AdminOSAccess } from "@/components/admin/AdminOSAccess";
 import { AdminOSConsole } from "@/components/admin/AdminOSConsole";
 
 export const metadata: Metadata = {
-  title: "Admin Product Media - Reverent Inquiry",
+  title: "Admin Product Media - Dohara",
   robots: { index: false, follow: false },
 };
 

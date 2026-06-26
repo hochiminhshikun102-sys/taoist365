@@ -61,7 +61,7 @@ export const cloudflareAiCommerceAdapter: AiCommerceRuntimeAdapter = {
   async generateProductDraft(input, context) {
     const modelText = await runCloudflareText(
       [
-        "Return a concise Reverent Inquiry product draft as JSON-like text.",
+        "Return a concise Dohara product draft as JSON-like text.",
         "Keep it restrained, clear, and low-pressure.",
         `Instruction: ${input.prompt}`,
         `Media: ${input.mediaName ?? "none"}`,

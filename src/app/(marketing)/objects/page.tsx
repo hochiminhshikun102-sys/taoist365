@@ -6,7 +6,7 @@ import { productRuntimeObjects } from "@/config/product-runtime";
 import { buildSeoGeoMetadata } from "@/lib/seo-geo-runtime";
 
 export const metadata: Metadata = buildSeoGeoMetadata({
-  title: "Objects - Reverent Inquiry",
+  title: "Objects - Dohara",
   description: "A breathable object room for quiet living objects and passing things.",
   path: "/objects",
   kind: "product",
@@ -25,7 +25,7 @@ export default function ObjectsPage() {
           <section className="ri-breath-section grid gap-10 py-8 lg:grid-cols-[0.42fr_0.58fr] lg:items-end">
             <div>
               <Link href="/" className="text-sm text-text-muted">
-                Reverent Inquiry
+                Dohara
               </Link>
               <p className="mt-10 text-sm text-text-muted">Objects</p>
               <h1 className="mt-5 max-w-xl font-[var(--font-display-serif)] text-5xl font-normal leading-[1.04] text-foreground sm:text-6xl">

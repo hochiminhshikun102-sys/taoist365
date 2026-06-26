@@ -36,7 +36,7 @@ export function resolveAtmosphericHumanityRuntime(dayKey: string): AtmosphericHu
             ? "Quiet emotional stability keeps tenderness from becoming a product."
             : humanityMaturity === "lowPressureTenderness"
               ? "Low-pressure tenderness lets the room remain light."
-              : "Restrained softness gives Reverent Inquiry long-term human calm.",
+              : "Restrained softness gives Dohara long-term human calm.",
     emotionalCalmLine: "The civilization does not ask the user for emotional feedback.",
     avoidFeedbackSeeking: h > 16,
   };

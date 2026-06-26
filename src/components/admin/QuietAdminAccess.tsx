@@ -43,7 +43,7 @@ export function QuietAdminAccess({ children }: Readonly<{ children: React.ReactN
     <main className="min-h-dvh bg-[#eef1f4] px-4 py-6 text-foreground sm:px-6">
       <section className="mx-auto flex min-h-[82dvh] w-full max-w-xl flex-col justify-center">
         <p className="text-[0.68rem] uppercase tracking-[0.12em] text-text-muted">安静访问 / Quiet access</p>
-        <h1 className="mt-3 text-2xl font-normal leading-tight text-foreground">Reverent Inquiry</h1>
+        <h1 className="mt-3 text-2xl font-normal leading-tight text-foreground">Dohara</h1>
         <p className="mt-4 text-sm leading-7 text-text-secondary">
           后台只用于安静维护、文案检查和边界修复。This room is for quiet maintenance and guardrail repair.
         </p>

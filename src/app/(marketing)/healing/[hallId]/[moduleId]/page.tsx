@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: HealingModulePageProps): Prom
   const healingModule = healingModuleById(moduleId);
 
   return buildSeoGeoMetadata({
-    title: healingModule ? `${healingModule.title} - Healing - Reverent Inquiry` : "Healing Module - Reverent Inquiry",
-    description: healingModule?.summary ?? "A Reverent Inquiry healing module.",
+    title: healingModule ? `${healingModule.title} - Quiet Rooms - Dohara` : "Quiet Room - Dohara",
+    description: healingModule?.roomLine ?? "A Dohara quiet browser room.",
     path: healingModule ? `/healing/${healingModule.hall}/${healingModule.id}` : "/healing",
     kind: "healing",
     phrases: healingModule ? [healingModule.climate, healingModule.runtime, healingModule.aiHook] : undefined,
@@ -42,8 +42,8 @@ export default async function HealingModulePage({ params }: HealingModulePagePro
       <SeoGeoJsonLd
         graph={[
           articleSchema({
-            title: `${healingModule.title} - Healing - Reverent Inquiry`,
-            description: healingModule.summary,
+            title: `${healingModule.title} - Quiet Rooms - Dohara`,
+            description: healingModule.roomLine,
             path: `/healing/${healingModule.hall}/${healingModule.id}`,
             kind: "healing",
             phrases: [healingModule.climate, healingModule.runtime, healingModule.aiHook],

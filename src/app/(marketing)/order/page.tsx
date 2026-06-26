@@ -3,7 +3,7 @@ import { OrderClient } from "@/components/commerce/OrderClient";
 
 export const metadata: Metadata = {
   title: "Order",
-  description: "Reverent Inquiry order request.",
+  description: "Dohara order request.",
 };
 
 export default function OrderPage() {

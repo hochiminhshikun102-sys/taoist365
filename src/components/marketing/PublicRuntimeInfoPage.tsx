@@ -16,7 +16,7 @@ const pageCopy = {
   privacy: {
     eyebrow: "Public Version",
     title: "Privacy",
-    body: "Reverent Inquiry keeps the public privacy explanation concise. Full GDPR, CCPA, audit, AML, and sanctions handling stays in the backend runtime.",
+    body: "Dohara keeps the public privacy explanation concise. Full GDPR, CCPA, audit, AML, and sanctions handling stays in the backend runtime.",
     points: ["Account data", "Order data", "Locale and region data", "Backend compliance runtime"],
   },
   cookie: {
@@ -28,13 +28,13 @@ const pageCopy = {
   "quiet-extracts": {
     eyebrow: "Frontstage Runtime",
     title: "Quiet Extracts",
-    body: "Quiet Extracts are short notes, object traces, and small public fragments from the Reverent Inquiry world.",
+    body: "Quiet Extracts are short notes, object traces, and small public fragments from the Dohara world.",
     points: ["Small notes", "Object traces", "Soft reading", "No feed pressure"],
   },
   journal: {
     eyebrow: "Frontstage Runtime",
     title: "Journal",
-    body: "Journal is the quieter written layer of Reverent Inquiry: ordinary observations, object stories, and seasonal notes.",
+    body: "Journal is the quieter written layer of Dohara: ordinary observations, object stories, and seasonal notes.",
     points: ["Object stories", "Seasonal notes", "Human presence", "Low-pressure reading"],
   },
   driftbox: {
@@ -46,7 +46,7 @@ const pageCopy = {
   "wind-seeker-intro": {
     eyebrow: "Public Intro",
     title: "Wind Seeker",
-    body: "Wind Seeker is the global distributed object discovery network of Reverent Inquiry. It helps discovered objects become clear, reviewed, and ready to continue.",
+    body: "Wind Seeker is the global distributed object discovery network of Dohara. It helps discovered objects become clear, reviewed, and ready to continue.",
     points: ["Discover", "Photograph", "AI generate", "Review", "Publish"],
   },
 } as const;
@@ -58,7 +58,7 @@ export function PublicRuntimeInfoPage({ pageKey }: Readonly<{ pageKey: PublicRun
   return (
     <main className="min-h-dvh bg-[#F0F2F5] px-5 py-10 text-[#2C323C]">
       <section className="mx-auto max-w-4xl">
-        <Link href="/" className="text-sm text-[#646E7A]">Reverent Inquiry</Link>
+        <Link href="/" className="text-sm text-[#646E7A]">Dohara</Link>
         <div className="mt-8 rounded-[28px] border border-[#D7DCE3] bg-[#E8EBF0] p-6 sm:p-10">
           <p className="text-sm text-[#646E7A]">{content.eyebrow}</p>
           <h1 className="mt-3 text-5xl font-semibold tracking-[-0.01em] text-[#2C323C]">{content.title}</h1>

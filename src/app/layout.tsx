@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
 import { siteConfig } from "@/config/site";
 import { localizedAlternates } from "@/config/locales";
-import { QuietSiteJsonLd } from "@/components/structured/QuietSiteJsonLd";
 import { TemporalBandRoot } from "@/components/ritual/TemporalBandRoot";
 import "./globals.css";
 
@@ -22,16 +21,20 @@ const displaySerif = Cormorant_Garamond({
   weight: ["400", "500", "600", "700"],
 });
 
+const rootTitle = `${siteConfig.siteName} — ${siteConfig.domain}`;
+
 /** Matches page background so mobile chrome stays visually steady between revisits. */
 export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
   themeColor: "#F0F2F5",
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.metadataBase),
   title: {
-    default: `${siteConfig.siteName} - ${siteConfig.domain}`,
-    template: `%s - ${siteConfig.siteName}`,
+    default: rootTitle,
+    template: `%s — ${siteConfig.siteName}`,
   },
   description: siteConfig.description,
   alternates: {
@@ -42,12 +45,20 @@ export const metadata: Metadata = {
     icon: "/brand/production/favicon.svg",
   },
   openGraph: {
-    title: `${siteConfig.siteName} - ${siteConfig.domain}`,
+    title: rootTitle,
     description: siteConfig.description,
     url: siteConfig.metadataBase,
     siteName: siteConfig.siteName,
     locale: siteConfig.locale,
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: rootTitle,
+    description: siteConfig.description,
+  },
+  other: {
+    google: "notranslate",
   },
 };
 
@@ -59,10 +70,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geistMono.variable} ${displaySerif.variable} h-full antialiased`}
+      translate="no"
+      className={`${inter.variable} ${geistMono.variable} ${displaySerif.variable} h-full antialiased notranslate`}
     >
-      <body className="min-h-full flex flex-col">
-        <QuietSiteJsonLd />
+      <body className="min-h-full flex flex-col notranslate">
         <TemporalBandRoot>{children}</TemporalBandRoot>
       </body>
     </html>

@@ -6,7 +6,7 @@ import { newArrivalObjects } from "@/config/frontstage-operations";
 
 export const metadata: Metadata = {
   title: "New Arrivals",
-  description: "Recently added Reverent Inquiry objects.",
+  description: "Recently added Dohara objects.",
 };
 
 export default function NewArrivalsPage() {

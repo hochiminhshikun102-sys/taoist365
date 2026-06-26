@@ -37,7 +37,7 @@ export function resolveLowFrequencyExplorationRuntime(dayKey: string): LowFreque
             : explorationState === "sparseNavigation"
               ? "Navigation remains sparse and atmospheric."
               : "Discovery refuses optimization and remains non-directed.",
-    wanderingLine: "Reverent Inquiry is for wandering, not using.",
+    wanderingLine: "Dohara is for wandering, not using.",
     suppressRecommendationBehavior: h > 12,
   };
 }

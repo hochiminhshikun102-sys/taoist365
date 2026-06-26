@@ -3,7 +3,7 @@ import { HomepageBrowserRoom } from "@/components/marketing/HomepageBrowserRoom"
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Reverent Inquiry",
+  title: "Dohara",
   description:
     "A quiet browser room at taoist365.com, kept steady beside ordinary life.",
   openGraph: {

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { PublicRuntimeInfoPage } from "@/components/marketing/PublicRuntimeInfoPage";
 
 export const metadata: Metadata = {
-  title: "Quiet Extracts - Reverent Inquiry",
-  description: "Quiet public extracts from Reverent Inquiry.",
+  title: "Quiet Extracts - Dohara",
+  description: "Quiet public extracts from Dohara.",
 };
 
 export default function QuietExtractsPage() {

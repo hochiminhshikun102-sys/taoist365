@@ -54,20 +54,23 @@ export function WindSeekerRuntime() {
   }
 
   return (
-    <main className="min-h-dvh bg-[#F0F2F5] text-[#2C323C]">
-      <section className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4 pb-24 pt-5">
-        <header className="rounded-[28px] border border-[#D7DCE3] bg-[#E8EBF0] p-5 shadow-[0_18px_50px_rgba(44,50,60,0.08)]">
-          <p className="text-sm text-[#646E7A]">Global Object Discovery Network</p>
-          <h1 className="mt-2 text-4xl font-semibold tracking-[-0.01em] text-[#2C323C]">Wind Seeker</h1>
-          <p className="mt-3 text-sm leading-6 text-[#646E7A]">
-            Discover, photograph, let AI prepare the listing, then submit for review in about three minutes.
-          </p>
-          <div className="mt-5 grid grid-cols-3 gap-2 text-center text-xs text-[#646E7A]">
-            {["Photo", "AI", "Review"].map((item, index) => (
-              <div key={item} className={`rounded-2xl border px-2 py-3 ${step > index ? "border-[#728278] bg-white text-[#2C323C]" : "border-[#D7DCE3] bg-[#F0F2F5]"}`}>
-                <RuntimeLabel>{item}</RuntimeLabel>
-              </div>
-            ))}
+    <main className="ri-global-buyer-room min-h-dvh overflow-hidden text-[#24313a]">
+      <div className="ri-runtime-depth pointer-events-none absolute inset-0" aria-hidden="true">
+        <span className="ri-runtime-depth__far" />
+        <span className="ri-runtime-depth__mid" />
+        <span className="ri-runtime-depth__front" />
+      </div>
+
+      <section className="relative mx-auto grid min-h-dvh w-full max-w-6xl gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[0.42fr_0.58fr] lg:px-10 lg:py-12">
+        <aside className="relative z-10 flex flex-col justify-between gap-8">
+          <div>
+            <p className="text-sm text-[#6f7f88]">Global Buyer Living Runtime</p>
+            <h1 className="mt-5 max-w-md text-5xl leading-[0.98] text-[#1f3444] sm:text-6xl">
+              Discovering world objects without turning the room loud.
+            </h1>
+            <p className="mt-6 max-w-sm text-sm leading-8 text-[#61727d]">
+              A browser space for finding, photographing, preparing, previewing, and gently routing good objects into Dohara.
+            </p>
           </div>
         </header>
 

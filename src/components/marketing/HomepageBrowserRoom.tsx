@@ -526,8 +526,8 @@ export function HomepageBrowserRoom() {
   const nextLife = nextIndex(activeLife, lifeSlides.length);
 
   return (
-    <main className="ri-final-home min-h-full text-[#14213a]">
-      <section className={styles.pcTaskSurface} aria-label="VIVLUM desktop homepage V2.1">
+    <main className={`${styles.homepageFrame} ri-final-home min-h-full text-[#14213a]`}>
+      <section className={styles.pcTaskSurface} aria-label="Dohara desktop homepage V2.1">
         <div className={styles.pcFixedCanvas}>
           <section id="home-hero-carousel" className={`${styles.pcLayer} ${styles.pcLayer01}`} aria-label="Hero Carousel">
             {pcHeroSlides.map((slide, index) => (
@@ -626,7 +626,7 @@ export function HomepageBrowserRoom() {
 
           <section id="home-velune" className={`${styles.pcLayer} ${styles.pcLayer05}`} aria-label="Velune">
             <div className={styles.pcVeluneCopy}>
-              <strong className={styles.pcVeluneBrand}>VIVLUM</strong>
+              <strong className={styles.pcVeluneBrand}>Dohara</strong>
               <small className={styles.pcVeluneTagline}>BOTANICAL THINGS<br />FOR SLOWER HOURS</small>
               <h2>When your body<br />feels too loud.</h2>
               <p>Not fixing. Just easing.</p>
@@ -869,7 +869,7 @@ export function HomepageBrowserRoom() {
             </div>
           </footer>
 
-          <div className={styles.pcHotspots} aria-label="VIVLUM desktop page links">
+          <div className={styles.pcHotspots} aria-label="Dohara desktop page links">
             {pcLayerLinks.map((link) => (
               <Link key={link.className} href={link.href} className={styles[link.className]} aria-label={link.ariaLabel} />
             ))}
@@ -877,7 +877,7 @@ export function HomepageBrowserRoom() {
         </div>
       </section>
 
-      <section className={`${styles.mobileTaskSurface} md:hidden`} aria-label="VIVLUM mobile homepage">
+      <section className={`${styles.mobileTaskSurface} md:hidden`} aria-label="Dohara mobile homepage">
         <div className={styles.mobileV2FirstScreen}>
           <Image
             src={`${S01}/backgrounds/screen-bg.png`}
@@ -892,7 +892,7 @@ export function HomepageBrowserRoom() {
 
           <section
             className={styles.mobileV2Hero}
-            aria-label="VIVLUM first screen hero carousel"
+            aria-label="Dohara first screen hero carousel"
             onTouchStart={(event) => {
               heroTouchStartX.current = event.touches[0]?.clientX ?? null;
             }}
@@ -955,11 +955,11 @@ export function HomepageBrowserRoom() {
             ))}
           </section>
 
-          <nav className={styles.mobileV2TopNav} aria-label="VIVLUM top navigation">
-            <Link href="/" className={styles.mobileV2Logo} aria-label="VIVLUM home">
+          <nav className={styles.mobileV2TopNav} aria-label="Dohara top navigation">
+            <Link href="/" className={styles.mobileV2Logo} aria-label="Dohara home">
               <Image
                 src={`${S01}/chrome/logo.png`}
-                alt="VIVLUM"
+                alt="Dohara"
                 width={309}
                 height={183}
                 className={styles.mobileV2LogoImage}
@@ -967,7 +967,7 @@ export function HomepageBrowserRoom() {
                 unoptimized
               />
             </Link>
-            <div className={styles.mobileV2NavIcons} aria-label="VIVLUM quick actions">
+            <div className={styles.mobileV2NavIcons} aria-label="Dohara quick actions">
               <button className={`${styles.mobileV2IconButton} ${styles.mobileV2IconSearch}`} type="button" aria-label="Search" />
               <button className={`${styles.mobileV2IconButton} ${styles.mobileV2IconBag}`} type="button" aria-label="Cart">
                 <span>0</span>
@@ -990,7 +990,7 @@ export function HomepageBrowserRoom() {
             ))}
           </div>
 
-          <nav className={styles.mobileV2Tabs} aria-label="VIVLUM first screen paths">
+          <nav className={styles.mobileV2Tabs} aria-label="Dohara first screen paths">
             {topTabs.map((tab) => (
               <button key={tab.label} className={styles.mobileV2Tab} type="button">
                 <Image
@@ -1020,7 +1020,7 @@ export function HomepageBrowserRoom() {
 
           <section
             className={styles.mobileV2CardLayer}
-            aria-label="VIVLUM second layer cards"
+            aria-label="Dohara second layer cards"
             onTouchStart={(event) => {
               cardTouchStartX.current = event.touches[0]?.clientX ?? null;
             }}
@@ -1703,7 +1703,7 @@ export function HomepageBrowserRoom() {
             </div>
           </section>
 
-          <footer className={styles.mobileV2FooterLayer} aria-label="VIVLUM footer">
+          <footer className={styles.mobileV2FooterLayer} aria-label="Dohara footer">
             <Image
               src={`${S06}/backgrounds/footer-bg.png`}
               alt=""
@@ -1728,7 +1728,7 @@ export function HomepageBrowserRoom() {
                 breathe gently.
               </p>
             </div>
-            <nav className={styles.mobileV2FooterNav} aria-label="VIVLUM footer navigation">
+            <nav className={styles.mobileV2FooterNav} aria-label="Dohara footer navigation">
               {footerNavItems.map((item) => (
                 <Link key={item.label} href={item.href} className={styles.mobileV2FooterNavItem}>
                   <FooterGlyph kind={item.kind} />
@@ -1737,10 +1737,10 @@ export function HomepageBrowserRoom() {
               ))}
             </nav>
             <div className={styles.mobileV2FooterBrand}>
-              <p>VIVLUM</p>
+              <p>Dohara</p>
               <span aria-hidden="true" />
             </div>
-            <p className={styles.mobileV2FooterCopyright}>婵?2025 VIVLUM Studio. All rights reserved.</p>
+            <p className={styles.mobileV2FooterCopyright}>(c) 2026 Dohara. All rights reserved.</p>
           </footer>
         </div>
       </section>

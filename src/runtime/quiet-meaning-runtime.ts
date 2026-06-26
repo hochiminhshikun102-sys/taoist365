@@ -37,7 +37,7 @@ export function resolveQuietMeaningRuntime(dayKey: string): QuietMeaningRuntime 
             : meaningState === "existentialWarmth"
               ? "Subtle existence warmth passes through the room."
               : "Soft continuity lets significance remain barely verbal.",
-    unsaidLine: "Reverent Inquiry allows meaning to appear without telling anyone what it means.",
+    unsaidLine: "Dohara allows meaning to appear without telling anyone what it means.",
     allowMeaningTrace: h > 18 && h < 92,
   };
 }

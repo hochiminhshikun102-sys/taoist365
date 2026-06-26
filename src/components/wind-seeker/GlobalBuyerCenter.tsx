@@ -276,7 +276,7 @@ function DesktopBuyerRuntime() {
     <section className="hidden lg:block">
       <div className="mx-auto grid min-h-screen max-w-[96rem] grid-cols-[18rem_1fr] gap-6 px-8 py-8">
         <aside className="sticky top-8 h-[calc(100vh-4rem)] rounded-2xl border border-[#D9DCE0] bg-white p-4 shadow-[0_24px_80px_rgba(45,51,58,0.08)]">
-          <div className="border-b border-[#D9DCE0] pb-5"><p className="text-2xl font-semibold">Reverent Inquiry</p><p className="mt-1 text-sm text-[#6B7280]">Global Buyer Center / 全球买手中心</p></div>
+          <div className="border-b border-[#D9DCE0] pb-5"><p className="text-2xl font-semibold">Dohara</p><p className="mt-1 text-sm text-[#6B7280]">Global Buyer Center / 全球买手中心</p></div>
           <nav className="mt-5 grid gap-2">{navItems.map((item) => <button key={item.id} type="button" onClick={() => setActive(item.id)} className={`rounded-xl border px-4 py-3 text-left transition ${active === item.id ? "border-[#947A66] bg-[#947A66] text-white" : "border-transparent text-[#4B5563] hover:border-[#D9DCE0] hover:bg-[#F5F6F8]"}`}><span className="block font-semibold">{item.label}</span><span className={`mt-1 block text-xs ${active === item.id ? "text-white/75" : "text-[#6B7280]"}`}>{item.zh}</span></button>)}</nav>
           <div className="mt-4 grid gap-2 border-t border-[#D9DCE0] pt-4">
             <Link href="/wind-seeker/upload" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm font-semibold text-white">Upload to Object Pipeline</Link>

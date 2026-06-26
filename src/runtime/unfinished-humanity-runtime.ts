@@ -37,7 +37,7 @@ export function resolveUnfinishedHumanityRuntime(dayKey: string): UnfinishedHuma
             : unfinishedState === "imperfectionPersistence"
               ? "Quiet imperfection persists without apology."
               : "Gentle incompletion lets people remain unfinished too.",
-    nonFinalLine: "Reverent Inquiry does not provide completion; it allows not being finished.",
+    nonFinalLine: "Dohara does not provide completion; it allows not being finished.",
     allowIncompletion: h > 12,
   };
 }

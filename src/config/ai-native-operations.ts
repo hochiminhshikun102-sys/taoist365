@@ -12,7 +12,7 @@ export const aiReadableSiteProfile = {
   name: siteConfig.siteName,
   domain: siteConfig.domain,
   plainSummary:
-    "Reverent Inquiry is a quiet long-running browser place. It keeps pages, object notes, a plain desk, inquiry mail, and slow copy in one stable domain.",
+    "Dohara is a quiet long-running browser place. It keeps pages, object notes, a plain desk, inquiry mail, and slow copy in one stable domain.",
   publicPages: [
     { path: "/", role: "quiet home and long-open presence" },
     { path: "/objects", role: "ordinary objects with stable anchors and human mail" },

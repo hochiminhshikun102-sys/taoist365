@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { HomeHarmonyLiveExperience } from "@/live-prototypes/home-harmony/LiveExperience";
 
-// Reverent Inquiry: quiet route surface.
+// Dohara: quiet route surface.
 export const metadata: Metadata = {
-  title: "Home harmony - Reverent Inquiry",
+  title: "Home harmony - Dohara",
   description:
     "Part of taoist365.com—room-focused guidance page kept alongside objects and contact.",
 };

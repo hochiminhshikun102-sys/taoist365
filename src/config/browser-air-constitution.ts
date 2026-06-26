@@ -1,5 +1,5 @@
 export const browserAirCivilizationRoot = {
-  definition: "Reverent Inquiry is a long-lived browser-based Human Emotional Living Space and Browser Air Civilization.",
+  definition: "Dohara is a long-lived browser-based Human Emotional Living Space and Browser Air Civilization.",
   entryQuestion: "Does this break the air?",
   healingPrinciple: "Feeling life again.",
   permanentCore: [

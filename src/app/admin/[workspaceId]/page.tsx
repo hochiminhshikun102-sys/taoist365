@@ -138,7 +138,7 @@ export async function generateMetadata({ params }: AdminWorkspacePageProps): Pro
   const { workspaceId } = await params;
   return {
     title: isAdminWorkspaceId(workspaceId) ? `Admin OS - ${workspaceId}` : "Admin OS",
-    description: "Reverent Inquiry Admin OS Runtime Workspace.",
+    description: "Dohara Admin OS Runtime Workspace.",
   };
 }
 

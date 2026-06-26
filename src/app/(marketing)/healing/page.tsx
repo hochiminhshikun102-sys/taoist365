@@ -12,8 +12,8 @@ import { HealingModuleCard } from "@/components/healing/HealingModuleCard";
 import { buildSeoGeoMetadata } from "@/lib/seo-geo-runtime";
 
 export const metadata: Metadata = buildSeoGeoMetadata({
-  title: "Healing - Reverent Inquiry",
-  description: "Reverent Inquiry quiet browser world: halls, modules, object stories, and light interactions.",
+  title: "Healing Paths - Dohara",
+  description: "A quiet entrance to Dohara Healing Paths: rooms, fragments, rituals, weather, and nearby notes.",
   path: "/healing",
   kind: "healing",
   phrases: ["45 healing rooms", "seven healing halls", "soft daily ritual", "browser healing"],

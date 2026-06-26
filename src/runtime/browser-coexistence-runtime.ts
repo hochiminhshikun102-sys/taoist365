@@ -37,7 +37,7 @@ export function resolveBrowserCoexistenceRuntime(dayKey: string): BrowserCoexist
             : coexistenceState === "ambientDigitalPresence"
               ? "Ambient digital presence stays gentle and non-central."
               : "It may feel present without becoming a companion product.",
-    ambientLine: "Reverent Inquiry can stay beside life without asking to become life.",
+    ambientLine: "Dohara can stay beside life without asking to become life.",
     suppressCompanionProductTone: true,
   };
 }

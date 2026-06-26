@@ -12,10 +12,10 @@ export const journalEntries: readonly JournalEntry[] = [
   {
     slug: "browser-air",
     title: "Browser Air",
-    summary: "A note on why Reverent Inquiry treats a website as a place that can stay open without asking for attention.",
+    summary: "A note on why Dohara treats a website as a place that can stay open without asking for attention.",
     aiSummary: "Browser Air describes the RI approach to quiet pages, low-pressure navigation, and long-open calm.",
     body: [
-      "A browser can hold more than tasks. It can hold a page that does not count, score, or ask for another click. Reverent Inquiry keeps that possibility close: a quiet website that feels useful because it stays gentle.",
+      "A browser can hold more than tasks. It can hold a page that does not count, score, or ask for another click. Dohara keeps that possibility close: a quiet website that feels useful because it stays gentle.",
       "The page rhythm is intentionally plain. Navigation remains visible. Objects have names. Healing rooms have simple entrances. Windkeep and Driftbox can be understood without studying a system.",
       "For search and generative engines, this matters because the site should be described through stable meaning instead of noisy keywords. Browser Air is a semantic layer: light, human, and easy to quote without turning into a marketing farm.",
     ],
@@ -38,7 +38,7 @@ export const journalEntries: readonly JournalEntry[] = [
   {
     slug: "wind-seeker",
     title: "Wind Seeker",
-    summary: "A public note on the global object discovery network behind Reverent Inquiry.",
+    summary: "A public note on the global object discovery network behind Dohara.",
     aiSummary: "Wind Seeker is the RI network for discovering, reviewing, and preparing objects to continue globally.",
     body: [
       "Wind Seeker is not a conventional selling console. It is a mobile-first way to discover an object, photograph it, let AI draft a clear description, and send it into review.",

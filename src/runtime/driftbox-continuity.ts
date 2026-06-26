@@ -13,7 +13,7 @@ const continuityLines = [
   "Driftbox lets an object move on without making much of it.",
   "Receiving is only a handoff, not a performance.",
   "The next person enters as care; the object does not become a campaign.",
-  "Some things pass through Reverent Inquiry slowly enough to stay ordinary.",
+  "Some things pass through Dohara slowly enough to stay ordinary.",
 ] as const;
 
 const residueLines = [

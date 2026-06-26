@@ -1,5 +1,5 @@
 /**
- * Anti-AI-product boundary - Reverent Inquiry guidance is not SaaS, not chat-first, not therapy.
+ * Anti-AI-product boundary - Dohara guidance is not SaaS, not chat-first, not therapy.
  * English-only policy lives at UI layer; this file is English by design.
  */
 

@@ -24,7 +24,7 @@ const heroSlides = [
 export function HomepageHeroCarousel() {
   return (
     <section className="homepage-hero-carousel ri-home-hero relative h-[68svh] min-h-[30rem] max-h-[39rem] bg-[#eef3f5] md:aspect-video md:h-auto md:min-h-0 md:max-h-none" aria-label="Homepage hero carousel">
-      <h1 className="sr-only">Reverent Inquiry</h1>
+      <h1 className="sr-only">Dohara</h1>
       <div className="ri-hero-air ri-hero-air-a" aria-hidden />
       <div className="ri-hero-air ri-hero-air-b" aria-hidden />
       {heroSlides.map((slide, index) => (
@@ -58,11 +58,11 @@ export function HomepageHeroCarousel() {
       <Link
         href="/"
         className="homepage-hero-brand-breath absolute left-5 top-5 z-[3] hidden items-center gap-3 text-foreground/72 sm:left-8 sm:top-7 lg:left-10 lg:top-9 lg:flex"
-        aria-label="Reverent Inquiry home"
+        aria-label="Dohara home"
       >
         <img
           src="/brand/production/identity/reverent-inquiry-logo-gradient.png"
-          alt="Reverent Inquiry"
+          alt="Dohara"
           className="h-auto w-[11.5rem] object-contain mix-blend-multiply opacity-82"
           loading="eager"
           decoding="async"

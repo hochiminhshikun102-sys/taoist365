@@ -1,6 +1,6 @@
 {
   "naming": {
-    "primaryBrand": "Reverent Inquiry",
+    "primaryBrand": "Dohara",
     "ecosystemAnchor": "taoist365.com",
     "archiveSource": "Yewen / 谒问"
   },
@@ -178,7 +178,7 @@
     {
       "filePath": "docs/project-brain/README.md",
       "mustInclude": [
-        "Reverent Inquiry",
+        "Dohara",
         "taoist365.com"
       ]
     },

@@ -25,9 +25,9 @@ export async function generateMetadata({ params }: ObjectPageProps): Promise<Met
   const object = objectById(objectId);
 
   return buildSeoGeoMetadata({
-    title: object ? `${object.title} - Reverent Inquiry` : "Object - Reverent Inquiry",
-    description: object?.atmosphereLine ?? "A Reverent Inquiry object with quiet material presence.",
-    path: object ? `/objects/${object.id}` : "/objects",
+    title: object ? `${object.name} - Dohara` : "Object - Dohara",
+    description: object?.oneLine ?? "A Dohara object with quiet material presence.",
+    path: object ? `/objects/${object.object_id}` : "/objects",
     kind: "product",
     image: object?.media.hero,
     phrases: object ? [object.collectionTitle, ...object.materials, object.placement] : undefined,
@@ -52,12 +52,8 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
   ];
   const faqItems = [
     {
-      question: "Are these final product photos?",
-      answer: "This page uses the current Reverent Inquiry product material set. Multi-angle, detail, placement, and package views can be replaced as better production photos arrive.",
-    },
-    {
-      question: "When does it ship?",
-      answer: object.shippingNote,
+      question: "Is this a normal product listing?",
+      answer: "No. This page uses the unified RI object runtime, so commerce, Windkeep, Quiet Receiving, media, stories, and time layers stay attached to one object_id.",
     },
     {
       question: "Can this ship internationally?",

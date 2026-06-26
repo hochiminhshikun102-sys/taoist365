@@ -7,7 +7,7 @@ import { newArrivalObjects, seasonalThemes } from "@/config/frontstage-operation
 
 export const metadata: Metadata = {
   title: "Collections",
-  description: "Reverent Inquiry object collections for quiet rooms, desks, rituals, and seasons.",
+  description: "Dohara object collections for quiet rooms, desks, rituals, and seasons.",
 };
 
 export default function CollectionsPage() {

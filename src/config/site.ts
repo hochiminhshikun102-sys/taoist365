@@ -1,6 +1,6 @@
 export const siteConfig = {
-  siteName: "Reverent Inquiry",
-  brandEnName: "Reverent Inquiry",
+  siteName: "Dohara",
+  brandEnName: "Dohara",
   archiveSourceName: "Yewen / \u8c12\u95ee",
   domain: "taoist365.com",
   /** Plain-language discovery for search and link previews; stable site, not a funnel. */
@@ -46,7 +46,7 @@ export const siteConfig = {
     "Opening one ritual page again is still just that URL in your browser. Nothing scores it, schedules you, or frames a practice to improve.",
   /** Homepage: light real-life reopen without habit-product language. */
   lightReuseHomeLine:
-    "If Reverent Inquiry becomes a page you reopen when life loops back, that is ordinary browsing. Nothing here schedules your return or rewards repetition.",
+    "If Dohara becomes a page you reopen when life loops back, that is ordinary browsing. Nothing here schedules your return or rewards repetition.",
   /** Short trust line for footers and ritual shell; no streak-style mechanics. */
   lightDependencyFootLine:
     "Reopening the same page is ordinary use. No streaks, reminders, or daily resets.",
@@ -67,7 +67,7 @@ export const siteConfig = {
     "Bringing something nearer stays an ordinary mail exchange, slow enough for the object to remain a thing in life.",
   /** Objects page: first physical batch, long-lived catalog framing. */
   objectsCommerceCatalogLine:
-    "Below is Reverent Inquiry's first object batch: pieces described the way they sit in real American apartments: scuffed, uneven, already plausible. The list changes slowly and keeps its names stable.",
+    "Below is Dohara's first object batch: pieces described the way they sit in real American apartments: scuffed, uneven, already plausible. The list changes slowly and keeps its names stable.",
   /** Life moments when a slow site surfaces; user-led, not scheduled by the domain. */
   returnGravityHomeLine:
     "Late hours, pauses between tasks, idle rows of tabs, or the stretch before sleep are ordinary times a quiet URL resurfaces: through history, a tab left open, or memory of a named thing, not because this site called you back.",
@@ -88,7 +88,7 @@ export const siteConfig = {
     "Landing on the same ritual when something is undecided or a line has not settled is ordinary re-reading, not falling behind, not a loop this page grades.",
   /** Browser return vocabulary; no habit-building claim. */
   browserReturnGravityLine:
-    "Pinned tabs, typed URLs, and history trails bring old pages back; Reverent Inquiry does not train or tune your rhythm.",
+    "Pinned tabs, typed URLs, and history trails bring old pages back; Dohara does not train or tune your rhythm.",
   /** Contact: seasons of mail, not comeback campaigns. */
   contactReturnGravityLine:
     "The inbox stays the same whether you write once a season or after a long silence. No we-miss-you notes, no recovery campaigns.",

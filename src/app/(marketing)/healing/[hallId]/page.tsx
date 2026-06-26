@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: HealingHallPageProps): Promis
   const hall = healingHallById(hallId);
 
   return buildSeoGeoMetadata({
-    title: hall ? `${hall.title} - Reverent Inquiry` : "Healing Hall - Reverent Inquiry",
-    description: hall?.summary ?? "Reverent Inquiry healing hall.",
+    title: hall ? `${hall.title} - Dohara` : "Quiet Room - Dohara",
+    description: hall?.summary ?? "Dohara quiet room.",
     path: hall?.href ?? "/healing",
     kind: "healing",
     phrases: hall ? [hall.shortTitle, hall.hero, hall.climate] : undefined,

@@ -3,7 +3,7 @@ import { GlobalSearchClient } from "@/components/marketing/GlobalSearchClient";
 
 export const metadata: Metadata = {
   title: "Search",
-  description: "Search Reverent Inquiry objects, collections, and quiet ritual pages.",
+  description: "Search Dohara objects, collections, and quiet ritual pages.",
 };
 
 export default function SearchPage() {

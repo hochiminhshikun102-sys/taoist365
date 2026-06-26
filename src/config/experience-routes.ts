@@ -38,7 +38,7 @@ export const experienceRoutes: ExperienceRoute[] = [
 ];
 
 export const namingSystem = {
-  primaryBrandName: "Reverent Inquiry",
+  primaryBrandName: "Dohara",
   ecosystemAnchor: "taoist365.com",
   archiveSourceName: "Yewen / \u8c12\u95ee",
   rules: {

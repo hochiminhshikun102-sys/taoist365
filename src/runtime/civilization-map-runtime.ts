@@ -36,7 +36,7 @@ export function resolveCivilizationMapRuntime(dayKey: string): CivilizationMapRu
             : mapState === "nonLinearPaths"
               ? "Non-linear wandering paths keep the city from becoming a funnel."
               : "Quiet spatial relationships hold the civilization together.",
-    topologyLine: "Reverent Inquiry grows more like a small quiet city than a menu.",
+    topologyLine: "Dohara grows more like a small quiet city than a menu.",
     constellationRooms,
     suppressMenuFeeling: h > 16,
   };

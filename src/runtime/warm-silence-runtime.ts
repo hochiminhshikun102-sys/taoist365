@@ -32,7 +32,7 @@ export function resolveWarmSilenceRuntime(dayKey: string): WarmSilenceRuntime {
             : warmthState === "gentleStillness"
               ? "Gentle stillness carries warmth without explaining it."
               : "Familiar silence makes the browser room feel used and safe to leave open.",
-    comfortLine: "Reverent Inquiry stays calm without becoming cold.",
+    comfortLine: "Dohara stays calm without becoming cold.",
     preventColdSilence: h > 20,
   };
 }

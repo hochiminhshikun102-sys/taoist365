@@ -17,7 +17,7 @@ export const browserRoomHomeSurface = {
 } as const;
 
 export const homepageHeroOverlay = {
-  brandLine: "Reverent Inquiry",
+  brandLine: "Dohara",
   serifLine: "Quiet guidance in blue-white air.",
   supportingLine: "A short line, then back to the day.",
   residueKicker: "Browser residue",

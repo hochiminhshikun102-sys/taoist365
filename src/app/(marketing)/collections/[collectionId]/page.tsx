@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: CollectionPageProps): Promise
 
   return {
     title: collection?.title ?? "Collection",
-    description: collection?.summary ?? "Reverent Inquiry collection.",
+    description: collection?.summary ?? "Dohara collection.",
   };
 }
 

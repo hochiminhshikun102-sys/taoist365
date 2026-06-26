@@ -31,7 +31,7 @@ export function resolveCivilizationAntiAccelerationRuntime(dayKey: string): Civi
             ? "Atmospheric pacing keeps automation acceleration out of the foreground."
             : dragState === "civilizationDrag"
               ? "Civilization drag force makes the system remain slow on purpose."
-              : "Temporal slowing keeps Reverent Inquiry from becoming fast.",
+              : "Temporal slowing keeps Dohara from becoming fast.",
     pacingLine: "The civilization protects time by resisting content velocity.",
     suppressContentVelocity: h > 36,
   };

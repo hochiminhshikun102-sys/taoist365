@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { PublicRuntimeInfoPage } from "@/components/marketing/PublicRuntimeInfoPage";
 
 export const metadata: Metadata = {
-  title: "Driftbox - Reverent Inquiry",
-  description: "Quiet correspondence layer for Reverent Inquiry.",
+  title: "Driftbox - Dohara",
+  description: "Quiet correspondence layer for Dohara.",
 };
 
 export default function DriftboxPage() {

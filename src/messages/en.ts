@@ -1,6 +1,6 @@
 export const enMessages = {
   metadata: {
-    siteTitle: "Reverent Inquiry",
+    siteTitle: "Dohara",
     siteDescription: "A quiet browser room kept steady beside ordinary life.",
   },
   language: {

@@ -3,7 +3,7 @@ import { AdminOSAccess } from "@/components/admin/AdminOSAccess";
 import { AdminOSConsole } from "@/components/admin/AdminOSConsole";
 
 export const metadata: Metadata = {
-  title: "Publish Review - Reverent Inquiry",
+  title: "Publish Review - Dohara",
   robots: { index: false, follow: false },
 };
 

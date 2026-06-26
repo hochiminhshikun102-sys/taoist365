@@ -13,7 +13,7 @@ export function antiOverdesignAuditLine(dayKey: string): string {
     "Anti-overdesign: if it feels curated for awe, it gets cut.",
     "Anti-overdesign: one room voice at a time—no chorus of clever residues.",
     "Anti-overdesign: plain beats impressive when plain is true.",
-    "Anti-overdesign: Reverent Inquiry stays ordinary on purpose.",
+    "Anti-overdesign: Dohara stays ordinary on purpose.",
   ] as const;
   return audits[i] ?? audits[0];
 }

@@ -4,8 +4,8 @@ import { journalEntries } from "@/config/journal-runtime";
 import { articleSchema, breadcrumbSchema, buildAiSeoSignals, buildSeoGeoMetadata, SeoGeoJsonLd } from "@/lib/seo-geo-runtime";
 
 export const metadata: Metadata = buildSeoGeoMetadata({
-  title: "Journal - Reverent Inquiry",
-  description: "Longer notes, object stories, and quiet semantic traces from Reverent Inquiry.",
+  title: "Journal - Dohara",
+  description: "Longer notes, object stories, and quiet semantic traces from Dohara.",
   path: "/journal",
   kind: "article",
   phrases: ["long content", "AI summaries", "related links", "object stories"],
@@ -17,8 +17,8 @@ export default function JournalPage() {
       <SeoGeoJsonLd
         graph={[
           articleSchema({
-            title: "Journal - Reverent Inquiry",
-            description: "Longer notes, object stories, and quiet semantic traces from Reverent Inquiry.",
+            title: "Journal - Dohara",
+            description: "Longer notes, object stories, and quiet semantic traces from Dohara.",
             path: "/journal",
             kind: "article",
             relatedLinks: ["/healing", "/windkeep", "/quiet-extracts"],
@@ -40,7 +40,7 @@ export default function JournalPage() {
         ]}
       />
       <section className="mx-auto max-w-5xl">
-        <Link href="/" className="text-sm text-[#646E7A]">Reverent Inquiry</Link>
+        <Link href="/" className="text-sm text-[#646E7A]">Dohara</Link>
         <div className="mt-8 rounded-[28px] border border-[#D7DCE3] bg-[#E8EBF0] p-6 sm:p-10">
           <p className="text-sm text-[#646E7A]">Journal Runtime</p>
           <h1 className="mt-3 text-5xl font-semibold tracking-[-0.01em] text-[#2C323C]">Journal</h1>

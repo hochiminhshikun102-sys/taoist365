@@ -15,7 +15,7 @@ export function CalmNavigation() {
           />
           <div className="leading-tight">
             <p className="text-xs tracking-[0.12em] text-text-muted uppercase">
-              Reverent Inquiry
+              Dohara
             </p>
             <p className="text-[10px] text-text-muted/80">taoist365.com</p>
           </div>

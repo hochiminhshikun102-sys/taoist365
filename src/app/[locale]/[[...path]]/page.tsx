@@ -34,7 +34,7 @@ type LocalePageProps = {
 };
 
 const routeTitles: Record<string, string> = {
-  "": "Reverent Inquiry",
+  "": "Dohara",
   about: "About",
   healing: "Healing",
   windkeep: "Windkeep",

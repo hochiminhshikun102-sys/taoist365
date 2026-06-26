@@ -3,7 +3,7 @@ import { WindSeekerProductsClient } from "@/components/object-intake/WindSeekerP
 import { buildSeoGeoMetadata } from "@/lib/seo-geo-runtime";
 
 export const metadata: Metadata = buildSeoGeoMetadata({
-  title: "Wind Seeker Products - Reverent Inquiry",
+  title: "Wind Seeker Products - Dohara",
   description: "Review buyer-submitted objects moving through the VL Object Intake Pipeline.",
   path: "/wind-seeker/products",
   kind: "wind-seeker",

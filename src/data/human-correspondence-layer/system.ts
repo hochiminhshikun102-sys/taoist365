@@ -75,7 +75,7 @@ export const humanCorrespondenceLayer = {
     "Think late web: one domain, one address, someone on the other side who also edits the HTML—correspondence as continuity, not brand care.",
 
   composeLinkLabel: "Open your mail app",
-  defaultSubject: "Hello - Reverent Inquiry",
+  defaultSubject: "Hello - Dohara",
 
   objectsBridgeLine:
     "If a specific piece is already in your imagination, name it like you would to a friend—Objects lists stable anchors you can paste into the subject.",

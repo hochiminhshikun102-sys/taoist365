@@ -42,7 +42,7 @@ export function AdminOSAccess({ children }: Readonly<{ children: React.ReactNode
     <main className="min-h-dvh bg-[#F5F6F8] px-4 py-6 text-[#2D333A] sm:px-6">
       <section className="mx-auto flex min-h-[82dvh] w-full max-w-xl flex-col justify-center">
         <p className="text-sm text-[#6B7280]">\u540e\u53f0\u5165\u53e3 / Admin Access</p>
-        <h1 className="mt-3 text-4xl font-semibold leading-tight text-[#2D333A]">Reverent Inquiry Admin OS</h1>
+        <h1 className="mt-3 text-4xl font-semibold leading-tight text-[#2D333A]">Dohara Admin OS</h1>
         <p className="mt-4 text-base leading-8 text-[#6B7280]">
           \u5de5\u4e1a\u5316\u8fd0\u8425\u5165\u53e3\u3002\u7528\u4e8e\u5de5\u7a0b\u3001CMS\u3001\u7d20\u6750\u6cbb\u7406\u3001AI Operations\u3001\u652f\u4ed8\u3001GEO \u4e0e\u89c4\u5219\u8054\u52a8\u3002
         </p>

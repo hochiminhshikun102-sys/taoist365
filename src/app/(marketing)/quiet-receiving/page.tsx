@@ -5,7 +5,7 @@ import { windkeepObjects } from "@/config/windkeep-continuity";
 import { breadcrumbSchema, buildSeoGeoMetadata, faqSchema, SeoGeoJsonLd } from "@/lib/seo-geo-runtime";
 
 export const metadata: Metadata = buildSeoGeoMetadata({
-  title: "Quiet Receiving - Reverent Inquiry",
+  title: "Quiet Receiving - Dohara",
   description: "Objects quietly waiting for their next keeper inside Windkeep.",
   path: "/quiet-receiving",
   kind: "quiet-receiving",

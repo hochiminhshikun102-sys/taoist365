@@ -4,7 +4,7 @@ import { DailyGuidanceLiveExperience } from "@/live-prototypes/daily-guidance/Li
 export const metadata: Metadata = {
   title: "Daily guidance",
   description:
-    "Long-running Reverent Inquiry page—one optional nudge for the day; bookmarkable URL on the main domain.",
+    "Long-running Dohara page—one optional nudge for the day; bookmarkable URL on the main domain.",
 };
 
 export default function DailyGuidanceRitualPage() {

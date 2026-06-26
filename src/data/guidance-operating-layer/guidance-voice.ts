@@ -1,5 +1,5 @@
 /**
- * Reverent Inquiry guidance voice - observant room-state, not GPT, coach, or wise master.
+ * Dohara guidance voice - observant room-state, not GPT, coach, or wise master.
  */
 
 export const guidanceVoice = {

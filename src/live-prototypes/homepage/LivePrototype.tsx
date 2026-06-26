@@ -11,12 +11,12 @@ export function HomepageLivePrototype() {
   return (
     <main className="room-section-y-compact mx-auto w-full max-w-5xl px-6 sm:px-10">
       <header className="room-section-y-standard flex min-h-[70svh] flex-col gap-[var(--room-pause-standard)]">
-        <p className="text-sm tracking-[0.15em] text-text-muted uppercase">Reverent Inquiry - layout draft</p>
+        <p className="text-sm tracking-[0.15em] text-text-muted uppercase">Dohara - layout draft</p>
         <h1 className="max-w-3xl text-4xl leading-tight text-foreground sm:text-5xl">
           Same site, earlier homepage structure.
         </h1>
         <p className="max-w-2xl text-text-secondary">
-          Kept online as a scroll sketch; the domain and navigation match the rest of Reverent Inquiry.
+          Kept online as a scroll sketch; the domain and navigation match the rest of Dohara.
         </p>
       </header>
 

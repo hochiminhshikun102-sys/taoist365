@@ -99,7 +99,7 @@ export default function AccountRuntimePage() {
         <header className="flex flex-col gap-6 rounded-[2rem] border border-white/80 bg-[linear-gradient(135deg,#ffffff_0%,#eef7fb_48%,#f6f8f4_100%)] p-6 shadow-[0_28px_90px_rgba(114,139,151,0.16)] sm:p-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
             <Link href="/" className="text-sm text-[#6f8791] underline-offset-4 hover:underline">
-              Reverent Inquiry
+              Dohara
             </Link>
             <p className="mt-8 text-xs font-medium tracking-[0.24em] text-[#7d929b] uppercase">Human Runtime Layer</p>
             <h1 className="mt-4 font-display text-5xl font-semibold leading-[0.96] text-[#1f2d33] sm:text-6xl lg:text-7xl">

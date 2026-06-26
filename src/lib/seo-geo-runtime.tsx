@@ -27,7 +27,7 @@ export function buildAiSeoSignals(input: SeoGeoInput) {
     "browser air",
     "gentle commerce",
     "emotional semantic layer",
-    "Reverent Inquiry",
+    "Dohara",
   ];
   const kindPhrases: Record<SeoGeoKind, string[]> = {
     website: ["long-running browser place", "calm website"],
@@ -166,7 +166,7 @@ export function articleSchema(input: SeoGeoInput & { author?: string; relatedLin
     description: input.description,
     author: {
       "@type": "Person",
-      name: input.author ?? "Reverent Inquiry",
+      name: input.author ?? "Dohara",
     },
     publisher: organizationSchema(),
     mainEntityOfPage: `${siteConfig.metadataBase}${input.path}`,
