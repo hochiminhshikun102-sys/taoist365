@@ -122,7 +122,7 @@ function buildOutputPlan(job, intake, media, now, allowGenerate) {
   media
     .filter((item) => hasMediaUrl(item))
     .forEach((item) => {
-      if (!existingByType.has(item.media_type)) existingByType.set(item.media_type, item);
+      existingByType.set(item.media_type, item);
     });
 
   const publishSource = media.find((item) => publishOutputTypes.has(item.media_type) && !isVideoMedia(item) && hasMediaUrl(item));

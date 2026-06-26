@@ -49,15 +49,16 @@ type AirEngineJob = {
 
 const statuses = ["all", "pending", "processing", "ready", "failed"] as const;
 const mutableStatuses = ["pending", "processing", "ready", "failed"] as const;
+const uploadOutputTypes = ["main", "detail", "scene", "pc", "mobile", "social", "motion"] as const;
 
 const fallbackOutputs: AirEngineOutput[] = [
-  { media_type: "original", label: "Source reference", dimensions: "source", ratio: "source", publishable: false, required: false, status: "missing" },
   { media_type: "main", label: "White product image", dimensions: "2400x2400", ratio: "1:1", publishable: true, required: true, status: "missing" },
   { media_type: "detail", label: "Detail image", dimensions: "1800x2400", ratio: "3:4", publishable: true, required: false, status: "missing" },
   { media_type: "scene", label: "Room scene image", dimensions: "2400x1600", ratio: "3:2", publishable: true, required: false, status: "missing" },
   { media_type: "pc", label: "Desktop hero image", dimensions: "3200x1800", ratio: "16:9", publishable: true, required: false, status: "missing" },
   { media_type: "mobile", label: "Mobile atmosphere image", dimensions: "1600x2400", ratio: "2:3", publishable: true, required: false, status: "missing" },
   { media_type: "social", label: "Social image", dimensions: "2400x1600", ratio: "3:2", publishable: true, required: false, status: "missing" },
+  { media_type: "motion", label: "Loop video", dimensions: "1920x1080", ratio: "16:9", publishable: true, required: false, status: "missing" },
 ];
 
 export function AirEngineJobQueue() {
@@ -66,6 +67,9 @@ export function AirEngineJobQueue() {
   const [activeId, setActiveId] = useState("");
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
+  const [uploadBusy, setUploadBusy] = useState(false);
+  const [uploadType, setUploadType] = useState<(typeof uploadOutputTypes)[number]>("main");
+  const [uploadFiles, setUploadFiles] = useState<FileList | null>(null);
   const [counts, setCounts] = useState<Record<string, number>>({});
 
   const active = useMemo(() => rows.find((row) => row.id === activeId) ?? rows[0] ?? null, [activeId, rows]);
@@ -114,20 +118,45 @@ export function AirEngineJobQueue() {
     await loadRows(status);
   }
 
+  async function uploadOutput() {
+    if (!active || !uploadFiles || uploadFiles.length === 0) {
+      setNote("Choose an output file first.");
+      return;
+    }
+    setUploadBusy(true);
+    setNote("");
+    const form = new FormData();
+    form.set("media_type", uploadType);
+    Array.from(uploadFiles).forEach((file) => form.append("files", file));
+    const response = await fetch(`/api/admin/air-engine/jobs/${active.id}/outputs`, {
+      method: "POST",
+      body: form,
+    });
+    const data = await response.json();
+    setUploadBusy(false);
+    if (!response.ok) {
+      setNote(data.error || "Unable to upload Air Engine output.");
+      return;
+    }
+    setUploadFiles(null);
+    setNote(`Uploaded ${data.rows?.length ?? 0} ${uploadType} output file(s).`);
+    await loadRows(status);
+  }
+
   return (
     <main className="min-h-dvh bg-[#F5F6F8] px-5 py-8 text-[#2D333A]">
       <section className="mx-auto grid w-full max-w-7xl gap-6">
         <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
           <div>
             <p className="text-sm text-[#6B7280]">Dohara Air Engine</p>
-            <h1 className="mt-2 text-4xl font-semibold">AI 素材处理队列</h1>
+            <h1 className="mt-2 text-4xl font-semibold">AI Media Processing Queue</h1>
             <p className="mt-3 max-w-3xl text-sm leading-7 text-[#6B7280]">
-              外部平台图片只作为参考源。这里统一管理抓取、版权检查、重做要求和 Dohara 发布素材输出，避免淘宝、闲鱼、亚马逊等来源素材直接污染商城。
+              Marketplace images are reference sources only. This queue tracks source capture, rights checks, rebuild requirements, and publishable Dohara media outputs before review.
             </p>
           </div>
           <div className="flex flex-wrap gap-2 text-sm">
-            <a href="/admin/product-intake" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-white">宝贝入库</a>
-            <a href="/admin/publish-review" className="rounded-xl border border-[#D9DCE0] bg-white px-4 py-3 text-[#6B7280]">发布审核</a>
+            <a href="/admin/product-intake" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-white">Product Intake</a>
+            <a href="/admin/publish-review" className="rounded-xl border border-[#D9DCE0] bg-white px-4 py-3 text-[#6B7280]">Publish Review</a>
           </div>
         </header>
 
@@ -167,15 +196,15 @@ export function AirEngineJobQueue() {
               <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#D9DCE0] pb-5">
                 <div>
                   <p className="text-sm text-[#6B7280]">{active.id} / {active.status}</p>
-                  <h2 className="mt-2 text-3xl font-semibold">{active.source_platform} 素材重做</h2>
+                  <h2 className="mt-2 text-3xl font-semibold">{active.source_platform} media rebuild</h2>
                   <p className="mt-2 text-sm text-[#6B7280]">{active.commerce_channel || "commerce_new"} / {active.goods_condition || "new"} / {active.priority || "normal"}</p>
                 </div>
-                <a href="/admin/publish-review" className="rounded-xl border border-[#2D333A] px-4 py-3 text-sm">打开发布审核</a>
+                <a href="/admin/publish-review" className="rounded-xl border border-[#2D333A] px-4 py-3 text-sm">Open Review</a>
               </div>
 
               <div className="mt-5 grid gap-5 xl:grid-cols-[0.48fr_0.52fr]">
                 <section className="rounded-2xl border border-[#D9DCE0] bg-[#F5F6F8] p-4">
-                  <p className="text-sm font-semibold">来源与版权口径</p>
+                  <p className="text-sm font-semibold">Source and rights</p>
                   <div className="mt-3 grid gap-2 text-sm leading-7 text-[#6B7280]">
                     <p>Intake: {active.intake_id}</p>
                     <p>Platform: {active.source_platform}</p>
@@ -187,16 +216,30 @@ export function AirEngineJobQueue() {
                     <p>Transform required: {active.transform_required ? "yes" : "no"}</p>
                     <p>Policy: {active.air_engine_policy || "rebuild_or_replace_before_publish"}</p>
                   </div>
+
+                  <div className="mt-5 rounded-2xl border border-[#D9DCE0] bg-white p-4">
+                    <p className="text-sm font-semibold">Upload finished output</p>
+                    <p className="mt-2 text-xs leading-5 text-[#6B7280]">Use this for manually edited files now. The same endpoint can be used later by the real AI beautifier.</p>
+                    <div className="mt-4 grid gap-3">
+                      <select value={uploadType} onChange={(event) => setUploadType(event.target.value as (typeof uploadOutputTypes)[number])} className="rounded-xl border border-[#D9DCE0] bg-white px-3 py-3 text-sm">
+                        {uploadOutputTypes.map((item) => <option key={item} value={item}>{item}</option>)}
+                      </select>
+                      <input key={`${active.id}-${uploadType}-${uploadFiles?.length ?? 0}`} type="file" multiple accept="image/*,video/*" onChange={(event) => setUploadFiles(event.target.files)} className="rounded-xl border border-dashed border-[#C8B7A4] bg-[#F3ECE2] px-3 py-3 text-sm" />
+                      <button type="button" disabled={uploadBusy} onClick={uploadOutput} className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white disabled:opacity-50">
+                        {uploadBusy ? "Uploading..." : "Attach Output"}
+                      </button>
+                    </div>
+                  </div>
                 </section>
 
                 <section className="rounded-2xl border border-[#D9DCE0] bg-[#F5F6F8] p-4">
-                  <p className="text-sm font-semibold">输出验收</p>
+                  <p className="text-sm font-semibold">Output acceptance</p>
                   <div className="mt-3 grid gap-2">
                     {activeOutputs.map((item) => (
                       <div key={item.media_type} className="rounded-xl border border-[#D9DCE0] bg-white p-3">
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <div>
-                            <p className="text-sm font-semibold">{item.media_type} · {item.label}</p>
+                            <p className="text-sm font-semibold">{item.media_type} - {item.label}</p>
                             <p className="mt-1 text-xs text-[#6B7280]">{item.dimensions} / {item.ratio}{item.required ? " / required" : ""}</p>
                           </div>
                           <span className={outputStatusClass(item.status)}>{formatOutputStatus(item.status)}</span>
