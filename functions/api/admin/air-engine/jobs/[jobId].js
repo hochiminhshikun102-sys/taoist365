@@ -120,12 +120,12 @@ function buildOutputPlan(job, intake, media, now, allowGenerate) {
   const requested = normalizeOutputs(job.requested_outputs);
   const existingByType = new Map();
   media
-    .filter((item) => hasMediaUrl(item))
+    .filter((item) => isReadyOutputMedia(item))
     .forEach((item) => {
       existingByType.set(item.media_type, item);
     });
 
-  const publishSource = media.find((item) => publishOutputTypes.has(item.media_type) && !isVideoMedia(item) && hasMediaUrl(item));
+  const publishSource = media.find((item) => publishOutputTypes.has(item.media_type) && !isVideoMedia(item) && isReadyOutputMedia(item));
   const generatedMedia = [];
   const manifest = [];
   const readyOutputs = [];
@@ -222,6 +222,10 @@ function isVideoMedia(media) {
 
 function hasMediaUrl(media) {
   return Boolean(media?.file_url || media?.data_url);
+}
+
+function isReadyOutputMedia(media) {
+  return hasMediaUrl(media) && ["air_engine_uploaded", "air_engine_ready", "publish_ready"].includes(String(media?.status || ""));
 }
 
 function makeAuditNote(note, outputPlan) {

@@ -145,7 +145,7 @@ function buildOutputPlan(job, media) {
   const requested = normalizeOutputs(job.requested_outputs);
   const existingByType = new Map();
   media
-    .filter((item) => hasMediaUrl(item))
+    .filter((item) => isReadyOutputMedia(item))
     .forEach((item) => {
       existingByType.set(item.media_type, item);
     });
@@ -195,6 +195,10 @@ function makeManifestEntry(type, spec, status, media, note) {
 
 function hasMediaUrl(media) {
   return Boolean(media?.file_url || media?.data_url);
+}
+
+function isReadyOutputMedia(media) {
+  return hasMediaUrl(media) && ["air_engine_uploaded", "air_engine_ready", "publish_ready"].includes(String(media?.status || ""));
 }
 
 async function fileToDataUrl(file, contentType) {
