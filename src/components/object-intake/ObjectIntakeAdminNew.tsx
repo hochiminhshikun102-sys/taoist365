@@ -16,7 +16,7 @@ export function ObjectIntakeAdminNew() {
   const [state, setState] = useState<UploadState>("idle");
   const [note, setNote] = useState("");
   const [mediaFiles, setMediaFiles] = useState<Partial<Record<ProductMediaType, FileList | null>>>({});
-  const [created, setCreated] = useState<{ intake_id: string; intake_no: string; status: string; air_engine_job_id?: string } | null>(null);
+  const [created, setCreated] = useState<{ intake_id: string; intake_no: string; status: string; review_id?: string; air_engine_job_id?: string } | null>(null);
   const [form, setForm] = useState({
     source_type: "admin_upload",
     source_platform: "manual" as MarketplaceSourcePlatform,
@@ -87,8 +87,14 @@ export function ObjectIntakeAdminNew() {
       const reviewData = await reviewResponse.json();
       if (!reviewResponse.ok) throw new Error(reviewData.error || "Unable to submit review.");
 
+      const doneData = {
+        ...createData,
+        review_id: reviewData.review_id,
+        air_engine_job_id: reviewData.air_engine_job_id || createData.air_engine_job_id,
+      };
+      setCreated(doneData);
       setState("done");
-      setNote(`Intake ${createData.intake_no} entered review queue. Air Engine job: ${reviewData.air_engine_job_id || createData.air_engine_job_id || "created"}.`);
+      setNote(`Intake ${createData.intake_no} entered review queue. Review: ${reviewData.review_id}. Air Engine job: ${doneData.air_engine_job_id || "created"}.`);
     } catch (error) {
       setState("error");
       setNote(error instanceof Error ? error.message : "Object intake failed.");
@@ -101,10 +107,12 @@ export function ObjectIntakeAdminNew() {
         <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
           <div>
             <p className="text-sm text-[#6B7280]">Dohara Object Intake Pipeline</p>
-            <h1 className="mt-2 text-4xl font-semibold">宝贝入库</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">后台宝贝上传进入统一 object_intakes，不再作为孤立工具。链接导入的外部图片只做来源参考，必须经过授权、重拍、替换或 Air Engine 重建后才能发布。</p>
+            <h1 className="mt-2 text-4xl font-semibold">Product Intake</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">
+              Create one product intake for OA operations. One submit creates the intake, uploads media, generates the AI draft, submits publish review, and creates the Air Engine job.
+            </p>
           </div>
-          <a href="/admin/publish-review" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">发布审核</a>
+          <a href="/admin/publish-review" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">Open Publish Review</a>
         </header>
 
         <ObjectIntakeBatchLinkImport />
@@ -115,20 +123,22 @@ export function ObjectIntakeAdminNew() {
           <div className="grid gap-4 md:grid-cols-3">
             <label className="grid gap-2 text-sm">Source Type<select value={form.source_type} onChange={(event) => update("source_type", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">{objectIntakeSourceDefinitions.map((item) => <option key={item.type} value={item.type}>{item.type} - {item.label}</option>)}</select></label>
             <label className="grid gap-2 text-sm">Source Platform<select value={form.source_platform} onChange={(event) => update("source_platform", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3">{sourcePlatforms.map((item) => <option key={item}>{item}</option>)}</select></label>
-            <label className="grid gap-2 text-sm">Source URL<input value={form.source_url} onChange={(event) => update("source_url", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" placeholder="Optional link, first version saves only" /></label>
+            <label className="grid gap-2 text-sm">Source URL<input value={form.source_url} onChange={(event) => update("source_url", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" placeholder="Optional reference link" /></label>
           </div>
 
           <section className="grid gap-4 rounded-2xl border border-[#D9DCE0] bg-[#F8F5EF] p-4">
             <div>
-              <p className="text-sm font-semibold">Product media modules / 商品图片模块</p>
-              <p className="mt-2 text-xs leading-6 text-[#6B7280]">按页面用途上传素材。文件先进入 object_media，后续可被素材中心、Air Engine、商品详情页和社媒输出复用。</p>
+              <p className="text-sm font-semibold">Product media modules</p>
+              <p className="mt-2 text-xs leading-6 text-[#6B7280]">
+                Upload production media by slot. Main is required before publish; detail, scene, PC, mobile, social, and motion can be filled through Air Engine.
+              </p>
             </div>
             <div className="grid gap-3 md:grid-cols-2">
               {mediaUploadGroups.map((group) => (
                 <label key={group.type} className="grid gap-2 rounded-xl border border-[#D9DCE0] bg-white p-4 text-sm">
                   <span className="flex items-center justify-between gap-3 font-semibold">
                     {group.title}
-                    {group.required ? <span className="rounded-full bg-[#2D333A] px-2 py-1 text-[11px] text-white">必传</span> : null}
+                    {group.required ? <span className="rounded-full bg-[#2D333A] px-2 py-1 text-[11px] text-white">Required</span> : null}
                   </span>
                   <span className="text-xs leading-5 text-[#6B7280]">{group.usage}</span>
                   <ul className="grid gap-1 text-xs leading-5 text-[#6B7280]">
@@ -161,9 +171,18 @@ export function ObjectIntakeAdminNew() {
 
         <aside className="rounded-2xl border border-[#D9DCE0] bg-white p-5 text-sm leading-7 text-[#6B7280]">
           <p>Status: <strong className="text-[#2D333A]">{state}</strong></p>
-          {created ? <p>Created: {created.intake_no} / {created.intake_id} / Air Engine: {created.air_engine_job_id || "created"}</p> : null}
+          {created ? (
+            <div className="grid gap-2">
+              <p>Created: {created.intake_no} / {created.intake_id}</p>
+              <p>Review: {created.review_id || "created"} / Air Engine: {created.air_engine_job_id || "created"}</p>
+              <div className="flex flex-wrap gap-3">
+                <a href="/admin/publish-review" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-2 text-white">Open Publish Review</a>
+                <a href="/admin/ai-queue" className="rounded-xl border border-[#D9DCE0] bg-[#F5F6F8] px-4 py-2 text-[#2D333A]">Open Air Engine Queue</a>
+              </div>
+            </div>
+          ) : null}
           {note ? <p>{note}</p> : null}
-          <p className="mt-3">Air Engine 第一版先保留处理状态和审核字段。链接导入先保存 source_url、source_platform、rights policy 和 rebuild policy，后续再接真实抓取与图片重建。</p>
+          <p className="mt-3">External source media is reference-only. Publish requires owned, uploaded, rebuilt, or approved Air Engine output media.</p>
         </aside>
       </section>
     </main>

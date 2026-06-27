@@ -36,6 +36,7 @@ function enrichIntake(store, intake) {
   const draft = latestAiDraft(store, intake.id);
   const review = store.objectReviewQueue.find((item) => item.intake_id === intake.id) || null;
   const publishedObject = store.objects.find((item) => item.intake_id === intake.id) || null;
+  const airEngineJob = (store.airEngineJobs || []).find((item) => item.intake_id === intake.id) || null;
   const primary =
     media.find((item) => item.media_type === "main" && !isVideoMedia(item)) ||
     media.find((item) => !isVideoMedia(item)) ||
@@ -46,6 +47,7 @@ function enrichIntake(store, intake) {
     media,
     draft,
     review,
+    air_engine_job: airEngineJob,
     object: publishedObject,
     thumbnail_url: publicUrlForMedia(primary),
     audit_logs: store.adminAuditLogs.filter((item) => item.target_id === intake.id).slice(0, 20),

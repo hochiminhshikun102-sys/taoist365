@@ -5,6 +5,7 @@ export async function onRequestPost(context) {
   let queueItem = null;
   let airEngineJobId = "";
   let airEngineJobCreated = false;
+  let airEngineStatus = "pending";
   let missing = false;
 
   await updateStore(context.env, (store) => {
@@ -21,6 +22,7 @@ export async function onRequestPost(context) {
     const airJob = existingJob || makeAirEngineJob(intake, now);
     airEngineJobId = airJob.id;
     airEngineJobCreated = !existingJob;
+    airEngineStatus = airJob.status || intake.air_engine_status || "pending";
     queueItem = {
       id: makeId("review"),
       intake_id: intakeId,
@@ -46,7 +48,15 @@ export async function onRequestPost(context) {
   });
 
   if (missing) return json({ error: "Intake not found." }, 404);
-  return json({ review: queueItem, status: intakeStatuses.REVIEW_PENDING, air_engine_job_id: airEngineJobId, air_engine_job_created: airEngineJobCreated }, 201);
+  return json({
+    intake_id: intakeId,
+    review_id: queueItem.id,
+    review: queueItem,
+    status: intakeStatuses.REVIEW_PENDING,
+    air_engine_status: airEngineStatus,
+    air_engine_job_id: airEngineJobId,
+    air_engine_job_created: airEngineJobCreated,
+  }, 201);
 }
 
 function makeAirEngineJob(intake, now) {

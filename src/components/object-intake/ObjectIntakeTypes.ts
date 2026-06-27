@@ -125,6 +125,14 @@ export type EnrichedIntake = {
   media: ObjectMedia[];
   draft: ObjectAiDraft | null;
   review: Record<string, string> | null;
+  air_engine_job?: {
+    id: string;
+    status: string;
+    ready_outputs?: string[];
+    missing_outputs?: string[];
+    blocked_outputs?: string[];
+    next_action?: string;
+  } | null;
   object: PublishedObject | null;
   thumbnail_url: string;
   audit_logs: Array<Record<string, string>>;

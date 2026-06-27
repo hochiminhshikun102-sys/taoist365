@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
+import { PublishedObjectDetailClient } from "@/components/commerce/PublishedObjectDetailClient";
 import { productByRuntimeId, productRuntimeObjects, type ProductRuntimeMedia, type ProductRuntimeObject } from "@/config/product-runtime";
 import { breadcrumbSchema, buildSeoGeoMetadata, faqSchema, productSchema, SeoGeoJsonLd } from "@/lib/seo-geo-runtime";
 
@@ -124,7 +125,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
   const { objectId } = await params;
   const object = productByRuntimeId(objectId);
 
-  if (!object || object.runtimeKind !== "commerce") return null;
+  if (!object || object.runtimeKind !== "commerce") return <PublishedObjectDetailClient objectId={objectId} />;
 
   const media = uniqueMedia(object).slice(0, 7);
   const mainMedia = media[0] ?? object.media[0];

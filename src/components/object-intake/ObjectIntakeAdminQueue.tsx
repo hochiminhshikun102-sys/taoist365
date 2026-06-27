@@ -73,12 +73,12 @@ export function ObjectIntakeAdminQueue() {
         <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
           <div>
             <p className="text-sm text-[#6B7280]">Dohara Object Intake Pipeline</p>
-            <h1 className="mt-2 text-4xl font-semibold">发布审核</h1>
+            <h1 className="mt-2 text-4xl font-semibold">Publish Review</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">
-              统一治理全球买手、后台、老板上传和链接导入的物件。外部平台素材只作来源参考，必须完成授权、重拍、替换或 Air Engine 重建后再发布。
+              Review OA, legacy sample, external link, and buyer uploads before creating a published storefront object. Main publishable media is required before publishing.
             </p>
           </div>
-          <a href="/admin/product-intake" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">宝贝入库</a>
+          <a href="/admin/product-intake" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">Product Intake</a>
         </header>
 
         <div className="flex flex-wrap gap-2">
@@ -136,6 +136,7 @@ export function ObjectIntakeAdminQueue() {
                     <p>Rights: {active.intake.media_rights_status || "unset"} / Policy: {active.intake.air_engine_policy || "unset"}</p>
                     <p>Price: {active.intake.original_price || active.draft?.price_suggestion} {active.intake.currency}</p>
                     <p>Inventory: {active.intake.inventory} / Location: {active.intake.location || active.intake.country || "unset"}</p>
+                    <p>Air job: {active.air_engine_job?.id || "missing"} / Next: {active.air_engine_job?.next_action || "Needs review"}</p>
                   </div>
                 </div>
 
@@ -144,9 +145,15 @@ export function ObjectIntakeAdminQueue() {
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
                         <p className="text-sm font-semibold">Dohara Media Check</p>
-                        <p className="mt-2 text-xs leading-5 text-[#6B7280]">主图按 2400 x 2400 白底产品图；视频可做详情首屏，但仍需白底图作为缩略图和合成打底。</p>
+                        <p className="mt-2 text-xs leading-5 text-[#6B7280]">Main still image is required for storefront thumbnails and checkout. Other output slots improve the product detail page but do not block the first publish.</p>
                       </div>
                       <span className="rounded-full bg-white px-3 py-1 text-xs text-[#6B7280]">{active.media.length} files</span>
+                    </div>
+                    <div className="mt-3 grid gap-2 rounded-xl border border-[#D9DCE0] bg-white p-3 text-xs leading-5">
+                      <p className="font-semibold">Air Engine readiness</p>
+                      <p className="text-[#557C5D]">Ready: {(active.air_engine_job?.ready_outputs || []).join(", ") || "none"}</p>
+                      <p className="text-[#A05D4E]">Missing: {(active.air_engine_job?.missing_outputs || []).join(", ") || "none"}</p>
+                      <p className="text-[#9B4B4B]">Blocked: {(active.air_engine_job?.blocked_outputs || []).join(", ") || "none"}</p>
                     </div>
                     <div className="mt-4 grid gap-2 sm:grid-cols-2">
                       {reviewMediaTypes.map((type) => {
@@ -166,9 +173,9 @@ export function ObjectIntakeAdminQueue() {
                   </section>
 
                   <section className="rounded-2xl border border-[#D9DCE0] bg-[#F8F5EF] p-4">
-                    <p className="text-sm font-semibold">Publish Gate / 发布门槛</p>
+                    <p className="text-sm font-semibold">Publish Gate</p>
                     {publishGateMessages.length === 0 ? (
-                      <p className="mt-3 text-sm leading-7 text-[#3E6446]">可发布：标题、价格、库存、主图和素材策略已满足最小门槛。</p>
+                      <p className="mt-3 text-sm leading-7 text-[#3E6446]">Ready to publish: title, description, price, inventory, and main publishable media are present.</p>
                     ) : (
                       <ul className="mt-3 grid gap-2 text-sm leading-6 text-[#A05D4E]">
                         {publishGateMessages.map((item) => <li key={item}>- {item}</li>)}
@@ -183,7 +190,7 @@ export function ObjectIntakeAdminQueue() {
                     <p className="mt-3 text-xs leading-6 text-[#6B7280]">{active.draft?.geo_summary}</p>
                   </section>
 
-                  <textarea value={note} onChange={(event) => setNote(event.target.value)} className="min-h-24 rounded-2xl border border-[#D9DCE0] p-4 text-sm leading-7" placeholder="Review note / 审核备注" />
+                  <textarea value={note} onChange={(event) => setNote(event.target.value)} className="min-h-24 rounded-2xl border border-[#D9DCE0] p-4 text-sm leading-7" placeholder="Review note" />
 
                   <div className="flex flex-wrap gap-3">
                     <button disabled={busy} type="button" onClick={() => review("approve")} className="rounded-xl border border-[#3E6446] bg-[#3E6446] px-4 py-3 text-sm text-white disabled:opacity-50">Approve</button>
@@ -216,13 +223,13 @@ function getPublishGateMessages(row: EnrichedIntake) {
   const publishableMedia = row.media.filter((media) => media.media_type !== "original");
   const isExternalReference = Boolean(row.intake.source_url) || row.intake.media_rights_status === "reference_only" || row.intake.media_transform_required;
 
-  if (!title) messages.push("需要标题");
-  if (!description) messages.push("需要商品描述");
-  if (!Number.isFinite(price) || price <= 0) messages.push("需要有效价格");
-  if (inventory <= 0) messages.push("库存必须大于 0");
-  if (!mainStillImage) messages.push("需要 main 类型的白底产品图，视频不能替代缩略图");
-  if (publishableMedia.length === 0) messages.push("需要至少一个可发布商品素材，original 只能作来源证据");
-  if (isExternalReference && row.intake.air_engine_status !== "ready") messages.push("外部链接来源必须先把 Air Engine 状态标为 ready");
+  if (!title) messages.push("Title is required.");
+  if (!description) messages.push("Description is required.");
+  if (!Number.isFinite(price) || price <= 0) messages.push("Valid price is required.");
+  if (inventory <= 0) messages.push("Inventory must be greater than 0.");
+  if (!mainStillImage) messages.push("Main still image is required before publish.");
+  if (publishableMedia.length === 0) messages.push("At least one publishable product media asset is required.");
+  if (isExternalReference && row.intake.air_engine_status !== "ready") messages.push("External reference sources must be Air Engine ready before publish.");
 
   return messages;
 }
