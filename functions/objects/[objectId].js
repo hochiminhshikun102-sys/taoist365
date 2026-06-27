@@ -337,6 +337,16 @@ function renderObjectHtml(object) {
         button.textContent = "ADDED";
         window.setTimeout(() => { button.textContent = "ADD TO CART"; }, 1600);
       }));
+      document.querySelectorAll('a.secondary[href="/order"]').forEach((link) => link.addEventListener("click", (event) => {
+        event.preventDefault();
+        let cart = [];
+        try { cart = JSON.parse(window.localStorage.getItem(cartKey) || "[]"); } catch { cart = []; }
+        const existing = cart.find((entry) => entry.id === item.id);
+        if (existing) existing.quantity = Math.min(99, Number(existing.quantity || 1) + 1);
+        else cart.push(item);
+        window.localStorage.setItem(cartKey, JSON.stringify(cart));
+        window.location.href = "/checkout";
+      }));
     })();
   </script>
 </body>
