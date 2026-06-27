@@ -18,6 +18,10 @@ export type HealingModule = {
   runtime: string;
   aiHook: string;
   pricing: string;
+  roomLine: string;
+  weatherLine: string;
+  traceLine: string;
+  quietEntrance: string;
   coverTone: "mist" | "wood" | "water" | "stone" | "paper" | "desert" | "garden";
 };
 
@@ -34,8 +38,8 @@ export type HealingHall = {
 export const healingHalls: readonly HealingHall[] = [
   {
     id: "philosophy",
-    title: "Philosophy Hall",
-    shortTitle: "Philosophy",
+    title: "Paper Light Room",
+    shortTitle: "Paper Light",
     href: "/healing/philosophy",
     hero: "Daily light interactions for short lines, symbols, wishes, and kindness.",
     summary: "A high-frequency hall for small browser pauses that do not become tasks.",
@@ -43,8 +47,8 @@ export const healingHalls: readonly HealingHall[] = [
   },
   {
     id: "elements",
-    title: "Elements Hall",
-    shortTitle: "Elements",
+    title: "Inner Weather Room",
+    shortTitle: "Inner Weather",
     href: "/healing/elements",
     hero: "Color, plant, room, and seasonal fit without heavy mystic framing.",
     summary: "A practical hall for mood, materials, color, and home atmosphere.",
@@ -52,8 +56,8 @@ export const healingHalls: readonly HealingHall[] = [
   },
   {
     id: "meditation",
-    title: "Meditation Hall",
-    shortTitle: "Meditation",
+    title: "Slower Room",
+    shortTitle: "Slower Room",
     href: "/healing/meditation",
     hero: "Slow visual and audio surfaces for leaving the tab open.",
     summary: "No score, no streak, no pressure to complete the session.",
@@ -61,8 +65,8 @@ export const healingHalls: readonly HealingHall[] = [
   },
   {
     id: "stories",
-    title: "Stories Hall",
-    shortTitle: "Stories",
+    title: "Letter Shelf",
+    shortTitle: "Letter Shelf",
     href: "/healing/stories",
     hero: "Anonymous letters, time capsules, object stories, and quiet resonance.",
     summary: "A soft emotional layer without continuous stream behavior or social pressure.",
@@ -70,8 +74,8 @@ export const healingHalls: readonly HealingHall[] = [
   },
   {
     id: "creation",
-    title: "Creation Hall",
-    shortTitle: "Creation",
+    title: "Nearby Light",
+    shortTitle: "Nearby Light",
     href: "/healing/creation",
     hero: "Light AI-assisted creation for portraits, trees, maps, and elemental images.",
     summary: "Small creative surfaces that can produce a keepsake without becoming a tool suite.",
@@ -79,8 +83,8 @@ export const healingHalls: readonly HealingHall[] = [
   },
   {
     id: "subscriptions",
-    title: "Subscriptions Hall",
-    shortTitle: "Subscriptions",
+    title: "Monthly Shelf",
+    shortTitle: "Monthly Shelf",
     href: "/healing/subscriptions",
     hero: "Monthly quiet objects, scents, sounds, tea, texture, and regional variants.",
     summary: "Physical continuity with digital companions, kept simple and clear.",
@@ -88,8 +92,8 @@ export const healingHalls: readonly HealingHall[] = [
   },
   {
     id: "playground",
-    title: "Playground Hall",
-    shortTitle: "Playground",
+    title: "Quiet Courtyard",
+    shortTitle: "Courtyard",
     href: "/healing/playground",
     hero: "Low-pressure interactions with no failure, no timer pressure, and no measurement loop.",
     summary: "Small browser play surfaces for gardens, letters, texture, water, and stars.",
@@ -97,7 +101,333 @@ export const healingHalls: readonly HealingHall[] = [
   },
 ] as const;
 
-export const healingModules: readonly HealingModule[] = [
+type BrowserAirModuleName = {
+  title: string;
+  roomLine: string;
+  weatherLine: string;
+  traceLine: string;
+  quietEntrance: string;
+};
+
+const browserAirModuleNames: Record<string, BrowserAirModuleName> = {
+  "daily-verse": {
+    title: "Morning Line",
+    roomLine: "A short line left in the browser before the day becomes loud.",
+    weatherLine: "mist, paper light, one sentence",
+    traceLine: "The page remembers one quiet line and lets it pass.",
+    quietEntrance: "Read slowly",
+  },
+  "wisdom-scroll-generator": {
+    title: "Paper Window",
+    roomLine: "A vertical page for one plain thought and a little room light.",
+    weatherLine: "paper edge, ink air, soft margin",
+    traceLine: "A line can stay as paper without becoming a post.",
+    quietEntrance: "Open paper",
+  },
+  "rune-inner-self": {
+    title: "Small Mark",
+    roomLine: "A thin personal mark, kept light enough to sit near the desk.",
+    weatherLine: "linework, stone, quiet meaning",
+    traceLine: "The mark stays small and does not explain the person.",
+    quietEntrance: "Find a mark",
+  },
+  "life-flower-sigil": {
+    title: "Season Mark",
+    roomLine: "A pale seasonal shape for a name, a date, and a little air.",
+    weatherLine: "seasonal geometry, pale light",
+    traceLine: "The shape rests like a note in a drawer.",
+    quietEntrance: "Let it form",
+  },
+  "kindness-blank-canvas": {
+    title: "Blank Kindness",
+    roomLine: "An empty paper corner where one small response is enough.",
+    weatherLine: "blank paper, one quiet mark",
+    traceLine: "Nothing here asks for more than one human trace.",
+    quietEntrance: "Leave one mark",
+  },
+  "wish-lantern": {
+    title: "Lantern Air",
+    roomLine: "A warm paper light for a short wish that does not need a crowd.",
+    weatherLine: "night air, warm paper, slow lift",
+    traceLine: "The wish rises and the browser keeps the room gentle.",
+    quietEntrance: "Lift a light",
+  },
+  "five-elements-harmony": {
+    title: "Inner Weather",
+    roomLine: "A practical weather corner for color, rest, scent, and living rhythm.",
+    weatherLine: "mineral color, linen, ordinary balance",
+    traceLine: "The result should feel like a room note, not a report.",
+    quietEntrance: "Check the weather",
+  },
+  "five-color-vibe": {
+    title: "Color Weather",
+    roomLine: "A soft color corner for the clothes, rooms, and days nearby.",
+    weatherLine: "muted cards, pale color, easy use",
+    traceLine: "Color appears as atmosphere before advice.",
+    quietEntrance: "See the colors",
+  },
+  "vibe-color-palette": {
+    title: "Linen Palette",
+    roomLine: "A longer color shelf for rooms, desks, and small wearable choices.",
+    weatherLine: "linen warmth, mineral gray, muted accent",
+    traceLine: "The palette stays quiet enough to live with.",
+    quietEntrance: "Open palette",
+  },
+  "space-harmony-quiz": {
+    title: "Shelf Balance",
+    roomLine: "A room corner for light, placement, and small adjustments.",
+    weatherLine: "quiet shelf, window air, softened room",
+    traceLine: "The room is not fixed; it is allowed to settle.",
+    quietEntrance: "Look around",
+  },
+  "seasonal-energy-check": {
+    title: "Season Room",
+    roomLine: "A slow seasonal check for rest, scent, color, and daily rhythm.",
+    weatherLine: "seasonal light, ordinary rhythm",
+    traceLine: "The season is treated as weather, not a task.",
+    quietEntrance: "Enter season",
+  },
+  "soul-plant-match": {
+    title: "Plant Nearby",
+    roomLine: "A plant companion corner for shade, temperament, and quiet care.",
+    weatherLine: "plant light, shade, care note",
+    traceLine: "A plant can be nearby without becoming symbolic weight.",
+    quietEntrance: "Meet a plant",
+  },
+  "cloud-meditation-altar": {
+    title: "Cloud Room",
+    roomLine: "A cloud surface that can stay open without asking to be completed.",
+    weatherLine: "cloud, fog, water, wood sound",
+    traceLine: "The tab may remain open like a quiet window.",
+    quietEntrance: "Open cloud",
+  },
+  "virtual-incense-altar": {
+    title: "Incense Table",
+    roomLine: "A slow smoke table with forest air and no managed ritual pressure.",
+    weatherLine: "smoke, forest, muted table",
+    traceLine: "The smoke moves softly and the room does the rest.",
+    quietEntrance: "Light softly",
+  },
+  "quiet-silence-timer": {
+    title: "Quiet Minute",
+    roomLine: "A small silence room with no loud numbers and no finish line.",
+    weatherLine: "fog movement, low light",
+    traceLine: "Time becomes softer when it is not counted loudly.",
+    quietEntrance: "Begin quiet",
+  },
+  "slow-clock": {
+    title: "Slow Clock",
+    roomLine: "A desktop clock without second-hand pressure.",
+    weatherLine: "slow cloud time",
+    traceLine: "The hour can stay visible without becoming urgent.",
+    quietEntrance: "Open clock",
+  },
+  "quiet-ferry": {
+    title: "Quiet Ferry",
+    roomLine: "A small boat moving through a minimal river at browser speed.",
+    weatherLine: "river, boat, dawn, night",
+    traceLine: "The ferry passes without asking where to arrive.",
+    quietEntrance: "Enter ferry",
+  },
+  "mindful-path": {
+    title: "Slow Path",
+    roomLine: "A short walking passage with water, wind, and low movement.",
+    weatherLine: "path, stream, low wind",
+    traceLine: "Walking here is a room atmosphere, not progress.",
+    quietEntrance: "Walk slowly",
+  },
+  "stone-alignment": {
+    title: "Stone Table",
+    roomLine: "A pale table where stones can be placed and left alone.",
+    weatherLine: "stone, balance, pale table",
+    traceLine: "The stones do not score the hand that moved them.",
+    quietEntrance: "Place stones",
+  },
+  "time-capsule": {
+    title: "Future Letter",
+    roomLine: "A sealed paper corner for a letter that may wait a long time.",
+    weatherLine: "sealed paper, long time",
+    traceLine: "The letter belongs to time before it belongs to sending.",
+    quietEntrance: "Write slowly",
+  },
+  "story-drift": {
+    title: "Drifting Bottle",
+    roomLine: "A distant water surface for short anonymous fragments.",
+    weatherLine: "bottle, water, distance",
+    traceLine: "A story can drift without becoming a conversation.",
+    quietEntrance: "Let it drift",
+  },
+  "object-story-archive": {
+    title: "Object Shelf",
+    roomLine: "A shelf for old object photos and small human notes.",
+    weatherLine: "object archive, human note",
+    traceLine: "Objects are kept as traces before they become anything else.",
+    quietEntrance: "Add a trace",
+  },
+  "mood-envelope": {
+    title: "Closed Envelope",
+    roomLine: "A paper envelope for a difficult feeling to become quieter.",
+    weatherLine: "envelope, fog, release",
+    traceLine: "The envelope closes without asking for a reply.",
+    quietEntrance: "Seal softly",
+  },
+  "distant-resonance": {
+    title: "Distant Mountain",
+    roomLine: "A same-moment line from far away, without direct conversation.",
+    weatherLine: "distant mountain, one sentence",
+    traceLine: "Another room may echo without pulling closer.",
+    quietEntrance: "Send a state",
+  },
+  "kindness-seed": {
+    title: "Passing Seed",
+    roomLine: "A small note that can move from one person to another room.",
+    weatherLine: "seed, handoff, green quiet",
+    traceLine: "Kindness travels better when it stays ordinary.",
+    quietEntrance: "Pass a seed",
+  },
+  "life-vibe-portrait": {
+    title: "Line Portrait",
+    roomLine: "A minimal line portrait kept as a small personal keepsake.",
+    weatherLine: "line portrait, open space",
+    traceLine: "The portrait stays light and does not define the person.",
+    quietEntrance: "Open line",
+  },
+  "life-vibe-tree": {
+    title: "Quiet Tree",
+    roomLine: "A mood tree with branches, mist, and yearly light.",
+    weatherLine: "tree, air, yearly change",
+    traceLine: "The tree grows slowly enough to be remembered.",
+    quietEntrance: "Grow softly",
+  },
+  "birth-vibe-map": {
+    title: "Star Map",
+    roomLine: "A quiet map of time and place without prediction pressure.",
+    weatherLine: "star field, ink map",
+    traceLine: "The sky stays as a keepsake, not an answer.",
+    quietEntrance: "Open map",
+  },
+  "element-craft-studio": {
+    title: "Element Table",
+    roomLine: "A small table for water, wind, mountain, cloud, and intention.",
+    weatherLine: "element tiles, slow composition",
+    traceLine: "Composition stays like arranging objects on a table.",
+    quietEntrance: "Compose slowly",
+  },
+  "quiet-moments-subscription": {
+    title: "Monthly Quiet",
+    roomLine: "A monthly shelf for incense, sound, and a small table object.",
+    weatherLine: "parcel, scent, sound, quiet table",
+    traceLine: "The parcel arrives like part of the room, not a campaign.",
+    quietEntrance: "View shelf",
+  },
+  "seasonal-quiet-decor-subscription": {
+    title: "Seasonal Shelf",
+    roomLine: "A seasonal desk object with room placement and low sound.",
+    weatherLine: "seasonal desk, small parcel",
+    traceLine: "The object follows weather instead of urgency.",
+    quietEntrance: "View season",
+  },
+  "calm-candle-crystal-subscription": {
+    title: "Warm Mineral",
+    roomLine: "A candle and mineral shelf with a small mood card.",
+    weatherLine: "warm light, mineral surface",
+    traceLine: "Light and stone stay ordinary enough to use.",
+    quietEntrance: "View light",
+  },
+  "quiet-soundscape-subscription": {
+    title: "Small Sound",
+    roomLine: "A small sound object with a nature-air companion.",
+    weatherLine: "small instrument, slow sound",
+    traceLine: "Sound stays in the background of the room.",
+    quietEntrance: "View sound",
+  },
+  "tactile-calm-subscription": {
+    title: "Texture Shelf",
+    roomLine: "A monthly natural texture object with a short material note.",
+    weatherLine: "wood grain, stone, hand feeling",
+    traceLine: "Texture gives the hand a quiet place to return.",
+    quietEntrance: "View texture",
+  },
+  "quiet-tea-moments": {
+    title: "Tea Hour",
+    roomLine: "A caffeine-free tea corner with ceramic warmth and slow drinking.",
+    weatherLine: "tea, ceramic, warm paper",
+    traceLine: "The cup keeps the hour soft.",
+    quietEntrance: "View tea",
+  },
+  "desert-calm-subscription": {
+    title: "Desert Evening",
+    roomLine: "A warm desert shelf for scent, stone, and evening air.",
+    weatherLine: "desert stone, warm dusk",
+    traceLine: "The desert stays low and room-like.",
+    quietEntrance: "View dusk",
+  },
+  "arabesque-quiet-craft-subscription": {
+    title: "Tile Fragment",
+    roomLine: "A handmade tile or ceramic fragment with pattern and quiet craft.",
+    weatherLine: "tile, pattern, quiet craft",
+    traceLine: "Pattern remains a human trace, not ornament pressure.",
+    quietEntrance: "View tile",
+  },
+  "date-sage-quiet-tea": {
+    title: "Courtyard Tea",
+    roomLine: "A regional herbal tea corner with copper and courtyard air.",
+    weatherLine: "tea, copper, courtyard quiet",
+    traceLine: "The courtyard stays close to the cup.",
+    quietEntrance: "View tea",
+  },
+  "emotion-garden": {
+    title: "Soft Garden",
+    roomLine: "A no-fail garden where small feelings can grow slowly.",
+    weatherLine: "soft garden, daily change",
+    traceLine: "Nothing here needs to be completed.",
+    quietEntrance: "Open garden",
+  },
+  "quiet-letters": {
+    title: "Quiet Letters",
+    roomLine: "Warm anonymous letters with no pressure to perform or answer quickly.",
+    weatherLine: "letter paper, warm margin",
+    traceLine: "A letter can be received without creating a loop.",
+    quietEntrance: "Open letters",
+  },
+  "desert-starscape": {
+    title: "Desert Stars",
+    roomLine: "A slow desert horizon with stars, dusk, moon, and quiet air.",
+    weatherLine: "sand, stars, dusk light",
+    traceLine: "The sky moves slowly enough to leave open.",
+    quietEntrance: "Open stars",
+  },
+  "arabesque-garden": {
+    title: "Courtyard Garden",
+    roomLine: "A no-fail courtyard with desert roses, jasmine, and still objects.",
+    weatherLine: "courtyard, mosaic, desert plants",
+    traceLine: "The garden stays a room, not a challenge.",
+    quietEntrance: "Open courtyard",
+  },
+  "sand-texture-zen": {
+    title: "Sand Texture",
+    roomLine: "A slow sand surface with geometry and no time limit.",
+    weatherLine: "sand texture, soft geometry",
+    traceLine: "The pattern can remain unfinished.",
+    quietEntrance: "Open sand",
+  },
+  "courtyard-water-calm": {
+    title: "Courtyard Water",
+    roomLine: "A water surface with slow drops, ripples, and adjustable pace.",
+    weatherLine: "water, tile, slow ripple",
+    traceLine: "The water keeps moving without asking anything back.",
+    quietEntrance: "Open water",
+  },
+  "quiet-arabic-notes": {
+    title: "Warm Wall Notes",
+    roomLine: "Warm regional notes on a quiet wall, readable without pressure.",
+    weatherLine: "wall note, warm paper, regional texture",
+    traceLine: "The wall keeps small notes like room memory.",
+    quietEntrance: "Open notes",
+  },
+};
+
+const healingModuleSeeds = [
   {
     id: "daily-verse",
     hall: "philosophy",
@@ -114,7 +444,7 @@ export const healingModules: readonly HealingModule[] = [
   {
     id: "wisdom-scroll-generator",
     hall: "philosophy",
-    title: "Wisdom Scroll Generator",
+    title: "Paper Window",
     originalName: "哲理卷轴生成器",
     summary: "A vertical quiet scroll for a short thought, cover image, or social card.",
     climate: "paper, ink edge, vertical breathing",
@@ -289,7 +619,7 @@ export const healingModules: readonly HealingModule[] = [
     climate: "fog movement and low light",
     entry: "Begin quiet",
     runtime: "Soft timer shell, no loud display",
-    aiHook: "Session tone and background selection",
+    aiHook: "Quiet tone and background selection",
     pricing: "Free base timer / $3.99 custom background and sound",
     coverTone: "mist",
   },
@@ -465,7 +795,7 @@ export const healingModules: readonly HealingModule[] = [
   {
     id: "element-craft-studio",
     hall: "creation",
-    title: "Element Craft Studio",
+    title: "Element Table",
     originalName: "万物合成工坊",
     summary: "Drag water, wind, mountain, cloud, and intention into a small image surface.",
     climate: "element tiles and slow composition",
@@ -478,12 +808,12 @@ export const healingModules: readonly HealingModule[] = [
   {
     id: "quiet-moments-subscription",
     hall: "subscriptions",
-    title: "Quiet Moments Subscription",
+    title: "Monthly Quiet",
     originalName: "静心时刻・香氛/音钵订阅",
     summary: "Monthly incense holder, incense or small sound bowl with a short audio companion.",
     climate: "parcel, scent, sound, quiet table",
     entry: "View subscription",
-    runtime: "Subscription shelf shell and order interest link",
+    runtime: "Monthly shelf shell and order interest link",
     aiHook: "Monthly pairing and audio card",
     pricing: "$12.99 / month placeholder",
     coverTone: "wood",
@@ -491,7 +821,7 @@ export const healingModules: readonly HealingModule[] = [
   {
     id: "seasonal-quiet-decor-subscription",
     hall: "subscriptions",
-    title: "Seasonal Quiet Decor Subscription",
+    title: "Seasonal Shelf",
     originalName: "季节风物・治愈桌面小物订阅",
     summary: "Monthly desk object with a room placement guide and white-noise companion.",
     climate: "seasonal desk and small parcel",
@@ -504,7 +834,7 @@ export const healingModules: readonly HealingModule[] = [
   {
     id: "calm-candle-crystal-subscription",
     hall: "subscriptions",
-    title: "Calm Candle & Crystal Subscription",
+    title: "Warm Mineral",
     originalName: "情绪疗愈・香薰蜡烛&天然晶石订阅",
     summary: "A monthly candle and crystal with short mood cards and simple care notes.",
     climate: "warm light and mineral surface",
@@ -517,7 +847,7 @@ export const healingModules: readonly HealingModule[] = [
   {
     id: "quiet-soundscape-subscription",
     hall: "subscriptions",
-    title: "Quiet Soundscape Subscription",
+    title: "Small Sound",
     originalName: "自然音景・冥想乐器订阅",
     summary: "A monthly small sound instrument with a nature audio companion.",
     climate: "small instrument and slow sound",
@@ -530,7 +860,7 @@ export const healingModules: readonly HealingModule[] = [
   {
     id: "tactile-calm-subscription",
     hall: "subscriptions",
-    title: "Tactile Calm Subscription",
+    title: "Texture Shelf",
     originalName: "触摸治愈・天然纹理手作订阅",
     summary: "A monthly natural texture object with a short material story.",
     climate: "wood grain, stone, hand feel",
@@ -556,7 +886,7 @@ export const healingModules: readonly HealingModule[] = [
   {
     id: "desert-calm-subscription",
     hall: "subscriptions",
-    title: "Desert Calm Subscription",
+    title: "Desert Evening",
     originalName: "沙漠静谧・沙丘香氛与沙漠晶石订阅",
     summary: "A regional desert scent and crystal subscription with evening wind audio.",
     climate: "desert stone and warm dusk",
@@ -569,7 +899,7 @@ export const healingModules: readonly HealingModule[] = [
   {
     id: "arabesque-quiet-craft-subscription",
     hall: "subscriptions",
-    title: "Arabesque Quiet Craft Subscription",
+    title: "Tile Fragment",
     originalName: "阿拉伯纹样・极简手作瓷砖/陶片订阅",
     summary: "A small handmade tile or ceramic fragment with pattern story and coloring line.",
     climate: "tile, pattern, quiet craft",
@@ -684,6 +1014,25 @@ export const healingModules: readonly HealingModule[] = [
     coverTone: "desert",
   },
 ] as const;
+
+export const healingModules: readonly HealingModule[] = healingModuleSeeds.map((module) => {
+  const room = browserAirModuleNames[module.id];
+
+  return {
+    ...module,
+    title: room.title,
+    summary: room.roomLine,
+    climate: room.weatherLine,
+    entry: room.quietEntrance,
+    runtime: room.traceLine,
+    aiHook: "Atmosphere may adapt softly when real room context is present.",
+    pricing: "Kept low-pressure and optional.",
+    roomLine: room.roomLine,
+    weatherLine: room.weatherLine,
+    traceLine: room.traceLine,
+    quietEntrance: room.quietEntrance,
+  };
+});
 
 export function healingHallById(id: string) {
   return healingHalls.find((hall) => hall.id === id);

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import AboutPage from "@/app/(marketing)/about/page";
 import CookiePage from "@/app/(marketing)/cookie/page";
 import DriftboxPage from "@/app/(marketing)/driftbox/page";
+import GuidancePage from "@/app/(marketing)/guidance/page";
 import HealingIndexPage from "@/app/(marketing)/healing/page";
 import InquiryPage from "@/app/(marketing)/inquiry/page";
 import JournalPage from "@/app/(marketing)/journal/page";
@@ -39,6 +40,7 @@ const routeTitles: Record<string, string> = {
   healing: "Healing",
   windkeep: "Windkeep",
   "quiet-receiving": "Quiet Receiving",
+  guidance: "Guidance",
   live: "Quiet Live Room",
   objects: "Objects",
   inquiry: "Driftbox",
@@ -137,6 +139,9 @@ export default async function LocalePage({ params }: LocalePageProps) {
       break;
     case "quiet-receiving":
       page = <QuietReceivingPage />;
+      break;
+    case "guidance":
+      page = <GuidancePage />;
       break;
     case "live":
       page = <QuietLiveRoomPage />;

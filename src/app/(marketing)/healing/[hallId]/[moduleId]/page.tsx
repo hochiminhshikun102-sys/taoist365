@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: HealingModulePageProps): Prom
     description: healingModule?.roomLine ?? "A Dohara quiet browser room.",
     path: healingModule ? `/healing/${healingModule.hall}/${healingModule.id}` : "/healing",
     kind: "healing",
-    phrases: healingModule ? [healingModule.climate, healingModule.runtime, healingModule.aiHook] : undefined,
+    phrases: healingModule ? [healingModule.weatherLine, healingModule.traceLine, healingModule.quietEntrance] : undefined,
   });
 }
 
@@ -46,12 +46,12 @@ export default async function HealingModulePage({ params }: HealingModulePagePro
             description: healingModule.roomLine,
             path: `/healing/${healingModule.hall}/${healingModule.id}`,
             kind: "healing",
-            phrases: [healingModule.climate, healingModule.runtime, healingModule.aiHook],
+            phrases: [healingModule.weatherLine, healingModule.traceLine, healingModule.quietEntrance],
             relatedLinks: [hall.href, "/healing", "/quiet-extracts"],
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Healing", path: "/healing" },
+            { name: "Quiet Rooms", path: "/healing" },
             { name: hall.shortTitle, path: hall.href },
             { name: healingModule.title, path: `/healing/${healingModule.hall}/${healingModule.id}` },
           ]),

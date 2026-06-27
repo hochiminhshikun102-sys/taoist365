@@ -36,6 +36,7 @@ import {
   quietObjectCollections,
   quietObjectFields,
   quietUploadFlow,
+  oneCivilizationCmsRuntime,
 } from "@/config/quiet-cms";
 import {
   quietCommerceBoundaries,
@@ -219,6 +220,39 @@ export function QuietAdminWorkspace({ entries }: Readonly<{ entries: readonly Sl
               {line}
             </p>
           ))}
+        </div>
+      </section>
+
+      <section id="civilization-runtime" className="rounded-lg border border-border-subtle/80 bg-white/48 px-4 py-4">
+        <p className="text-[0.66rem] uppercase tracking-[0.12em] text-text-muted">One Civilization CMS</p>
+        <div className="mt-4 grid gap-4 lg:grid-cols-[0.36fr_0.64fr]">
+          <div>
+            <p className="text-xs text-foreground">Managed together</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {oneCivilizationCmsRuntime.manages.map((item) => (
+                <span key={item} className="border border-border-subtle bg-white/58 px-2 py-1 text-[0.64rem] text-text-muted">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              ["Coherence", oneCivilizationCmsRuntime.runtime.coherence.length],
+              ["Motion", oneCivilizationCmsRuntime.runtime.motion.length],
+              ["Typography", oneCivilizationCmsRuntime.runtime.typography.length],
+              ["Image climate", oneCivilizationCmsRuntime.runtime.imageClimate.length],
+              ["Video", oneCivilizationCmsRuntime.runtime.video.slots.length],
+              ["Sound", oneCivilizationCmsRuntime.runtime.sound.length],
+              ["Memory", oneCivilizationCmsRuntime.runtime.memory.quietNotes.length],
+              ["Media structure", oneCivilizationCmsRuntime.runtime.mediaStructure.length],
+            ].map(([label, count]) => (
+              <div key={label as string} className="border-t border-border-subtle/70 pt-3 first:border-t-0 first:pt-0 sm:first:border-t sm:first:pt-3">
+                <p className="text-xs text-foreground">{label as string}</p>
+                <p className="mt-2 text-[0.68rem] leading-5 text-text-muted">{count as number} maintained references</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

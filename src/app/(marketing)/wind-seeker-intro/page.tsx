@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PublicRuntimeInfoPage } from "@/components/marketing/PublicRuntimeInfoPage";
+import { GlobalBuyerLanding } from "@/components/marketing/GlobalBuyerLanding";
 import { buildSeoGeoMetadata } from "@/lib/seo-geo-runtime";
 
 export const metadata: Metadata = buildSeoGeoMetadata({
@@ -11,5 +11,5 @@ export const metadata: Metadata = buildSeoGeoMetadata({
 });
 
 export default function WindSeekerIntroPage() {
-  return <PublicRuntimeInfoPage pageKey="wind-seeker-intro" />;
+  return <GlobalBuyerLanding />;
 }

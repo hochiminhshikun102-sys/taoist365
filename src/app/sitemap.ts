@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteConfig.metadataBase.replace(/\/$/, "");
   const now = new Date();
 
-  const staticPaths = ["", "/objects", "/windkeep", "/quiet-receiving", "/desk", "/inquiry", "/guidance", "/guidance/session", "/rituals", "/healing", "/live", "/journal", "/quiet-extracts", "/wind-seeker", "/wind-seeker-intro"].map((path) => ({
+  const staticPaths = ["", "/objects", "/windkeep", "/quiet-receiving", "/quiet-notes", "/daily-verse", "/desk", "/inquiry", "/guidance", "/guidance/session", "/rituals", "/healing", "/live", "/journal", "/quiet-extracts", "/wind-seeker", "/wind-seeker-intro"].map((path) => ({
     url: `${base}${path || "/"}`,
     lastModified: now,
     changeFrequency: path === "" ? ("weekly" as const) : ("monthly" as const),

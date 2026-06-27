@@ -43,16 +43,16 @@ export function HealingModuleActions({ moduleId, title }: HealingModuleActionsPr
       <button
         type="button"
         onClick={toggleSaved}
-        className="rounded-md border border-border-subtle bg-white/54 px-3 py-2 text-xs text-text-secondary hover:bg-white"
+        className="quiet-air-touch rounded-md border border-[#d7e5ea]/58 bg-white/54 px-3 py-2 text-xs text-text-secondary hover:bg-white"
       >
-        {saved ? "Saved here" : "Save"}
+        {saved ? "Kept here" : "Keep nearby"}
       </button>
       <button
         type="button"
         onClick={shareModule}
-        className="rounded-md border border-border-subtle bg-white/54 px-3 py-2 text-xs text-text-secondary hover:bg-white"
+        className="quiet-air-touch rounded-md border border-[#d7e5ea]/58 bg-white/54 px-3 py-2 text-xs text-text-secondary hover:bg-white"
       >
-        {shared ? "Link copied" : "Share"}
+        {shared ? "Link copied" : "Leave a link"}
       </button>
     </div>
   );

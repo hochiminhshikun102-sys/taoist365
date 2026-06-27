@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { WindSeekerRuntime } from "@/components/wind-seeker/WindSeekerRuntime";
+import { GlobalBuyerCenter } from "@/components/wind-seeker/GlobalBuyerCenter";
 import { breadcrumbSchema, buildSeoGeoMetadata, SeoGeoJsonLd } from "@/lib/seo-geo-runtime";
 
 export const metadata: Metadata = buildSeoGeoMetadata({
@@ -19,7 +19,7 @@ export default function WindSeekerPage() {
           { name: "Wind Seeker", path: "/wind-seeker" },
         ])}
       />
-      <WindSeekerRuntime />
+      <GlobalBuyerCenter />
     </>
   );
 }

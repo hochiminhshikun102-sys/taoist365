@@ -1,5 +1,16 @@
+.homepageFrame {
+  --homepage-frame-left: clamp(0.85rem, 3.6vw, 1.55rem);
+  --homepage-frame-right: clamp(0.95rem, 3.85vw, 1.72rem);
+  position: relative;
+  width: calc(100% + var(--homepage-frame-left) + var(--homepage-frame-right));
+  margin-left: calc(-1 * var(--homepage-frame-left));
+  overflow: hidden;
+}
+
 .pcTaskSurface {
-  --pc-scale: min(1, calc(100vw / 1920));
+  --pc-design-width: 1920px;
+  --pc-design-height: 18641px;
+  --pc-scale: min(1, calc(100vw / var(--pc-design-width)));
   --vl-blue-title: #123a68;
   --vl-blue-body: #2d527a;
   --vl-blue-secondary: #163d8c;
@@ -14,14 +25,14 @@
   --card-radius: 22px;
   --card-shadow: 0 16px 38px rgba(30, 62, 96, 0.10);
   --nav-blur: 14px;
-  --vl-font-title: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --vl-font-title: "Playfair Display", "Cormorant Garamond", serif;
   --vl-font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
   --title-font: var(--vl-font-title);
   --body-font: var(--vl-font-body);
   display: block;
   position: relative;
   width: 100%;
-  height: calc(18641px * var(--pc-scale));
+  height: calc(var(--pc-design-height) * var(--pc-scale));
   min-height: 100vh;
   overflow: hidden;
   background: var(--vl-air-bg);
@@ -34,9 +45,9 @@
 
 .pcFixedCanvas {
   position: relative;
-  width: 1920px;
-  height: 18641px;
-  margin: 0 auto;
+  width: var(--pc-design-width);
+  height: var(--pc-design-height);
+  margin: 0;
   overflow: hidden;
   background: var(--vl-air-bg);
   font-family: var(--body-font);
@@ -50,6 +61,18 @@
   width: 1920px;
   overflow: hidden;
   background: var(--vl-air-bg);
+}
+
+@supports (width: 100dvw) {
+  .pcTaskSurface {
+    --pc-scale: min(1, calc(100dvw / var(--pc-design-width)));
+  }
+}
+
+@media (min-width: 1920px) {
+  .pcFixedCanvas {
+    margin: 0 auto;
+  }
 }
 
 .pcLayer01 {
@@ -3220,6 +3243,316 @@
 .pcLayer14Bottom a:nth-of-type(1) { left: 1242px; width: 81px; }
 .pcLayer14Bottom a:nth-of-type(2) { left: 1474px; width: 66px; }
 .pcLayer14Bottom a:nth-of-type(3) { left: 1689px; width: 84px; }
+
+/* VL PC Master text lock V1: typography-only overrides. */
+.pcTaskSurface {
+  --vl-font-title: "Playfair Display", "Cormorant Garamond", serif;
+  --vl-font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --title-font: var(--vl-font-title);
+  --body-font: var(--vl-font-body);
+  --vl-blue-title: #123a68;
+  --vl-blue-body: #2d527a;
+  --vl-blue-muted: #5e738a;
+  --vl-accent-gold: #c9a45c;
+  --vl-air-bg: #f4f8fc;
+}
+
+.pcTaskSurface :is(h1, h2, h3, h4, p, a, span, strong, small, em, b, input, button) {
+  font-synthesis: none;
+}
+
+.pcNavItem,
+.pcNavSearch,
+.pcNavBag {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0;
+}
+
+.pcHeroCopy h1 {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 80px;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.6px;
+}
+
+.pcHeroCopy p {
+  color: var(--vl-blue-body);
+  font-family: var(--body-font);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 36px;
+}
+
+.pcWaysTitle,
+.pcGuidanceTitle,
+.pcLifeTitle,
+.pcVeluneCopy h2,
+.pcLayer06Hero h2 {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 68px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.pcWaysSubtitle,
+.pcGuidanceSubtitle,
+.pcLifeSubtitle,
+.pcLifeSupport,
+.pcVeluneCopy p,
+.pcVeluneCopy em,
+.pcLayer06Hero p,
+.pcLayer06Hero small {
+  color: var(--vl-blue-body);
+  font-family: var(--title-font);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 38px;
+}
+
+.pcWaysCard span,
+.pcGuidanceCard h3,
+.pcLifeCard h3,
+.pcVeluneQuote,
+.pcLayer06Quote,
+.pcLayer11Card h3,
+.pcLayer12Card p,
+.pcLayer12Notes p,
+.pcLayer12Summary {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 38px;
+}
+
+.pcGuidanceCard p,
+.pcLifeCard p,
+.pcVeluneElement span,
+.pcVeluneState span,
+.pcLayer06Note span,
+.pcLayer11Card p,
+.pcLayer13Copy p,
+.pcLayer14Brand p,
+.pcLayer14Subscribe p {
+  color: var(--vl-blue-body);
+  font-family: var(--body-font);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.pcWaysFeature {
+  color: var(--vl-blue-body);
+  font-family: var(--body-font);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.pcWaysViewAll,
+.pcGuidancePrimary,
+.pcGuidanceSecondary,
+.pcVelunePrimary,
+.pcVeluneSecondary,
+.pcLifeCard b,
+.pcLayer07Cta,
+.pcLayer08Cta,
+.pcLayer11ViewAll,
+.pcLayer12Cta {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.pcGuidancePrimary,
+.pcGuidanceSecondary,
+.pcGuidanceSecondary b,
+.pcLayer08Cta b {
+  font-weight: 400;
+}
+
+.pcLifeTimeline,
+.pcVeluneTagline,
+.pcVeluneElements h3,
+.pcVeluneElement strong,
+.pcVeluneState strong,
+.pcLayer06Note strong,
+.pcLayer07Explore,
+.pcLayer07Category strong,
+.pcLayer09Benefit strong,
+.pcLayer14Column h3,
+.pcLayer14Subscribe h3 {
+  color: var(--vl-blue-title);
+  font-family: var(--body-font);
+  font-weight: 600;
+}
+
+.pcLayer07Hero h2,
+.pcLayer08Intro h2,
+.pcLayer09Intro h2,
+.pcLayer10Left h2 {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 100px;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.pcLayer07Hero p,
+.pcLayer08Body,
+.pcLayer08Ways,
+.pcLayer09Subtitle,
+.pcLayer09Body,
+.pcLayer10Left p,
+.pcLayer10Left small,
+.pcLayer10QuoteLineOne,
+.pcLayer10QuoteLineTwo {
+  color: var(--vl-blue-body);
+  font-family: var(--title-font);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 38px;
+}
+
+.pcLayer07Explore,
+.pcLayer07Category strong,
+.pcLayer07Category span {
+  color: var(--vl-blue-title);
+}
+
+.pcLayer07Category span {
+  font-family: var(--body-font);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.pcLayer08PathCard strong,
+.pcLayer09Card strong,
+.pcLayer10CardText h3 {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 38px;
+}
+
+.pcLayer08PathSage strong,
+.pcLayer08PathCoral strong,
+.pcLayer08PathViolet strong,
+.pcLayer08PathAzure strong {
+  color: var(--vl-blue-title);
+}
+
+.pcLayer08PathCard span,
+.pcLayer09Card span,
+.pcLayer09Benefit span,
+.pcLayer10CardText p {
+  color: var(--vl-blue-body);
+  font-family: var(--body-font);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.pcLayer08Quote strong,
+.pcLayer08Quote span,
+.pcLayer09Quote {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 44px;
+}
+
+.pcLayer10Left span {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.pcLayer11Intro h2 {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 68px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.pcLayer11Intro p,
+.pcLayer11Card small {
+  color: var(--vl-blue-body);
+  font-family: var(--body-font);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.pcLayer11Summary {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 44px;
+}
+
+.pcLayer12Intro h2,
+.pcLayer13Copy h2 {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.pcLayer12Intro p {
+  color: var(--vl-blue-body);
+  font-family: var(--title-font);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 34px;
+}
+
+.pcLayer14Column h3,
+.pcLayer14Subscribe h3 {
+  color: var(--vl-blue-title);
+  font-family: var(--body-font);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+}
+
+.pcLayer14Column a,
+.pcLayer14Bottom p {
+  color: var(--vl-blue-title);
+  font-family: var(--title-font);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 38px;
+}
+
+.pcLayer14Subscribe input,
+.pcLayer14Subscribe button,
+.pcLayer14Bottom a {
+  color: var(--vl-blue-body);
+  font-family: var(--body-font);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+}
 
 .pcHotspots {
   position: absolute;

@@ -22,9 +22,9 @@ export function HealingModuleCard({ module }: HealingModuleCardProps) {
   return (
     <article
       id={module.id}
-      className="quiet-air-touch scroll-mt-28 overflow-hidden rounded-[0.82rem_1rem_0.9rem_0.94rem] border border-border-subtle bg-white/52 transition hover:bg-white/68"
+      className="quiet-air-touch ri-image-climate scroll-mt-28 overflow-hidden rounded-[0.82rem_1rem_0.9rem_0.94rem] border border-[#c7d7df]/44 bg-white/54 transition hover:bg-white/68"
     >
-      <div className={`relative min-h-[11rem] bg-gradient-to-br ${toneClass[module.coverTone]}`}>
+      <div className={`ri-air-motion-surface relative min-h-[11rem] bg-gradient-to-br ${toneClass[module.coverTone]}`}>
         <div className="absolute inset-x-8 top-8 h-px bg-white/70" />
         <div className="absolute bottom-5 left-5 right-5">
           <p className="text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">{module.climate}</p>
@@ -32,28 +32,20 @@ export function HealingModuleCard({ module }: HealingModuleCardProps) {
         </div>
       </div>
       <div className="p-5">
-        <p className="text-sm leading-7 text-text-secondary">{module.summary}</p>
+        <p className="ri-quiet-copy text-sm leading-7 text-text-secondary">{module.roomLine}</p>
         <div className="mt-5 grid gap-3 text-xs leading-6 text-text-muted sm:grid-cols-2">
           <p>
-            <span className="block text-foreground">Runtime</span>
-            {module.runtime}
+            <span className="block text-foreground">Weather</span>
+            {module.weatherLine}
           </p>
           <p>
-            <span className="block text-foreground">Future AI hook</span>
-            {module.aiHook}
-          </p>
-          <p>
-            <span className="block text-foreground">Pricing</span>
-            {module.pricing}
-          </p>
-          <p>
-            <span className="block text-foreground">Entry</span>
-            {module.entry}
+            <span className="block text-foreground">Trace</span>
+            {module.traceLine}
           </p>
         </div>
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
           <Link href={moduleHref} className="text-sm text-foreground underline-offset-4 hover:underline">
-            Open
+            {module.quietEntrance}
           </Link>
           <HealingModuleActions moduleId={module.id} title={module.title} />
         </div>

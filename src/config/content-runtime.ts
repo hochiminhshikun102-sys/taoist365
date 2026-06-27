@@ -19,6 +19,29 @@ const quietNotes = [
   "A note that can return without asking for a response.",
   "Plain text, not recently touched.",
   "Something short enough to leave alone.",
+  "Maybe you do not need to answer everything today.",
+  "The room can stay with you while the feeling changes.",
+] as const;
+
+const quietJournalLines = [
+  "The page was left open while water boiled in the next room.",
+  "Nothing important happened, but the light changed slowly.",
+  "Someone returned later and the sentence still felt usable.",
+  "A small record of the day, without turning the day into content.",
+] as const;
+
+const innerWeatherLines = [
+  "Maybe you have been tired longer than you realized.",
+  "The feeling can be here without becoming the whole room.",
+  "Some weather passes only after it is no longer being pushed.",
+  "A quieter hour may not solve it, but it can give it edges.",
+] as const;
+
+const humanWarmthLines = [
+  "Take the smaller version of the task if that is the human version.",
+  "A person should be able to leave and come back without penalty.",
+  "The internet can wait while someone makes tea.",
+  "Useful things do not need to raise their voice.",
 ] as const;
 
 const objectLines = [
@@ -56,6 +79,9 @@ export function resolveSlowContentRuntime(now = new Date()): readonly SlowConten
   const groups = [
     { label: "Daily line", lines: dailyLines, note: "Low-frequency line; no streak or update pressure." },
     { label: "Quiet fragments", lines: quietNotes, note: "Fragments can remain unfinished." },
+    { label: "Quiet Journal", lines: quietJournalLines, note: "Journal language stays lived-in and non-performative." },
+    { label: "Inner Weather", lines: innerWeatherLines, note: "Emotional language gives room without diagnosis or mystic framing." },
+    { label: "Human Warmth", lines: humanWarmthLines, note: "Runtime copy protects human rhythm before conversion pressure." },
     { label: "Objects wording", lines: objectLines, note: "Object wording shifts only as upkeep." },
     { label: "Windkeep wording", lines: windkeepLines, note: "Object passage stays slow and non-market." },
     { label: "Home wording", lines: homeLines, note: "Home copy stays sparse during observation." },
@@ -78,4 +104,6 @@ export const contentRuntimeBoundaries = [
   "No endless reading.",
   "No response loop.",
   "No public climate change.",
+  "No conversion pressure disguised as care.",
+  "No language that consumes the person reading it.",
 ] as const;

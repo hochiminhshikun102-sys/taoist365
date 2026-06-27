@@ -38,32 +38,32 @@ export default async function HealingHallPage({ params }: HealingHallPageProps) 
   const modules = healingModulesForHall(hall.id);
 
   return (
-    <main className="min-h-full bg-background">
+    <main className="ri-runtime-coherence min-h-full bg-background">
       <SeoGeoJsonLd
         graph={breadcrumbSchema([
           { name: "Home", path: "/" },
-          { name: "Healing", path: "/healing" },
+          { name: "Quiet Rooms", path: "/healing" },
           { name: hall.title, path: hall.href },
         ])}
       />
       <div className="room-section-y-standard mx-auto w-full max-w-6xl px-6 sm:px-10">
         <Link href="/healing" className="text-xs text-text-muted underline-offset-4 hover:text-foreground hover:underline">
-          Healing
+          Quiet rooms
         </Link>
-        <section className="mt-5 grid gap-8 lg:grid-cols-[0.46fr_0.54fr] lg:items-end">
+        <section className="ri-breath-section mt-5 grid gap-8 lg:grid-cols-[0.46fr_0.54fr] lg:items-end">
           <div>
             <p className="text-xs uppercase tracking-[0.12em] text-text-muted">{hall.shortTitle}</p>
             <h1 className="mt-3 max-w-2xl text-4xl leading-tight text-foreground sm:text-5xl">{hall.title}</h1>
             <p className="mt-5 max-w-2xl text-sm leading-8 text-text-secondary">{hall.hero}</p>
           </div>
-          <div className="rounded-[0.9rem_1.1rem_1rem_0.96rem] border border-border-subtle bg-white/52 p-5">
-            <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Hall climate</p>
+          <div className="ri-image-climate rounded-[0.9rem_1.1rem_1rem_0.96rem] border border-[#c7d7df]/44 bg-white/52 p-5">
+            <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Room climate</p>
             <p className="mt-3 text-sm leading-7 text-text-secondary">{hall.climate}</p>
             <p className="mt-4 text-sm leading-7 text-text-muted">{hall.summary}</p>
           </div>
         </section>
 
-        <nav className="mt-10 flex gap-3 overflow-x-auto pb-2" aria-label="Healing halls">
+        <nav className="mt-10 flex gap-3 overflow-x-auto pb-2" aria-label="Quiet rooms">
           {healingHalls.map((item) => (
             <Link
               key={item.id}
@@ -80,7 +80,7 @@ export default async function HealingHallPage({ params }: HealingHallPageProps) 
         </nav>
 
         {hall.id === "stories" ? (
-          <section className="mt-10 rounded-lg border border-[#c7d7df]/46 bg-white/72 p-5 shadow-[0_12px_34px_rgba(38,61,78,0.045)]">
+          <section className="ri-image-climate mt-10 rounded-lg border border-[#c7d7df]/46 bg-white/72 p-5 shadow-[0_12px_34px_rgba(38,61,78,0.045)]">
             <p className="text-xs uppercase tracking-[0.12em] text-text-muted">Journal atmosphere</p>
             <p className="mt-3 max-w-2xl text-sm leading-8 text-text-secondary">{lilaHumanPresence.journalNote}</p>
           </section>
