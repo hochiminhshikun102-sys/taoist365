@@ -79,8 +79,16 @@ export function WindSeekerUploadClient() {
       const reviewData = await reviewResponse.json();
       if (!reviewResponse.ok) throw new Error(reviewData.error || "Unable to submit buyer intake.");
 
+      const airResponse = await fetch("/api/admin/air-engine/jobs", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ intake_id: createData.intake_id, actor_id: windSeekerBuyerId }),
+      });
+      const airData = await airResponse.json();
+      if (!airResponse.ok) throw new Error(airData.error || "Unable to create Air Engine job.");
+
       setState("done");
-      setNote(`${createData.intake_no} submitted to review. Air Engine job: ${createData.air_engine_job_id || "created"}.`);
+      setNote(`${createData.intake_no} submitted to review. Air Engine job: ${airData.air_engine_job_id || createData.air_engine_job_id || "created"}.`);
     } catch (error) {
       setState("error");
       setNote(error instanceof Error ? error.message : "Buyer upload failed.");

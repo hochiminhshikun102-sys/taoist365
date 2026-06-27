@@ -87,8 +87,16 @@ export function ObjectIntakeAdminNew() {
       const reviewData = await reviewResponse.json();
       if (!reviewResponse.ok) throw new Error(reviewData.error || "Unable to submit review.");
 
+      const airResponse = await fetch("/api/admin/air-engine/jobs", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ intake_id: createData.intake_id, actor_id: form.submitted_by || "admin-os" }),
+      });
+      const airData = await airResponse.json();
+      if (!airResponse.ok) throw new Error(airData.error || "Unable to create Air Engine job.");
+
       setState("done");
-      setNote(`Intake ${createData.intake_no} entered review queue. Air Engine job: ${createData.air_engine_job_id || "created"}.`);
+      setNote(`Intake ${createData.intake_no} entered review queue. Air Engine job: ${airData.air_engine_job_id || createData.air_engine_job_id || "created"}.`);
     } catch (error) {
       setState("error");
       setNote(error instanceof Error ? error.message : "Object intake failed.");
