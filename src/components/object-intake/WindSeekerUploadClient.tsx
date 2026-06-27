@@ -79,7 +79,7 @@ export function WindSeekerUploadClient() {
       const reviewData = await reviewResponse.json();
       if (!reviewResponse.ok) throw new Error(reviewData.error || "Unable to submit buyer intake.");
 
-      const airResponse = await fetch("/api/admin/air-engine/jobs", {
+      const airResponse = await fetch("/api/admin/air-engine/job-backfill", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ intake_id: createData.intake_id, actor_id: windSeekerBuyerId }),
