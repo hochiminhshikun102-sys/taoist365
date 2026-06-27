@@ -7,6 +7,8 @@ export async function onRequestGet(context) {
   const sourceType = url.searchParams.get("source_type");
   const supplyProgram = url.searchParams.get("supply_program");
   const commerceChannel = url.searchParams.get("commerce_channel");
+  const submittedBy = url.searchParams.get("submitted_by");
+  const buyerId = url.searchParams.get("buyer_id");
   const store = await readStore(context.env);
 
   if (intakeId) {
@@ -20,6 +22,8 @@ export async function onRequestGet(context) {
   if (sourceType) rows = rows.filter((row) => row.source_type === sourceType);
   if (supplyProgram) rows = rows.filter((row) => row.supply_program === supplyProgram);
   if (commerceChannel) rows = rows.filter((row) => (row.commerce_channel || "commerce_new") === commerceChannel);
+  if (submittedBy) rows = rows.filter((row) => row.submitted_by === submittedBy);
+  if (buyerId) rows = rows.filter((row) => row.buyer_id === buyerId);
 
   return json({
     rows: rows.map((intake) => enrichIntake(store, intake)),

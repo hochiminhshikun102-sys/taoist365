@@ -114,6 +114,12 @@ export function ObjectIntakeAdminQueue() {
                   <h2 className="mt-2 text-3xl font-semibold">{active.draft?.draft_title || active.intake.original_title}</h2>
                   <p className="mt-2 text-sm text-[#6B7280]">Air Engine: {active.intake.air_engine_status} / Status: {active.intake.status}</p>
                   <p className="mt-2 text-sm text-[#6B7280]">{active.intake.commerce_channel || "commerce_new"} / {active.intake.goods_condition || "new"}</p>
+                  <p className="mt-2 text-sm text-[#6B7280]">
+                    Source: {active.intake.source_type} / {active.intake.entry_surface || "unset"} / {active.intake.identity_scope || "unset"}
+                  </p>
+                  <p className="mt-2 text-sm text-[#6B7280]">
+                    Buyer: {active.intake.buyer_id || "none"} / Submitted by: {active.intake.submitted_by || "unknown"} / Pro buyer: {active.intake.professional_buyer_required ? "yes" : "no"}
+                  </p>
                 </div>
                 {active.object ? <a href={`/objects/${active.object.object_id}`} className="rounded-xl border border-[#2D333A] px-4 py-3 text-sm">Open {active.object.object_id}</a> : null}
               </div>
@@ -125,6 +131,7 @@ export function ObjectIntakeAdminQueue() {
                   </div>
                   <div className="mt-4 grid gap-2 text-sm text-[#6B7280]">
                     <p>Source: {active.intake.source_platform} {active.intake.source_url ? `/ ${active.intake.source_url}` : ""}</p>
+                    <p>Source type: {active.intake.source_type} / Entry: {active.intake.entry_surface || "unset"} / Buyer: {active.intake.buyer_id || "none"}</p>
                     <p>Source ID: {active.intake.source_snapshot?.source_item_id || "unparsed"} / Parse: {active.intake.source_snapshot?.source_parse_status || "unset"}</p>
                     <p>Rights: {active.intake.media_rights_status || "unset"} / Policy: {active.intake.air_engine_policy || "unset"}</p>
                     <p>Price: {active.intake.original_price || active.draft?.price_suggestion} {active.intake.currency}</p>

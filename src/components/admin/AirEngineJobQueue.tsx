@@ -22,6 +22,12 @@ type AirEngineJob = {
   object_id?: string;
   title?: string;
   source_type?: string;
+  entry_surface?: string;
+  identity_scope?: string;
+  supply_program?: string;
+  buyer_id?: string;
+  submitted_by?: string;
+  professional_buyer_required?: boolean;
   review_id?: string;
   review_status?: string;
   intake_status?: string;
@@ -233,7 +239,8 @@ export function AirEngineJobQueue() {
                   </div>
                   <span className={statusClass(job.status)}>{job.status}</span>
                 </div>
-                <p className="mt-2 text-xs text-[#6B7280]">{job.source_type || "unknown_source"} / {job.source_platform} / {job.source_item_id || "no_source_id"}</p>
+                <p className="mt-2 text-xs text-[#6B7280]">{job.source_type || "unknown_source"} / {job.entry_surface || "unset"} / {job.source_platform}</p>
+                <p className="mt-1 text-xs text-[#6B7280]">Buyer: {job.buyer_id || "none"} / Submitted: {job.submitted_by || "unknown"}</p>
                 <p className="mt-3 line-clamp-2 text-xs leading-5 text-[#6B7280]">{job.next_action || nextActionForJob(job)}</p>
                 <div className="mt-3 flex flex-wrap gap-2 text-[11px]">
                   <span className="rounded-full bg-white px-2 py-1 text-[#557C5D]">ready {job.ready_count ?? job.ready_outputs?.length ?? 0}</span>
@@ -251,7 +258,8 @@ export function AirEngineJobQueue() {
                 <div>
                   <p className="text-sm text-[#6B7280]">{active.id} / {active.status}</p>
                   <h2 className="mt-2 text-3xl font-semibold">{active.title || active.source_platform + " media rebuild"}</h2>
-                  <p className="mt-2 text-sm text-[#6B7280]">{active.source_type || "unknown_source"} / {active.commerce_channel || "commerce_new"} / {active.goods_condition || "new"} / {active.priority || "normal"}</p>
+                  <p className="mt-2 text-sm text-[#6B7280]">{active.source_type || "unknown_source"} / {active.entry_surface || "unset"} / {active.commerce_channel || "commerce_new"} / {active.goods_condition || "new"} / {active.priority || "normal"}</p>
+                  <p className="mt-2 text-sm text-[#6B7280]">Buyer: {active.buyer_id || "none"} / Submitted by: {active.submitted_by || "unknown"} / Pro buyer: {active.professional_buyer_required ? "yes" : "no"}</p>
                 </div>
                 <a href="/admin/publish-review" className="rounded-xl border border-[#2D333A] px-4 py-3 text-sm">Open Review</a>
               </div>
@@ -275,6 +283,8 @@ export function AirEngineJobQueue() {
                     <p>Updated: {active.updated_at || active.created_at}</p>
                     <p>Platform: {active.source_platform}</p>
                     <p>Source type: {active.source_type || "unknown"}</p>
+                    <p>Entry: {active.entry_surface || "unset"} / Identity: {active.identity_scope || "unset"} / Supply: {active.supply_program || "unset"}</p>
+                    <p>Buyer: {active.buyer_id || "none"} / Submitted by: {active.submitted_by || "unknown"}</p>
                     <p>Source ID: {active.source_item_id || "unparsed"}</p>
                     <p>Parse: {active.source_parse_status || "unset"} / Capture: {active.source_capture_status || "unset"}</p>
                     {active.source_url ? <a href={active.source_url} target="_blank" rel="noreferrer" className="break-all text-[#947A66]">{active.source_url}</a> : <p>Source URL: manual / none</p>}

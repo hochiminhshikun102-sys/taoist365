@@ -7,6 +7,7 @@ import { windkeepMemberSupplySourceTypes, windSeekerSourceTypes } from "@/config
 
 const windSeekerSourceTypeSet = new Set<string>(windSeekerSourceTypes);
 const windkeepMemberSupplySourceTypeSet = new Set<string>(windkeepMemberSupplySourceTypes);
+const windSeekerBuyerId = "wind-seeker";
 
 function isWindSeekerIntake(row: EnrichedIntake) {
   const sourceType = row.intake.source_type;
@@ -14,7 +15,12 @@ function isWindSeekerIntake(row: EnrichedIntake) {
   if (row.intake.commerce_channel === "windkeep_secondhand") return false;
   if (row.intake.supply_program === "windkeep" || row.intake.entry_surface === "member_center") return false;
 
-  return windSeekerSourceTypeSet.has(sourceType) || row.intake.supply_program === "wind_seeker" || row.intake.submitted_by === "wind-seeker";
+  return (
+    row.intake.buyer_id === windSeekerBuyerId ||
+    row.intake.submitted_by === windSeekerBuyerId ||
+    windSeekerSourceTypeSet.has(sourceType) ||
+    row.intake.supply_program === "wind_seeker"
+  );
 }
 
 export function WindSeekerProductsClient() {
@@ -23,7 +29,7 @@ export function WindSeekerProductsClient() {
 
   useEffect(() => {
     async function load() {
-      const response = await fetch("/api/admin/object-intakes?status=all", { cache: "no-store" });
+      const response = await fetch(`/api/admin/object-intakes?status=all&buyer_id=${encodeURIComponent(windSeekerBuyerId)}&submitted_by=${encodeURIComponent(windSeekerBuyerId)}`, { cache: "no-store" });
       const data = await response.json();
       if (!response.ok) {
         setNote(data.error || "Unable to read products.");
@@ -55,6 +61,7 @@ export function WindSeekerProductsClient() {
               </div>
               <div>
                 <p className="text-xs text-[#6B7280]">{row.intake.intake_no} / {row.intake.status}</p>
+                <p className="mt-1 text-xs text-[#6B7280]">{row.intake.source_type} / Air Engine: {row.intake.air_engine_status}</p>
                 <h2 className="mt-2 text-xl font-semibold">{row.draft?.draft_title || row.intake.original_title}</h2>
                 <p className="mt-2 text-sm text-[#6B7280]">{row.draft?.price_suggestion || row.intake.original_price}</p>
                 <a href={`/wind-seeker/products/detail?intakeId=${encodeURIComponent(row.intake.id)}`} className="mt-3 inline-flex text-sm text-[#947A66]">Open intake</a>

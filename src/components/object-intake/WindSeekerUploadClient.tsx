@@ -5,6 +5,7 @@ import { productMediaUploadSpecs, type ProductMediaType } from "@/config/product
 
 const buyerMediaTypes: ProductMediaType[] = ["main", "original", "scene", "detail", "motion"];
 const buyerMediaGroups = productMediaUploadSpecs.filter((spec) => buyerMediaTypes.includes(spec.type));
+const windSeekerBuyerId = "wind-seeker";
 
 export function WindSeekerUploadClient() {
   const [mediaFiles, setMediaFiles] = useState<Partial<Record<ProductMediaType, FileList | null>>>({});
@@ -42,8 +43,8 @@ export function WindSeekerUploadClient() {
           ...form,
           source_type: "buyer_upload",
           source_platform: form.source_url ? "other" : "manual",
-          submitted_by: "wind-seeker",
-          buyer_id: "wind-seeker",
+          submitted_by: windSeekerBuyerId,
+          buyer_id: windSeekerBuyerId,
           currency: "USD",
           inventory: Number.parseInt(form.inventory, 10) || 1,
           is_one_of_one: true,
@@ -79,7 +80,7 @@ export function WindSeekerUploadClient() {
       if (!reviewResponse.ok) throw new Error(reviewData.error || "Unable to submit buyer intake.");
 
       setState("done");
-      setNote(`${createData.intake_no} submitted to VL review queue.`);
+      setNote(`${createData.intake_no} submitted to review. Air Engine job: ${createData.air_engine_job_id || "created"}.`);
     } catch (error) {
       setState("error");
       setNote(error instanceof Error ? error.message : "Buyer upload failed.");
@@ -91,7 +92,7 @@ export function WindSeekerUploadClient() {
       <section className="mx-auto grid w-full max-w-3xl gap-6">
         <header className="border-b border-[#D9DCE0] pb-6">
           <a href="/wind-seeker" className="text-sm text-[#6B7280]">Wind Seeker</a>
-          <h1 className="mt-3 text-4xl font-semibold">Upload Object</h1>
+          <h1 className="mt-3 text-4xl font-semibold">One-click Product Intake</h1>
           <p className="mt-3 text-sm leading-7 text-[#6B7280]">买手上传进入同一条 Dohara Object Intake Pipeline。</p>
         </header>
 
@@ -126,7 +127,7 @@ export function WindSeekerUploadClient() {
             <label className="grid gap-2 text-sm">Stock<input value={form.inventory} onChange={(event) => update("inventory", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
           </div>
           <label className="grid gap-2 text-sm">Source Link Optional<input value={form.source_url} onChange={(event) => update("source_url", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" /></label>
-          <button type="submit" disabled={state !== "ready" && state !== "done" && state !== "error"} className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">Submit to Review</button>
+          <button type="submit" disabled={state !== "ready" && state !== "done" && state !== "error"} className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">Create Intake + AI Draft + Air Engine + Review</button>
         </form>
 
         <aside className="rounded-2xl border border-[#D9DCE0] bg-white p-5 text-sm leading-7 text-[#6B7280]">

@@ -16,7 +16,7 @@ export function ObjectIntakeAdminNew() {
   const [state, setState] = useState<UploadState>("idle");
   const [note, setNote] = useState("");
   const [mediaFiles, setMediaFiles] = useState<Partial<Record<ProductMediaType, FileList | null>>>({});
-  const [created, setCreated] = useState<{ intake_id: string; intake_no: string; status: string } | null>(null);
+  const [created, setCreated] = useState<{ intake_id: string; intake_no: string; status: string; air_engine_job_id?: string } | null>(null);
   const [form, setForm] = useState({
     source_type: "admin_upload",
     source_platform: "manual" as MarketplaceSourcePlatform,
@@ -88,7 +88,7 @@ export function ObjectIntakeAdminNew() {
       if (!reviewResponse.ok) throw new Error(reviewData.error || "Unable to submit review.");
 
       setState("done");
-      setNote(`Intake ${createData.intake_no} entered review queue.`);
+      setNote(`Intake ${createData.intake_no} entered review queue. Air Engine job: ${createData.air_engine_job_id || "created"}.`);
     } catch (error) {
       setState("error");
       setNote(error instanceof Error ? error.message : "Object intake failed.");
@@ -155,13 +155,13 @@ export function ObjectIntakeAdminNew() {
 
           <div className="flex flex-wrap items-center justify-between gap-4">
             <label className="flex items-center gap-3 text-sm"><input type="checkbox" checked={form.is_one_of_one} onChange={(event) => update("is_one_of_one", event.target.checked)} /> One-of-one object</label>
-            <button disabled={state !== "idle" && state !== "done" && state !== "error"} type="submit" className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">Create Intake + Submit Review</button>
+            <button disabled={state !== "idle" && state !== "done" && state !== "error"} type="submit" className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">Create Intake + AI Draft + Air Engine + Review</button>
           </div>
         </form>
 
         <aside className="rounded-2xl border border-[#D9DCE0] bg-white p-5 text-sm leading-7 text-[#6B7280]">
           <p>Status: <strong className="text-[#2D333A]">{state}</strong></p>
-          {created ? <p>Created: {created.intake_no} / {created.intake_id}</p> : null}
+          {created ? <p>Created: {created.intake_no} / {created.intake_id} / Air Engine: {created.air_engine_job_id || "created"}</p> : null}
           {note ? <p>{note}</p> : null}
           <p className="mt-3">Air Engine 第一版先保留处理状态和审核字段。链接导入先保存 source_url、source_platform、rights policy 和 rebuild policy，后续再接真实抓取与图片重建。</p>
         </aside>

@@ -6,11 +6,13 @@ export async function onRequestGet(context) {
   const url = new URL(context.request.url);
   const status = url.searchParams.get("status");
   const submittedBy = url.searchParams.get("submitted_by");
+  const buyerId = url.searchParams.get("buyer_id");
   const store = await readStore(context.env);
   let rows = [...store.objectIntakes].sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
 
   if (status) rows = rows.filter((row) => row.status === status);
   if (submittedBy) rows = rows.filter((row) => row.submitted_by === submittedBy);
+  if (buyerId) rows = rows.filter((row) => row.buyer_id === buyerId);
 
   return json({
     rows,
@@ -88,44 +90,87 @@ export async function onRequestPost(context) {
     updated_at: now,
   };
 
-  const airJob = sourceUrl
-    ? {
-        id: makeId("airjob"),
-        intake_id: id,
-        object_id: "",
-        job_type: "source_fetch_and_rebuild",
-        source_platform: sourcePlatform,
-        source_url: sourceUrl,
-        source_item_id: sourceMeta?.source_item_id || "",
-        canonical_source_url: sourceMeta?.canonical_source_url || sourceUrl,
-        commerce_channel: source.commerce_channel,
-        goods_condition: source.goods_condition,
-        status: "pending",
-        priority: "normal",
-        media_rights_status: "reference_only",
-        transform_required: true,
-        rights_review_required: true,
-        source_capture_status: "metadata_pending",
-        source_parse_status: sourceMeta?.source_parse_status || "url_only",
-        air_engine_policy: "rebuild_or_replace_before_publish",
-        requested_outputs: ["original", "main", "detail", "scene", "pc", "mobile", "social"],
-        notes: "Single object intake with external source link. Source images are references only; final publish media must be licensed, re-shot, rebuilt, replaced, or transformed.",
-        created_at: now,
-        updated_at: now,
-      }
-    : null;
+  const airJob = makeAirEngineJob({
+    id: makeId("airjob"),
+    intakeId: id,
+    source,
+    sourcePlatform,
+    sourceUrl,
+    sourceMeta,
+    now,
+  });
 
   await updateStore(context.env, (store) => ({
     ...store,
     objectIntakes: [intake, ...store.objectIntakes],
-    airEngineJobs: airJob ? [airJob, ...(store.airEngineJobs || [])] : store.airEngineJobs,
+    airEngineJobs: [airJob, ...(store.airEngineJobs || [])],
     adminAuditLogs: [
       createAuditLog("object_intake_created", "object_intake", id, null, intake, sourceUrl ? `Single intake created from ${sourcePlatform} external link.` : "Single intake created.", intake.submitted_by),
+      createAuditLog("air_engine_job_created", "air_engine_job", airJob.id, null, airJob, `Air Engine job created for ${source.source_type}.`, intake.submitted_by),
       ...store.adminAuditLogs,
     ],
   }));
 
-  return json({ intake_id: id, intake_no: intakeNo, status: intake.status, intake }, 201);
+  return json({ intake_id: id, intake_no: intakeNo, status: intake.status, intake, air_engine_job_id: airJob.id }, 201);
+}
+
+function makeAirEngineJob({ id, intakeId, source, sourcePlatform, sourceUrl, sourceMeta, now }) {
+  const isExternal = Boolean(sourceUrl);
+  const requestedOutputs = ["main", "detail", "scene", "pc", "mobile", "social", "motion"];
+  return {
+    id,
+    intake_id: intakeId,
+    object_id: "",
+    job_type: isExternal ? "source_fetch_and_rebuild" : `${source.source_type}_media_outputs`,
+    source_platform: sourcePlatform,
+    source_url: sourceUrl,
+    source_item_id: sourceMeta?.source_item_id || "",
+    canonical_source_url: sourceMeta?.canonical_source_url || sourceUrl,
+    commerce_channel: source.commerce_channel,
+    goods_condition: source.goods_condition,
+    status: "pending",
+    priority: source.source_type === "buyer_upload" ? "buyer_normal" : "normal",
+    media_rights_status: isExternal ? "reference_only" : "owned_or_original",
+    transform_required: isExternal,
+    rights_review_required: isExternal,
+    source_capture_status: isExternal ? "metadata_pending" : "direct_upload_pending",
+    source_parse_status: isExternal ? sourceMeta?.source_parse_status || "url_only" : "manual_upload",
+    air_engine_policy: isExternal ? "rebuild_or_replace_before_publish" : "direct_review",
+    requested_outputs: requestedOutputs,
+    output_manifest: requestedOutputs.map((type) => makeOutputSlot(type, isExternal)),
+    ready_outputs: [],
+    blocked_outputs: isExternal ? requestedOutputs : [],
+    missing_outputs: isExternal ? [] : requestedOutputs,
+    generated_media_ids: [],
+    notes: isExternal
+      ? "External source link. Source images are references only; final publish media must be licensed, re-shot, rebuilt, replaced, or transformed."
+      : "Direct intake created. Upload or generate Air Engine output slots before publication.",
+    created_at: now,
+    updated_at: now,
+  };
+}
+
+function makeOutputSlot(type, blocked) {
+  const specs = {
+    main: ["White product image", "2400x2400", "1:1"],
+    detail: ["Detail image", "1800x2400", "3:4"],
+    scene: ["Room scene image", "2400x1600", "3:2"],
+    pc: ["Desktop hero image", "3200x1800", "16:9"],
+    mobile: ["Mobile atmosphere image", "1600x2400", "2:3"],
+    social: ["Social image", "2400x1600", "3:2"],
+    motion: ["Loop video", "1920x1080", "16:9"],
+  };
+  const [label, dimensions, ratio] = specs[type] || [type, "to_confirm", "to_confirm"];
+  return {
+    media_type: type,
+    label,
+    dimensions,
+    ratio,
+    publishable: true,
+    required: type === "main",
+    status: blocked ? "blocked_reference_only" : "missing",
+    note: blocked ? "External source is reference-only. Rebuild or replace this output." : "Awaiting Air Engine output.",
+  };
 }
 
 function detectPlatform(url) {
