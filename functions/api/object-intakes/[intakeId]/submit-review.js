@@ -3,6 +3,8 @@ import { createAuditLog, intakeStatuses, json, makeId, nowIso, updateStore } fro
 export async function onRequestPost(context) {
   const { intakeId } = context.params;
   let queueItem = null;
+  let airEngineJobId = "";
+  let airEngineJobCreated = false;
   let missing = false;
 
   await updateStore(context.env, (store) => {
@@ -17,6 +19,8 @@ export async function onRequestPost(context) {
     const after = { ...intake, status: intakeStatuses.REVIEW_PENDING, updated_at: now };
     const existingJob = (store.airEngineJobs || []).find((job) => job.intake_id === intakeId);
     const airJob = existingJob || makeAirEngineJob(intake, now);
+    airEngineJobId = airJob.id;
+    airEngineJobCreated = !existingJob;
     queueItem = {
       id: makeId("review"),
       intake_id: intakeId,
@@ -42,7 +46,7 @@ export async function onRequestPost(context) {
   });
 
   if (missing) return json({ error: "Intake not found." }, 404);
-  return json({ review: queueItem, status: intakeStatuses.REVIEW_PENDING }, 201);
+  return json({ review: queueItem, status: intakeStatuses.REVIEW_PENDING, air_engine_job_id: airEngineJobId, air_engine_job_created: airEngineJobCreated }, 201);
 }
 
 function makeAirEngineJob(intake, now) {
