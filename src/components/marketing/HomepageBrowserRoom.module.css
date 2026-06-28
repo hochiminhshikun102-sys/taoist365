@@ -180,6 +180,7 @@
 .pcNavItem,
 .pcNavSearch,
 .pcNavBag,
+.pcNavAccount,
 .pcHeroCopy,
 .pcHeroCopy h1,
 .pcHeroCopy span,
@@ -252,7 +253,8 @@
 
 .pcNavItem,
 .pcNavSearch,
-.pcNavBag {
+.pcNavBag,
+.pcNavAccount {
   z-index: 9;
   color: #123a68;
   text-decoration: none;
@@ -270,37 +272,38 @@
 }
 
 .pcNavJournal {
-  left: 466px;
+  left: 430px;
   top: 70px;
   width: 87px;
 }
 
 .pcNavObjects {
-  left: 657px;
+  left: 590px;
   top: 70px;
   width: 91px;
 }
 
 .pcNavWindkeep {
-  left: 848px;
+  left: 760px;
   top: 70px;
   width: 115px;
 }
 
 .pcNavCollections {
-  left: 1060px;
+  left: 945px;
   top: 70px;
   width: 136px;
 }
 
 .pcNavAbout {
-  left: 1290px;
+  left: 1180px;
   top: 70px;
   width: 81px;
 }
 
 .pcNavSearch,
-.pcNavBag {
+.pcNavBag,
+.pcNavAccount {
   top: 0;
   height: 26px;
   font-family: var(--vl-font-title);
@@ -311,17 +314,23 @@
 }
 
 .pcNavSearch {
-  left: 1528px;
+  left: 1390px;
   width: 132px;
 }
 
 .pcNavBag {
-  left: 1710px;
+  left: 1548px;
   width: 130px;
 }
 
+.pcNavAccount {
+  left: 1694px;
+  width: 118px;
+}
+
 .pcSearchIcon,
-.pcBagIcon {
+.pcBagIcon,
+.pcAccountIcon {
   position: absolute;
   box-sizing: border-box;
 }
@@ -351,22 +360,52 @@
 
 .pcBagIcon {
   left: 0;
-  top: 70px;
-  width: 30px;
-  height: 32px;
-  border: 3px solid #123a68;
+  top: 69px;
+  width: 28px;
+  height: 30px;
+  border: 2px solid #123a68;
   border-radius: 3px 3px 5px 5px;
 }
 
 .pcBagIcon::before {
   position: absolute;
-  left: 6px;
-  top: -9px;
-  width: 12px;
-  height: 11px;
-  border: 3px solid #123a68;
+  left: 7px;
+  top: -8px;
+  width: 10px;
+  height: 9px;
+  border: 2px solid #123a68;
   border-bottom: 0;
   border-radius: 10px 10px 0 0;
+  content: "";
+}
+
+.pcAccountIcon {
+  left: 0;
+  top: 69px;
+  width: 32px;
+  height: 32px;
+}
+
+.pcAccountIcon::before {
+  position: absolute;
+  left: 10px;
+  top: 1px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #123a68;
+  border-radius: 50%;
+  content: "";
+}
+
+.pcAccountIcon::after {
+  position: absolute;
+  left: 3px;
+  top: 20px;
+  width: 24px;
+  height: 12px;
+  border: 2px solid #123a68;
+  border-bottom: 0;
+  border-radius: 18px 18px 0 0;
   content: "";
 }
 
@@ -383,6 +422,14 @@
   left: 48px;
   top: 70px;
   width: 45px;
+  height: 32px;
+}
+
+.pcNavAccount span {
+  position: absolute;
+  left: 48px;
+  top: 70px;
+  width: 70px;
   height: 32px;
 }
 

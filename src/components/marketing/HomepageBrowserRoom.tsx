@@ -562,6 +562,10 @@ export function HomepageBrowserRoom() {
                 <i className={styles.pcBagIcon} aria-hidden="true" />
                 <span>Bag</span>
               </Link>
+              <Link href="/account" className={styles.pcNavAccount} aria-label="Member Center">
+                <i className={styles.pcAccountIcon} aria-hidden="true" />
+                <span>Account</span>
+              </Link>
             </nav>
           </section>
 
