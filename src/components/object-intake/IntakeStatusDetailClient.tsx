@@ -104,8 +104,11 @@ function DetailBody({ row, titleText, image, windkeep = false }: Readonly<{ row:
         <div className="mt-5 grid gap-3 text-sm text-[#5E738A]">
           <p><strong className="text-[#123A68]">Intake:</strong> {row.intake.intake_no}</p>
           <p><strong className="text-[#123A68]">Source:</strong> {row.intake.source_type} / {row.intake.entry_surface || "wind_seeker"}</p>
+          <p><strong className="text-[#123A68]">Platform:</strong> {row.intake.source_platform || "manual"} / {row.intake.source_snapshot?.source_item_id || "no source id"}</p>
           <p><strong className="text-[#123A68]">Air Engine:</strong> {row.intake.air_engine_status || "not_started"}</p>
+          <p><strong className="text-[#123A68]">Rights:</strong> {row.intake.media_rights_status || "owned_or_original"} / rebuild: {row.intake.media_transform_required ? "required" : "not required"}</p>
           <p><strong className="text-[#123A68]">Media files:</strong> {row.media.length}</p>
+          {row.intake.source_url ? <a href={row.intake.source_url} target="_blank" rel="noreferrer" className="break-all text-[#C9A45C]">Source URL: {row.intake.source_url}</a> : null}
         </div>
       </WindSeekerCard>
 
@@ -135,6 +138,11 @@ function DetailBody({ row, titleText, image, windkeep = false }: Readonly<{ row:
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#B84537]">Why returned</p>
             <p className="mt-2 text-sm leading-6 text-[#5E738A]">{whyReturned}</p>
           </div>
+          {(row.intake.media_rights_status === "reference_only" || row.intake.media_transform_required) ? (
+            <div className="mt-4 rounded-2xl border border-[#EDC7BE] bg-[#F8E8E4] p-4 text-sm leading-6 text-[#B84537]">
+              This source is reference-only. Upload owned media or wait for Air Engine rebuild before Dohara can publish it.
+            </div>
+          ) : null}
           {!windkeep ? (
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
               <Link href={`/wind-seeker/upload?step=details&intakeId=${encodeURIComponent(row.intake.id)}`} className="rounded-full bg-[#123A68] px-5 py-3 text-center text-sm font-semibold text-white">
