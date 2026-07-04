@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { cartSubtotal, readQuietCart, type QuietCartItem, writeQuietCart } from "@/lib/quiet-cart";
 import { formatPrice } from "@/config/operational-commerce";
+import { publicObjectImage, publicObjectPriceCents, type PublicObject } from "@/lib/public-objects";
 
 type CheckoutActions = {
   confirm: () => Promise<{ error?: { message?: string } }>;
@@ -93,7 +94,39 @@ export function DoharaCheckoutClient() {
   const subtotal = useMemo(() => cartSubtotal(items), [items]);
 
   useEffect(() => {
-    queueMicrotask(() => setItems(readQuietCart()));
+    queueMicrotask(async () => {
+      const params = new URLSearchParams(window.location.search);
+      const objectId = params.get("objectId");
+      if (!objectId) {
+        setItems(readQuietCart());
+        return;
+      }
+
+      try {
+        setStatus("loading");
+        setMessage("Loading Dohara object...");
+        const response = await fetch(`/api/public/objects?object_id=${encodeURIComponent(objectId)}`, { cache: "no-store" });
+        const data = await response.json();
+        if (!response.ok || !data.object) throw new Error(data.error || "Unable to load this Dohara object.");
+
+        const object = data.object as PublicObject;
+        setItems([
+          {
+            id: object.object_id,
+            title: object.title,
+            priceCents: publicObjectPriceCents(object),
+            quantity: 1,
+            image: publicObjectImage(object),
+          },
+        ]);
+        setMessage("");
+        setStatus("idle");
+      } catch (error) {
+        setItems([]);
+        setStatus("error");
+        setMessage(error instanceof Error ? error.message : "Unable to load this Dohara object.");
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -245,7 +278,7 @@ export function DoharaCheckoutClient() {
     return (
       <section className="rounded-2xl border border-[#e6eaf0] bg-white p-8 shadow-[0_12px_32px_rgba(13,32,64,0.06)]">
         <h2 className="font-[var(--font-display-serif)] text-[30px] font-semibold leading-9 text-[#0b1b33]">Your checkout is empty.</h2>
-        <p className="mt-3 text-[15px] leading-6 text-[#3b4556]">Add a Dohara object first, then return here for secure payment.</p>
+        <p className="mt-3 text-[15px] leading-6 text-[#3b4556]">{message || "Add a Dohara object first, then return here for secure payment."}</p>
         <Link href="/objects" className="mt-6 inline-grid h-12 place-items-center rounded-lg bg-[#0b1b33] px-6 text-[15px] font-semibold text-white">
           Browse Objects
         </Link>
