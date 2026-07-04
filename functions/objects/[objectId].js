@@ -127,6 +127,7 @@ function renderObjectHtml(object) {
   const media = mediaForObject(object);
   const inventory = Number.isFinite(Number(object.inventory)) ? Number(object.inventory) : 0;
   const canAddToCart = priceCentsForObject(object) > 0 && inventory > 0;
+  const checkoutHref = `/checkout?objectId=${encodeURIComponent(object.object_id || object.id || "")}`;
   const cartItemJson = JSON.stringify({
     id: object.object_id,
     title: object.title,
@@ -296,7 +297,7 @@ function renderObjectHtml(object) {
         <div class="swatches"><span class="swatch active" style="background:#c8b29a"></span><span class="swatch" style="background:#d8dde2"></span><span class="swatch" style="background:#f2eee7"></span></div>
         <p class="copy">Quantity:</p>
         <div class="qty"><button type="button">−</button><span>1</span><button type="button">＋</button></div>
-        <div class="buttons"><button id="add-to-cart" class="primary" type="button" ${canAddToCart ? "" : "disabled"}>${canAddToCart ? "ADD TO CART" : "UNAVAILABLE"}</button><a class="secondary" href="/checkout">BUY IT NOW</a><a href="/account/wishlist">♡ Save to Wishlist</a></div>
+        <div class="buttons"><button id="add-to-cart" class="primary" type="button" ${canAddToCart ? "" : "disabled"}>${canAddToCart ? "ADD TO CART" : "UNAVAILABLE"}</button><a class="secondary" href="${checkoutHref}">BUY IT NOW</a><a href="/account/wishlist">♡ Save to Wishlist</a></div>
       </aside>
     </section>
 
@@ -337,7 +338,7 @@ function renderObjectHtml(object) {
         button.textContent = "ADDED";
         window.setTimeout(() => { button.textContent = "ADD TO CART"; }, 1600);
       }));
-      document.querySelectorAll('a.secondary[href="/checkout"]').forEach((link) => link.addEventListener("click", (event) => {
+      document.querySelectorAll('a.secondary[href^="/checkout"]').forEach((link) => link.addEventListener("click", (event) => {
         event.preventDefault();
         let cart = [];
         try { cart = JSON.parse(window.localStorage.getItem(cartKey) || "[]"); } catch { cart = []; }
@@ -345,7 +346,7 @@ function renderObjectHtml(object) {
         if (existing) existing.quantity = Math.min(99, Number(existing.quantity || 1) + 1);
         else cart.push(item);
         window.localStorage.setItem(cartKey, JSON.stringify(cart));
-        window.location.href = "/checkout";
+        window.location.href = link.getAttribute("href") || "${checkoutHref}";
       }));
     })();
   </script>

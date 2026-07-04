@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { AddToCartButton } from "@/components/commerce/AddToCartButton";
@@ -99,18 +99,18 @@ function StoreHeader() {
             Collections
           </Link>
           <Link href="/search" className="flex h-20 items-center gap-2">
-            <span aria-hidden="true">⌕</span> Search
+            <span aria-hidden="true">&gt;</span> Search
           </Link>
         </nav>
         <nav className="flex justify-end gap-8 text-[24px] leading-none text-[#1a2a44]" aria-label="Storefront actions">
           <Link href="/account/wishlist" aria-label="Wishlist">
-            ♡
+            <span aria-hidden="true">*</span>
           </Link>
           <Link href="/account" aria-label="Account">
-            ♙
+            <span aria-hidden="true">*</span>
           </Link>
           <Link href="/cart" aria-label="Cart" className="relative">
-            □
+            鈻?
             <span className="absolute -right-2 -top-2 grid h-[14px] min-w-[14px] place-items-center rounded-full bg-[#0b1b33] px-1 text-[10px] font-semibold text-white">
               2
             </span>
@@ -161,11 +161,11 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
 
       <nav className="mx-auto hidden h-12 w-full max-w-[1440px] items-center gap-2 px-10 text-[13px] leading-5 text-[#6b778c] md:flex" aria-label="Breadcrumb">
         <Link href="/">Home</Link>
-        <span>/</span>
+                <span>&gt;</span>
         <Link href="/objects">Objects</Link>
-        <span>/</span>
+                <span>&gt;</span>
         <Link href={`/objects?category=${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>{category}</Link>
-        <span>/</span>
+                <span>&gt;</span>
         <span className="text-[#3b4556]">{object.name}</span>
       </nav>
 
@@ -174,11 +174,11 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
           {media.slice(0, 6).map((item, index) => (
             <a key={`${item.src}-${index}`} href={`#media-${index + 1}`} className={`relative h-16 w-16 overflow-hidden rounded-lg border bg-white ${index === 0 ? "border-2 border-[#2e4a7d]" : "border-[#e6eaf0]"}`}>
               <Image src={item.src} alt={`${object.name} thumbnail ${index + 1}`} fill className="object-cover" sizes="64px" />
-              {isVideo(item) ? <span className="absolute inset-0 grid place-items-center bg-[#0b1b33]/45 text-[18px] text-white">▶</span> : null}
+              {isVideo(item) ? <span className="absolute inset-0 grid place-items-center bg-[#0b1b33]/45 text-[18px] text-white">&gt;</span> : null}
             </a>
           ))}
           <button type="button" className="grid h-8 w-8 place-items-center self-center rounded-full border border-[#e6eaf0] bg-white text-[#2e4a7d]" aria-label="Show more media">
-            ˅
+            藚
           </button>
         </div>
 
@@ -186,11 +186,11 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
           <div id="media-1" className="relative h-[390px] overflow-hidden bg-white md:h-[620px] md:rounded-xl md:border md:border-[#e6eaf0]">
             {renderMedia(mainMedia, object.name, "object-cover", true)}
             <button type="button" aria-label="Play media" className="absolute left-1/2 top-1/2 grid h-[60px] w-[60px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/88 text-[24px] text-[#0b1b33] shadow-[0_12px_28px_rgba(13,32,64,0.14)] md:h-[72px] md:w-[72px]">
-              ▶
+              鈻?
             </button>
             <span className="absolute bottom-4 right-16 rounded-full bg-white/88 px-3 py-1 text-[13px] text-[#3b4556]">1 / {media.length}</span>
             <button type="button" aria-label="Open media preview" className="absolute bottom-4 right-4 grid h-10 w-10 place-items-center rounded-full bg-white/88 text-[18px] text-[#0b1b33]">
-              ⛶
+              鉀?
             </button>
           </div>
           <div className="flex gap-2 overflow-x-auto border-b border-[#e8ecf1] bg-white px-4 py-3 md:hidden">
@@ -207,8 +207,8 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
           <h1 className="mt-4 font-[var(--font-display-serif)] text-[24px] font-semibold leading-8 text-[#0b1b33] md:text-[36px] md:leading-[44px]">{object.name}</h1>
           <p className="mt-2 text-[14px] leading-[22px] text-[#6b778c] md:text-[16px] md:leading-6">{object.commerce?.subtitle ?? "Stillness in Motion."}</p>
           <a href="#reviews" className="mt-4 flex items-center gap-2 text-[13px] leading-5 text-[#3b4556] md:text-[14px]">
-            <span className="text-[#b58a5b]">★★★★★</span>
-            <span>4.9 (132 reviews)</span>
+            <span className="text-[#b58a5b]">*****</span>
+                <span>&gt;</span>
           </a>
           <p className="mt-4 text-[24px] font-semibold leading-8 text-[#0b1b33] md:text-[28px] md:leading-9">{object.priceLine}</p>
           <p className="mt-4 line-clamp-3 text-[14px] leading-[22px] text-[#3b4556] md:text-[15px] md:leading-6">{object.oneLine}</p>
@@ -216,7 +216,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
           <ul className="mt-5 grid gap-3">
             {["Handmade finish", "Inspired by daily rooms", "Perfect for quiet rituals", "Calming & minimal design"].map((point) => (
               <li key={point} className="flex items-center gap-3 text-[14px] leading-[22px] text-[#3b4556]">
-                <span className="grid h-[18px] w-[18px] place-items-center rounded-full border border-[#2e4a7d] text-[11px] text-[#2e4a7d]">✓</span>
+                <span className="grid h-[18px] w-[18px] place-items-center rounded-full border border-[#2e4a7d] text-[11px] text-[#2e4a7d]">OK</span>
                 {point}
               </li>
             ))}
@@ -234,9 +234,9 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
           <div className="mt-6">
             <p className="text-[14px] leading-[22px] text-[#3b4556]">Quantity:</p>
             <div className="mt-2 grid h-11 w-[132px] grid-cols-3 overflow-hidden rounded-lg border border-[#e6eaf0] bg-white text-center text-[15px]">
-              <button type="button" className="border-r border-[#e6eaf0] text-[#2e4a7d]" aria-label="Decrease quantity">−</button>
+              <button type="button" className="border-r border-[#e6eaf0] text-[#2e4a7d]" aria-label="Decrease quantity">鈭?/button>
               <span className="grid place-items-center text-[#0b1b33]">1</span>
-              <button type="button" className="border-l border-[#e6eaf0] text-[#2e4a7d]" aria-label="Increase quantity" disabled={stock <= 1}>＋</button>
+              <button type="button" className="border-l border-[#e6eaf0] text-[#2e4a7d]" aria-label="Increase quantity" disabled={stock <= 1}>锛?/button>
             </div>
           </div>
 
@@ -259,11 +259,11 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
               disabled={stock <= 0}
               label="BUY IT NOW"
               addedLabel="OPENING CHECKOUT"
-              redirectHref="/checkout"
+              redirectHref={`/checkout?objectId=${encodeURIComponent(object.object_id)}`}
               className="grid h-12 w-full place-items-center rounded-lg border border-[#2e4a7d] bg-white text-[15px] font-semibold leading-5 text-[#2e4a7d] hover:bg-[#f7f9fc]"
             />
             <button type="button" className="flex h-11 items-center gap-3 text-[14px] leading-[22px] text-[#3b4556]">
-              <span className="text-[18px] text-[#2e4a7d]">♡</span> Save to Wishlist
+              <span className="text-[18px] text-[#2e4a7d]">*</span> Save to Wishlist
             </button>
           </div>
         </aside>
@@ -272,10 +272,10 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
       <section className="border-y border-[#e8ecf1] bg-white" aria-label="Trust bar">
         <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-px px-4 py-4 md:grid-cols-4 md:px-10 md:py-6">
           {[
-            ["▱", "Free Shipping", "On orders over $99"],
-            ["↻", "30-Day Returns", "Easy returns & exchanges"],
-            ["▣", "Secure Payment", "Protected by Stripe"],
-            ["✧", "Sustainable Packaging", "Eco-friendly materials"],
+            ["Ship", "Free Shipping", "On orders over $99"],
+            ["Return", "30-Day Returns", "Easy returns & exchanges"],
+            ["Pay", "Secure Payment", "Protected by Stripe"],
+            ["Eco", "Sustainable Packaging", "Eco-friendly materials"],
           ].map(([icon, title, text]) => (
             <div key={title} className="flex items-center gap-3 p-3">
               <span className="text-[24px] text-[#2e4a7d]">{icon}</span>
@@ -298,7 +298,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
               ["A quiet gift for the room", "Brings stillness and warmth to any corner."],
             ].map(([title, text]) => (
               <article key={title} className="flex gap-4">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#eef3fa] text-[#2e4a7d]">✧</span>
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#eef3fa] text-[#2e4a7d]">OK</span>
                 <span>
                   <span className="block text-[15px] font-semibold leading-6 text-[#1a2a44]">{title}</span>
                   <span className="block text-[14px] leading-[21px] text-[#6b778c]">{text}</span>
@@ -309,7 +309,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
         </div>
         <figure className="relative aspect-video overflow-hidden rounded-xl bg-white md:min-h-[360px]">
           <Image src={sceneMedia[0]?.src ?? mainMedia.src} alt={`${object.name} in a room`} fill className="object-cover" sizes="(max-width: 768px) 92vw, 900px" />
-          <button type="button" aria-label="Play scene media" className="absolute left-1/2 top-1/2 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/88 text-[#0b1b33]">▶</button>
+          <button type="button" aria-label="Play scene media" className="absolute left-1/2 top-1/2 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/88 text-[#0b1b33]">&gt;</button>
         </figure>
       </section>
 
@@ -354,19 +354,19 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
             <p className="mt-2 text-[14px] leading-[22px] text-[#6b778c] md:text-[15px] md:leading-6">A simple ritual that brings stillness to your day.</p>
             <ul className="mt-5 grid gap-2 text-[14px] leading-[22px] text-[#3b4556]">
               {["Place it on a stable surface", "Let the room light pass naturally", "Keep the surface dry", "Enjoy the moment"].map((step) => (
-                <li key={step} className="flex gap-2"><span className="text-[#2e4a7d]">⊙</span>{step}</li>
+                <li key={step} className="flex gap-2"><span className="text-[#2e4a7d]">-</span>{step}</li>
               ))}
             </ul>
           </div>
           <figure className="relative aspect-video overflow-hidden rounded-xl bg-[#0b1b33] md:h-60">
             <Image src={videoMedia.src} alt={`${object.name} use video cover`} fill className="object-cover opacity-90" sizes="360px" />
-            <button type="button" aria-label="Play use video" className="absolute left-1/2 top-1/2 grid h-[52px] w-[52px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/88 text-[#0b1b33]">▶</button>
+            <button type="button" aria-label="Play use video" className="absolute left-1/2 top-1/2 grid h-[52px] w-[52px] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/88 text-[#0b1b33]">&gt;</button>
             <span className="absolute bottom-2 right-2 rounded bg-[#0b1b33]/75 px-2 py-1 text-[11px] text-white">0:30</span>
           </figure>
           <div id="reviews" className="grid gap-3 md:grid-cols-3">
             {["Beautiful and calming. The shape is elegant and perfect for my space.", "Love the texture and natural color. Great quality.", "Exactly as described. A wonderful addition to my daily ritual."].map((review, index) => (
               <article key={review} className="rounded-xl border border-[#e6eaf0] bg-white p-5">
-                <p className="text-[#b58a5b]">★★★★★</p>
+                <p className="text-[#b58a5b]">鈽呪槄鈽呪槄鈽?/p>
                 <p className="mt-3 line-clamp-3 text-[14px] leading-[22px] text-[#3b4556]">{review}</p>
                 <p className="mt-4 text-[13px] font-semibold text-[#1a2a44]">{["Sarah L.", "Michael T.", "Emily R."][index]}</p>
                 <p className="text-[12px] text-[#6b778c]">Verified Buyer</p>
@@ -381,7 +381,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
         <div className="mt-5 grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]">
           <div>
             <p className="text-[48px] font-semibold leading-[56px] text-[#0b1b33]">4.9</p>
-            <p className="text-[#b58a5b]">★★★★★</p>
+            <p className="text-[#b58a5b]">鈽呪槄鈽呪槄鈽?/p>
             <p className="mt-2 text-[14px] text-[#6b778c]">Based on 132 reviews</p>
           </div>
           <div className="flex gap-3">
@@ -432,7 +432,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
             <details key={item.question} className="border-b border-[#e8ecf1] bg-white">
               <summary className="flex h-14 cursor-pointer list-none items-center justify-between px-1 text-[14px] font-semibold text-[#1a2a44]">
                 {item.question}
-                <span>⌄</span>
+                <span>&gt;</span>
               </summary>
               <p className="pb-5 text-[13px] leading-5 text-[#6b778c]">{item.answer}</p>
             </details>
@@ -444,7 +444,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
         <div className="mx-auto grid max-w-[1440px] gap-8 px-4 py-10 md:grid-cols-[260px_repeat(3,1fr)_320px] md:px-10 md:py-14">
           <div>
             <p className="font-[var(--font-display-serif)] text-[2rem] leading-none text-[#0b1b33]">Dohara</p>
-            <p className="mt-4 text-[13px] leading-5 text-[#6b778c]">© 2026 Dohara. All rights reserved.</p>
+            <p className="mt-4 text-[13px] leading-5 text-[#6b778c]">漏 2026 Dohara. All rights reserved.</p>
           </div>
           {[
             ["Shop", "New Arrivals", "Best Sellers", "Objects", "Collections"],
@@ -463,7 +463,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
             <p className="mt-3 text-[13px] leading-5 text-[#6b778c]">Join our newsletter for mindful living insights and special offers.</p>
             <div className="mt-4 grid h-11 grid-cols-[1fr_48px] overflow-hidden rounded-md border border-[#e6eaf0]">
               <input aria-label="Email" placeholder="Enter your email" className="px-3 text-[13px] outline-none" />
-              <button type="button" className="bg-[#0b1b33] text-white">→</button>
+              <button type="button" className="bg-[#0b1b33] text-white">&gt;</button>
             </div>
           </div>
         </div>

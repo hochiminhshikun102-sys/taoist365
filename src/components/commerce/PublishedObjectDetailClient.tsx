@@ -139,7 +139,7 @@ export function PublishedObjectDetailClient({ objectId }: PublishedObjectDetailC
               disabled={stock <= 0}
               label="BUY IT NOW"
               addedLabel="OPENING CHECKOUT"
-              redirectHref="/checkout"
+              redirectHref={`/checkout?objectId=${encodeURIComponent(object.object_id)}`}
               className="grid h-12 w-full place-items-center rounded-lg border border-[#2e4a7d] bg-white text-[15px] font-semibold leading-5 text-[#2e4a7d] hover:bg-[#f7f9fc]"
             />
           </div>
