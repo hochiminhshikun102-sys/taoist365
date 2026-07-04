@@ -86,6 +86,7 @@ export async function onRequestPatch(context) {
           ...intake,
           air_engine_status: nextJobStatus,
           media_transform_required: intake.media_transform_required && !readyOutputs.includes("main"),
+          media_rights_status: readyOutputs.includes("main") && intake.media_rights_status === "reference_only" ? "rebuilt" : intake.media_rights_status,
           updated_at: now,
         }
       : null;
