@@ -82,6 +82,19 @@ export function IntakeStatusDetailClient({ intakeId, mode }: Readonly<{ intakeId
 }
 
 function DetailBody({ row, titleText, image, windkeep = false }: Readonly<{ row: EnrichedIntake; titleText: string; image: string; windkeep?: boolean }>) {
+  const [reviewMessage, setReviewMessage] = useState("");
+  const [actionLog, setActionLog] = useState("Ready");
+  const requiresRevision = row.review?.status === "revision_required" || row.intake.status === "revision_required";
+  const whyReturned = row.draft?.risk_notes || row.intake.source_note || (requiresRevision ? "Reviewer requested additional confirmation before publishing." : "No return reason recorded.");
+  const readyOutputs = row.air_engine_job?.ready_outputs || [];
+  const missingOutputs = row.air_engine_job?.missing_outputs || [];
+  const blockedOutputs = row.air_engine_job?.blocked_outputs || [];
+  const mediaByType = row.media.reduce<Record<string, string>>((acc, media) => {
+    acc[media.media_type] = media.status || "uploaded";
+    return acc;
+  }, {});
+  const outputSlots = ["main", "detail", "scene", "pc", "mobile", "social", "motion"];
+
   return (
     <article className="grid gap-6 lg:grid-cols-[0.42fr_0.58fr]">
       <WindSeekerCard className="p-5">
@@ -118,9 +131,52 @@ function DetailBody({ row, titleText, image, windkeep = false }: Readonly<{ row:
             <p>Published object: <strong className="text-[#123A68]">{row.object?.object_id || "not published"}</strong></p>
             <p>Next action: <strong className="text-[#123A68]">{row.review?.status === "revision_required" ? "Fix and resubmit" : row.object ? "Live object available" : "Wait for review"}</strong></p>
           </div>
-          {!windkeep && row.review?.status === "revision_required" ? (
-            <Link href="/wind-seeker/upload?step=capture" className="mt-5 inline-flex rounded-full bg-[#123A68] px-5 py-3 text-sm font-semibold text-white">Upload new photo</Link>
+          <div className="mt-5 rounded-2xl bg-[#F3F7FB] p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#B84537]">Why returned</p>
+            <p className="mt-2 text-sm leading-6 text-[#5E738A]">{whyReturned}</p>
+          </div>
+          {!windkeep ? (
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <Link href={`/wind-seeker/upload?step=details&intakeId=${encodeURIComponent(row.intake.id)}`} className="rounded-full bg-[#123A68] px-5 py-3 text-center text-sm font-semibold text-white">
+                Fix and resubmit
+              </Link>
+              <button type="button" onClick={() => setActionLog("Reviewer message drafted locally. Backend message thread is a P1 connection.")} className="rounded-full border border-[#C9A45C] bg-white px-5 py-3 text-sm font-semibold text-[#123A68]">
+                Message Review
+              </button>
+              <Link href={`/wind-seeker/upload?step=capture&intakeId=${encodeURIComponent(row.intake.id)}`} className="rounded-full border border-[#D9E2EC] bg-white px-5 py-3 text-center text-sm font-semibold text-[#123A68]">
+                Upload New Photo
+              </Link>
+            </div>
           ) : null}
+          {!windkeep ? (
+            <label className="mt-5 grid gap-2 text-sm">
+              <span className="font-semibold text-[#123A68]">Message to review</span>
+              <textarea
+                value={reviewMessage}
+                onChange={(event) => setReviewMessage(event.target.value)}
+                placeholder="Ask about the review note or explain your revision."
+                className="min-h-24 rounded-2xl border border-[#D9E2EC] bg-white px-4 py-3 outline-none focus:border-[#C9A45C]"
+              />
+            </label>
+          ) : null}
+          <p className="mt-3 rounded-2xl bg-[#EAF3FE] p-3 text-xs text-[#5E738A]">Action log: {actionLog}</p>
+        </WindSeekerCard>
+
+        <WindSeekerCard className="p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C9A45C]">Air Engine outputs</p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {outputSlots.map((slot) => {
+              const state = readyOutputs.includes(slot) ? "ready" : blockedOutputs.includes(slot) ? "blocked" : missingOutputs.includes(slot) ? "missing" : mediaByType[slot] || "not_started";
+              const tone = state === "ready" || state === "air_engine_uploaded" ? "border-[#BFDCCD] bg-[#E1F0E9] text-[#2E8B68]" : state === "blocked" || state === "failed" ? "border-[#EDC7BE] bg-[#F8E8E4] text-[#B84537]" : "border-[#D9E2EC] bg-[#F3F7FB] text-[#5E738A]";
+              return (
+                <div key={slot} className={`rounded-2xl border p-4 ${tone}`}>
+                  <p className="text-sm font-semibold">{slot}</p>
+                  <p className="mt-1 text-xs">{state}</p>
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-4 text-xs leading-6 text-[#5E738A]">Next Air Engine action: {row.air_engine_job?.next_action || "No queued action recorded."}</p>
         </WindSeekerCard>
 
         <WindSeekerCard className="p-5">
