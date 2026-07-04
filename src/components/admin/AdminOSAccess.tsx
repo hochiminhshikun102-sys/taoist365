@@ -35,7 +35,7 @@ export function AdminOSAccess({ children }: Readonly<{ children: React.ReactNode
   }
 
   if (isOpen) {
-    return children;
+    return <div className="admin-readable">{children}</div>;
   }
 
   return (

@@ -1972,14 +1972,15 @@ export function AdminOSConsole({ activeWorkspace = "overview" }: Readonly<{ acti
           <header className="sticky top-0 z-10 border-b border-[#D9DCE0] bg-[#F5F6F8]/96 px-4 py-4 backdrop-blur lg:px-7">
             <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
               <div>
-                <p className="text-sm text-[#6B7280]">Runtime Workspace Architecture</p>
-                <h1 className="mt-1 text-3xl font-semibold leading-tight text-[#2D333A] sm:text-4xl">{workspace.en}</h1>
-                <p className="mt-1 text-sm text-[#6B7280]">{workspace.cn} / {workspace.state}</p>
+                <p className="text-sm text-[#6B7280]">运行工作台架构</p>
+                <h1 className="mt-1 text-3xl font-semibold leading-tight text-[#2D333A] sm:text-4xl">{workspace.cn}</h1>
+                <p className="mt-1 text-sm text-[#6B7280]">{workspace.en}</p>
+                <p className="mt-1 text-sm text-[#6B7280]">{workspace.state}</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <StatusPill>{t.threeLevels} / 3 levels max</StatusPill>
-                <StatusPill>{t.noCrop} / no browser crop</StatusPill>
-                <StatusPill>Workspace switch</StatusPill>
+                <StatusPill><span className="block">三级以内</span><span className="block text-xs opacity-85">3 levels max</span></StatusPill>
+                <StatusPill><span className="block">禁止裁切</span><span className="block text-xs opacity-85">No browser crop</span></StatusPill>
+                <StatusPill><span className="block">工作台切换</span><span className="block text-xs opacity-85">Workspace switch</span></StatusPill>
               </div>
             </div>
           </header>

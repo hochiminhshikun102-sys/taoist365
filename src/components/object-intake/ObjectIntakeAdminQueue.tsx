@@ -17,6 +17,7 @@ export function ObjectIntakeAdminQueue() {
 
   const active = useMemo(() => rows.find((row) => row.intake.id === activeId) ?? rows[0] ?? null, [activeId, rows]);
   const publishGateMessages = useMemo(() => (active ? getPublishGateMessages(active) : []), [active]);
+  const activePolicy = useMemo(() => (active ? getPublishPolicy(active) : null), [active]);
 
   async function loadRows(nextStatus = status) {
     setNote("");
@@ -76,7 +77,7 @@ export function ObjectIntakeAdminQueue() {
             <p className="text-sm text-[#6B7280]">Dohara Object Intake Pipeline</p>
             <h1 className="mt-2 text-4xl font-semibold">Publish Review</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">
-              Review OA, legacy sample, external link, and buyer uploads before creating a published storefront object. Main publishable media is required before publishing.
+              OA self-operated items can publish after required fields and Air Engine main media are ready. Buyer and Windkeep/C2C supply still require review approval before storefront publication.
             </p>
           </div>
           <a href="/admin/product-intake" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">Product Intake</a>
@@ -118,6 +119,11 @@ export function ObjectIntakeAdminQueue() {
                   <p className="mt-2 text-sm text-[#6B7280]">
                     Source: {active.intake.source_type} / {active.intake.entry_surface || "unset"} / {active.intake.identity_scope || "unset"}
                   </p>
+                  {activePolicy ? (
+                    <p className={`mt-3 rounded-xl px-3 py-2 text-sm ${activePolicy.kind === "self_operated" ? "bg-[#E1F0E9] text-[#2E8B68]" : "bg-[#F8E8E4] text-[#B84537]"}`}>
+                      {activePolicy.message}
+                    </p>
+                  ) : null}
                   <p className="mt-2 text-sm text-[#6B7280]">
                     Buyer: {active.intake.buyer_id || "none"} / Submitted by: {active.intake.submitted_by || "unknown"} / Pro buyer: {active.intake.professional_buyer_required ? "yes" : "no"}
                   </p>
@@ -197,7 +203,9 @@ export function ObjectIntakeAdminQueue() {
                     <button disabled={busy} type="button" onClick={() => review("approve")} className="rounded-xl border border-[#3E6446] bg-[#3E6446] px-4 py-3 text-sm text-white disabled:opacity-50">Approve</button>
                     <button disabled={busy} type="button" onClick={() => review("revision_required")} className="rounded-xl border border-[#947A66] px-4 py-3 text-sm disabled:opacity-50">Revision Required</button>
                     <button disabled={busy} type="button" onClick={() => review("reject")} className="rounded-xl border border-[#D95550] px-4 py-3 text-sm text-[#D95550] disabled:opacity-50">Reject</button>
-                    <button disabled={busy || active.intake.status !== "approved" || publishGateMessages.length > 0} type="button" onClick={publish} className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-4 py-3 text-sm text-white disabled:opacity-50">Publish Object ID</button>
+                    <button disabled={busy || !canPublishFromUi(active, activePolicy) || publishGateMessages.length > 0} type="button" onClick={publish} className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-4 py-3 text-sm text-white disabled:opacity-50">
+                      {activePolicy?.kind === "self_operated" ? "Publish Self-operated Object" : "Publish Object ID"}
+                    </button>
                   </div>
 
                   <section className="rounded-2xl border border-[#D9DCE0] bg-[#F5F6F8] p-4">
@@ -218,21 +226,87 @@ function getPublishGateMessages(row: EnrichedIntake) {
   const messages: string[] = [];
   const title = (row.draft?.draft_title || row.intake.original_title || "").trim();
   const description = (row.draft?.draft_description || row.intake.original_description || "").trim();
+  const category = (row.draft?.category || row.intake.category_hint || "").trim();
   const price = priceNumber(row.intake.original_price || row.draft?.price_suggestion || "");
   const inventory = Number.parseInt(String(row.intake.inventory || "0"), 10) || 0;
   const mainStillImage = row.media.find((media) => media.media_type === "main" && !isVideoMedia(media));
   const publishableMedia = row.media.filter((media) => media.media_type !== "original");
+  const airMainReady = (row.air_engine_job?.ready_outputs || []).includes("main");
   const isExternalReference = Boolean(row.intake.source_url) || row.intake.media_rights_status === "reference_only" || row.intake.media_transform_required;
 
   if (!title) messages.push("Title is required.");
   if (!description) messages.push("Description is required.");
+  if (!category) messages.push("Category is required.");
   if (!Number.isFinite(price) || price <= 0) messages.push("Valid price is required.");
   if (inventory <= 0) messages.push("Inventory must be greater than 0.");
   if (!mainStillImage) messages.push("Main still image is required before publish.");
+  if (!airMainReady) messages.push("Air Engine main slot must be ready.");
   if (publishableMedia.length === 0) messages.push("At least one publishable product media asset is required.");
+  if (row.intake.media_rights_status === "reference_only") messages.push("Reference-only media rights cannot be published.");
+  if (row.intake.media_transform_required) messages.push("Media transform must be completed before publishing.");
   if (isExternalReference && row.intake.air_engine_status !== "ready") messages.push("External reference sources must be Air Engine ready before publish.");
 
   return messages;
+}
+
+function canPublishFromUi(row: EnrichedIntake, policy: ReturnType<typeof getPublishPolicy> | null) {
+  if (policy?.kind === "self_operated") return true;
+  return row.intake.status === "approved";
+}
+
+function getPublishPolicy(row: EnrichedIntake) {
+  if (isSelfOperatedIntake(row)) {
+    return {
+      kind: "self_operated" as const,
+      message: "Self-operated item. Review can be skipped after media and required fields are ready.",
+    };
+  }
+
+  if (isWindSeekerIntake(row)) {
+    return {
+      kind: "buyer" as const,
+      message: "Buyer-submitted item. Review approval required.",
+    };
+  }
+
+  if (isC2cIntake(row)) {
+    return {
+      kind: "c2c" as const,
+      message: "Member / Windkeep / C2C item. Review approval required.",
+    };
+  }
+
+  return {
+    kind: "review_required" as const,
+    message: "Review approval required before publish.",
+  };
+}
+
+function isSelfOperatedIntake(row: EnrichedIntake) {
+  return (
+    row.intake.entry_surface === "admin_os" &&
+    row.intake.identity_scope === "admin" &&
+    ["admin_upload", "boss_upload", "external_link", "supplier_batch"].includes(row.intake.source_type || "")
+  );
+}
+
+function isWindSeekerIntake(row: EnrichedIntake) {
+  return (
+    row.intake.entry_surface === "wind_seeker" ||
+    row.intake.source_type === "buyer_upload" ||
+    row.intake.identity_scope === "buyer" ||
+    row.intake.identity_scope === "wind_seeker"
+  );
+}
+
+function isC2cIntake(row: EnrichedIntake) {
+  return (
+    row.intake.entry_surface === "windkeep" ||
+    ["windkeep_member_upload", "barter_upload", "c2c_upload", "windkeep_member", "member_consignment", "neighbor_referral", "windkeep_external_link"].includes(row.intake.source_type || "") ||
+    row.intake.identity_scope === "member" ||
+    row.intake.identity_scope === "windkeep_member" ||
+    row.intake.supply_program === "windkeep"
+  );
 }
 
 function isVideoMedia(media: EnrichedIntake["media"][number]) {

@@ -177,13 +177,21 @@ export function ObjectIntakeAdminNew() {
       <section className="mx-auto grid w-full max-w-6xl gap-6">
         <header className="flex flex-wrap items-end justify-between gap-4 border-b border-[#D9DCE0] pb-6">
           <div>
-            <p className="text-sm text-[#6B7280]">Dohara Object Intake Pipeline</p>
-            <h1 className="mt-2 text-4xl font-semibold">Product Intake</h1>
+            <p className="text-sm text-[#6B7280]">Dohara 宝贝入库流水线</p>
+            <p className="mt-1 text-sm text-[#6B7280]">Dohara Object Intake Pipeline</p>
+            <h1 className="mt-2 text-4xl font-semibold">宝贝入库</h1>
+            <p className="mt-1 text-sm text-[#6B7280]">Product Intake</p>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">
-              Create one product intake for OA operations. One submit creates the intake, uploads media, generates the AI draft, submits publish review, and creates the Air Engine job.
+              为 OA 运营创建单个宝贝入库。一键提交会创建 intake、上传素材、生成 AI 草稿、提交发布流程，并创建 Air Engine 任务。
+            </p>
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-[#6B7280]">
+              Create one product intake for OA operations. One submit creates the intake, uploads media, generates the AI draft, submits publish flow, and creates the Air Engine job.
             </p>
           </div>
-          <a href="/admin/publish-review" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">Open Publish Review</a>
+          <a href="/admin/publish-review" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">
+            <span className="block">打开发布审核</span>
+            <span className="block text-xs opacity-85">Open Publish Review</span>
+          </a>
         </header>
 
         <ObjectIntakeBatchLinkImport />

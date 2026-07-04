@@ -23,7 +23,8 @@ export async function onRequestPost(context) {
       missing = true;
       return store;
     }
-    if (intake.status !== intakeStatuses.APPROVED && intake.status !== intakeStatuses.PUBLISHED) {
+    const publishPolicy = resolvePublishPolicy(intake);
+    if (!publishPolicy.canSkipReview && intake.status !== intakeStatuses.APPROVED && intake.status !== intakeStatuses.PUBLISHED) {
       invalid = "Only approved intakes can be published.";
       return store;
     }
@@ -31,7 +32,8 @@ export async function onRequestPost(context) {
     const now = nowIso();
     const draft = latestAiDraft(store, intakeId);
     const media = mediaForIntake(store, intakeId);
-    const gateReasons = validatePublishGate(intake, draft, media);
+    const airEngineJob = (store.airEngineJobs || []).find((item) => item.intake_id === intakeId) || null;
+    const gateReasons = validatePublishGate(intake, draft, media, airEngineJob);
     if (gateReasons.length > 0) {
       invalid = "Publish blocked.";
       invalidReasons = gateReasons;
@@ -99,7 +101,7 @@ export async function onRequestPost(context) {
       objectMedia: store.objectMedia.map((item) => (item.intake_id === intakeId ? { ...item, object_id: objectId } : item)),
       objects: [object, ...store.objects.filter((item) => item.intake_id !== intakeId && item.object_id !== objectId)],
       adminAuditLogs: [
-        createAuditLog("published_object", "object_intake", intakeId, before, after, `Published ${objectId}.`),
+        createAuditLog(publishPolicy.auditAction, "object_intake", intakeId, before, after, `${publishPolicy.auditReason}. Published ${objectId}.`, publishPolicy.actorId),
         ...store.adminAuditLogs,
       ],
     };
@@ -108,6 +110,71 @@ export async function onRequestPost(context) {
   if (missing) return json({ error: "Intake not found." }, 404);
   if (invalid) return json({ ok: false, code: "PUBLISH_BLOCKED", error: invalid, reasons: invalidReasons }, 400);
   return json({ object: published, object_id: published.object_id, path: `/objects/${published.object_id}` }, 201);
+}
+
+function resolvePublishPolicy(intake) {
+  if (isSelfOperatedIntake(intake)) {
+    return {
+      canSkipReview: true,
+      auditAction: "self_operated_publish",
+      auditReason: "admin_os_self_operated_fast_publish",
+      actorId: "admin",
+    };
+  }
+
+  if (isWindSeekerIntake(intake)) {
+    return {
+      canSkipReview: false,
+      auditAction: "buyer_publish_after_review",
+      auditReason: "buyer_publish_after_review",
+      actorId: "admin",
+    };
+  }
+
+  if (isC2cIntake(intake)) {
+    return {
+      canSkipReview: false,
+      auditAction: "c2c_publish_after_review",
+      auditReason: "c2c_publish_after_review",
+      actorId: "admin",
+    };
+  }
+
+  return {
+    canSkipReview: false,
+    auditAction: "published_object",
+    auditReason: "standard_publish_after_review",
+    actorId: "admin",
+  };
+}
+
+function isSelfOperatedIntake(intake) {
+  const selfOperatedSources = new Set(["admin_upload", "boss_upload", "external_link", "supplier_batch"]);
+  return (
+    intake.entry_surface === "admin_os" &&
+    intake.identity_scope === "admin" &&
+    selfOperatedSources.has(String(intake.source_type || ""))
+  );
+}
+
+function isWindSeekerIntake(intake) {
+  return (
+    intake.entry_surface === "wind_seeker" ||
+    intake.source_type === "buyer_upload" ||
+    intake.identity_scope === "buyer" ||
+    intake.identity_scope === "wind_seeker"
+  );
+}
+
+function isC2cIntake(intake) {
+  const c2cSources = new Set(["windkeep_member_upload", "barter_upload", "c2c_upload", "windkeep_member", "member_consignment", "neighbor_referral", "windkeep_external_link"]);
+  return (
+    intake.entry_surface === "windkeep" ||
+    c2cSources.has(String(intake.source_type || "")) ||
+    intake.identity_scope === "member" ||
+    intake.identity_scope === "windkeep_member" ||
+    intake.supply_program === "windkeep"
+  );
 }
 
 function makeDetailModules(intake, draft, media) {
@@ -147,7 +214,7 @@ function isVideoMedia(media) {
   return value.includes("video/") || /\.(mp4|webm|mov|m4v)(\?|$)/.test(value);
 }
 
-function validatePublishGate(intake, draft, media) {
+function validatePublishGate(intake, draft, media, airEngineJob) {
   const reasons = [];
   const title = String(draft?.draft_title || intake.original_title || "").trim();
   const description = String(draft?.draft_description || intake.original_description || "").trim();
@@ -156,6 +223,7 @@ function validatePublishGate(intake, draft, media) {
   const inventory = Number.parseInt(intake.inventory, 10) || 0;
   const mainStillImage = media.find((item) => item.media_type === "main" && !isVideoMedia(item) && publicUrlForMedia(item) && isPublishReadyMedia(item));
   const publishableMedia = media.filter((item) => item.media_type !== "original" && publicUrlForMedia(item));
+  const airMainReady = Array.isArray(airEngineJob?.ready_outputs) && airEngineJob.ready_outputs.includes("main");
   const isExternalReference = Boolean(intake.source_url) || intake.media_rights_status === "reference_only" || intake.media_transform_required;
   const hasReferenceOnlyMedia = media.some((item) => ["reference_only", "legacy_reference", "blocked_reference_only"].includes(String(item.status || "")));
   const highRisk = [
@@ -172,7 +240,10 @@ function validatePublishGate(intake, draft, media) {
   if (!Number.isFinite(price) || price <= 0) reasons.push({ field: "price", message: "Valid price is required." });
   if (inventory <= 0) reasons.push({ field: "inventory", message: "Inventory must be greater than 0." });
   if (!mainStillImage) reasons.push({ field: "main_image", message: "Main image is not ready." });
+  if (!airMainReady) reasons.push({ field: "air_engine", message: "Air Engine main slot must be ready." });
   if (publishableMedia.length === 0) reasons.push({ field: "media", message: "At least one publishable product media asset is required." });
+  if (intake.media_rights_status === "reference_only") reasons.push({ field: "media_rights_status", message: "Reference-only media rights cannot be published." });
+  if (intake.media_transform_required) reasons.push({ field: "media_transform_required", message: "Media transform must be completed before publishing." });
   if (hasReferenceOnlyMedia) reasons.push({ field: "media_usage", message: "Reference-only media cannot be published directly." });
   if (isExternalReference && intake.air_engine_status !== "ready") {
     reasons.push({ field: "air_engine", message: "External marketplace media is reference only and must be rebuilt before publishing." });

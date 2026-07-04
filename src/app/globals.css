@@ -36,6 +36,32 @@ body {
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
 
+.admin-readable {
+  font-size: 17px;
+}
+
+.admin-readable .text-xs {
+  font-size: 0.875rem !important;
+  line-height: 1.35rem !important;
+}
+
+.admin-readable .text-sm {
+  font-size: 1rem !important;
+  line-height: 1.625rem !important;
+}
+
+.admin-readable .text-base {
+  font-size: 1.125rem !important;
+  line-height: 1.875rem !important;
+}
+
+.admin-readable input,
+.admin-readable select,
+.admin-readable textarea,
+.admin-readable button {
+  font-size: 1rem;
+}
+
 /* Lived-in micro-asymmetry: optical room frame, not mirrored gallery margins */
 .lived-room-frame {
   padding-inline: clamp(0.85rem, 3.6vw, 1.55rem) clamp(0.95rem, 3.85vw, 1.72rem);
