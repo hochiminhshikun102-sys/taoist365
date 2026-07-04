@@ -234,9 +234,9 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
           <div className="mt-6">
             <p className="text-[14px] leading-[22px] text-[#3b4556]">Quantity:</p>
             <div className="mt-2 grid h-11 w-[132px] grid-cols-3 overflow-hidden rounded-lg border border-[#e6eaf0] bg-white text-center text-[15px]">
-              <button type="button" className="border-r border-[#e6eaf0] text-[#2e4a7d]" aria-label="Decrease quantity">鈭?/button>
+              <button type="button" className="border-r border-[#e6eaf0] text-[#2e4a7d]" aria-label="Decrease quantity">-</button>
               <span className="grid place-items-center text-[#0b1b33]">1</span>
-              <button type="button" className="border-l border-[#e6eaf0] text-[#2e4a7d]" aria-label="Increase quantity" disabled={stock <= 1}>锛?/button>
+              <button type="button" className="border-l border-[#e6eaf0] text-[#2e4a7d]" aria-label="Increase quantity" disabled={stock <= 1}>+</button>
             </div>
           </div>
 
@@ -366,7 +366,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
           <div id="reviews" className="grid gap-3 md:grid-cols-3">
             {["Beautiful and calming. The shape is elegant and perfect for my space.", "Love the texture and natural color. Great quality.", "Exactly as described. A wonderful addition to my daily ritual."].map((review, index) => (
               <article key={review} className="rounded-xl border border-[#e6eaf0] bg-white p-5">
-                <p className="text-[#b58a5b]">鈽呪槄鈽呪槄鈽?/p>
+                <p className="text-[#b58a5b]">*****</p>
                 <p className="mt-3 line-clamp-3 text-[14px] leading-[22px] text-[#3b4556]">{review}</p>
                 <p className="mt-4 text-[13px] font-semibold text-[#1a2a44]">{["Sarah L.", "Michael T.", "Emily R."][index]}</p>
                 <p className="text-[12px] text-[#6b778c]">Verified Buyer</p>
@@ -381,7 +381,7 @@ export default async function ObjectDetailPage({ params }: ObjectPageProps) {
         <div className="mt-5 grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]">
           <div>
             <p className="text-[48px] font-semibold leading-[56px] text-[#0b1b33]">4.9</p>
-            <p className="text-[#b58a5b]">鈽呪槄鈽呪槄鈽?/p>
+            <p className="text-[#b58a5b]">*****</p>
             <p className="mt-2 text-[14px] text-[#6b778c]">Based on 132 reviews</p>
           </div>
           <div className="flex gap-3">
