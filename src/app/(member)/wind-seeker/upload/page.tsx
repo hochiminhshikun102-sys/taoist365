@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { WindSeekerUploadClient } from "@/components/object-intake/WindSeekerUploadClient";
 import { buildSeoGeoMetadata } from "@/lib/seo-geo-runtime";
 
@@ -11,5 +12,9 @@ export const metadata: Metadata = buildSeoGeoMetadata({
 });
 
 export default function WindSeekerUploadPage() {
-  return <WindSeekerUploadClient />;
+  return (
+    <Suspense fallback={null}>
+      <WindSeekerUploadClient />
+    </Suspense>
+  );
 }
