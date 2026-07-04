@@ -7,6 +7,35 @@ import { productMediaUploadSpecs, type ProductMediaType } from "@/config/product
 import { WindSeekerCard, WindSeekerFrame, WindSeekerStepNav, windSeekerIcon } from "@/components/wind-seeker/WindSeekerShell";
 
 type UploadStep = "capture" | "ai-draft" | "details" | "submit";
+type SourceLinkAnalysis = {
+  ok: boolean;
+  source_url: string;
+  normalized_url: string;
+  platform: string;
+  source_product_id: string | null;
+  draft: {
+    title: string;
+    description: string;
+    category: string;
+    tags: string[];
+    suggested_price: number | null;
+    currency: string;
+    seo_title: string;
+    geo_summary: string;
+  };
+  media: {
+    media_usage: string;
+    requires_rebuild: boolean;
+    can_publish_directly: boolean;
+  };
+  risk: {
+    copyright_risk: string;
+    needs_manual_review: boolean;
+    risk_notes: string[];
+  };
+  source_snapshot: Record<string, string | boolean | null>;
+  next_required_actions: string[];
+};
 
 const buyerMediaTypes: ProductMediaType[] = ["main", "original", "scene", "detail", "motion"];
 const buyerMediaGroups = productMediaUploadSpecs.filter((spec) => buyerMediaTypes.includes(spec.type));
@@ -20,7 +49,9 @@ export function WindSeekerUploadClient() {
   const step = stepParam && validSteps.includes(stepParam) ? stepParam : "capture";
   const [mediaFiles, setMediaFiles] = useState<Partial<Record<ProductMediaType, FileList | null>>>({});
   const [state, setState] = useState("ready");
+  const [linkState, setLinkState] = useState<"idle" | "analyzing" | "ready" | "error">("idle");
   const [note, setNote] = useState("");
+  const [sourceAnalysis, setSourceAnalysis] = useState<SourceLinkAnalysis | null>(null);
   const [form, setForm] = useState({
     original_title: "",
     original_description: "",
@@ -30,22 +61,27 @@ export function WindSeekerUploadClient() {
     category_hint: "wind-objects",
     inventory: "1",
     source_url: "",
+    source_platform: "manual",
     material: "",
     supplier_note: "",
   });
 
   const selectedFileCount = useMemo(() => Object.values(mediaFiles).reduce((sum, files) => sum + (files?.length || 0), 0), [mediaFiles]);
   const aiDraft = useMemo(() => {
-    const title = form.original_title || "Untitled Wind Seeker Object";
+    const title = form.original_title || sourceAnalysis?.draft.title || "Untitled Wind Seeker Object";
     return {
       title,
-      description: form.original_description || "A discovered object prepared for Dohara review. Add source context before submitting.",
-      category: form.category_hint || "wind-objects",
+      description: form.original_description || sourceAnalysis?.draft.description || "A discovered object prepared for Dohara review. Add source context before submitting.",
+      category: form.category_hint || sourceAnalysis?.draft.category || "wind-objects",
       confidence: selectedFileCount > 0 ? "86%" : "Needs media",
-      risk: selectedFileCount > 0 ? "No immediate restriction detected. Review still required." : "Upload at least one product photo or video.",
-      tags: ["curated find", "new goods", "wind seeker"],
+      risk: sourceAnalysis
+        ? sourceAnalysis.risk.risk_notes.join(" ")
+        : selectedFileCount > 0
+          ? "No immediate restriction detected. Review still required."
+          : "Upload at least one product photo or video.",
+      tags: sourceAnalysis?.draft.tags?.length ? sourceAnalysis.draft.tags : ["curated find", "new goods", "wind seeker"],
     };
-  }, [form, selectedFileCount]);
+  }, [form, selectedFileCount, sourceAnalysis]);
 
   function go(next: UploadStep) {
     router.push(`/wind-seeker/upload?step=${next}`, { scroll: false });
@@ -57,6 +93,44 @@ export function WindSeekerUploadClient() {
 
   function updateMedia(type: ProductMediaType, files: FileList | null) {
     setMediaFiles((current) => ({ ...current, [type]: files }));
+  }
+
+  async function analyzeLink() {
+    setNote("");
+    setSourceAnalysis(null);
+    if (!form.source_url.trim()) {
+      setLinkState("error");
+      setNote("Paste a product link before analysis.");
+      return;
+    }
+
+    try {
+      setLinkState("analyzing");
+      const response = await fetch("/api/object-intakes/parse-link", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: form.source_url, source: "wind_seeker", buyerId: windSeekerBuyerId }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || "Unable to analyze source link.");
+      const analysis = data as SourceLinkAnalysis;
+      const sourcePlatform = normalizePlatformForIntake(analysis.platform);
+      setSourceAnalysis(analysis);
+      setForm((current) => ({
+        ...current,
+        source_url: analysis.normalized_url || current.source_url,
+        source_platform: sourcePlatform || current.source_platform,
+        original_title: current.original_title || analysis.draft.title || "",
+        original_description: current.original_description || analysis.draft.description || "",
+        original_price: current.original_price || (analysis.draft.suggested_price ? `$${analysis.draft.suggested_price}` : ""),
+        category_hint: current.category_hint || analysis.draft.category || "wind-objects",
+      }));
+      setLinkState("ready");
+      setNote(`${analysis.platform} link analyzed. Media is ${analysis.media.media_usage}; publish needs rebuilt or owned images.`);
+    } catch (error) {
+      setLinkState("error");
+      setNote(error instanceof Error ? error.message : "Source link analysis failed.");
+    }
   }
 
   async function submit() {
@@ -76,7 +150,8 @@ export function WindSeekerUploadClient() {
           category_hint: form.category_hint,
           source_url: form.source_url,
           source_type: "buyer_upload",
-          source_platform: form.source_url ? "other" : "manual",
+          source_platform: form.source_url ? form.source_platform : "manual",
+          source_snapshot: sourceAnalysis?.source_snapshot,
           submitted_by: windSeekerBuyerId,
           buyer_id: windSeekerBuyerId,
           entry_surface: "wind_seeker",
@@ -145,6 +220,22 @@ export function WindSeekerUploadClient() {
               <div>
                 <h2 className="text-2xl font-semibold text-[#123A68]">Capture media</h2>
                 <p className="mt-3 text-sm leading-7 text-[#5E738A]">Main image can be a clear photo or short video. Add scene, detail, and original files when available.</p>
+                <div className="mt-5 rounded-2xl border border-[#D9E2EC] bg-[#F8FBFF] p-4">
+                  <p className="text-sm font-semibold text-[#123A68]">Paste product link</p>
+                  <p className="mt-2 text-xs leading-5 text-[#5E738A]">Optional. Taobao, 1688, Xianyu, Etsy, Amazon, Shopify and other links become reference-only source context.</p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto]">
+                    <input value={form.source_url} onChange={(event) => update("source_url", event.target.value)} className="rounded-xl border border-[#D9E2EC] bg-white px-4 py-3 text-sm outline-none focus:border-[#C9A45C]" placeholder="https://..." />
+                    <button type="button" onClick={analyzeLink} disabled={linkState === "analyzing"} className="rounded-xl bg-[#123A68] px-5 py-3 text-sm font-semibold text-white disabled:opacity-50">
+                      {linkState === "analyzing" ? "Analyzing" : "Analyze link"}
+                    </button>
+                  </div>
+                  {sourceAnalysis ? (
+                    <div className="mt-3 rounded-xl bg-white p-3 text-xs leading-5 text-[#5E738A]">
+                      <p><strong className="text-[#123A68]">{sourceAnalysis.platform}</strong> / Product ID: {sourceAnalysis.source_product_id || "unparsed"}</p>
+                      <p>Media: {sourceAnalysis.media.media_usage} / Requires rebuild: {sourceAnalysis.media.requires_rebuild ? "yes" : "no"}</p>
+                    </div>
+                  ) : null}
+                </div>
                 <div className="mt-5 grid gap-3">
                   {buyerMediaGroups.map((group) => (
                     <label key={group.type} className="grid gap-2 rounded-2xl border border-[#D9E2EC] bg-[#F8FBFF] p-4 text-sm">
@@ -173,6 +264,8 @@ export function WindSeekerUploadClient() {
                   ["Confidence", aiDraft.confidence],
                   ["Risk hints", aiDraft.risk],
                   ["Tags", aiDraft.tags.join(", ")],
+                  ["Source platform", sourceAnalysis ? `${sourceAnalysis.platform} / ${sourceAnalysis.source_product_id || "unparsed"}` : form.source_platform],
+                  ["Next action", sourceAnalysis ? sourceAnalysis.next_required_actions.join(" ") : "Confirm source, media, price, and inventory."],
                 ].map(([label, value]) => (
                   <div key={label} className="rounded-2xl bg-[#F3F7FB] p-4">
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#C9A45C]">{label}</p>
@@ -199,6 +292,7 @@ export function WindSeekerUploadClient() {
               <Field label="Inventory" value={form.inventory} onChange={(value) => update("inventory", value)} />
               <Field label="Material" value={form.material} onChange={(value) => update("material", value)} />
               <Field label="Source link" value={form.source_url} onChange={(value) => update("source_url", value)} />
+              <Field label="Source platform" value={form.source_platform} onChange={(value) => update("source_platform", value)} />
               <Field label="Supplier note" value={form.supplier_note} onChange={(value) => update("supplier_note", value)} />
               <label className="grid gap-2 text-sm md:col-span-2">
                 <span className="font-semibold text-[#123A68]">Object story</span>
@@ -239,6 +333,12 @@ export function WindSeekerUploadClient() {
       </section>
     </WindSeekerFrame>
   );
+}
+
+function normalizePlatformForIntake(platform: string) {
+  if (platform === "unknown") return "other";
+  if (platform === "pinduoduo") return "pdd";
+  return platform;
 }
 
 function Field({ label, value, onChange, required = false }: Readonly<{ label: string; value: string; onChange: (value: string) => void; required?: boolean }>) {

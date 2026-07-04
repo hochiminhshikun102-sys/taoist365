@@ -15,6 +15,7 @@ export async function onRequestPost(context) {
   let published = null;
   let missing = false;
   let invalid = "";
+  let invalidReasons = [];
 
   await updateStore(context.env, (store) => {
     const intake = store.objectIntakes.find((item) => item.id === intakeId);
@@ -30,9 +31,10 @@ export async function onRequestPost(context) {
     const now = nowIso();
     const draft = latestAiDraft(store, intakeId);
     const media = mediaForIntake(store, intakeId);
-    const gateErrors = validatePublishGate(intake, draft, media);
-    if (gateErrors.length > 0) {
-      invalid = `Publish blocked: ${gateErrors.join(" / ")}`;
+    const gateReasons = validatePublishGate(intake, draft, media);
+    if (gateReasons.length > 0) {
+      invalid = "Publish blocked.";
+      invalidReasons = gateReasons;
       return store;
     }
 
@@ -104,7 +106,7 @@ export async function onRequestPost(context) {
   });
 
   if (missing) return json({ error: "Intake not found." }, 404);
-  if (invalid) return json({ error: invalid }, 400);
+  if (invalid) return json({ ok: false, code: "PUBLISH_BLOCKED", error: invalid, reasons: invalidReasons }, 400);
   return json({ object: published, object_id: published.object_id, path: `/objects/${published.object_id}` }, 201);
 }
 
@@ -146,27 +148,46 @@ function isVideoMedia(media) {
 }
 
 function validatePublishGate(intake, draft, media) {
-  const errors = [];
+  const reasons = [];
   const title = String(draft?.draft_title || intake.original_title || "").trim();
   const description = String(draft?.draft_description || intake.original_description || "").trim();
+  const category = String(draft?.category || intake.category_hint || "").trim();
   const price = priceNumber(intake.original_price || draft?.price_suggestion || "");
   const inventory = Number.parseInt(intake.inventory, 10) || 0;
-  const mainStillImage = media.find((item) => item.media_type === "main" && !isVideoMedia(item) && publicUrlForMedia(item));
+  const mainStillImage = media.find((item) => item.media_type === "main" && !isVideoMedia(item) && publicUrlForMedia(item) && isPublishReadyMedia(item));
   const publishableMedia = media.filter((item) => item.media_type !== "original" && publicUrlForMedia(item));
   const isExternalReference = Boolean(intake.source_url) || intake.media_rights_status === "reference_only" || intake.media_transform_required;
+  const hasReferenceOnlyMedia = media.some((item) => ["reference_only", "legacy_reference", "blocked_reference_only"].includes(String(item.status || "")));
+  const highRisk = [
+    intake.risk_level,
+    intake.risk_flags,
+    intake.compliance_flags,
+    draft?.risk_level,
+    draft?.risk_flags,
+  ].some((value) => String(Array.isArray(value) ? value.join(",") : value || "").toLowerCase().includes("high"));
 
-  if (!title) errors.push("title required");
-  if (!description) errors.push("description required");
-  if (!Number.isFinite(price) || price <= 0) errors.push("valid price required");
-  if (inventory <= 0) errors.push("inventory must be greater than 0");
-  if (!mainStillImage) errors.push("main white product image required");
-  if (publishableMedia.length === 0) errors.push("publishable product media required");
-  if (isExternalReference && intake.air_engine_status !== "ready") errors.push("external source must be Air Engine ready");
+  if (!title) reasons.push({ field: "title", message: "Title is required." });
+  if (!description) reasons.push({ field: "description", message: "Description is required." });
+  if (!category) reasons.push({ field: "category", message: "Category is required." });
+  if (!Number.isFinite(price) || price <= 0) reasons.push({ field: "price", message: "Valid price is required." });
+  if (inventory <= 0) reasons.push({ field: "inventory", message: "Inventory must be greater than 0." });
+  if (!mainStillImage) reasons.push({ field: "main_image", message: "Main image is not ready." });
+  if (publishableMedia.length === 0) reasons.push({ field: "media", message: "At least one publishable product media asset is required." });
+  if (hasReferenceOnlyMedia) reasons.push({ field: "media_usage", message: "Reference-only media cannot be published directly." });
+  if (isExternalReference && intake.air_engine_status !== "ready") {
+    reasons.push({ field: "air_engine", message: "External marketplace media is reference only and must be rebuilt before publishing." });
+  }
+  if (highRisk) reasons.push({ field: "risk_flags", message: "High risk flags must be resolved before publishing." });
 
-  return errors;
+  return reasons;
 }
 
 function priceNumber(value) {
   const numeric = Number.parseFloat(String(value || "").replace(/[^0-9.]/g, ""));
   return Number.isFinite(numeric) ? numeric : 0;
+}
+
+function isPublishReadyMedia(media) {
+  const status = String(media?.status || "");
+  return ["uploaded", "air_engine_uploaded", "air_engine_ready", "publish_ready"].includes(status);
 }

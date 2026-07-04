@@ -8,15 +8,46 @@ import { ObjectIntakeBatchLinkImport } from "@/components/object-intake/ObjectIn
 import { LegacyProductSampleTest } from "@/components/object-intake/LegacyProductSampleTest";
 
 type UploadState = "idle" | "creating" | "uploading" | "drafting" | "submitting" | "done" | "error";
+type SourceLinkAnalysis = {
+  ok: boolean;
+  source_url: string;
+  normalized_url: string;
+  platform: string;
+  source_product_id: string | null;
+  draft: {
+    title: string;
+    description: string;
+    category: string;
+    tags: string[];
+    suggested_price: number | null;
+    currency: string;
+    seo_title: string;
+    geo_summary: string;
+  };
+  media: {
+    media_usage: string;
+    requires_rebuild: boolean;
+    can_publish_directly: boolean;
+  };
+  risk: {
+    copyright_risk: string;
+    needs_manual_review: boolean;
+    risk_notes: string[];
+  };
+  source_snapshot: Record<string, string | boolean | null>;
+  next_required_actions: string[];
+};
 
 const sourcePlatforms = marketplaceSourcePolicies.map((policy) => policy.platform).filter((platform) => platform !== "auto");
 const mediaUploadGroups = productMediaUploadSpecs;
 
 export function ObjectIntakeAdminNew() {
   const [state, setState] = useState<UploadState>("idle");
+  const [linkState, setLinkState] = useState<"idle" | "analyzing" | "ready" | "error">("idle");
   const [note, setNote] = useState("");
   const [mediaFiles, setMediaFiles] = useState<Partial<Record<ProductMediaType, FileList | null>>>({});
   const [created, setCreated] = useState<{ intake_id: string; intake_no: string; status: string; review_id?: string; air_engine_job_id?: string } | null>(null);
+  const [sourceAnalysis, setSourceAnalysis] = useState<SourceLinkAnalysis | null>(null);
   const [form, setForm] = useState({
     source_type: "admin_upload",
     source_platform: "manual" as MarketplaceSourcePlatform,
@@ -44,6 +75,46 @@ export function ObjectIntakeAdminNew() {
     setMediaFiles((current) => ({ ...current, [type]: files }));
   }
 
+  async function analyzeLink() {
+    setNote("");
+    setSourceAnalysis(null);
+    if (!form.source_url.trim()) {
+      setLinkState("error");
+      setNote("Paste a product source URL before analysis.");
+      return;
+    }
+
+    try {
+      setLinkState("analyzing");
+      const response = await fetch("/api/object-intakes/parse-link", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ url: form.source_url, source: "oa" }),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || "Unable to analyze source link.");
+      const analysis = data as SourceLinkAnalysis;
+      const sourcePlatform = normalizePlatformForIntake(analysis.platform) as MarketplaceSourcePlatform;
+      setSourceAnalysis(analysis);
+      setForm((current) => ({
+        ...current,
+        source_type: sourcePlatform === "manual" ? current.source_type : "external_link",
+        source_platform: sourcePlatform,
+        source_url: analysis.normalized_url || current.source_url,
+        original_title: current.original_title || analysis.draft.title || "",
+        original_description: current.original_description || analysis.draft.description || "",
+        original_price: current.original_price || (analysis.draft.suggested_price ? `$${analysis.draft.suggested_price}` : ""),
+        currency: analysis.draft.currency || current.currency,
+        category_hint: analysis.draft.category || current.category_hint,
+      }));
+      setLinkState("ready");
+      setNote(`${analysis.platform} source analyzed. Draft filled. Media remains reference-only until rebuilt or replaced.`);
+    } catch (error) {
+      setLinkState("error");
+      setNote(error instanceof Error ? error.message : "Source link analysis failed.");
+    }
+  }
+
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setNote("");
@@ -54,7 +125,7 @@ export function ObjectIntakeAdminNew() {
       const createResponse = await fetch("/api/object-intakes", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...form, inventory: Number.parseInt(form.inventory, 10) || 1 }),
+        body: JSON.stringify({ ...form, source_snapshot: sourceAnalysis?.source_snapshot, inventory: Number.parseInt(form.inventory, 10) || 1 }),
       });
       const createData = await createResponse.json();
       if (!createResponse.ok) throw new Error(createData.error || "Unable to create intake.");
@@ -126,6 +197,26 @@ export function ObjectIntakeAdminNew() {
             <label className="grid gap-2 text-sm">Source URL<input value={form.source_url} onChange={(event) => update("source_url", event.target.value)} className="rounded-xl border border-[#D9DCE0] px-4 py-3" placeholder="Optional reference link" /></label>
           </div>
 
+          <section className="grid gap-3 rounded-2xl border border-[#D9DCE0] bg-[#F8F5EF] p-4">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold">AI source link analysis</p>
+                <p className="mt-2 text-xs leading-6 text-[#6B7280]">Paste one marketplace link, analyze it, then review the filled title, category, description, risk notes, and media rebuild status before creating the intake.</p>
+              </div>
+              <button type="button" onClick={analyzeLink} disabled={linkState === "analyzing"} className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-4 py-3 text-sm font-semibold text-white disabled:opacity-50">
+                {linkState === "analyzing" ? "Analyzing link" : "Analyze Link"}
+              </button>
+            </div>
+            {sourceAnalysis ? (
+              <div className="grid gap-3 rounded-xl bg-white p-4 text-xs leading-6 text-[#6B7280] md:grid-cols-2">
+                <p><strong className="text-[#2D333A]">Platform:</strong> {sourceAnalysis.platform} / {sourceAnalysis.source_product_id || "unparsed"}</p>
+                <p><strong className="text-[#2D333A]">Media:</strong> {sourceAnalysis.media.media_usage} / rebuild required: {sourceAnalysis.media.requires_rebuild ? "yes" : "no"}</p>
+                <p><strong className="text-[#2D333A]">Draft:</strong> {sourceAnalysis.draft.title}</p>
+                <p><strong className="text-[#2D333A]">Risk:</strong> {sourceAnalysis.risk.risk_notes.join(" ")}</p>
+              </div>
+            ) : null}
+          </section>
+
           <section className="grid gap-4 rounded-2xl border border-[#D9DCE0] bg-[#F8F5EF] p-4">
             <div>
               <p className="text-sm font-semibold">Product media modules</p>
@@ -187,4 +278,10 @@ export function ObjectIntakeAdminNew() {
       </section>
     </main>
   );
+}
+
+function normalizePlatformForIntake(platform: string) {
+  if (platform === "unknown") return "other";
+  if (platform === "pinduoduo") return "pdd";
+  return platform;
 }

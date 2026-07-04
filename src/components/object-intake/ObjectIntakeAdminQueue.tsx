@@ -60,7 +60,8 @@ export function ObjectIntakeAdminQueue() {
     const data = await response.json();
     setBusy(false);
     if (!response.ok) {
-      setNote(data.error || "Publish failed.");
+      const reasons = Array.isArray(data.reasons) ? data.reasons.map((item: { field?: string; message?: string }) => `${item.field || "publish"}: ${item.message || "Blocked."}`).join(" / ") : "";
+      setNote(reasons || data.error || "Publish failed.");
       return;
     }
     setNote(`Published ${data.object_id}. Path: ${data.path}`);
