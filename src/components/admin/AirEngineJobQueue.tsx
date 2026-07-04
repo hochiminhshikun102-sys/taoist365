@@ -9,11 +9,14 @@ type AirEngineOutput = {
   ratio: string;
   publishable: boolean;
   required: boolean;
-  status: "ready" | "missing" | "blocked_reference_only" | string;
+  status: "ready" | "missing" | "blocked_reference_only" | "needs_rebuild" | "reference_only" | "queued" | "processing" | "failed" | "optional" | string;
   media_id?: string;
   source_media_id?: string;
   url?: string;
   note?: string;
+  reason?: string;
+  source?: string;
+  updated_at?: string;
 };
 
 type AirEngineJob = {
@@ -93,6 +96,7 @@ export function AirEngineJobQueue() {
   const [uploadBusy, setUploadBusy] = useState(false);
   const [uploadType, setUploadType] = useState<(typeof uploadOutputTypes)[number]>("main");
   const [uploadFiles, setUploadFiles] = useState<FileList | null>(null);
+  const [slotBusy, setSlotBusy] = useState("");
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [facets, setFacets] = useState<{ source_platforms?: string[]; source_types?: string[] }>({});
 
@@ -168,6 +172,36 @@ export function AirEngineJobQueue() {
     }
     setUploadFiles(null);
     setNote(`Uploaded ${data.rows?.length ?? 0} ${uploadType} output file(s).`);
+    await loadRows(status);
+  }
+
+  function prepareUploadForSlot(slot: (typeof uploadOutputTypes)[number]) {
+    setUploadType(slot);
+    setNote(`Choose a file for ${slot}, then click Attach Output.`);
+  }
+
+  async function updateSlot(slot: string, nextStatus: "ready" | "needs_rebuild" | "reference_only" | "optional") {
+    if (!active) return;
+    setSlotBusy(`${slot}:${nextStatus}`);
+    setNote("");
+    const response = await fetch(`/api/admin/air-engine/jobs/${active.id}/slots`, {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        slot,
+        status: nextStatus,
+        reason: slotReason(slot, nextStatus),
+      }),
+    });
+    const data = await response.json();
+    setSlotBusy("");
+    if (!response.ok) {
+      setNote(data.error || "Unable to update Air Engine slot.");
+      return;
+    }
+    const readyCount = data.job.ready_outputs?.length ?? 0;
+    const blockedCount = data.job.blocked_outputs?.length ?? 0;
+    setNote(`${slot} marked ${nextStatus}. Ready outputs: ${readyCount}; blocked: ${blockedCount}.`);
     await loadRows(status);
   }
 
@@ -295,15 +329,15 @@ export function AirEngineJobQueue() {
                   </div>
 
                   <div className="mt-5 rounded-2xl border border-[#D9DCE0] bg-white p-4">
-                    <p className="text-sm font-semibold">Upload finished output</p>
-                    <p className="mt-2 text-xs leading-5 text-[#6B7280]">Use this for manually edited files now. The same endpoint can be used later by the real AI beautifier.</p>
-                    <div className="mt-4 grid gap-3">
+                  <p className="text-sm font-semibold">Upload finished output</p>
+                  <p className="mt-2 text-xs leading-5 text-[#6B7280]">Use this for manually edited files now. The same endpoint can be used later by the real AI beautifier.</p>
+                  <div className="mt-4 grid gap-3">
                       <select value={uploadType} onChange={(event) => setUploadType(event.target.value as (typeof uploadOutputTypes)[number])} className="rounded-xl border border-[#D9DCE0] bg-white px-3 py-3 text-sm">
                         {uploadOutputTypes.map((item) => <option key={item} value={item}>{item}</option>)}
                       </select>
                       <input key={`${active.id}-${uploadType}-${uploadFiles?.length ?? 0}`} type="file" multiple accept="image/*,video/*" onChange={(event) => setUploadFiles(event.target.files)} className="rounded-xl border border-dashed border-[#C8B7A4] bg-[#F3ECE2] px-3 py-3 text-sm" />
                       <button type="button" disabled={uploadBusy} onClick={uploadOutput} className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white disabled:opacity-50">
-                        {uploadBusy ? "Uploading..." : "Attach Output"}
+                        {uploadBusy ? "Uploading..." : `Attach ${uploadType} Output`}
                       </button>
                     </div>
                   </div>
@@ -321,8 +355,34 @@ export function AirEngineJobQueue() {
                           </div>
                           <span className={outputStatusClass(item.status)}>{formatOutputStatus(item.status)}</span>
                         </div>
-                        {item.note ? <p className="mt-2 text-xs leading-5 text-[#6B7280]">{item.note}</p> : null}
+                        {item.url ? (
+                          <div className="mt-3 overflow-hidden rounded-xl border border-[#D9DCE0] bg-[#F5F6F8]">
+                            {isVideoOutput(item) ? (
+                              <video src={item.url} controls muted className="h-40 w-full object-cover" />
+                            ) : (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={item.url} alt={item.label} className="h-40 w-full object-cover" />
+                            )}
+                          </div>
+                        ) : null}
+                        {item.note || item.reason ? <p className="mt-2 text-xs leading-5 text-[#6B7280]">{item.reason || item.note}</p> : null}
                         {item.url ? <a href={item.url} target="_blank" rel="noreferrer" className="mt-2 block break-all text-xs text-[#947A66]">{item.media_id || item.url}</a> : null}
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          <button type="button" onClick={() => prepareUploadForSlot(item.media_type as (typeof uploadOutputTypes)[number])} className="rounded-lg border border-[#D9DCE0] bg-[#F5F6F8] px-3 py-2 text-xs">
+                            Upload / Replace
+                          </button>
+                          <button type="button" disabled={slotBusy === `${item.media_type}:ready`} onClick={() => updateSlot(item.media_type, "ready")} className="rounded-lg border border-[#557C5D] bg-[#E7F2E7] px-3 py-2 text-xs text-[#557C5D] disabled:opacity-50">
+                            Mark Ready
+                          </button>
+                          <button type="button" disabled={slotBusy === `${item.media_type}:needs_rebuild`} onClick={() => updateSlot(item.media_type, "needs_rebuild")} className="rounded-lg border border-[#947A66] bg-[#F8F5EF] px-3 py-2 text-xs text-[#947A66] disabled:opacity-50">
+                            Needs Rebuild
+                          </button>
+                          {item.media_type === "motion" ? (
+                            <button type="button" disabled={slotBusy === `${item.media_type}:optional`} onClick={() => updateSlot(item.media_type, "optional")} className="rounded-lg border border-[#D9DCE0] bg-white px-3 py-2 text-xs text-[#6B7280] disabled:opacity-50">
+                              Optional
+                            </button>
+                          ) : null}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -355,13 +415,27 @@ function statusClass(status: AirEngineJob["status"]) {
 
 function outputStatusClass(status: string) {
   if (status === "ready") return "rounded-full bg-[#E7F2E7] px-3 py-1 text-xs text-[#557C5D]";
-  if (status === "blocked_reference_only") return "rounded-full bg-[#F7E4E4] px-3 py-1 text-xs text-[#9B4B4B]";
+  if (status === "blocked_reference_only" || status === "reference_only" || status === "needs_rebuild") return "rounded-full bg-[#F7E4E4] px-3 py-1 text-xs text-[#9B4B4B]";
+  if (status === "optional") return "rounded-full bg-white px-3 py-1 text-xs text-[#6B7280]";
+  if (status === "processing" || status === "queued") return "rounded-full bg-[#FFF1D6] px-3 py-1 text-xs text-[#947A66]";
   return "rounded-full bg-[#F5F6F8] px-3 py-1 text-xs text-[#6B7280]";
 }
 
 function formatOutputStatus(status: string) {
   if (status === "blocked_reference_only") return "blocked";
   return status || "missing";
+}
+
+function isVideoOutput(item: AirEngineOutput) {
+  return item.media_type === "motion" || /\.(mp4|webm|mov|m4v)(\?|$)/i.test(item.url || "");
+}
+
+function slotReason(slot: string, status: string) {
+  if (status === "ready") return `${slot} output confirmed as owned, rebuilt, or manually approved for Dohara publishing.`;
+  if (status === "needs_rebuild") return `${slot} output needs Air Engine rebuild or manual replacement before publishing.`;
+  if (status === "reference_only") return `${slot} output is external reference only and cannot publish directly.`;
+  if (status === "optional") return `${slot} output is optional for this P0 listing.`;
+  return `${slot} marked ${status}.`;
 }
 
 function MetricCard({ label, value }: Readonly<{ label: string; value: string | number }>) {
