@@ -12,7 +12,7 @@ import { join, relative, sep } from "node:path";
 const ROOT = process.cwd();
 const DEFAULT_SCOPE = [
   "src/app/(member)/account",
-  "src/app/__account-v6",
+  "src/app/account-v6-preview",
   "src/components/account/v6",
   "src/styles/account",
 ];

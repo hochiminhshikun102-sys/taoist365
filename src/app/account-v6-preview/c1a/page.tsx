@@ -1,6 +1,9 @@
 /**
  * C1-A 组件预览页 · V6三方试跑SOP V0.1
- * 路由：/__account-v6/preview/c1a（隔离预览，非正式页面）
+ * 路由：/account-v6-preview/c1a（隔离预览，非正式页面）
+ * 路由变更说明：原/__account-v6/preview/c1a因Next.js下划线私有文件夹
+ * 约定不出路由（狗蛋复验发现，BLOCKER），改为本路径。
+ * 旧目录src/app/__account-v6/由狗蛋删除（二牛挂载盘无删除权限）。
  * 用途：发财+老板 Gate C1 视觉验收；Playwright截图基线源
  * 注意：本页允许data-dh-fixture标记的DEV示例；Gate O1与本页无关
  */
