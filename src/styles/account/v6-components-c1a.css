@@ -1,0 +1,274 @@
+/* ============================================================
+   v6-components-c1a.css
+   DOHARA Account Center V6 · C1-A组件批（5个）
+   AccountGlobalHeader / AccountHero / AccountUtilityEnd /
+   CompactPageTitle / SectionTitle
+   治理：V6三方试跑SOP V0.1 · Gate C1
+   依赖：account-tokens.v1.1-r1.css + account-utilities.v1.css
+   规则：全部视觉数值引用--dh-*；流式布局；断点仅用规定字面量
+   ============================================================ */
+
+/* ══════════ 1. AccountGlobalHeader ══════════ */
+.dhv6-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--dh-sp-4);
+  height: var(--dh-header-h);
+  background: var(--dh-bg);
+  border-bottom: var(--dh-line);
+  padding-inline: var(--dh-content-pad-x);
+}
+.dhv6-header__logo {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+.dhv6-header__logo img {
+  display: block;
+  height: var(--dh-icon-service-box);
+  width: auto;
+  object-fit: contain;
+}
+.dhv6-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--dh-sp-4);
+}
+.dhv6-header__iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--dh-icon-control-box);
+  height: var(--dh-icon-control-box);
+  border: 0;
+  background: transparent;
+  border-radius: var(--dh-radius-pill);
+  color: var(--dh-ink);
+  cursor: pointer;
+  transition: background var(--dh-transition);
+}
+.dhv6-header__iconbtn:hover {
+  background: var(--dh-icon-bg);
+}
+.dhv6-header__iconbtn img,
+.dhv6-header__iconbtn svg {
+  width: var(--dh-icon-control-glyph);
+  height: var(--dh-icon-control-glyph);
+  display: block;
+  object-fit: contain;
+}
+.dhv6-header__name {
+  font-size: var(--dh-text-sub);
+  line-height: var(--dh-lh-sub);
+  font-weight: 600;
+  color: var(--dh-ink-secondary);
+}
+.dhv6-header {
+  /* Header Avatar尺寸别名：仅复用44px尺寸档，不代表Help资产语义（R1第5条） */
+  --dhv6-header-avatar-size: var(--dh-icon-help-box);
+}
+.dhv6-header__avatar {
+  width: var(--dhv6-header-avatar-size);
+  height: var(--dhv6-header-avatar-size);
+  border-radius: var(--dh-radius-pill);
+  overflow: hidden;
+  background: var(--dh-border);
+  flex: none;
+}
+.dhv6-header__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ══════════ 2. AccountHero（Global Scenic） ══════════ */
+.dhv6-hero {
+  position: relative;
+  min-height: var(--dh-hero-h);
+  background: var(--dh-bg-page);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.dhv6-hero__bg {
+  /* dh-allow-absolute: decorative（背景氛围图层，SOP 7.3） */
+  position: absolute;
+  inset: 0;
+  z-index: var(--dh-z-bg);
+}
+.dhv6-hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+.dhv6-hero__inner {
+  position: relative;
+  z-index: var(--dh-z-content);
+  width: 100%;
+  max-width: var(--dh-content-max);
+  margin-inline: auto;
+  padding-inline: var(--dh-content-pad-x);
+  padding-block: var(--dh-sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dh-sp-4);
+}
+.dhv6-hero__eyebrow {
+  font-family: var(--dh-font-body);
+  font-size: var(--dh-hero-eyebrow-size);
+  line-height: var(--dh-hero-eyebrow-lh);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dh-ink-secondary);
+}
+.dhv6-hero__title {
+  font-family: var(--dh-font-display);
+  font-size: var(--dh-hero-h1-size);
+  line-height: var(--dh-hero-h1-lh);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--dh-ink);
+  margin: 0;
+}
+/* 字阶模式由Page Manifest显式指定（R1第1条），组件不自动判断 */
+.dhv6-hero__title[data-title-mode="long"] {
+  font-size: var(--dh-hero-h1-long-size);
+  line-height: var(--dh-hero-h1-long-lh);
+}
+.dhv6-hero__subtitle {
+  font-size: var(--dh-hero-subtitle-size);
+  line-height: var(--dh-hero-subtitle-lh);
+  font-weight: 400;
+  color: var(--dh-ink-secondary);
+  margin: 0;
+  max-width: 60%;
+}
+.dhv6-hero__notice {
+  font-size: var(--dh-hero-notice-size);
+  line-height: var(--dh-hero-notice-lh);
+  font-weight: 500;
+  color: var(--dh-cta);
+  margin: 0;
+}
+
+/* ══════════ 3. AccountUtilityEnd ══════════ */
+.dhv6-end {
+  /* --dh-end-h只作min-height，禁固定height裁切，内容自然撑开（R1第3条） */
+  min-height: var(--dh-end-h);
+  background: var(--dh-bg);
+  border-top: var(--dh-line);
+  padding-block: var(--dh-end-pad-y);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--dh-sp-5);
+}
+.dhv6-end__inner {
+  width: 100%;
+  max-width: var(--dh-content-max);
+  margin-inline: auto;
+  padding-inline: var(--dh-content-pad-x);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dh-sp-5);
+}
+.dhv6-end__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dh-sp-5);
+}
+.dhv6-end__link {
+  font-size: var(--dh-text-sub);
+  line-height: var(--dh-lh-sub);
+  font-weight: 400;
+  color: var(--dh-ink-muted);
+  text-decoration: none;
+  transition: color var(--dh-transition);
+}
+.dhv6-end__link:hover {
+  color: var(--dh-ink);
+}
+.dhv6-end__copy {
+  font-size: var(--dh-end-copy-size);
+  line-height: var(--dh-lh-cap);
+  color: var(--dh-ink-muted);
+  text-align: center;
+}
+
+/* ══════════ 4. CompactPageTitle ══════════ */
+.dhv6-cpt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dh-sp-2);
+}
+.dhv6-cpt__title {
+  font-family: var(--dh-font-display);
+  font-size: var(--dh-text-title-page);
+  line-height: var(--dh-lh-title-page);
+  font-weight: 600;
+  color: var(--dh-ink);
+  margin: 0;
+}
+.dhv6-cpt__subtitle {
+  font-size: var(--dh-text-body);
+  line-height: var(--dh-lh-body);
+  font-weight: 400;
+  color: var(--dh-ink-secondary);
+  margin: 0;
+}
+
+/* ══════════ 5. SectionTitle ══════════ */
+.dhv6-st {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--dh-sp-4);
+}
+.dhv6-st__title {
+  font-family: var(--dh-font-display);
+  font-size: var(--dh-text-title);
+  line-height: var(--dh-lh-title);
+  font-weight: 600;
+  color: var(--dh-ink);
+  margin: 0;
+}
+.dhv6-st__viewall {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dh-sp-1);
+  font-size: var(--dh-text-sub);
+  line-height: var(--dh-lh-sub);
+  font-weight: 500;
+  color: var(--dh-ink-secondary);
+  text-decoration: none;
+  transition: color var(--dh-transition);
+  flex: none;
+}
+.dhv6-st__viewall:hover {
+  color: var(--dh-ink);
+}
+
+/* ══════════ Mobile覆盖 ══════════ */
+@media (max-width: 767px) {
+  .dhv6-hero__subtitle {
+    max-width: 100%;
+  }
+  .dhv6-end__links {
+    justify-content: flex-start;
+  }
+  .dhv6-end__copy {
+    text-align: left;
+  }
+  .dhv6-header__name {
+    display: none;
+  }
+}

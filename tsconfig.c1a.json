@@ -1,0 +1,1 @@
+{"compilerOptions":{"noEmit":true,"skipLibCheck":true,"jsx":"preserve","module":"esnext","moduleResolution":"bundler","target":"es2022","strict":true,"baseUrl":".","paths":{"@/*":["src/*"]}},"include":["src/components/account/v6/**/*.tsx","src/app/__account-v6/**/*.tsx"]}

@@ -1,0 +1,199 @@
+/* ============================================================
+   account-tokens.v1.1-r1.css
+   DOHARA Account Center · Design Tokens V1.1-R1
+   体系：DOHARA Account Center Production System V6.0
+        Component-First / Token-Driven / Runtime-Final
+   治理：V6三方试跑SOP V0.1 · Gate T1 二次提交
+   修订依据：发财 T1_RETURN_FOR_V1_1_R1 五项修复（2026-07-24）
+   规则：页面代码禁止发明数值；数值只允许存在于本文件
+        和公共组件规格中。4px基础网格。
+   本文件为纯Token文件，不含工具类（工具类另行交付
+   account-utilities.v1.css，随组件批次）。
+   ============================================================ */
+
+:root {
+  /* ════════ 1. 颜色 ════════ */
+  --dh-ink:            #0B315A;
+  --dh-ink-deep:       #123A68;
+  --dh-ink-secondary:  #566D86;  /* 合并#5F7388/#47627E */
+  --dh-ink-muted:      #8391A0;  /* 合并#8A97A5 */
+  --dh-gold:           #C9A24A;
+  --dh-cta:            #C45C26;
+  --dh-on-cta:         #FFFFFF;
+
+  --dh-bg:             #FFFFFF;
+  --dh-bg-page:        #F3F7FA;
+  --dh-bg-wash:        #F8FBFD;
+  --dh-bg-panel:       #EEF4F9;
+  --dh-border:         #DDE8EF;
+  --dh-border-soft:    #E8EEF4;
+  --dh-icon-bg:        rgba(18, 58, 104, 0.06);
+
+  --dh-success:        #177A61;
+  --dh-warning:        #B8742A;
+  --dh-error:          #9B4B3E;
+  --dh-info:           #60768D;
+  /* 状态浅底变体：首批10组件未使用；第二批如需，先回填此处再用 */
+
+  /* ════════ 2. 字体（仅此5字重物理存在，禁用700） ════════ */
+  --dh-font-body:      "Inter", system-ui, sans-serif;
+  --dh-font-display:   "Cormorant Garamond", Georgia, serif;
+  /* WOFF2统一从 /fonts/account/ 加载；全局 font-synthesis:none */
+
+  /* ════════ 3A. 字阶 · Global Scenic Hero ════════ */
+  --dh-hero-eyebrow-size:    14px;  --dh-hero-eyebrow-lh:    20px;
+  --dh-hero-h1-size:         76px;  --dh-hero-h1-lh:         92px;
+  --dh-hero-h1-long-size:    68px;  --dh-hero-h1-long-lh:    70px;
+  --dh-hero-subtitle-size:   22px;  --dh-hero-subtitle-lh:   34px;
+  --dh-hero-notice-size:     13px;  --dh-hero-notice-lh:     20px;
+
+  /* ════════ 3B. 字阶 · Compact Inner Page（7档） ════════ */
+  --dh-text-title-page:  32px;  --dh-lh-title-page:  40px;
+  --dh-text-title:       24px;  --dh-lh-title:       32px;
+  --dh-text-card:        18px;  --dh-lh-card:        26px;
+  --dh-text-body:        16px;  --dh-lh-body:        24px;
+  --dh-text-sub:         14px;  --dh-lh-sub:         21px;
+  --dh-text-cap:         12px;  --dh-lh-cap:         18px;
+  --dh-text-stat:        28px;  --dh-lh-stat:        34px;
+
+  /* ════════ 4. 全局三层（Header/Hero/End 独立，禁止合并） ════════ */
+  --dh-header-h:         119px;   /* AccountGlobalHeader PC */
+  --dh-hero-h:           420px;   /* AccountHero PC */
+  --dh-end-h:            280px;   /* AccountUtilityEnd PC（Governance Core） */
+  --dh-content-max:      1272px;
+  --dh-content-pad-x:    84px;
+  --dh-grid-cols-pc:     2;
+  --dh-grid-cols-mobile: 2;
+
+  /* ════════ 5. DH小标角色尺寸（Container/Glyph，光学居中） ════════ */
+  --dh-icon-entry-box:     48px;  --dh-icon-entry-glyph:    28px;
+  --dh-icon-summary-box:   44px;  --dh-icon-summary-glyph:  26px;
+  --dh-icon-activity-box:  36px;  --dh-icon-activity-glyph: 20px;
+  --dh-icon-service-box:   44px;  --dh-icon-service-glyph:  24px;
+  --dh-icon-help-box:      40px;  --dh-icon-help-glyph:     22px;
+  --dh-icon-control-box:   32px;  --dh-icon-control-glyph:  18px;
+  --dh-icon-state:         16px;
+  --dh-icon-chevron:       18px;
+  /* 铁律：官方DH小标库(SHA锁定)；WindKeep/WindSeeker独立品牌标；
+     新语义图标先入库过审再用；禁Unicode/Emoji/通用图标库 */
+
+  /* ════════ 6. 间距（4px基础网格，7档） ════════ */
+  --dh-sp-1: 4px;   --dh-sp-2: 8px;   --dh-sp-3: 12px;
+  --dh-sp-4: 16px;  --dh-sp-5: 24px;  --dh-sp-6: 32px;
+  --dh-sp-7: 48px;
+
+  /* ════════ 7. 圆角/描边/阴影 ════════ */
+  --dh-radius-btn:   8px;
+  --dh-radius-card:  12px;
+  --dh-radius-hero:  16px;
+  --dh-radius-pill:  999px;
+  --dh-goldline-h:   2px;
+  --dh-line:            1px solid var(--dh-border);
+  --dh-shadow-overlay:  0 8px 24px rgba(11, 49, 90, 0.12);
+
+  /* ════════ 8. 交互状态（完整Token化） ════════ */
+  /* Focus */
+  --dh-focus-ring-color:  var(--dh-ink);
+  --dh-focus-ring-w:      2px;
+  --dh-focus-ring:        var(--dh-focus-ring-w) solid var(--dh-focus-ring-color);
+  --dh-focus-offset:      2px;
+  /* Disabled */
+  --dh-disabled-opacity:  0.45;
+  --dh-disabled-cursor:   not-allowed;
+  /* Locked（业务锁定态，区别于disabled） */
+  --dh-locked-fg:         var(--dh-ink-muted);
+  --dh-locked-bg:         var(--dh-bg-wash);
+  --dh-locked-border:     var(--dh-border);
+  --dh-locked-cursor:     not-allowed;
+  /* 通用 */
+  --dh-touch-min:         44px;
+  --dh-transition:        160ms ease;
+
+  /* ════════ 9. Z-index ════════ */
+  --dh-z-bg:        0;
+  --dh-z-content:   10;
+  --dh-z-icon:      30;
+  --dh-z-control:   40;
+  --dh-z-drawer:    90;
+  --dh-z-modal:     100;
+  --dh-z-toast:     110;
+
+  /* ════════ 10. 图片比例 / Grid ════════ */
+  --dh-ratio-hero-pc:     1440 / 420;
+  --dh-ratio-hero-mobile: 390 / 280;
+  --dh-ratio-journey:     16 / 9;
+  --dh-grid-gap:          var(--dh-sp-3);
+  --dh-section-gap:       var(--dh-sp-6);
+
+  /* ════════ 11. AccountUtilityEnd 规格 ════════ */
+  --dh-end-pad-y:         48px;
+  --dh-end-gap:           var(--dh-sp-3);
+  --dh-end-copy-size:     var(--dh-text-cap);
+}
+
+/* ════════ 12. Breakpoint 执行机制 ════════
+   本项目断点唯一值：767px（mobile ≤767 / pc ≥768）。
+   CSS变量不能用于@media，执行机制如下：
+   a) 全仓库统一书写以下两个字面量，逐字符一致：
+        @media (max-width: 767px)
+        @media (min-width: 768px)
+   b) 该两个字面量是扫描规则F11的唯一裸px豁免；
+      其他任何@media裸px（如768px以外数值、二次发明断点）违规。
+   c) 若狗蛋确认仓库支持 postcss-custom-media，则升级为：
+        @custom-media --dh-mobile (max-width: 767px);
+      声明仅允许存在于本文件，届时豁免收窄到本文件。
+   ═══════════════════════════════════════════════ */
+
+/* ════════ 13. Overflow 规则（全局强制，工具类见utilities文件） ════════
+   a. 任何视口横向溢出=0（Tier B门禁）
+   b. 文本容器禁固定height裁切；高度由内容撑开
+   c. 单行溢出用ellipsis工具类；多行用clamp工具类
+   d. 等高对齐用flex/grid stretch，禁固定height
+   ═══════════════════════════════════════════════ */
+
+/* ════════ Mobile覆盖（≤767px，正文硬下限12px） ════════ */
+@media (max-width: 767px) {
+  :root {
+    --dh-hero-eyebrow-size:  12px;  --dh-hero-eyebrow-lh:  16px;
+    --dh-hero-h1-size:       34px;  --dh-hero-h1-lh:       42px;
+    --dh-hero-h1-long-size:  30px;  --dh-hero-h1-long-lh:  36px;
+    --dh-hero-subtitle-size: 15px;  --dh-hero-subtitle-lh: 23px;
+    --dh-hero-notice-size:   12px;  --dh-hero-notice-lh:   18px;
+
+    --dh-text-title-page: 26px;  --dh-lh-title-page: 34px;
+    --dh-text-title:      20px;  --dh-lh-title:      28px;
+    --dh-text-card:       16px;  --dh-lh-card:       24px;
+    --dh-text-body:       14px;  --dh-lh-body:       22px;
+    --dh-text-sub:        13px;  --dh-lh-sub:        20px;
+    --dh-text-cap:        12px;  --dh-lh-cap:        18px;
+    --dh-text-stat:       24px;  --dh-lh-stat:       30px;
+
+    /* 全局三层 Mobile（Governance Core恢复值） */
+    --dh-header-h:        48px;
+    --dh-hero-h:          280px;
+    --dh-end-h:           220px;
+    --dh-content-pad-x:   16px;
+    --dh-end-pad-y:       32px;
+
+    --dh-icon-entry-box:     38px;  --dh-icon-entry-glyph:    22px;
+    --dh-icon-summary-box:   36px;  --dh-icon-summary-glyph:  22px;
+    --dh-icon-activity-box:  28px;  --dh-icon-activity-glyph: 16px;
+    --dh-icon-service-box:   36px;  --dh-icon-service-glyph:  20px;
+    --dh-icon-help-box:      32px;  --dh-icon-help-glyph:     18px;
+    --dh-icon-control-box:   30px;  --dh-icon-control-glyph:  18px;
+    --dh-icon-state:         14px;
+    --dh-icon-chevron:       16px;
+  }
+}
+
+/* ============================================================
+   V6施工禁令（对应 tokens-v1.1-r1-forbidden-rules.json）
+   1. 禁 font-weight:700
+   2. 正文/卡片禁 position:absolute（仅装饰层带显式标记豁免）
+   3. 禁裸#色值（本文件除外）
+   4. 禁裸px（本文件与F11断点字面量除外）
+   5. 移动端可见正文 <12px 违规
+   6. DH小标只用官方库资产
+   7. DEV fixture用 data-dh-fixture="dev-only" 显式标记，
+      Gate O1 DOM审计要求全部为0
+   ============================================================ */

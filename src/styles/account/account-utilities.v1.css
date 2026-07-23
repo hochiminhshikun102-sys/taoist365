@@ -1,0 +1,112 @@
+/* ============================================================
+   account-utilities.v1.css
+   DOHARA Account Center V6 · 公共工具类 V1
+   治理：V6三方试跑SOP V0.1 · C1-A交付物
+   依赖：account-tokens.v1.1-r1.css（必须先引入）
+   说明：从纯Token文件拆出的选择器规则（T1修订建议1）
+   ============================================================ */
+
+/* ---------- 文本溢出（Overflow规则c） ---------- */
+.dh-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dh-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.dh-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- 焦点（全组件统一，F-Ring Token化） ---------- */
+.dh-focusable:focus-visible {
+  outline: var(--dh-focus-ring);
+  outline-offset: var(--dh-focus-offset);
+}
+
+/* ---------- Disabled / Locked 态 ---------- */
+.dh-disabled,
+[data-dh-state="disabled"] {
+  opacity: var(--dh-disabled-opacity);
+  cursor: var(--dh-disabled-cursor);
+  pointer-events: none;
+}
+[data-dh-state="locked"] {
+  color: var(--dh-locked-fg);
+  background: var(--dh-locked-bg);
+  border-color: var(--dh-locked-border);
+  cursor: var(--dh-locked-cursor);
+}
+[data-dh-state="locked"] * {
+  color: var(--dh-locked-fg);
+}
+
+/* ---------- 触控下限（移动端交互元素） ---------- */
+.dh-touch {
+  min-width: var(--dh-touch-min);
+  min-height: var(--dh-touch-min);
+}
+
+/* ---------- DH小标容器（Container+Glyph光学居中骨架） ---------- */
+.dh-iconbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border-radius: var(--dh-radius-pill);
+  background: var(--dh-icon-bg);
+  overflow: hidden;
+}
+.dh-iconbox > img,
+.dh-iconbox > svg {
+  display: block;
+  object-fit: contain;
+}
+
+/* ---------- 金线装饰（组件内统一实现，禁逐页自画） ---------- */
+.dh-goldline {
+  height: var(--dh-goldline-h);
+  border-radius: var(--dh-goldline-h);
+  background: var(--dh-gold);
+  border: 0;
+}
+
+/* ---------- Chevron（SVG统一绘制，stroke继承currentColor） ---------- */
+.dh-chevron {
+  width: var(--dh-icon-chevron);
+  height: var(--dh-icon-chevron);
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- 内容区容器 ---------- */
+.dh-content {
+  max-width: var(--dh-content-max);
+  margin-inline: auto;
+  padding-inline: var(--dh-content-pad-x);
+}
+
+/* ---------- 全局字体渲染基线 ---------- */
+.dh-scope {
+  font-family: var(--dh-font-body);
+  color: var(--dh-ink);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+.dh-scope *,
+.dh-scope *::before,
+.dh-scope *::after {
+  box-sizing: border-box;
+}
