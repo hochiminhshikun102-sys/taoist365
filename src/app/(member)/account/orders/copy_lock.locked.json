@@ -1,0 +1,191 @@
+{
+  "revision": "MY_ORDERS_COPY_DATA_V1_2",
+  "conflict_rule": {
+    "presentation_copy": "Visible wording in Final wins unless the data/legal locks below explicitly override it.",
+    "ids_amounts_dates_counts_statuses": "This data lock wins.",
+    "footer_legal_copy": "This data lock and locked Overview End win.",
+    "report_mismatch": true
+  },
+  "hero": {
+    "title": "My Orders",
+    "description": "A clear place for your object orders, payments, shipments, returns, and after-sales records."
+  },
+  "status_cards": [
+    {
+      "key": "to_pay",
+      "title": "To Pay",
+      "count": 2,
+      "unit": "Orders",
+      "scope": "Pending or failed payments",
+      "footer": "Total $268.00"
+    },
+    {
+      "key": "on_the_way",
+      "title": "On the Way",
+      "count": 3,
+      "unit": "Shipments",
+      "scope": "Preparing, shipped or in transit",
+      "footer": "Est. delivery May 20"
+    },
+    {
+      "key": "after_sales",
+      "title": "After-sales",
+      "count": 1,
+      "unit": "Requests",
+      "scope": "Returns, refunds or exchanges",
+      "footer": "In progress"
+    },
+    {
+      "key": "completed",
+      "title": "Completed",
+      "count": 12,
+      "unit": "Orders",
+      "scope": "Delivered or closed",
+      "footer": "View completed"
+    }
+  ],
+  "search": {
+    "placeholder": "Find by order, payment, return, or invoice ID"
+  },
+  "section_titles": {
+    "start_here": "Start Here",
+    "recent_records": "Recent Records",
+    "need_help": "Need Help?"
+  },
+  "start_here": [
+    {
+      "key": "order_list",
+      "title": "Order List",
+      "description": "Browse all your orders and their current status."
+    },
+    {
+      "key": "payment",
+      "title": "Payment",
+      "description": "View payments, invoices, and billing details."
+    },
+    {
+      "key": "shipment",
+      "title": "Shipment",
+      "description": "Track shipments and manage deliveries."
+    },
+    {
+      "key": "order_details",
+      "title": "Order Details",
+      "description": "View order information and item details."
+    },
+    {
+      "key": "after_sales",
+      "title": "After-sales",
+      "description": "Request a return, refund, or exchange."
+    },
+    {
+      "key": "after_sales_records",
+      "title": "After-sales Records",
+      "description": "View after-sales history and service records."
+    }
+  ],
+  "recent_records": {
+    "view_all": "View All",
+    "rows": [
+      {
+        "type": "ORDER",
+        "title": "Objects Order",
+        "id": "Order #DOH-250516-0017",
+        "status": "Delivered",
+        "meta_primary": "May 18, 2025",
+        "meta_secondary": "2 items",
+        "action": "View Order"
+      },
+      {
+        "type": "PAYMENT",
+        "title": "Payment Record",
+        "id": "Payment #PAY-250516-0032",
+        "status": "Paid",
+        "meta_primary": "$268.00",
+        "meta_secondary": "May 16, 2025",
+        "action": "View Payment"
+      },
+      {
+        "type": "RETURN",
+        "title": "Return Request",
+        "id": "Return #RET-250520-0008",
+        "status": "In Progress",
+        "meta_primary": "Refund: $98.00",
+        "meta_secondary": "May 20, 2025",
+        "action": "View Return"
+      },
+      {
+        "type": "INVOICE",
+        "title": "Invoice Record",
+        "id": "Invoice #INV-250516-0099",
+        "status": "Issued",
+        "meta_primary": "$268.00",
+        "meta_secondary": "May 16, 2025",
+        "action": "View Invoice"
+      }
+    ]
+  },
+  "need_help": [
+    {
+      "key": "faq",
+      "title": "FAQ",
+      "description": "Find quick answers to common questions."
+    },
+    {
+      "key": "shipping_delivery",
+      "title": "Shipping & Delivery",
+      "description": "Learn about shipping options and timelines."
+    },
+    {
+      "key": "returns_after_sales",
+      "title": "Returns & After-sales",
+      "description": "Understand returns, refunds, and support."
+    },
+    {
+      "key": "support_center",
+      "title": "Support Center",
+      "description": "Contact support with your order ID, payment ID, or return ID."
+    }
+  ],
+  "order_policies": {
+    "title": "Order Policies",
+    "description": "Shipping, returns, customs, delivery exceptions, address changes, and invoice rules."
+  },
+  "coverage": {
+    "title": "Coverage: Commerce Orders Only",
+    "body": "This page covers commerce object orders, payments, shipments, returns, refunds, and invoices. WindKeep transfers, Guidance sessions, Healing subscriptions, creator rewards, and referral rewards are managed in their dedicated areas. Related charges and payment records may also appear in Billing."
+  },
+  "shared_end": {
+    "cards": [
+      {
+        "key": "help_support",
+        "title": "Help & Support",
+        "description": "Account, order, and service assistance"
+      },
+      {
+        "key": "shipping_returns",
+        "title": "Shipping & Returns",
+        "description": "Delivery, tracking, and return support"
+      },
+      {
+        "key": "privacy_security",
+        "title": "Privacy & Security",
+        "description": "Privacy, sign-in, and data controls"
+      },
+      {
+        "key": "policies_guidelines",
+        "title": "Policies & Guidelines",
+        "description": "Service rules and community standards"
+      }
+    ],
+    "footer_links": [
+      "Terms",
+      "Privacy",
+      "Accessibility",
+      "Sitemap"
+    ],
+    "copyright": "© 2026 DOHARA. All rights reserved.",
+    "back_to_top": "Back to top"
+  },
+  "mobile_end_rule": "After Coverage, render only the locked Account Center Shared End. Do not render duplicate large Help & Support or Shipping & Returns cards."
+}

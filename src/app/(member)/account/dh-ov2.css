@@ -1,0 +1,267 @@
+/* AUTO-SCOPED from V0.2 package 10_REFERENCE_IMPLEMENTATION/reference_runtime.css
+   Isolation-only transform for /account-overview-v0_2-trial. No design change.
+   Selectors scoped under .dh-ov2; asset URLs -> /dh/account/overview/*. */
+.dh-ov2{box-sizing:border-box}
+/* ---- Directed Refinement R1: font isolation (font_runtime_override.locked.json) ----
+   Page-scoped packaged families only; no reuse of root next/font "Inter"/"Cormorant Garamond".
+   font-synthesis:none; visible weights limited to 400/500/600 (six 700 slots -> 600). */
+@font-face{font-family:DHOverviewInter;src:url("/dh/account/overview/fonts/inter-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:DHOverviewInter;src:url("/dh/account/overview/fonts/inter-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:DHOverviewInter;src:url("/dh/account/overview/fonts/inter-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:DHOverviewCormorant;src:url("/dh/account/overview/fonts/cormorant-garamond-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:DHOverviewCormorant;src:url("/dh/account/overview/fonts/cormorant-garamond-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+/* neutralize globals.css global heading bleed; keep isolated family + allowed weight */
+[data-page='account-overview-v0_2-trial'] h1,[data-page='account-overview-v0_2-trial'] h2,[data-page='account-overview-v0_2-trial'] h3,[data-page='account-overview-v0_2-trial'] h4{font-family:DHOverviewCormorant;font-weight:600;letter-spacing:normal}
+/* no visible slot may resolve to weight 700: strong/b default bold -> 600 within scope */
+[data-page='account-overview-v0_2-trial'] strong,[data-page='account-overview-v0_2-trial'] b{font-weight:600}
+:root{--blue:#0b3f78;--blue2:#1a5ea2;--line:#dce9f5;--pale:#f5faff;--gold:#d29a27;--white:#fff;--shadow:0 5px 18px rgba(26,94,162,.06)}
+.dh-ov2 *{box-sizing:border-box}
+.dh-ov2{scroll-behavior:smooth}
+.dh-ov2{margin:0;color:var(--blue);background:#fff;font-family:DHOverviewInter,Arial,sans-serif;font-synthesis:none}
+.dh-ov2 a{color:inherit;text-decoration:none}
+.dh-ov2 button{font:inherit;color:inherit}
+.dh-ov2 .mobile-only{display:none!important}
+/* ---- Directed Refinement R1 (addendum): Header right utility zone ----
+   Coords target VISIBLE glyph bounds (trimmed assets), buttons = click areas.
+   PC Logo untouched. Header height unchanged. No new nav/buttons. */
+.dh-ov2 .account-header{height:119px;position:relative;border-bottom:1px solid #eef4f9;background:#fff}
+.dh-ov2 .header-logo{position:absolute;left:38px;top:11px;width:242px;height:96px;object-fit:contain;object-position:left center}
+.dh-ov2 .header-actions{position:static}
+.dh-ov2 .account-header button{border:0;background:transparent;padding:0;cursor:pointer}
+/* Boss follow-up: right group shifts so chevron→right edge == logo→left edge (38px).
+   Chevron vertically aligned with Lena name midline. */
+.dh-ov2 [data-control-id=header_notification]{position:absolute;left:1036px;top:31px;width:48px;height:56px}
+.dh-ov2 [data-control-id=header_notification] .ui-icon{position:absolute;left:2px;top:3px;width:41px;height:50px;object-fit:fill}
+.dh-ov2 [data-control-id=header_support]{position:absolute;left:1122px;top:31px;width:60px;height:58px}
+.dh-ov2 [data-control-id=header_support] .ui-icon{position:absolute;left:5px;top:4px;width:49px;height:51px;object-fit:fill}
+.dh-ov2 .profile-control{position:absolute;left:1210px;top:21px;width:192px;height:80px;display:block!important;font-weight:600}
+.dh-ov2 .profile-control .avatar{position:absolute;left:4px;top:4px;width:73px;height:75px;border-radius:50%;object-fit:cover}
+.dh-ov2 .profile-control [data-slot-id=header_user]{position:absolute;left:103px;top:30px;font-size:17px;line-height:18px;letter-spacing:2.1px;color:var(--blue)}
+/* chevron right edge 1402 (=1440-38); vertically centered on Lena (top 29 → y50 with h11) */
+.dh-ov2 .profile-control>span[aria-hidden]{position:absolute;left:174px;top:29px;font-size:15px;line-height:11px;color:var(--blue);display:inline-block;transform:scaleX(2.05);transform-origin:left center}
+.dh-ov2 .account-hero{height:420px;position:relative;overflow:hidden}
+.dh-ov2 .hero-scene{width:100%;height:420px;object-fit:cover;display:block}
+.dh-ov2 .hero-copy{position:absolute;inset:0 auto 0 0;width:620px;padding:105px 0 0 90px}
+.dh-ov2 .hero-copy h1{font-family:DHOverviewCormorant;font-size:76px;line-height:1;margin:0;font-weight:600}
+.dh-ov2 .gold-rule{display:block;width:66px;height:4px;background:var(--gold);margin:28px 0 28px;border-radius:3px}
+.dh-ov2 .hero-copy p{font-size:23px;line-height:1.55;margin:0;width:540px;color:#244f7e}
+.dh-ov2 .account-content{width:1270px;height:2411px;margin:0 auto;padding-top:32px}
+.dh-ov2 .primary-grid{height:600px;display:grid;grid-template-columns:repeat(3,406px);grid-auto-rows:135px;gap:20px 26px}
+.dh-ov2 .entry-card,.dh-ov2 .service-card,.dh-ov2 .support-card,.dh-ov2 .end-card,.dh-ov2 .recent-panel,.dh-ov2 .journey-card,.dh-ov2 .stats-strip,.dh-ov2 .wind-banner,.dh-ov2 .wind-status{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.96);box-shadow:var(--shadow)}
+.dh-ov2 .entry-card{position:relative;display:flex;align-items:center;padding:18px;gap:18px;text-align:left;overflow:hidden}
+.dh-ov2 button.entry-card{width:100%;color:inherit;cursor:pointer}
+.dh-ov2 .entry-card>.ui-icon:first-child{width:72px;height:72px;object-fit:contain;flex:0 0 72px}
+.dh-ov2 .entry-card>.ui-icon:last-child{width:20px;height:20px;margin-left:auto}
+.dh-ov2 .entry-copy,.dh-ov2 .service-copy,.dh-ov2 .support-copy,.dh-ov2 .end-copy,.dh-ov2 .journey-copy{display:flex;flex-direction:column;min-width:0}
+.dh-ov2 .card-title{font-family:DHOverviewCormorant;font-size:25px;line-height:1.05;font-weight:600}
+.dh-ov2 .card-desc{font-size:14px;line-height:1.45;margin-top:8px;color:#365e89}
+.dh-ov2 .current-badge{position:absolute;right:34px;top:18px;background:#fff2d6;color:#b67808;border-radius:13px;padding:5px 12px;font-size:11px;font-weight:600}
+.dh-ov2 .gate-lock{position:absolute;right:10px;top:8px;color:#8da5bd;font-size:8px}
+.dh-ov2 .stats-strip{height:176px;margin-top:24px;display:grid;grid-template-columns:repeat(4,1fr);background:linear-gradient(110deg,#f4f9ff,#fff)}
+.dh-ov2 .stat{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.dh-ov2 .stat+.stat:before{content:"";position:absolute;left:0;top:28px;bottom:28px;width:1px;background:#dfeaf4}
+.dh-ov2 .stat .ui-icon{width:52px;height:52px;object-fit:contain}
+.dh-ov2 .stat-value{font-size:20px;margin-top:3px}
+.dh-ov2 .stat-title{font-size:15px;font-weight:600}
+.dh-ov2 .stat-state{font-size:12px;color:#6c88a5}
+.dh-ov2 .recent-panel{height:255px;margin-top:24px;padding:17px 28px}
+.dh-ov2 .section-heading-row{height:46px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e4edf5}
+.dh-ov2 .section-heading-row h2,.dh-ov2 .section-title{font-family:DHOverviewCormorant;font-size:31px;line-height:1.1;font-weight:600;margin:0}
+.dh-ov2 .view-all{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.dh-ov2 .view-all .ui-icon{width:15px;height:15px}
+.dh-ov2 .activity-list{display:grid}
+.dh-ov2 .activity-row{height:55px;display:grid;grid-template-columns:38px 1fr auto;align-items:center;border-bottom:1px solid #e4edf5;font-size:14px}
+.dh-ov2 .activity-row:last-child{border-bottom:0}
+.dh-ov2 .activity-row .ui-icon{width:30px;height:30px}
+.dh-ov2 .activity-time{color:#7a93ac}
+.dh-ov2 .journey-section{height:365px;margin-top:24px}
+.dh-ov2 .journey-grid{height:305px;margin-top:16px;display:grid;grid-template-columns:repeat(2,608px);gap:42px}
+.dh-ov2 .journey-card{height:285px;overflow:hidden;display:grid;grid-template-rows:205px 80px;position:relative}
+.dh-ov2 .journey-card .media-image{width:100%;height:205px;object-fit:cover}
+.dh-ov2 .journey-copy{padding:13px 24px}
+.dh-ov2 .journey-card>.ui-icon{position:absolute;right:20px;bottom:28px;width:18px;height:18px}
+.dh-ov2 .services-section{height:260px;margin-top:24px}
+.dh-ov2 .services-grid{height:185px;margin-top:18px;display:grid;grid-template-columns:repeat(4,305px);gap:17px}
+.dh-ov2 .service-card{height:185px;display:grid;grid-template-columns:72px 1fr 18px;align-items:start;padding:25px 15px 18px 18px;gap:7px}
+.dh-ov2 .service-card>.ui-icon:first-child{width:62px;height:62px}
+.dh-ov2 .service-card>.ui-icon:last-child{width:18px;height:18px;align-self:end}
+.dh-ov2 .service-card .card-title{font-size:23px}
+/* PC Wind Seeker: keep Final background direction; mark-only asset + locked copy column
+   (wind_seeker_final.locked.json). Banner box x85/y2347/w1270/h300 via content column. */
+.dh-ov2 .wind-banner{height:300px;margin-top:24px;position:relative;overflow:hidden;background-image:linear-gradient(90deg,rgba(239,247,255,.96) 0%,rgba(239,247,255,.9) 52%,rgba(239,247,255,.05) 76%),url("/dh/account/overview/assets/images/overview_hero_pc_1440x420.png");background-size:cover;background-position:center}
+.dh-ov2 .wind-mark{position:absolute;left:20px;top:101px;width:125px;height:117px;object-fit:contain}
+.dh-ov2 .wind-copy{position:absolute;left:175px;top:0;width:650px;height:100%;margin:0;padding:0}
+.dh-ov2 .wind-copy h2{position:absolute;top:50px;left:0;font-family:DHOverviewCormorant;font-size:40px;margin:0;line-height:1.1}
+.dh-ov2 .wind-copy>strong{position:absolute;top:108px;left:0;display:block;color:#c88a16;font-size:18px;margin:0}
+.dh-ov2 .wind-copy p{position:absolute;top:151px;left:0;font-size:13px;line-height:1.5;margin:0;width:620px}
+.dh-ov2 .wind-actions{position:absolute;top:224px;left:0;display:flex;gap:22px;margin:0}
+.dh-ov2 .primary-button,.dh-ov2 .secondary-button{height:54px;border-radius:28px;display:grid;place-items:center;padding:0 30px;font-size:13px;font-weight:600}
+.dh-ov2 .primary-button{background:#06579f;color:#fff}
+.dh-ov2 .secondary-button{background:#fff;border:1px solid #d8af57}
+.dh-ov2 .wind-status{height:118px;margin-top:12px;display:grid;grid-template-columns:102px 270px 1fr 190px;align-items:center;padding:0 28px}
+/* status_mark_visible_box_relative: x28 y39 w74 h66 */
+.dh-ov2 .wind-status-mark{width:74px;height:66px;object-fit:contain;margin-left:0;align-self:start;margin-top:39px}
+.dh-ov2 .wind-status-copy{display:flex;flex-direction:column}
+.dh-ov2 .wind-status-copy span{font-size:11px}
+.dh-ov2 .wind-status-copy strong{font-family:DHOverviewCormorant;font-size:26px}
+.dh-ov2 .wind-status p{font-size:12px;color:#587594}
+.dh-ov2 .wind-status>a{height:52px;border:1px solid #cddfec;border-radius:27px;display:grid;place-items:center;font-size:12px;font-weight:600}
+.dh-ov2 .support-grid{height:155px;margin-top:18px;display:grid;grid-template-columns:repeat(4,305px);gap:17px;overflow:hidden}
+.dh-ov2 .support-card{height:140px;min-height:0;display:grid;grid-template-columns:62px 1fr 16px;align-items:center;align-content:center;padding:16px;gap:8px;overflow:hidden}
+.dh-ov2 .support-card>.ui-icon:first-child{width:56px;height:56px}
+.dh-ov2 .support-card>.ui-icon:last-child{width:16px;height:16px}
+/* ---- Directed Refinement R1: Quiet Return End (hero_end_geometry.locked.json) ----
+   Scene plate = natural scene only; panel/cards/footer drawn by real DOM. */
+.dh-ov2 .account-end{height:280px;background:linear-gradient(rgba(248,252,255,.32),rgba(248,252,255,.42)),url("/dh/account/overview/assets/images/quiet_return_end_pc_clean_scene_1440x280.png");background-size:cover;background-position:center;border-top:1px solid #e8f0f8;padding-top:27px}
+.dh-ov2 .end-grid{width:1376px;height:189px;margin:0 auto;display:grid;grid-template-columns:repeat(4,308px);grid-auto-rows:104px;column-gap:32px;align-content:start;padding:25px 0 0 25px;background:rgba(255,255,255,.34);border:1px solid rgba(216,231,245,.5);border-radius:16px;box-shadow:0 2px 12px rgba(26,94,162,.04)}
+.dh-ov2 .end-card{height:104px;display:grid;grid-template-columns:52px 1fr 14px;align-items:center;padding:16px 18px;gap:10px;border:1px solid rgba(214,229,244,.5);border-radius:14px;background:rgba(255,255,255,.5);box-shadow:0 2px 7px rgba(26,94,162,.045)}
+.dh-ov2 .end-card>.ui-icon:first-child{width:52px;height:52px}
+.dh-ov2 .end-card>.ui-icon:last-child{width:14px;height:14px}
+.dh-ov2 .end-card .card-title{font-size:21px}
+.dh-ov2 .end-card .card-desc{font-size:11px}
+.dh-ov2 .footer-row{height:auto;margin-top:22px;padding:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;font-size:10px;color:#8399b0}
+.dh-ov2 .footer-row .legal-links{margin-left:57px}
+.dh-ov2 .footer-row .back-top{margin-right:115px}
+.dh-ov2 .legal-links{display:flex;gap:7px}
+.dh-ov2 .back-top{justify-self:end}
+/* ---- V0.3 Final Correction: unified circular DH small-mark holders (PC) ----
+   small_mark_optical_alignment.locked.json — one holder per repeated row so every
+   sibling shares one top + centerline; visible mark centered; image <=72% of holder.
+   Optical-y micro corrections (<=2px) are expressed here, never as img margins. */
+.dh-ov2 .dh-holder{display:grid;place-items:center;border-radius:50%;background:#f1f7fe;border:1px solid #d6e4f3;box-shadow:none;flex:0 0 auto;overflow:hidden}
+.dh-ov2 .dh-holder.is-current{border-color:var(--gold);background:#fdf7ea}
+.dh-ov2 .dh-mark-img{width:72%;height:72%;object-fit:contain;display:block}
+/* Optical-y micro corrections (px, range -2..+2). Recorded explicitly; never via img margin.
+   Default 0; filled after runtime centerline audit if a sibling drifts. */
+.dh-ov2 .dh-holder--primary_entry{width:72px;height:72px;transform:translateY(0)}
+.dh-ov2 .dh-holder--summary_stat{width:68px;height:68px;transform:translateY(0)}
+.dh-ov2 .dh-holder--recent_activity{width:28px;height:28px;transform:translateY(0)}
+.dh-ov2 .dh-holder--services{width:62px;height:62px;transform:translateY(0)}
+.dh-ov2 .dh-holder--support{width:56px;height:56px;transform:translateY(0)}
+.dh-ov2 .dh-holder--quiet_return_end{width:52px;height:52px;transform:translateY(0)}
+/* WindKeep brand slot: same outer size as sibling holders, NO circular DH ring. */
+.dh-ov2 .dh-brand-mark{display:grid;place-items:center;flex:0 0 auto;background:transparent;border:0;box-shadow:none;overflow:visible}
+.dh-ov2 .dh-brand-mark .dh-mark-img{width:100%;height:100%;object-fit:contain}
+.dh-ov2 .dh-brand-mark--primary_entry{width:72px;height:72px}
+.dh-ov2 .dh-brand-mark--summary_stat{width:68px;height:68px}
+.dh-ov2 .entry-card>.dh-holder,.dh-ov2 .entry-card>.dh-brand-mark{flex:0 0 72px}
+.dh-ov2 .service-card>.dh-holder{align-self:start;justify-self:center}
+.dh-ov2 .support-card>.dh-holder{align-self:center;justify-self:center}
+.dh-ov2 .end-card>.dh-holder{justify-self:center}
+.dh-ov2 .stat>.dh-holder,.dh-ov2 .stat>.dh-brand-mark{margin-bottom:6px}
+.dh-ov2 .activity-row>.dh-holder{justify-self:center}
+.dh-ov2 .ui-icon{object-fit:contain}
+.dh-ov2 .wind-status-mark{justify-self:start}
+.dh-ov2 .clean .slot-text,.dh-ov2 .clean .gold-rule,.dh-ov2 .clean .ui-icon,.dh-ov2 .clean .header-logo,.dh-ov2 .clean .avatar,.dh-ov2 .clean .wind-mark,.dh-ov2 .clean .wind-status-mark,.dh-ov2 .clean .gate-lock,.dh-ov2 .clean .legal-links>span,.dh-ov2 .clean .back-top,.dh-ov2 .clean .profile-control>span{visibility:hidden!important}
+.dh-ov2 .clean .media-image{visibility:visible!important}
+.dh-ov2 .clean .entry-card,.dh-ov2 .clean .service-card,.dh-ov2 .clean .support-card,.dh-ov2 .clean .end-card,.dh-ov2 .clean .journey-card,.dh-ov2 .clean .recent-panel,.dh-ov2 .clean .stats-strip,.dh-ov2 .clean .wind-status{color:transparent}
+@media(max-width:600px){
+.dh-ov2 .pc-only{display:none!important}
+.dh-ov2 .mobile-only{display:grid!important}
+/* V0.3: mobile circular holder sizes (small_mark_optical_alignment.locked.json) */
+.dh-ov2 .dh-holder--primary_entry{width:36px;height:36px}
+.dh-ov2 .dh-holder--summary_stat{width:40px;height:40px}
+.dh-ov2 .dh-holder--recent_activity{width:24px;height:24px}
+.dh-ov2 .dh-holder--services{width:34px;height:34px}
+.dh-ov2 .dh-holder--support{width:30px;height:30px}
+.dh-ov2 .dh-holder--quiet_return_end{width:30px;height:30px}
+.dh-ov2 .entry-card>.dh-holder,.dh-ov2 .entry-card>.dh-brand-mark{flex:0 0 36px}
+.dh-ov2 .dh-brand-mark--primary_entry{width:36px;height:36px}
+.dh-ov2 .dh-brand-mark--summary_stat{width:40px;height:40px}
+.dh-ov2 .activity-row>.dh-holder{grid-row:1/3}
+.dh-ov2 .stat>.dh-holder,.dh-ov2 .stat>.dh-brand-mark{margin-bottom:3px}
+.dh-ov2 .account-header{height:48px;padding:0}
+.dh-ov2 .header-logo{position:absolute;left:154px;top:4px;width:82px;height:40px;object-fit:contain;object-position:center}
+/* Mobile header optical balance: thin menu bars vs solid avatar circle.
+   Menu −4px left; avatar −4px left (more right air). Bell x=271 unchanged. Logo still centered. */
+.dh-ov2 .header-menu{position:absolute;left:9px;top:8px;width:32px;height:32px;display:grid;place-items:center}
+.dh-ov2 .header-menu .ui-icon{position:static;width:22px;height:14px;object-fit:fill}
+.dh-ov2 .header-actions{position:static}
+.dh-ov2 [data-control-id=header_notification]{position:absolute;left:260px;top:4px;width:40px;height:40px}
+.dh-ov2 [data-control-id=header_notification] .ui-icon{position:absolute;left:11px;top:15px;width:19px;height:17px;object-fit:fill}
+.dh-ov2 [data-control-id=header_support]{position:absolute;left:298px;top:4px;width:32px;height:40px}
+.dh-ov2 [data-control-id=header_support] .ui-icon{position:absolute;left:5px;top:15px;width:23px;height:18px;object-fit:fill}
+.dh-ov2 .profile-control{position:absolute;left:328px;top:4px;width:40px;height:40px;display:block!important}
+.dh-ov2 .profile-control .avatar{position:absolute;left:15px;top:13px;width:25px;height:23px;border-radius:50%}
+.dh-ov2 .account-hero,.dh-ov2 .hero-scene{height:280px}
+.dh-ov2 .hero-scene{object-fit:cover}
+.dh-ov2 .hero-copy{width:185px;padding:52px 0 0 22px}
+.dh-ov2 .hero-copy h1{font-size:32px;white-space:nowrap}
+/* Hero: body up ~15px; gold rule vertically centered between title and body (X unchanged) */
+.dh-ov2 .gold-rule{width:38px;height:2px;margin:12px 0 12px}
+.dh-ov2 .hero-copy p{font-size:9px;line-height:1.55;width:150px}
+.dh-ov2 .account-content{width:354px;height:2744px;padding-top:20px}
+.dh-ov2 .primary-grid{height:700px;grid-template-columns:repeat(2,170px);grid-auto-rows:100px;gap:20px 14px}
+.dh-ov2 .entry-card{padding:10px;gap:7px;border-radius:12px}
+.dh-ov2 .entry-card>.ui-icon:first-child{width:36px;height:36px;flex-basis:36px}
+.dh-ov2 .entry-card>.ui-icon:last-child{width:12px;height:12px}
+.dh-ov2 .card-title{font-size:14px}
+.dh-ov2 .card-desc{font-size:8px;line-height:1.45;margin-top:4px}
+.dh-ov2 .current-badge{right:22px;top:8px;padding:3px 6px;font-size:6px}
+.dh-ov2 .stats-strip{height:116px;margin-top:16px;border-radius:12px}
+.dh-ov2 .stat .ui-icon{width:32px;height:32px}
+.dh-ov2 .stat-value{font-size:13px}
+.dh-ov2 .stat-title{font-size:8px}
+.dh-ov2 .stat-state{font-size:7px}
+.dh-ov2 .stat+.stat:before{top:18px;bottom:18px}
+.dh-ov2 .recent-panel{height:232px;margin-top:14px;padding:10px}
+.dh-ov2 .section-heading-row{height:38px}
+.dh-ov2 .section-heading-row h2,.dh-ov2 .section-title{font-size:20px}
+.dh-ov2 .view-all{font-size:8px;gap:3px}
+.dh-ov2 .view-all .ui-icon{width:10px;height:10px}
+.dh-ov2 .activity-row{height:54px;grid-template-columns:30px 1fr;font-size:8px;align-content:center}
+.dh-ov2 .activity-row .ui-icon{width:24px;height:24px;grid-row:1/3}
+.dh-ov2 .activity-time{font-size:7px}
+.dh-ov2 .journey-section{height:520px;margin-top:18px}
+.dh-ov2 .journey-grid{height:482px;margin-top:8px;display:grid;grid-template-columns:354px;grid-template-rows:repeat(2,230px);gap:12px}
+.dh-ov2 .journey-card{height:230px;grid-template-rows:164px 66px}
+.dh-ov2 .journey-card .media-image{height:164px}
+.dh-ov2 .journey-copy{padding:9px 12px}
+.dh-ov2 .journey-card>.ui-icon{right:10px;bottom:23px;width:12px;height:12px}
+.dh-ov2 .services-section{height:310px;margin-top:18px}
+.dh-ov2 .services-grid{height:272px;margin-top:8px;grid-template-columns:repeat(2,170px);grid-template-rows:repeat(2,126px);gap:12px 14px}
+.dh-ov2 .service-card{height:126px;grid-template-columns:36px 1fr 10px;padding:12px 8px;gap:4px}
+.dh-ov2 .service-card>.ui-icon:first-child{width:34px;height:34px}
+.dh-ov2 .service-card>.ui-icon:last-child{width:10px;height:10px}
+.dh-ov2 .service-card .card-title{font-size:13px}
+.dh-ov2 .service-card .card-desc{font-size:7.5px}
+/* ---- V0.3: Mobile Wind Seeker focal layer rebuilt (wind_seeker_final.locked.json)
+   x18/y2304/w354/h360 clean scene; L0 = scene only; mark/title/subtitle/body/2 buttons
+   are real DOM. No Account Hero reuse, no PC crop, no baked-in text/logo. ---- */
+.dh-ov2 .wind-banner{height:360px;margin-top:12px;border-radius:14px;position:relative;overflow:hidden;background:none;background-image:url("/dh/account/overview/assets/images/wind_seeker_mobile_clean_scene_354x360.png");background-size:354px 360px;background-position:left top;background-repeat:no-repeat}
+/* Banner mark only: shrink 1/3 (keep 2/3), X fixed at 16; +10px down (boss). Status mark untouched. */
+.dh-ov2 .wind-mark{left:16px;top:32px;width:59px;height:43px}
+.dh-ov2 .wind-copy{position:absolute;left:16px;top:0;width:220px;height:100%;margin:0;padding:0}
+.dh-ov2 .wind-copy h2{position:absolute;top:87px;left:0;width:190px;font-size:22px;line-height:1.08}
+.dh-ov2 .wind-copy>strong{position:absolute;top:149px;left:0;width:220px;font-size:12px;margin:0}
+.dh-ov2 .wind-copy p{position:absolute;top:176px;left:0;width:220px;font-size:8px;line-height:1.45;margin:0}
+.dh-ov2 .wind-actions{position:absolute;top:251px;left:0;margin:0;gap:9px}
+.dh-ov2 .primary-button{width:126px;height:56px;padding:0;font-size:9px;line-height:1.1;text-align:center;white-space:normal}
+.dh-ov2 .secondary-button{width:97px;height:56px;padding:0;font-size:9px;line-height:1.1;text-align:center;white-space:normal}
+.dh-ov2 .wind-status{height:78px;margin-top:18px;grid-template-columns:58px 1fr 44px;padding:0 8px;align-items:center}
+/* status_mark_visible_box_relative: x17 y20 w39 h38 — reset PC margin-top:39 which was shoving the mark to the floor */
+.dh-ov2 .wind-status-mark{width:39px;height:38px;justify-self:start;align-self:start;margin-left:9px;margin-top:20px}
+.dh-ov2 .wind-status-copy span{font-size:6px}
+.dh-ov2 .wind-status-copy strong{font-size:16px}
+.dh-ov2 .wind-status p{display:none}
+.dh-ov2 .wind-status>a{height:48px;border:0;font-size:0}
+.dh-ov2 .wind-status>a:after{content:"›";font-size:18px}
+.dh-ov2 .support-grid{height:304px;margin-top:8px;grid-template-columns:354px;grid-template-rows:repeat(4,70px);gap:8px}
+.dh-ov2 .support-card{height:70px;grid-template-columns:40px 1fr 12px;padding:8px 10px;align-items:center}
+.dh-ov2 .support-card>.ui-icon:last-child{width:10px;height:10px}
+.dh-ov2 .support-card .card-title{font-size:12px}
+.dh-ov2 .support-card .card-desc{font-size:6px;margin-top:2px}
+.dh-ov2 .account-end{height:220px;padding-top:14px;background:linear-gradient(rgba(248,252,255,.3),rgba(248,252,255,.4)),url("/dh/account/overview/assets/images/quiet_return_end_mobile_clean_scene_390x220.png");background-size:cover;background-position:center}
+.dh-ov2 .end-grid{width:365px;height:129px;margin:0 0 0 13px;grid-template-columns:repeat(2,176px);grid-template-rows:repeat(2,59px);column-gap:13px;row-gap:11px;padding:0;background:transparent;border:0;box-shadow:none;align-content:start}
+.dh-ov2 .end-card{height:59px;grid-template-columns:30px 1fr 8px;padding:8px;gap:5px;background:rgba(255,255,255,.5);border:1px solid rgba(214,229,244,.5);box-shadow:0 1px 5px rgba(26,94,162,.04)}
+.dh-ov2 .end-card>.ui-icon:first-child{width:30px;height:30px}
+.dh-ov2 .end-card>.ui-icon:last-child{width:8px;height:8px}
+.dh-ov2 .end-card .card-title{font-size:10px}
+.dh-ov2 .end-card .card-desc{font-size:5.5px;margin-top:2px}
+.dh-ov2 .footer-row{height:auto;margin-top:23px;padding:0 13px;grid-template-columns:1fr auto;grid-template-rows:auto auto;row-gap:20px;font-size:5.5px;color:#8399b0}
+.dh-ov2 .footer-row .legal-links{margin-left:0}
+.dh-ov2 .footer-row .back-top{margin-right:0}
+.dh-ov2 .legal-links{gap:3px}
+.dh-ov2 .copyright{grid-column:1/3;grid-row:2;justify-self:center}
+.dh-ov2 .back-top{grid-column:2;grid-row:1}
+}

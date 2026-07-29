@@ -1,0 +1,15 @@
+{
+  "ACCOUNT_OVERVIEW_VISUAL_LOCKED": true,
+  "ACCOUNT_OVERVIEW_MODIFICATION_AUTHORIZED": false,
+  "ACCOUNT_HEADER_MASTER": "OVERVIEW_CURRENT",
+  "ACCOUNT_HERO_MASTER": "OVERVIEW_CURRENT",
+  "ACCOUNT_SHARED_END_MASTER": "OVERVIEW_CURRENT",
+  "formal_route": "/account",
+  "source_trial_route": "/account-overview-v0_2-trial",
+  "source_page_sha256": "0ff1620334389cbc4e769f9cffbce781a217c01dfb36dc4a52ac4b868978154c",
+  "source_css_sha256": "a6cd62b6e26572125537b24fabbd556fc1c7a1dcf6a9f74f58474d6a6dd8e457",
+  "formal_asset_root": "/dh/account/overview",
+  "locked_at": "2026-07-30T03:10:00+08:00",
+  "package_authority": "DH_Formal_V2R.zip",
+  "package_sha256": "ba04a9fb94f23be04d9289a14e942610f6569a1040f743718363305e910e6544"
+}

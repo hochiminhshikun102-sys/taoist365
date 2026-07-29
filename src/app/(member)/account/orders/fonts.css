@@ -1,0 +1,46 @@
+@font-face {
+  font-family: DHOrdersInter;
+  src: url("/dh/account/orders/fonts/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: DHOrdersInter;
+  src: url("/dh/account/orders/fonts/Inter-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: DHOrdersInter;
+  src: url("/dh/account/orders/fonts/Inter-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: DHOrdersCormorant;
+  src: url("/dh/account/orders/fonts/CormorantGaramond-Medium.woff2")
+    format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: DHOrdersCormorant;
+  src: url("/dh/account/orders/fonts/CormorantGaramond-SemiBold.woff2")
+    format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  font-family: DHOrdersInter, Arial, sans-serif;
+}
+h1,
+h2,
+.mo-serif {
+  font-family: DHOrdersCormorant, Georgia, serif;
+}

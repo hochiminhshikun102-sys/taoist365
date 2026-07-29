@@ -1,192 +1,394 @@
+/**
+ * Account Center Overview — V0.2 TRIAL + V0.3 FINAL CORRECTION (Dogdan)
+ * Route: /account (FORMAL)
+ * Authority: DOHARA_Account_Overview_Page_Package_V0_1_TRIAL_PACKAGE_READY_V0_3_FINAL_CORRECTION
+ *            SHA256 98dd7211d5c55c64e0809849eb9c62fa3e889089d23b0045125e7a3cbf00ed61
+ * Rules honored: 4 independent layers; Grid/Flex body; Final never a background;
+ * Visibility/State Matrix unchanged; V0.3 locks header_geometry_final,
+ * small_mark_optical_alignment, wind_seeker_final. Copy unchanged.
+ */
 import type { Metadata } from "next";
-import Link from "next/link";
+import "./dh-ov2.css";
 
 export const metadata: Metadata = {
-  title: "Account Runtime",
-  description: "A quiet personal runtime layer for objects, orders, membership, Driftbox, and future AI presence.",
+  title: "Account Overview · V0.2 TRIAL (Dogdan initial build)",
+  robots: { index: false, follow: false },
 };
 
-const primaryMenu = [
-  {
-    title: "Dashboard",
-    note: "A quiet overview of what is waiting, moving, or resting.",
-    href: "#dashboard",
-  },
-  {
-    title: "My Objects",
-    note: "Objects kept, received, requested, or continuing through Windkeep.",
-    href: "/account/objects",
-  },
-  {
-    title: "My Orders",
-    note: "Orders, shipping states, return notes, and human support.",
-    href: "/account/orders",
-  },
-  {
-    title: "Membership",
-    note: "Level, benefits, verification status, and reserved sharing points.",
-    href: "#membership",
-  },
-  {
-    title: "Windkeep Supply",
-    note: "Member supply, consignment, and neighbor referral intake without entering Wind Seeker.",
-    href: "/account/windkeep-supply",
-  },
-  {
-    title: "Rewards",
-    note: "Verification, levels, shopping benefits, referral rewards, and future rebate state.",
-    href: "/account/rewards",
-  },
-  {
-    title: "Driftbox",
-    note: "Quiet correspondence, replies, and saved messages.",
-    href: "#driftbox",
-  },
-  {
-    title: "My AI",
-    note: "A reserved personal AI runtime layer. Nothing noisy yet.",
-    href: "#my-ai",
-  },
-  {
-    title: "Settings",
-    note: "Profile, locale, privacy, notifications, and account safety.",
-    href: "#settings",
-  },
-] as const;
+const A = "/dh/account/overview/assets";
+/* V0.3 final correction: generic DH marks use transparent-edge-trimmed assets so
+   the VISIBLE glyph (not the old 256x256 frame) is what the circular holder centers. */
+const TRIM = (n: string) => `${A}/icons_trimmed/${n}.png`;
+const IMG = (n: string) => `${A}/images/${n}.png`;
+const CHEVRON = TRIM("chevron_right");
+/* Wind Seeker independent mark, no English wordmark (all 4 wind-seeker locations). */
+const WSMARK = IMG("wind_seeker_mark_only_trimmed");
 
-const mobileEssentials = [
-  ["Orders", "/account/orders"],
-  ["Objects", "/account/objects"],
-  ["Windkeep Supply", "/account/windkeep-supply"],
-  ["Rewards", "/account/rewards"],
-  ["Membership", "#membership"],
-] as const;
-
-const riskAllowed = ["Verification submission", "Status display", "Notifications"];
-
-const phases = [
-  "Client foundation runtime",
-  "Sharing points entry reserved",
-  "AI runtime extension",
-  "Risk-control connection",
-  "Logistics, membership, and AI loop",
-] as const;
-
-function SoftPanel({
-  id,
-  title,
-  eyebrow,
-  children,
-}: Readonly<{
-  id: string;
-  title: string;
-  eyebrow: string;
-  children: React.ReactNode;
-}>) {
+/* Unified circular holder: same visible ring per repeated row so sibling marks
+   share one top + centerline (small_mark_optical_alignment.locked.json).
+   Brand exception: WindKeep / Wind Seeker NEVER enter the generic DH circular holder.
+   WindKeep uses a same-size transparent brand slot for row alignment only. */
+function Mark(props: { icon: string; group: string; current?: boolean; brand?: boolean }) {
+  if (props.brand) {
+    return (
+      <span className={`dh-brand-mark dh-brand-mark--${props.group}`}>
+        <img className="dh-mark-img" src={props.icon} alt="" />
+      </span>
+    );
+  }
   return (
-    <section id={id} className="rounded-[1.75rem] border border-[#d8e2e6] bg-white/78 p-5 shadow-[0_24px_70px_rgba(117,139,149,0.14)] sm:p-7">
-      <p className="text-xs font-medium tracking-[0.22em] text-[#6f8791] uppercase">{eyebrow}</p>
-      <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-[#243137] sm:text-4xl">{title}</h2>
-      <div className="mt-5">{children}</div>
-    </section>
+    <span className={`dh-holder dh-holder--${props.group}${props.current ? " is-current" : ""}`}>
+      <img className="dh-mark-img" src={props.icon} alt="" />
+    </span>
   );
 }
 
-export default function AccountRuntimePage() {
+function EntryCard(props: {
+  cid: string;
+  icon: string;
+  title: string;
+  desc: string;
+  href: string;
+  badge?: string;
+  locked?: boolean;
+  current?: boolean;
+  brand?: boolean;
+}) {
   return (
-    <main className="min-h-screen bg-[#f0f2f5] text-[#243137]">
-      <div className="mx-auto w-full max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-        <header className="flex flex-col gap-6 rounded-[2rem] border border-white/80 bg-[linear-gradient(135deg,#ffffff_0%,#eef7fb_48%,#f6f8f4_100%)] p-6 shadow-[0_28px_90px_rgba(114,139,151,0.16)] sm:p-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl">
-            <Link href="/" className="text-sm text-[#6f8791] underline-offset-4 hover:underline">
-              Dohara
-            </Link>
-            <p className="mt-8 text-xs font-medium tracking-[0.24em] text-[#7d929b] uppercase">Human Runtime Layer</p>
-            <h1 className="mt-4 font-display text-5xl font-semibold leading-[0.96] text-[#1f2d33] sm:text-6xl lg:text-7xl">
-              A quiet place for your time here.
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#53666f]">
-              Not a noisy dashboard. This space keeps objects, orders, membership, Driftbox, and future AI presence close without turning them into pressure.
-            </p>
-          </div>
-          <div className="grid min-w-0 gap-2 rounded-3xl border border-[#d8e2e6] bg-white/72 p-4 text-sm text-[#53666f] sm:min-w-72">
-            {mobileEssentials.map(([item, href]) => (
-              <a key={item} href={href} className="rounded-2xl border border-transparent px-3 py-2 hover:border-[#cbd9de] hover:bg-[#f7fafb]">
-                {item}
-              </a>
-            ))}
-          </div>
-        </header>
+    <a className="entry-card" data-control-id={props.cid} href={props.href}>
+      <Mark icon={props.icon} group="primary_entry" current={props.current} brand={props.brand} />
+      <span className="entry-copy">
+        <strong className="slot-text card-title" data-slot-id={`${props.cid}_title`}>
+          {props.title}
+        </strong>
+        <span className="slot-text card-desc" data-slot-id={`${props.cid}_desc`}>
+          {props.desc}
+        </span>
+      </span>
+      {props.badge ? (
+        <span className="slot-text current-badge" data-slot-id={`${props.cid}_badge`}>
+          {props.badge}
+        </span>
+      ) : null}
+      {props.locked ? (
+        <span className="gate-lock" aria-label="Locked">
+          ●
+        </span>
+      ) : null}
+      <img className="ui-icon" src={CHEVRON} alt="" />
+    </a>
+  );
+}
 
-        <nav aria-label="Account runtime sections" className="mt-5 flex gap-2 overflow-x-auto pb-2">
-          {primaryMenu.map((item) => (
-            <a key={item.title} href={item.href} className="shrink-0 rounded-full border border-[#d8e2e6] bg-white/74 px-4 py-2 text-sm text-[#53666f] shadow-[0_10px_24px_rgba(117,139,149,0.08)]">
-              {item.title}
-            </a>
-          ))}
+function StatCard(props: {
+  cid: string;
+  icon: string;
+  href: string;
+  value: string;
+  title: string;
+  state: string;
+  brand?: boolean;
+}) {
+  return (
+    <a className="stat" data-control-id={props.cid} href={props.href}>
+      <Mark icon={props.icon} group="summary_stat" brand={props.brand} />
+      <strong className="slot-text stat-value" data-slot-id={`${props.cid}_value`}>
+        {props.value}
+      </strong>
+      <strong className="slot-text stat-title" data-slot-id={`${props.cid}_title`}>
+        {props.title}
+      </strong>
+      <span className="slot-text stat-state" data-slot-id={`${props.cid}_state`}>
+        {props.state}
+      </span>
+    </a>
+  );
+}
+
+function ActivityRow(props: {
+  cid: string;
+  icon: string;
+  href: string;
+  text: string;
+  time: string;
+}) {
+  return (
+    <a className="activity-row" data-control-id={props.cid} href={props.href}>
+      <Mark icon={props.icon} group="recent_activity" />
+      <span className="slot-text activity-text" data-slot-id={`${props.cid}_text`}>
+        {props.text}
+      </span>
+      <time className="slot-text activity-time" data-slot-id={`${props.cid}_time`}>
+        {props.time}
+      </time>
+    </a>
+  );
+}
+
+function CardWithChevron(props: {
+  cls: string;
+  copyCls: string;
+  cid: string;
+  icon: string;
+  href: string;
+  title: string;
+  desc: string;
+  group: string;
+}) {
+  return (
+    <a className={props.cls} data-control-id={props.cid} href={props.href}>
+      <Mark icon={props.icon} group={props.group} />
+      <span className={props.copyCls}>
+        <strong className="slot-text card-title" data-slot-id={`${props.cid}_title`}>
+          {props.title}
+        </strong>
+        <span className="slot-text card-desc" data-slot-id={`${props.cid}_desc`}>
+          {props.desc}
+        </span>
+      </span>
+      <img className="ui-icon" src={CHEVRON} alt="" />
+    </a>
+  );
+}
+
+export default function AccountOverviewV02TrialPage() {
+  return (
+    <div className="dh-ov2" id="top" data-dh-page="account-overview-v0_2-trial" data-page="account-overview-v0_2-trial">
+      <header className="account-header" data-layer="header">
+        <button className="header-menu mobile-only" data-control-id="header_menu" type="button">
+          <img className="ui-icon" src={TRIM("menu")} alt="" />
+        </button>
+        <img className="header-logo" src={`${A}/header/header_dohara_wordmark_only.png`} alt="Dohara" />
+        <nav className="header-actions" aria-label="Account utilities">
+          <button type="button" data-control-id="header_notification" aria-label="Notifications">
+            <img className="ui-icon" src={TRIM("notification")} alt="" />
+          </button>
+          <button type="button" data-control-id="header_support" aria-label="Support">
+            <img className="ui-icon" src={TRIM("support")} alt="" />
+          </button>
+          <button type="button" className="profile-control" data-control-id="header_profile" aria-label="Account menu">
+            <img className="avatar" src={`${A}/header/header_avatar_lena.png`} alt="" />
+            <span className="slot-text pc-only" data-slot-id="header_user">
+              Lena
+            </span>
+            <span className="pc-only" aria-hidden="true">
+              ⌄
+            </span>
+          </button>
         </nav>
+      </header>
 
-        <section id="dashboard" className="mt-6 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-          <SoftPanel id="emotional-overview" eyebrow="Dashboard" title="Emotional overview">
-            <div className="grid gap-3 sm:grid-cols-3">
-              {[
-                ["Objects", "2 resting"],
-                ["Orders", "1 in passage"],
-                ["Driftbox", "No pressure"],
-              ].map(([label, value]) => (
-                <div key={label} className="rounded-3xl border border-[#d8e2e6] bg-[#f8fbfc] p-4">
-                  <p className="text-sm text-[#7d929b]">{label}</p>
-                  <p className="mt-4 text-2xl font-semibold text-[#2c3d44]">{value}</p>
-                </div>
-              ))}
-            </div>
-          </SoftPanel>
+      <section className="account-hero" data-layer="hero">
+        <picture>
+          <source media="(max-width:600px)" srcSet={IMG("overview_hero_mobile_clean_exact_scene_390x280")} />
+          <img className="hero-scene" src={IMG("overview_hero_pc_clean_exact_scene_1440x420")} alt="" />
+        </picture>
+        <div className="hero-copy">
+          <h1 className="slot-text" data-slot-id="hero_title">
+            My Account
+          </h1>
+          <span className="gold-rule" />
+          <p className="slot-text" data-slot-id="hero_body">
+            Your space for orders, journals, mindful benefits, and member benefits.
+          </p>
+        </div>
+      </section>
 
-          <SoftPanel id="verification" eyebrow="Safety" title="Verification, status, notifications">
-            <div className="grid gap-2">
-              {riskAllowed.map((item) => (
-                <div key={item} className="rounded-2xl border border-[#d8e2e6] bg-[#f8fbfc] px-4 py-3 text-[#53666f]">
-                  {item}
-                </div>
-              ))}
-            </div>
-            <p className="mt-4 text-sm leading-6 text-[#7d929b]">
-              Review queues and enforcement settings remain inside Admin OS only.
-            </p>
-          </SoftPanel>
+      <main className="account-content" data-layer="content">
+        <section className="primary-grid" aria-label="Account sections">
+          <EntryCard cid="entry_overview" icon={TRIM("account_overview")} href="/account" title="Overview" desc="Account at a glance and recent activity." badge="Current" current />
+          <EntryCard cid="entry_orders" icon={TRIM("my_orders")} href="/account/orders" title="My Orders" desc="View your orders and order history." />
+          <EntryCard cid="entry_journal" icon={TRIM("my_journal")} href="/account/journal" title="My Journal" desc="Discover insights and journal entries." />
+          <EntryCard cid="entry_windkeep" icon={IMG("windkeep_brand_mark")} href="/account/windkeep" title="My WindKeep" desc="Track your WindKeep activity and progress." brand />
+          <EntryCard cid="entry_saved" icon={TRIM("saved_objects")} href="/account/saved" title="Saved Objects" desc="View and manage your saved items." />
+          <EntryCard cid="entry_services" icon={TRIM("services")} href="/account/services" title="Services" desc="Access Guidance, Healing and Support." />
+          <EntryCard cid="entry_member" icon={TRIM("member_benefits")} href="/account/member-benefits" title="Member Benefits" desc="Explore privileges and member offers." />
+          <EntryCard cid="entry_creator" icon={TRIM("creator_studio")} href="/account/studio" title="Creator Studio" desc="Manage content and creator resources." locked />
+          <EntryCard cid="entry_invite" icon={TRIM("invite_rewards")} href="/account/invite" title="Invite & Rewards" desc="Invite friends and view earned rewards." locked />
+          <EntryCard cid="entry_profile" icon={TRIM("profile")} href="/account/profile" title="Profile" desc="Manage your personal information." />
+          <EntryCard cid="entry_settings" icon={TRIM("settings")} href="/account/settings" title="Settings" desc="Manage your account and preferences." />
+          <button className="entry-card" data-control-id="entry_signout" data-action="sign_out" type="button">
+            <Mark icon={TRIM("sign_out")} group="primary_entry" />
+            <span className="entry-copy">
+              <strong className="slot-text card-title" data-slot-id="entry_signout_title">
+                Sign Out
+              </strong>
+              <span className="slot-text card-desc" data-slot-id="entry_signout_desc">
+                Securely sign out of your account.
+              </span>
+            </span>
+          </button>
         </section>
 
-        <section className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {primaryMenu.slice(1).map((item) => (
-            <article key={item.title} id={item.title.toLowerCase().replaceAll(" ", "-")} className="rounded-[1.5rem] border border-[#d8e2e6] bg-white/76 p-5 shadow-[0_20px_54px_rgba(117,139,149,0.12)]">
-              <p className="text-xs font-medium tracking-[0.18em] text-[#7d929b] uppercase">{item.title}</p>
-              <p className="mt-5 min-h-24 text-lg leading-8 text-[#40525a]">{item.note}</p>
-              <a href={item.href} className="mt-5 inline-flex rounded-full border border-[#cbd9de] px-4 py-2 text-sm text-[#53666f]">
-                Open quietly
+        <section className="stats-strip" aria-label="Account status">
+          <StatCard cid="stat_orders" icon={TRIM("my_orders")} href="/account/orders" value="3" title="Orders" state="Processing" />
+          <StatCard cid="stat_windkeep" icon={IMG("windkeep_brand_mark")} href="/account/windkeep" value="2" title="WindKeep" state="Active" brand />
+          <StatCard cid="stat_guidance" icon={TRIM("guidance")} href="/account/guidance" value="1" title="Guidance" state="Open" />
+          <StatCard cid="stat_subscriptions" icon={TRIM("subscriptions")} href="/account/subscriptions" value="4" title="Subscriptions" state="Active" />
+        </section>
+
+        <section className="recent-panel">
+          <div className="section-heading-row">
+            <h2 className="slot-text" data-slot-id="recent_heading">
+              Recent Activity
+            </h2>
+            <a className="view-all" data-control-id="recent_view_all" href="/account/activity">
+              <span className="slot-text" data-slot-id="recent_view_all_text">
+                View All
+              </span>{" "}
+              <img className="ui-icon" src={CHEVRON} alt="" />
+            </a>
+          </div>
+          <div className="activity-list">
+            <ActivityRow cid="recent_order" icon={TRIM("parcel")} href="/account/orders/DH2311" text="Order #DH2311 is being processed." time="Today, 10:24 AM" />
+            <ActivityRow cid="recent_windseeker" icon={TRIM("under_review")} href="/wind-seeker" text="You applied to the Wind Seeker network." time="Yesterday, 11:47 AM" />
+            <ActivityRow cid="recent_journal" icon={TRIM("my_journal")} href="/account/journal" text="New journal entry added." time="May 16, 2025" />
+          </div>
+        </section>
+
+        <section className="journey-section">
+          <h2 className="slot-text section-title" data-slot-id="journey_heading">
+            Continue Your Journey
+          </h2>
+          <div className="journey-grid">
+            <a className="journey-card" data-control-id="journey_journal" href="/account/journal">
+              <img className="media-image" src={IMG("journey_journal_pc_608x214")} alt="" />
+              <span className="journey-copy">
+                <strong className="slot-text card-title" data-slot-id="journey_journal_title">
+                  Resume Your Journal
+                </strong>
+                <span className="slot-text card-desc" data-slot-id="journey_journal_desc">
+                  Pick up where you left off and capture your thoughts.
+                </span>
+              </span>
+              <img className="ui-icon" src={CHEVRON} alt="" />
+            </a>
+            <a className="journey-card" data-control-id="journey_saved" href="/account/saved">
+              <img className="media-image" src={IMG("journey_saved_pc_608x214")} alt="" />
+              <span className="journey-copy">
+                <strong className="slot-text card-title" data-slot-id="journey_saved_title">
+                  Explore Saved Objects
+                </strong>
+                <span className="slot-text card-desc" data-slot-id="journey_saved_desc">
+                  Revisit your favorites and get inspired.
+                </span>
+              </span>
+              <img className="ui-icon" src={CHEVRON} alt="" />
+            </a>
+          </div>
+        </section>
+
+        <section className="services-section">
+          <h2 className="slot-text section-title" data-slot-id="services_heading">
+            Services & Guidance
+          </h2>
+          <div className="services-grid">
+            <CardWithChevron cls="service-card" copyCls="service-copy" group="services" cid="service_concierge" icon={TRIM("ai_concierge")} href="/account/ai-concierge" title="Concierge" desc="Get instant support and personalized assistance." />
+            <CardWithChevron cls="service-card" copyCls="service-copy" group="services" cid="service_guidance" icon={TRIM("guidance")} href="/account/guidance" title="Guidance" desc="Connect with trusted guides for clarity and direction." />
+            <CardWithChevron cls="service-card" copyCls="service-copy" group="services" cid="service_healing" icon={TRIM("healing_paths")} href="/account/healing" title="Healing Paths" desc="Explore practices for well-being, balance and renewal." />
+            <CardWithChevron cls="service-card" copyCls="service-copy" group="services" cid="service_subscriptions" icon={TRIM("subscriptions")} href="/account/subscriptions" title="Subscriptions" desc="Manage your plans and subscription benefits." />
+          </div>
+        </section>
+
+        <section className="wind-banner">
+          <img className="wind-mark" src={WSMARK} alt="" />
+          <div className="wind-copy">
+            <h2 className="slot-text" data-slot-id="wind_heading">
+              Join the Wind Seeker Network
+            </h2>
+            <strong className="slot-text" data-slot-id="wind_subheading">
+              Become a Global Hope for Dohara
+            </strong>
+            <p className="slot-text" data-slot-id="wind_body">
+              Discover accomplished seekers from around the world and shine like the Wind to serve Dohara. Create new hope on your journey every day.
+            </p>
+            <div className="wind-actions">
+              <a className="primary-button" data-control-id="wind_apply" href="/wind-seeker-intro">
+                <span className="slot-text" data-slot-id="wind_apply_text">
+                  Apply as Wind Seeker
+                </span>
               </a>
-            </article>
-          ))}
-        </section>
-
-        <section id="sharing-points" className="mt-4 grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
-          <SoftPanel id="membership-runtime" eyebrow="Membership" title="Sharing points remain reserved">
-            <p className="text-base leading-8 text-[#53666f]">
-              Sharing may later connect to points, membership multipliers, and channel rules. The entry is reserved only; no forced sharing, popup spam, or growth loop is active.
-            </p>
-          </SoftPanel>
-
-          <SoftPanel id="runtime-phases" eyebrow="Roadmap" title="Long-running personal layer">
-            <div className="grid gap-2 sm:grid-cols-2">
-              {phases.map((phase, index) => (
-                <div key={phase} className="rounded-2xl border border-[#d8e2e6] bg-[#f8fbfc] px-4 py-3 text-[#53666f]">
-                  <span className="mr-3 font-mono text-xs text-[#8ca1a9]">{String(index + 1).padStart(2, "0")}</span>
-                  {phase}
-                </div>
-              ))}
+              <a className="secondary-button" data-control-id="wind_learn" href="/wind-seeker-intro">
+                <span className="slot-text" data-slot-id="wind_learn_text">
+                  Learn More
+                </span>
+              </a>
             </div>
-          </SoftPanel>
+          </div>
         </section>
-      </div>
-    </main>
+
+        <section className="wind-status">
+          <img className="wind-status-mark" src={WSMARK} alt="" />
+          <div className="wind-status-copy">
+            <span className="slot-text" data-slot-id="wind_status_label">
+              Wind Seeker Status
+            </span>
+            <strong className="slot-text" data-slot-id="wind_status_value">
+              Not Applied Yet
+            </strong>
+          </div>
+          <p className="slot-text" data-slot-id="wind_status_body">
+            Apply today to open new opportunities and unlock unique perks.
+          </p>
+          <a data-control-id="wind_status_action" href="/wind-seeker">
+            <span className="slot-text" data-slot-id="wind_status_action_text">
+              View Details
+            </span>
+          </a>
+        </section>
+
+        <section className="support-grid">
+          <CardWithChevron cls="support-card" copyCls="support-copy" group="support" cid="support_center" icon={TRIM("support")} href="/account/support" title="Support Center" desc="Get help with your account, orders, or questions." />
+          <CardWithChevron cls="support-card" copyCls="support-copy" group="support" cid="support_policies" icon={TRIM("security")} href="/account/policies" title="Policies & Guidelines" desc="Review privacy, security, terms, and community rules." />
+          <CardWithChevron cls="support-card" copyCls="support-copy" group="support" cid="support_notes" icon={TRIM("information")} href="/account/notes" title="Account Notes" desc="Important updates and information for you." />
+          <CardWithChevron cls="support-card" copyCls="support-copy" group="support" cid="support_help" icon={TRIM("support")} href="/account/support" title="Help & Support" desc="Email us or start a live chat." />
+        </section>
+      </main>
+
+      <footer className="account-end" data-layer="end">
+        <div className="end-grid">
+          <CardWithChevron cls="end-card" copyCls="end-copy" group="quiet_return_end" cid="end_help" icon={TRIM("support")} href="/account/support" title="Help & Support" desc="Account, order and service assistance" />
+          <CardWithChevron cls="end-card" copyCls="end-copy" group="quiet_return_end" cid="end_shipping" icon={TRIM("return")} href="/account/policies/shipping-returns" title="Shipping & Returns" desc="Delivery, tracking and return support" />
+          <CardWithChevron cls="end-card" copyCls="end-copy" group="quiet_return_end" cid="end_privacy" icon={TRIM("security")} href="/account/settings/privacy-security" title="Privacy & Security" desc="Privacy, sign-in and data controls" />
+          <CardWithChevron cls="end-card" copyCls="end-copy" group="quiet_return_end" cid="end_policies" icon={TRIM("information")} href="/account/policies" title="Policies & Guidelines" desc="Service rules and community standards" />
+        </div>
+        <div className="footer-row">
+          <nav className="legal-links" aria-label="Legal">
+            <a data-control-id="footer_terms" href="/account/policies/terms">
+              <span className="slot-text" data-slot-id="footer_terms_text">
+                Terms
+              </span>
+            </a>{" "}
+            <span aria-hidden="true">|</span>{" "}
+            <a data-control-id="footer_privacy" href="/account/policies/privacy">
+              <span className="slot-text" data-slot-id="footer_privacy_text">
+                Privacy
+              </span>
+            </a>{" "}
+            <span aria-hidden="true">|</span>{" "}
+            <a data-control-id="footer_accessibility" href="/account/policies/accessibility">
+              <span className="slot-text" data-slot-id="footer_accessibility_text">
+                Accessibility
+              </span>
+            </a>{" "}
+            <span aria-hidden="true">|</span>{" "}
+            <a data-control-id="footer_sitemap" href="/sitemap">
+              <span className="slot-text" data-slot-id="footer_sitemap_text">
+                Sitemap
+              </span>
+            </a>
+          </nav>
+          <span className="slot-text copyright" data-slot-id="footer_copyright">
+            © 2026 DOHARA. All rights reserved.
+          </span>
+          <a className="back-top" data-control-id="footer_back_to_top" href="#top">
+            ↑{" "}
+            <span className="slot-text" data-slot-id="footer_back_text">
+              Back to top
+            </span>
+          </a>
+        </div>
+      </footer>
+    </div>
   );
 }

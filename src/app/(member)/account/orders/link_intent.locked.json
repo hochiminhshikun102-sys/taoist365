@@ -1,0 +1,65 @@
+{
+  "header": {
+    "menu": "Open existing Account Center navigation drawer",
+    "notification": "/account/notifications",
+    "support": "/account/support",
+    "avatar": "/account/profile"
+  },
+  "status_cards": {
+    "to_pay": "/account/orders?status=pending_payment",
+    "on_the_way": "/account/orders?status=in_transit",
+    "after_sales": "/account/aftersales?status=open",
+    "completed": "/account/orders?status=completed"
+  },
+  "search": {
+    "intent": "Search order, payment, return or invoice IDs",
+    "on_empty_submit": "NO_NAVIGATION",
+    "on_record_selected": "Navigate to the selected record's dedicated page"
+  },
+  "start_here": {
+    "order_list": "/account/orders",
+    "payment": "/account/billing?view=payments",
+    "shipment": "/account/orders?view=shipments",
+    "order_details": "/account/orders?intent=select_order_for_detail",
+    "after_sales": "/account/aftersales/new?intent=select_eligible_order",
+    "after_sales_records": "/account/aftersales"
+  },
+  "recent_records": {
+    "view_all": "/account/orders?view=records",
+    "order": "/account/orders/DOH-250516-0017",
+    "payment": "/account/billing/payments/PAY-250516-0032",
+    "return": "/account/aftersales/RET-250520-0008",
+    "invoice": "/account/billing/invoices/INV-250516-0099"
+  },
+  "need_help": {
+    "faq": "/account/support?topic=orders",
+    "shipping_delivery": "/account/policies?section=shipping-delivery",
+    "returns_after_sales": "/account/policies?section=returns-refunds",
+    "support_center": "/account/support"
+  },
+  "order_policies": "/account/policies?section=orders",
+  "coverage": "NO_LINK_INFORMATIONAL",
+  "shared_end": {
+    "help_support": "/account/support",
+    "shipping_returns": "/account/policies?section=shipping-returns",
+    "privacy_security": "/account/settings/privacy-security",
+    "policies_guidelines": "/account/policies",
+    "terms": "/terms",
+    "privacy": "/privacy",
+    "accessibility": "/accessibility",
+    "sitemap": "/sitemap",
+    "back_to_top": "#top"
+  },
+  "no_selected_order_behavior": {
+    "order_details": {
+      "route": "/account/orders?intent=select_order_for_detail",
+      "behavior": "Open the user's own order list/order picker. Navigate to a detail page only after an owned order is selected.",
+      "unresolved_order_id_placeholder_forbidden": true
+    },
+    "after_sales": {
+      "route": "/account/aftersales/new?intent=select_eligible_order",
+      "behavior": "Open the user's own eligible-order selector. Start an after-sales request only after an eligible owned order is selected.",
+      "unresolved_order_id_placeholder_forbidden": true
+    }
+  }
+}
