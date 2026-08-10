@@ -1,0 +1,153 @@
+{
+  "hero": {
+    "title": "Order Detail",
+    "subtitle": "Review your order information, shipment status, payments, invoices, and after-sales details."
+  },
+  "navigation": {
+    "back_to_list": "Back to Order List"
+  },
+  "overview": {
+    "title": "Order Overview",
+    "order_id": "Order ID",
+    "order_date": "Order Date",
+    "fulfillment_channel": "Fulfillment Channel",
+    "order_status": "Order Status",
+    "payment_status": "Payment Status",
+    "invoice_status": "Invoice Status",
+    "copy": "Copy"
+  },
+  "progress": {
+    "title": "Shipment Progress",
+    "steps": {
+      "order_placed": "Order Placed",
+      "payment_confirmed": "Payment Confirmed",
+      "preparing_shipment": "Preparing Shipment",
+      "customs_clearance": "Customs Clearance",
+      "in_transit": "In Transit",
+      "delivered": "Delivered"
+    },
+    "in_transit_note": "In Transit: returns, refunds, and exchanges unlock after delivery."
+  },
+  "item": {
+    "title": "Order Item",
+    "quantity": "Qty",
+    "items": "Items",
+    "item_total": "Item Total",
+    "sku": "SKU",
+    "unit_price": "Unit Price",
+    "category": "Category",
+    "pre_delivery_return": "Return window starts after delivery.",
+    "pre_delivery_return_hint": "Estimated return window will be shown after delivery."
+  },
+  "shipping": {
+    "title": "Shipping Information",
+    "shipping_method": "Shipping Method",
+    "carrier": "Carrier",
+    "estimated_delivery": "Estimated Delivery",
+    "tracking_number": "Tracking Number",
+    "shipping_address": "Shipping Address",
+    "track": "Track Shipment",
+    "customs_title": "Customs & Duties Note",
+    "customs_body": "Import duties and customs fees may vary by destination.",
+    "customs_cta": "See Customs & Duties Policy"
+  },
+  "billing": {
+    "title": "Billing & Payment",
+    "item_total": "Item Total",
+    "shipping": "Shipping",
+    "tax_import": "Tax / Import Duty",
+    "total_paid": "Total Paid",
+    "payment_information": "Payment Information",
+    "payment_id": "Payment ID",
+    "paid_on": "Paid",
+    "refund_status": "Refund Status",
+    "refund_none": "No refund requested"
+  },
+  "invoice": {
+    "title": "Invoice & Documents",
+    "status": "Status",
+    "view_invoice": "View Invoice"
+  },
+  "actions": {
+    "title": "Actions & After-sales",
+    "current_in_transit": "Current state: In Transit",
+    "unlock_after_delivery": "Return / refund / exchange actions unlock after delivery.",
+    "track": "Track Shipment",
+    "report_delivery_issue": "Report Delivery Issue",
+    "view_invoice": "View Invoice",
+    "contact_support": "Contact Support"
+  },
+  "policies": [
+    "Shipping Policy",
+    "Return & Refund Policy",
+    "Customs & Duties",
+    "Invoice Rule",
+    "Delivery Exceptions",
+    "Address Change Rule"
+  ],
+  "help": {
+    "eyebrow": "ORDER ASSISTANCE",
+    "title": "Need Help?",
+    "items": [
+      [
+        "Order FAQ",
+        "Quick answers about orders."
+      ],
+      [
+        "Shipping & Delivery",
+        "Delivery times and tracking."
+      ],
+      [
+        "Returns & After-sales",
+        "Returns, refunds and support."
+      ],
+      [
+        "Support Center",
+        "Contact our support team."
+      ]
+    ]
+  },
+  "recommendation": {
+    "eyebrow": "SELECTED FOR YOUR JOURNEY",
+    "title": "Recommended for You",
+    "subtitle": "Inspired by your recent orders, saved objects and quiet-living interests.",
+    "view_more": "View More Products",
+    "loading_hint": "More recommendations will load as you continue browsing."
+  },
+  "footer": {
+    "items": [
+      [
+        "Help & Support",
+        "Account, order and service assistance"
+      ],
+      [
+        "Shipping & Returns",
+        "Delivery, tracking and return support"
+      ],
+      [
+        "Privacy & Security",
+        "Privacy, sign-in and data controls"
+      ],
+      [
+        "Policies & Guidelines",
+        "Service rules and community standards"
+      ]
+    ],
+    "legal": [
+      "Terms",
+      "Privacy",
+      "Accessibility",
+      "Sitemap"
+    ],
+    "copyright": "© 2026 DOHARA. All rights reserved.",
+    "back_to_top": "Back to top"
+  },
+  "system_states": {
+    "record_unavailable": "Record unavailable.",
+    "sign_in": "Sign in to view this order.",
+    "session_expired": "Your session has expired. Please sign in again.",
+    "account_restricted": "This account is currently restricted. Contact Support for help.",
+    "error": "We couldn't load this order. Please try again.",
+    "offline": "You're offline. Reconnect to refresh this order."
+  }
+}

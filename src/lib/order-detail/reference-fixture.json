@@ -1,0 +1,320 @@
+{
+  "order_id": "DOH202405160001",
+  "order_no": "DOH202405160001",
+  "order_type": "commerce_order",
+  "fulfillment_type": "commerce_shipping",
+  "fulfillment_channel": "cn_cross_border",
+  "order_status": "in_transit",
+  "payment_status": "paid",
+  "invoice_status": "issued",
+  "refund_status": "no_refund_requested",
+  "order_date": "2024-05-16T10:24:00",
+  "product": {
+    "product_id": "FIXTURE-DH-VASE-SERENITY",
+    "title": "Dohara Serenity Porcelain Vase",
+    "sku": "DH-VASE-SERENITY",
+    "image_url": "03_ASSETS/product_fixture/dohara_serenity_porcelain_vase.png",
+    "category": "Home Decor · Vases",
+    "quantity": 1,
+    "item_count": 1,
+    "unit_price": 128.0,
+    "item_total": 128.0,
+    "currency": "USD"
+  },
+  "billing": {
+    "item_total": 128.0,
+    "shipping_fee": 18.0,
+    "tax_amount": 28.4,
+    "import_duty_amount": 0.0,
+    "total_paid": 174.4,
+    "currency": "USD",
+    "payment_id": "PAY202405160001",
+    "payment_method_label": "VISA •••• 4242",
+    "paid_at": "2024-05-16T10:30:00"
+  },
+  "invoice": {
+    "invoice_id": "INV202405160001",
+    "status": "issued",
+    "issued_at": "2024-05-16T10:31:00",
+    "detail_route": null
+  },
+  "shipping": {
+    "carrier_name": "DHL Express",
+    "tracking_number": "DOH202405160001CN",
+    "shipping_method": "CN Cross-border Shipment",
+    "estimated_delivery_start": "2024-05-22",
+    "estimated_delivery_end": "2024-05-29",
+    "delivered_at": null,
+    "recipient_name": "Lena Dohara",
+    "address_display": "123 Serenity Lane, San Francisco, CA 94107, United States",
+    "customs_required": true
+  },
+  "return_policy": {
+    "return_unlocked": false,
+    "return_eligible_until": null,
+    "refund_method": null,
+    "pre_delivery_message": "Return window starts after delivery."
+  },
+  "shipment_progress": [
+    {
+      "key": "order_placed",
+      "label": "Order Placed",
+      "state": "completed",
+      "occurred_at": "2024-05-16T10:24:00",
+      "estimated_start": null,
+      "estimated_end": null,
+      "display_date": "May 16",
+      "note": null
+    },
+    {
+      "key": "payment_confirmed",
+      "label": "Payment Confirmed",
+      "state": "completed",
+      "occurred_at": "2024-05-16T10:30:00",
+      "estimated_start": null,
+      "estimated_end": null,
+      "display_date": "May 16",
+      "note": null
+    },
+    {
+      "key": "preparing_shipment",
+      "label": "Preparing Shipment",
+      "state": "completed",
+      "occurred_at": "2024-05-16T16:40:00",
+      "estimated_start": null,
+      "estimated_end": null,
+      "display_date": "May 16",
+      "note": null
+    },
+    {
+      "key": "customs_clearance",
+      "label": "Customs Clearance",
+      "state": "completed",
+      "occurred_at": "2024-05-17T11:20:00",
+      "estimated_start": null,
+      "estimated_end": null,
+      "display_date": "May 17",
+      "note": "Customs clearance completed for the fixed CN cross-border reference fixture."
+    },
+    {
+      "key": "in_transit",
+      "label": "In Transit",
+      "state": "current",
+      "occurred_at": "2024-05-18T18:30:00",
+      "estimated_start": null,
+      "estimated_end": null,
+      "display_date": "May 18",
+      "note": "The package is on the way."
+    },
+    {
+      "key": "delivered",
+      "label": "Delivered",
+      "state": "future",
+      "occurred_at": null,
+      "estimated_start": "2024-05-22",
+      "estimated_end": "2024-05-29",
+      "display_date": "Est. May 22–29",
+      "note": "Expected delivery range from the locked Final."
+    }
+  ],
+  "available_actions": [
+    "track_shipment",
+    "report_delivery_issue",
+    "view_invoice",
+    "contact_support"
+  ],
+  "recommendations": [
+    {
+      "object_id": "VISUAL-REFERENCE-01",
+      "title": "Blue Garden Porcelain Vase",
+      "price": 128.0,
+      "currency": "USD",
+      "badge": "Member Pick",
+      "image_url": "03_ASSETS/recommendations/product_01.png",
+      "image_sha256": "aea59ab810791457b4a181b3bf02c10d1e6a1cc9248c8e15dca6087d108157cf",
+      "detail_route": "/objects/VISUAL-REFERENCE-01",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-02",
+      "title": "Quiet Ember Scented Candle",
+      "price": 48.0,
+      "currency": "USD",
+      "badge": "Bestseller",
+      "image_url": "03_ASSETS/recommendations/product_02.png",
+      "image_sha256": "4f20da766db6175a4a7bc441f65b3a37390396fff735bd91e4627a336ad72b55",
+      "detail_route": "/objects/VISUAL-REFERENCE-02",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-03",
+      "title": "Dohara Blue Tea Service",
+      "price": 156.0,
+      "currency": "USD",
+      "badge": "New",
+      "image_url": "03_ASSETS/recommendations/product_03.png",
+      "image_sha256": "4349d582179c6d8ff1f5f6378b457f518823c6fd57cde91a91d80a0ab78f798a",
+      "detail_route": "/objects/VISUAL-REFERENCE-03",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-04",
+      "title": "Linen Reflection Journal",
+      "price": 32.0,
+      "currency": "USD",
+      "badge": "New",
+      "image_url": "03_ASSETS/recommendations/product_04.png",
+      "image_sha256": "d1fa0c6dd37a23b322aedb88cdcbe6e0011fb1c6e0ef1e87f7d3be64089de1b5",
+      "detail_route": "/objects/VISUAL-REFERENCE-04",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-05",
+      "title": "Clear Wind Incense Holder",
+      "price": 42.0,
+      "currency": "USD",
+      "badge": "Quiet Living",
+      "image_url": "03_ASSETS/recommendations/product_05.png",
+      "image_sha256": "82d0eb896a122c006afe27c76e1da233f5e1d014561b04231d9597a32903c14a",
+      "detail_route": "/objects/VISUAL-REFERENCE-05",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-06",
+      "title": "Mist Blue Ceramic Bowl",
+      "price": 58.0,
+      "currency": "USD",
+      "badge": "Member Pick",
+      "image_url": "03_ASSETS/recommendations/product_06.png",
+      "image_sha256": "dc05bc32bb92a85b0e74b6fa86502f48e2454ccd1a61e5fc3084afa510bb2c7d",
+      "detail_route": "/objects/VISUAL-REFERENCE-06",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-07",
+      "title": "Silk Rest Eye Mask",
+      "price": 36.0,
+      "currency": "USD",
+      "badge": "Bestseller",
+      "image_url": "03_ASSETS/recommendations/product_07.png",
+      "image_sha256": "dab7aa4fd7a061acd24fe2b16b769ba15047024aa2ddf3a29c1c4e59131650ff",
+      "detail_route": "/objects/VISUAL-REFERENCE-07",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-08",
+      "title": "Soft Light Table Lamp",
+      "price": 118.0,
+      "currency": "USD",
+      "badge": "New",
+      "image_url": "03_ASSETS/recommendations/product_08.png",
+      "image_sha256": "d3cffb458120ed0555f0405d6da7790b25d639f695be30fa90336e8a4fa52f85",
+      "detail_route": "/objects/VISUAL-REFERENCE-08",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-09",
+      "title": "Botanical Air Diffuser",
+      "price": 54.0,
+      "currency": "USD",
+      "badge": "Bestseller",
+      "image_url": "03_ASSETS/recommendations/product_09.png",
+      "image_sha256": "cc6a31e05343dc5456318bc7245cae7fdf09d741384a09eeb756894e0df2e97b",
+      "detail_route": "/objects/VISUAL-REFERENCE-09",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-10",
+      "title": "Hand-thrown Morning Mug",
+      "price": 38.0,
+      "currency": "USD",
+      "badge": "Quiet Living",
+      "image_url": "03_ASSETS/recommendations/product_10.png",
+      "image_sha256": "2ea79ce15392d38d2ef86037d98849cbbbb9c74ef346ed45544e19edaf14bdb9",
+      "detail_route": "/objects/VISUAL-REFERENCE-10",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-11",
+      "title": "Petal Jewelry Dish",
+      "price": 46.0,
+      "currency": "USD",
+      "badge": "Member Pick",
+      "image_url": "03_ASSETS/recommendations/product_11.png",
+      "image_sha256": "709f8a600b6499665784cd3a917ce092091c7b8a600538a26989205252ce2f23",
+      "detail_route": "/objects/VISUAL-REFERENCE-11",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-12",
+      "title": "Woven Calm Storage Basket",
+      "price": 72.0,
+      "currency": "USD",
+      "badge": "New",
+      "image_url": "03_ASSETS/recommendations/product_12.png",
+      "image_sha256": "315aaa93147eefcc8abb40f9ed2cf9a2fd71b97504f4d6797ec2d8f2d5fd1544",
+      "detail_route": "/objects/VISUAL-REFERENCE-12",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-13",
+      "title": "Wind Blue Table Clock",
+      "price": 86.0,
+      "currency": "USD",
+      "badge": "Member Pick",
+      "image_url": "03_ASSETS/recommendations/product_13.png",
+      "image_sha256": "371de2c73b7b17eebb3e3a72b4fd075a792101ebae6670fad4ca340e3744b26f",
+      "detail_route": "/objects/VISUAL-REFERENCE-13",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-14",
+      "title": "Blue Garden Porcelain Tray",
+      "price": 68.0,
+      "currency": "USD",
+      "badge": "Bestseller",
+      "image_url": "03_ASSETS/recommendations/product_14.png",
+      "image_sha256": "945fe96ab2d2f7acf34304ddd97b5f170a4dfa4daeee39282c529e531b5dd240",
+      "detail_route": "/objects/VISUAL-REFERENCE-14",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-15",
+      "title": "Cloud Weave Throw",
+      "price": 96.0,
+      "currency": "USD",
+      "badge": "Quiet Living",
+      "image_url": "03_ASSETS/recommendations/product_15.png",
+      "image_sha256": "413384fb53d8c11885885d025476c6b977b4d21cdeae7c88a9d60858dd65bc3f",
+      "detail_route": "/objects/VISUAL-REFERENCE-15",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    },
+    {
+      "object_id": "VISUAL-REFERENCE-16",
+      "title": "Sculptural Bloom Vessel",
+      "price": 108.0,
+      "currency": "USD",
+      "badge": "New",
+      "image_url": "03_ASSETS/recommendations/product_16.png",
+      "image_sha256": "b270c33ba8d3a477dfdce55d5b29f52d304719bb17d39938609ac5fdf81cdf0d",
+      "detail_route": "/objects/VISUAL-REFERENCE-16",
+      "detail_route_status": "REFERENCE_FIXTURE_ONLY",
+      "production_rule": "Production recommendation service must replace fixture object_id/image/route with a real published, region-allowed object and a resolvable /objects/[objectId] route before enabling product_open."
+    }
+  ]
+}
