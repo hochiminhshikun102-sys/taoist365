@@ -1361,6 +1361,440 @@
 }
 
 /* ============================================================
+   ACCOUNT_CENTER_COMMERCE_TAIL_V1
+   Order List V2.1 is the visual master. The retired large Help,
+   Policies, Coverage and Quiet Return End are no longer rendered.
+   Full-page height is natural content growth only.
+   ============================================================ */
+.mo-content {
+  height: auto !important;
+  overflow: visible !important;
+  padding-bottom: 0 !important;
+}
+.mo .compact-help {
+  width: 1304px;
+  max-width: none;
+  margin: 74px 0 0 -17px;
+  padding: 28px 0 57px;
+}
+.mo .section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.mo .section-heading > span {
+  width: 170px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #bfd4e8);
+}
+.mo .section-heading > span:last-child {
+  background: linear-gradient(90deg, #bfd4e8, transparent);
+}
+.mo .section-heading p,
+.mo .recommend-header p {
+  margin: 0 0 4px;
+  color: #7891ad;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.mo .section-heading h2,
+.mo .recommend-header h2 {
+  margin: 0;
+  color: var(--blue);
+  font: 600 35px/1.05 var(--serif);
+}
+.mo .help-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.mo .help-card {
+  height: 92px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: 56px 1fr 28px;
+  gap: 13px;
+  align-items: center;
+  color: inherit;
+}
+.mo .help-card strong {
+  display: block;
+  font: 600 20px/1.05 var(--serif);
+}
+.mo .help-card small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.mo .dh-icon-tray {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  line-height: 0;
+}
+.mo .dh-icon-tray img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  object-position: center;
+}
+.mo .dh-icon-tray--chevron {
+  width: 28px;
+  height: 28px;
+}
+.mo .dh-icon-tray--chevron img {
+  width: 20px;
+  height: 20px;
+}
+.mo .recommendations {
+  width: 1440px;
+  margin-left: -85px;
+  padding: 54px 68px 64px;
+  border-top: 1px solid #edf4fa;
+  background: linear-gradient(180deg, #fff 0%, #f6faff 100%);
+}
+.mo .recommend-header {
+  max-width: 1304px;
+  margin: 0 auto 30px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.mo .recommend-header h2 {
+  font-size: 42px;
+}
+.mo .recommend-header small {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.mo .recommend-header > a {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #9dbddd;
+  color: var(--blue2);
+  font-size: 14px;
+  font-weight: 600;
+}
+.mo .product-grid {
+  max-width: 1304px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 26px 20px;
+}
+.mo .product-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(35, 83, 129, 0.055);
+}
+.mo .product-image {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: #f3f7fb;
+}
+.mo .product-image > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.mo .product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mo .product-image > span {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 10px;
+  font-weight: 600;
+}
+.mo .product-image button {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 2;
+  width: 33px;
+  height: 33px;
+  border: 1px solid #c7d9ea;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 20px;
+  line-height: 28px;
+}
+.mo .product-copy {
+  min-height: 131.25px;
+  padding: 16px 17px 18px;
+}
+.mo .product-copy h3 {
+  height: 43px;
+  margin: 0;
+  font: 600 21px/1.05 var(--serif);
+}
+.mo .product-copy p {
+  margin: 8px 0 5px;
+  color: #ed770a;
+  font-size: 17px;
+  font-weight: 600;
+}
+.mo .product-copy small {
+  color: var(--muted);
+  font-size: 10px;
+}
+.mo .feed-more {
+  margin: 44px auto 0;
+  text-align: center;
+}
+.mo .feed-more > a {
+  height: 46px;
+  padding: 0 28px;
+  border: 1px solid #8eb5da;
+  border-radius: 24px;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+.mo .feed-more small {
+  display: block;
+  margin-top: 10px;
+  color: #8ba0b8;
+  font-size: 10px;
+}
+.mo .light-footer {
+  padding: 30px 58px 22px;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+.mo .light-footer nav {
+  max-width: 1304px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid #e1ebf4;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.mo .light-footer nav span {
+  padding: 16px 12px;
+  border-right: 1px solid #e1ebf4;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+.mo .light-footer nav span:last-child {
+  border-right: 0;
+}
+.mo .light-footer > div {
+  max-width: 1304px;
+  margin: 20px auto 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #7890a9;
+  font-size: 9px;
+}
+.mo .light-footer > div i {
+  width: 1px;
+  height: 9px;
+  background: #cad8e6;
+}
+.mo .light-footer > div small,
+.mo .light-footer > div a {
+  margin-left: auto;
+}
+
+@media (max-width: 600px) {
+  .mo-content {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .mo .compact-help {
+    width: 390px;
+    margin: 0;
+    padding: 20px 11px 48px;
+  }
+  .mo .section-heading {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .mo .section-heading > span {
+    width: 52px;
+  }
+  .mo .section-heading p,
+  .mo .recommend-header p {
+    font-size: 7px;
+  }
+  .mo .section-heading h2 {
+    font-size: 25px;
+  }
+  .mo .help-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .mo .help-card {
+    height: 68px;
+    padding: 8px;
+    border-radius: 9px;
+    grid-template-columns: 36px 1fr 20px;
+    gap: 6px;
+  }
+  .mo .help-card strong {
+    font-size: 12px;
+  }
+  .mo .help-card small {
+    margin-top: 3px;
+    font-size: 6px;
+  }
+  .mo .dh-icon-tray {
+    width: 32px;
+    height: 32px;
+  }
+  .mo .dh-icon-tray img {
+    width: 24px;
+    height: 24px;
+  }
+  .mo .dh-icon-tray--chevron {
+    width: 20px;
+    height: 20px;
+  }
+  .mo .dh-icon-tray--chevron img {
+    width: 14px;
+    height: 14px;
+  }
+  .mo .recommendations {
+    width: 390px;
+    margin: 0;
+    padding: 42px 11px 50px;
+  }
+  .mo .recommend-header {
+    margin-bottom: 18px;
+    align-items: flex-end;
+    gap: 8px;
+  }
+  .mo .recommend-header h2 {
+    font-size: 28px;
+  }
+  .mo .recommend-header small {
+    max-width: 245px;
+    margin-top: 6px;
+    font-size: 8px;
+    line-height: 1.3;
+  }
+  .mo .recommend-header > a {
+    padding-bottom: 2px;
+    font-size: 7px;
+    white-space: nowrap;
+  }
+  .mo .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15.8px 9px;
+  }
+  .mo .product-card:nth-child(n + 13) {
+    display: none;
+  }
+  .mo .product-card {
+    border-radius: 10px;
+  }
+  .mo .product-image > span {
+    left: 6px;
+    top: 6px;
+    padding: 4px 5px;
+    font-size: 5px;
+  }
+  .mo .product-image button {
+    right: 6px;
+    top: 6px;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .mo .product-copy {
+    min-height: 95.333px;
+    padding: 9px 9px 11px;
+  }
+  .mo .product-copy h3 {
+    height: 32px;
+    font-size: 14px;
+  }
+  .mo .product-copy p {
+    margin: 6px 0 3px;
+    font-size: 12px;
+  }
+  .mo .product-copy small {
+    font-size: 5px;
+  }
+  .mo .feed-more {
+    margin-top: 26px;
+  }
+  .mo .feed-more > a {
+    height: 37px;
+    padding: 0 18px;
+    font-size: 9px;
+  }
+  .mo .feed-more small {
+    font-size: 6px;
+  }
+  .mo .light-footer {
+    width: 390px;
+    padding: 18px 11px 28px;
+  }
+  .mo .light-footer nav {
+    border-radius: 8px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mo .light-footer nav span {
+    padding: 10px 5px;
+    border-bottom: 1px solid #e1ebf4;
+    font-size: 7px;
+  }
+  .mo .light-footer nav span:nth-child(2) {
+    border-right: 0;
+  }
+  .mo .light-footer nav span:nth-child(n + 3) {
+    border-bottom: 0;
+  }
+  .mo .light-footer > div {
+    margin-top: 13px;
+    gap: 5px;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 5px;
+  }
+  .mo .light-footer > div small {
+    order: 2;
+    width: 100%;
+    margin: 2px 0 0;
+    text-align: center;
+  }
+  .mo .light-footer > div a {
+    margin-left: auto;
+  }
+}
+
+/* ============================================================
    Work Facai visual translation R1
    Final section rhythm is authoritative. Heights below describe
    real content sections; they do not pad a short page.

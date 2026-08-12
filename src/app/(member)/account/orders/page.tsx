@@ -7,6 +7,7 @@ import "./fonts.css";
 import "./mo.css";
 import copy from "./copy_lock.locked.json";
 import links from "./link_intent.locked.json";
+import { CommerceTail } from "@/components/my-orders/CommerceTail";
 
 export const metadata: Metadata = {
   title: "My Orders · Page Input V1.3 Visual Trial",
@@ -39,19 +40,6 @@ const RECENT_ICON = [
   "recent_records/03_return.png",
   "recent_records/04_invoice.png",
 ];
-const HELP_ICON: Record<string, string> = {
-  faq: "need_help/01_faq.png",
-  shipping_delivery: "need_help/02_shipping_delivery.png",
-  returns_after_sales: "need_help/03_returns_after_sales.png",
-  support_center: "need_help/04_support_center.png",
-};
-/** Shared End — package semantic paths only (not start_here / order_policies substitutes). */
-const END_ICON: Record<string, string> = {
-  help_support: "end/01_help_support.png",
-  shipping_returns: "end/02_shipping_returns.png",
-  privacy_security: "end/03_privacy_security.png",
-  policies_guidelines: "end/04_policies_guidelines.png",
-};
 const PILL: Record<string, string> = {
   Delivered: "blue",
   Paid: "green",
@@ -62,8 +50,6 @@ const PILL: Record<string, string> = {
 export default function AccountOrdersPage() {
   const statusHref = links.status_cards as Record<string, string>;
   const startHref = links.start_here as Record<string, string>;
-  const helpHref = links.need_help as Record<string, string>;
-  const endHref = links.shared_end as Record<string, string>;
   const recentHref = [
     links.recent_records.order,
     links.recent_records.payment,
@@ -220,122 +206,24 @@ export default function AccountOrdersPage() {
           </div>
         </section>
 
-        <section className="mo-help" data-layer="need-help">
-          <h2>{copy.section_titles.need_help}</h2>
-          <div className="mo-help-grid">
-            {copy.need_help.map((item) => (
-              <a key={item.key} className="mo-help-card mo-card" href={helpHref[item.key]}>
-                <img
-                  src={`${I}/${HELP_ICON[item.key]}`}
-                  alt=""
-                  data-asset={`icons/${HELP_ICON[item.key]}`}
-                />
-                <div>
-                  <strong>{item.title}</strong>
-                  <p>{item.description}</p>
-                </div>
-                <img className="chev" src={CHEV} alt="" data-asset="icons/common/chevron_right.png" />
-              </a>
-            ))}
-          </div>
-        </section>
-
-        <a
-          className="mo-policy mo-card"
-          data-layer="order-policies"
-          href={links.order_policies}
-        >
-          <picture>
-            <source
-              media="(max-width:600px)"
-              srcSet={`${I}/order_policies/mobile_order_policies_exact_final_80x80.png`}
-            />
-            <img
-              className="mo-policy-icon"
-              src={`${I}/order_policies/pc_order_policies_exact_final_96x96.png`}
-              alt=""
-              data-asset="icons/order_policies/pc|mobile_order_policies_exact_final_*"
-            />
-          </picture>
-          <span className="mo-policy-copy">
-            <strong>{copy.order_policies.title}</strong>
-            <small>{copy.order_policies.description}</small>
-          </span>
-          <img
-            className="chev"
-            src={CHEV}
-            alt=""
-            data-asset="icons/common/chevron_right.png"
-            data-chevron-standard="ARROW_PLUS_LEAF"
-          />
-        </a>
-
-        <section className="mo-coverage" data-layer="coverage" aria-label="Coverage">
-          {/* V1.3.1: mobile scene = coverage_mobile_354x210 only. No End substitute. No cover-stretch. */}
-          <picture>
-            <source media="(max-width:600px)" srcSet={`${S}/mobile/coverage_mobile_354x210.png`} />
-            <img
-              className="mo-cover-scene"
-              src={`${S}/pc/coverage_pc_1255x192.png`}
-              alt=""
-              data-asset="scenes/pc|mobile/coverage_*"
-            />
-          </picture>
-          <div className="mo-cover-card">
-            <img
-              className="mo-cover-icon"
-              src={`${I}/common/coverage_information.png`}
-              alt=""
-              data-asset="icons/common/coverage_information.png"
-            />
-            <div>
-              <strong>{copy.coverage.title}</strong>
-              <p>{copy.coverage.body}</p>
-            </div>
-          </div>
-        </section>
+        <CommerceTail />
       </main>
 
-      <footer className="mo-end" data-layer="end">
-        <div className="mo-end-grid">
-          {copy.shared_end.cards.map((card) => (
-            <a key={card.key} className="mo-end-card" href={endHref[card.key]}>
-              <span className="mo-end-glyph" aria-hidden="true">
-                <img
-                  src={`${I}/${END_ICON[card.key]}`}
-                  alt=""
-                  data-asset={`icons/${END_ICON[card.key]}`}
-                />
-              </span>
-              <div>
-                <strong>{card.title}</strong>
-                <p>{card.description}</p>
-              </div>
-              <img
-                className="chev"
-                src={CHEV}
-                alt=""
-                data-asset="icons/common/chevron_right.png"
-                data-chevron-standard="ARROW_PLUS_LEAF"
-              />
-            </a>
+      <footer className="light-footer" data-layer="end" data-tail-section="light-footer">
+        <nav>
+          {[
+            ["Help & Support", "/account/support"],
+            ["Shipping & Returns", "/account/policies/shipping-returns"],
+            ["Privacy & Security", "/account/settings/privacy"],
+            ["Policies & Guidelines", "/account/policies"],
+          ].map(([label, href]) => (
+            <span key={label} role="link" aria-disabled="true" data-route-status="DISABLED_UNTIL_READY" data-href={href}>{label}</span>
           ))}
-        </div>
-        <div className="mo-foot">
-          <nav>
-            <a href={endHref.terms}>{copy.shared_end.footer_links[0]}</a>
-            <span>|</span>
-            <a href={endHref.privacy}>{copy.shared_end.footer_links[1]}</a>
-            <span>|</span>
-            <a href={endHref.accessibility}>{copy.shared_end.footer_links[2]}</a>
-            <span>|</span>
-            <a href={endHref.sitemap}>{copy.shared_end.footer_links[3]}</a>
-          </nav>
-          <span className="copy">{copy.shared_end.copyright}</span>
-          <a className="top" href={endHref.back_to_top}>
-            {copy.shared_end.back_to_top}
-            <img src={CHEV} alt="" data-asset="icons/common/chevron_right.png" />
-          </a>
+        </nav>
+        <div>
+          <span>Terms</span><i /><span>Privacy</span><i /><span>Accessibility</span><i /><span>Sitemap</span>
+          <small>© 2026 DOHARA. All rights reserved.</small>
+          <a href="#top">Back to top ↑</a>
         </div>
       </footer>
     </div>
