@@ -45,9 +45,9 @@
 .dh-ov2 .hero-copy h1{font-family:DHOverviewCormorant;font-size:76px;line-height:1;margin:0;font-weight:600}
 .dh-ov2 .gold-rule{display:block;width:66px;height:4px;background:var(--gold);margin:28px 0 28px;border-radius:3px}
 .dh-ov2 .hero-copy p{font-size:23px;line-height:1.55;margin:0;width:540px;color:#244f7e}
-.dh-ov2 .account-content{width:1270px;height:2411px;margin:0 auto;padding-top:32px}
+.dh-ov2 .account-content{width:1270px;height:auto;margin:0 auto;padding-top:32px}
 .dh-ov2 .primary-grid{height:600px;display:grid;grid-template-columns:repeat(3,406px);grid-auto-rows:135px;gap:20px 26px}
-.dh-ov2 .entry-card,.dh-ov2 .service-card,.dh-ov2 .support-card,.dh-ov2 .end-card,.dh-ov2 .recent-panel,.dh-ov2 .journey-card,.dh-ov2 .stats-strip,.dh-ov2 .wind-banner,.dh-ov2 .wind-status{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.96);box-shadow:var(--shadow)}
+.dh-ov2 .entry-card,.dh-ov2 .service-card,.dh-ov2 .support-card,.dh-ov2 .recent-panel,.dh-ov2 .journey-card,.dh-ov2 .stats-strip,.dh-ov2 .wind-banner,.dh-ov2 .wind-status{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.96);box-shadow:var(--shadow)}
 .dh-ov2 .entry-card{position:relative;display:flex;align-items:center;padding:18px;gap:18px;text-align:left;overflow:hidden}
 .dh-ov2 button.entry-card{width:100%;color:inherit;cursor:pointer}
 .dh-ov2 .entry-card>.ui-icon:first-child{width:72px;height:72px;object-fit:contain;flex:0 0 72px}
@@ -110,20 +110,6 @@
 .dh-ov2 .support-card{height:140px;min-height:0;display:grid;grid-template-columns:62px 1fr 16px;align-items:center;align-content:center;padding:16px;gap:8px;overflow:hidden}
 .dh-ov2 .support-card>.ui-icon:first-child{width:56px;height:56px}
 .dh-ov2 .support-card>.ui-icon:last-child{width:16px;height:16px}
-/* ---- Directed Refinement R1: Quiet Return End (hero_end_geometry.locked.json) ----
-   Scene plate = natural scene only; panel/cards/footer drawn by real DOM. */
-.dh-ov2 .account-end{height:280px;background:linear-gradient(rgba(248,252,255,.32),rgba(248,252,255,.42)),url("/dh/account/overview/assets/images/quiet_return_end_pc_clean_scene_1440x280.png");background-size:cover;background-position:center;border-top:1px solid #e8f0f8;padding-top:27px}
-.dh-ov2 .end-grid{width:1376px;height:189px;margin:0 auto;display:grid;grid-template-columns:repeat(4,308px);grid-auto-rows:104px;column-gap:32px;align-content:start;padding:25px 0 0 25px;background:rgba(255,255,255,.34);border:1px solid rgba(216,231,245,.5);border-radius:16px;box-shadow:0 2px 12px rgba(26,94,162,.04)}
-.dh-ov2 .end-card{height:104px;display:grid;grid-template-columns:52px 1fr 14px;align-items:center;padding:16px 18px;gap:10px;border:1px solid rgba(214,229,244,.5);border-radius:14px;background:rgba(255,255,255,.5);box-shadow:0 2px 7px rgba(26,94,162,.045)}
-.dh-ov2 .end-card>.ui-icon:first-child{width:52px;height:52px}
-.dh-ov2 .end-card>.ui-icon:last-child{width:14px;height:14px}
-.dh-ov2 .end-card .card-title{font-size:21px}
-.dh-ov2 .end-card .card-desc{font-size:11px}
-.dh-ov2 .footer-row{height:auto;margin-top:22px;padding:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;font-size:10px;color:#8399b0}
-.dh-ov2 .footer-row .legal-links{margin-left:57px}
-.dh-ov2 .footer-row .back-top{margin-right:115px}
-.dh-ov2 .legal-links{display:flex;gap:7px}
-.dh-ov2 .back-top{justify-self:end}
 /* ---- V0.3 Final Correction: unified circular DH small-mark holders (PC) ----
    small_mark_optical_alignment.locked.json — one holder per repeated row so every
    sibling shares one top + centerline; visible mark centered; image <=72% of holder.
@@ -138,7 +124,6 @@
 .dh-ov2 .dh-holder--recent_activity{width:28px;height:28px;transform:translateY(0)}
 .dh-ov2 .dh-holder--services{width:62px;height:62px;transform:translateY(0)}
 .dh-ov2 .dh-holder--support{width:56px;height:56px;transform:translateY(0)}
-.dh-ov2 .dh-holder--quiet_return_end{width:52px;height:52px;transform:translateY(0)}
 /* WindKeep brand slot: same outer size as sibling holders, NO circular DH ring. */
 .dh-ov2 .dh-brand-mark{display:grid;place-items:center;flex:0 0 auto;background:transparent;border:0;box-shadow:none;overflow:visible}
 .dh-ov2 .dh-brand-mark .dh-mark-img{width:100%;height:100%;object-fit:contain}
@@ -147,14 +132,13 @@
 .dh-ov2 .entry-card>.dh-holder,.dh-ov2 .entry-card>.dh-brand-mark{flex:0 0 72px}
 .dh-ov2 .service-card>.dh-holder{align-self:start;justify-self:center}
 .dh-ov2 .support-card>.dh-holder{align-self:center;justify-self:center}
-.dh-ov2 .end-card>.dh-holder{justify-self:center}
 .dh-ov2 .stat>.dh-holder,.dh-ov2 .stat>.dh-brand-mark{margin-bottom:6px}
 .dh-ov2 .activity-row>.dh-holder{justify-self:center}
 .dh-ov2 .ui-icon{object-fit:contain}
 .dh-ov2 .wind-status-mark{justify-self:start}
 .dh-ov2 .clean .slot-text,.dh-ov2 .clean .gold-rule,.dh-ov2 .clean .ui-icon,.dh-ov2 .clean .header-logo,.dh-ov2 .clean .avatar,.dh-ov2 .clean .wind-mark,.dh-ov2 .clean .wind-status-mark,.dh-ov2 .clean .gate-lock,.dh-ov2 .clean .legal-links>span,.dh-ov2 .clean .back-top,.dh-ov2 .clean .profile-control>span{visibility:hidden!important}
 .dh-ov2 .clean .media-image{visibility:visible!important}
-.dh-ov2 .clean .entry-card,.dh-ov2 .clean .service-card,.dh-ov2 .clean .support-card,.dh-ov2 .clean .end-card,.dh-ov2 .clean .journey-card,.dh-ov2 .clean .recent-panel,.dh-ov2 .clean .stats-strip,.dh-ov2 .clean .wind-status{color:transparent}
+.dh-ov2 .clean .entry-card,.dh-ov2 .clean .service-card,.dh-ov2 .clean .support-card,.dh-ov2 .clean .journey-card,.dh-ov2 .clean .recent-panel,.dh-ov2 .clean .stats-strip,.dh-ov2 .clean .wind-status{color:transparent}
 @media(max-width:600px){
 .dh-ov2 .pc-only{display:none!important}
 .dh-ov2 .mobile-only{display:grid!important}
@@ -164,7 +148,6 @@
 .dh-ov2 .dh-holder--recent_activity{width:24px;height:24px}
 .dh-ov2 .dh-holder--services{width:34px;height:34px}
 .dh-ov2 .dh-holder--support{width:30px;height:30px}
-.dh-ov2 .dh-holder--quiet_return_end{width:30px;height:30px}
 .dh-ov2 .entry-card>.dh-holder,.dh-ov2 .entry-card>.dh-brand-mark{flex:0 0 36px}
 .dh-ov2 .dh-brand-mark--primary_entry{width:36px;height:36px}
 .dh-ov2 .dh-brand-mark--summary_stat{width:40px;height:40px}
@@ -190,7 +173,7 @@
 /* Hero: body up ~15px; gold rule vertically centered between title and body (X unchanged) */
 .dh-ov2 .gold-rule{width:38px;height:2px;margin:12px 0 12px}
 .dh-ov2 .hero-copy p{font-size:9px;line-height:1.55;width:150px}
-.dh-ov2 .account-content{width:354px;height:2744px;padding-top:20px}
+.dh-ov2 .account-content{width:354px;height:auto;padding-top:20px}
 .dh-ov2 .primary-grid{height:700px;grid-template-columns:repeat(2,170px);grid-auto-rows:100px;gap:20px 14px}
 .dh-ov2 .entry-card{padding:10px;gap:7px;border-radius:12px}
 .dh-ov2 .entry-card>.ui-icon:first-child{width:36px;height:36px;flex-basis:36px}
@@ -246,22 +229,102 @@
 .dh-ov2 .wind-status p{display:none}
 .dh-ov2 .wind-status>a{height:48px;border:0;font-size:0}
 .dh-ov2 .wind-status>a:after{content:"›";font-size:18px}
-.dh-ov2 .support-grid{height:304px;margin-top:8px;grid-template-columns:354px;grid-template-rows:repeat(4,70px);gap:8px}
+.dh-ov2 .support-grid{height:226px;margin-top:8px;grid-template-columns:354px;grid-template-rows:repeat(3,70px);gap:8px}
 .dh-ov2 .support-card{height:70px;grid-template-columns:40px 1fr 12px;padding:8px 10px;align-items:center}
 .dh-ov2 .support-card>.ui-icon:last-child{width:10px;height:10px}
 .dh-ov2 .support-card .card-title{font-size:12px}
 .dh-ov2 .support-card .card-desc{font-size:6px;margin-top:2px}
-.dh-ov2 .account-end{height:220px;padding-top:14px;background:linear-gradient(rgba(248,252,255,.3),rgba(248,252,255,.4)),url("/dh/account/overview/assets/images/quiet_return_end_mobile_clean_scene_390x220.png");background-size:cover;background-position:center}
-.dh-ov2 .end-grid{width:365px;height:129px;margin:0 0 0 13px;grid-template-columns:repeat(2,176px);grid-template-rows:repeat(2,59px);column-gap:13px;row-gap:11px;padding:0;background:transparent;border:0;box-shadow:none;align-content:start}
-.dh-ov2 .end-card{height:59px;grid-template-columns:30px 1fr 8px;padding:8px;gap:5px;background:rgba(255,255,255,.5);border:1px solid rgba(214,229,244,.5);box-shadow:0 1px 5px rgba(26,94,162,.04)}
-.dh-ov2 .end-card>.ui-icon:first-child{width:30px;height:30px}
-.dh-ov2 .end-card>.ui-icon:last-child{width:8px;height:8px}
-.dh-ov2 .end-card .card-title{font-size:10px}
-.dh-ov2 .end-card .card-desc{font-size:5.5px;margin-top:2px}
-.dh-ov2 .footer-row{height:auto;margin-top:23px;padding:0 13px;grid-template-columns:1fr auto;grid-template-rows:auto auto;row-gap:20px;font-size:5.5px;color:#8399b0}
-.dh-ov2 .footer-row .legal-links{margin-left:0}
-.dh-ov2 .footer-row .back-top{margin-right:0}
-.dh-ov2 .legal-links{gap:3px}
-.dh-ov2 .copyright{grid-column:1/3;grid-row:2;justify-self:center}
-.dh-ov2 .back-top{grid-column:2;grid-row:1}
+}
+
+/* ============================================================
+   ACCOUNT_CENTER_COMMERCE_TAIL_V1 · Overview binding
+   The Overview business body ends at Account Notes. The retired
+   duplicate Help card and Quiet Return End are not rendered.
+   ============================================================ */
+.dh-ov2 .compact-help,
+.dh-ov2 .recommendations,
+.dh-ov2 .light-footer {
+  line-height: normal;
+}
+.dh-ov2 .compact-help{width:1270px;margin:42px 0 0;padding:28px 0 57px}
+.dh-ov2 .tail-section-heading{display:flex;align-items:center;justify-content:center;gap:28px;margin-bottom:24px;text-align:center}
+.dh-ov2 .tail-section-heading>span{width:170px;height:1px;background:linear-gradient(90deg,transparent,#bfd4e8)}
+.dh-ov2 .tail-section-heading>span:last-child{background:linear-gradient(90deg,#bfd4e8,transparent)}
+.dh-ov2 .tail-section-heading p,.dh-ov2 .recommend-header p{margin:0 0 4px;color:#7891ad;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.dh-ov2 .tail-section-heading h2,.dh-ov2 .recommend-header h2{margin:0;color:var(--blue);font:600 35px/1.05 DHOverviewCormorant,serif}
+.dh-ov2 .tail-help-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.dh-ov2 .tail-help-card{height:92px;padding:14px 18px;border:1px solid var(--line);border-radius:14px;background:#fff;display:grid;grid-template-columns:56px 1fr 28px;gap:13px;align-items:center;color:inherit}
+.dh-ov2 .tail-help-card strong{display:block;font:600 20px/1.05 DHOverviewCormorant,serif}
+.dh-ov2 .tail-help-card small{display:block;margin-top:5px;color:#587594;font-size:11px}
+.dh-ov2 .tail-icon-tray{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;line-height:0}
+.dh-ov2 .tail-icon-tray img{width:32px;height:32px;object-fit:contain;object-position:center}
+.dh-ov2 .tail-icon-tray--chevron{width:28px;height:28px}
+.dh-ov2 .tail-icon-tray--chevron img{width:20px;height:20px}
+.dh-ov2 .recommendations{width:1440px;margin-left:-85px;padding:54px 68px 64px;border-top:1px solid #edf4fa;background:linear-gradient(180deg,#fff 0%,#f6faff 100%)}
+.dh-ov2 .recommend-header{max-width:1304px;margin:0 auto 30px;display:flex;align-items:flex-end;justify-content:space-between}
+.dh-ov2 .recommend-header h2{font-size:42px}
+.dh-ov2 .recommend-header small{display:block;margin-top:10px;color:#587594;font-size:14px}
+.dh-ov2 .recommend-header>a{padding-bottom:5px;border-bottom:1px solid #9dbddd;color:var(--blue2);font-size:14px;font-weight:600}
+.dh-ov2 .product-grid{max-width:1304px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:26px 20px}
+.dh-ov2 .product-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:0 10px 30px rgba(35,83,129,.055)}
+.dh-ov2 .product-image{position:relative;overflow:hidden;aspect-ratio:1/1;background:#f3f7fb}
+.dh-ov2 .product-image>a{display:block;width:100%;height:100%}
+.dh-ov2 .product-image img{width:100%;height:100%;object-fit:cover;display:block}
+.dh-ov2 .product-image>span{position:absolute;left:12px;top:12px;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.9);font-size:10px;font-weight:600}
+.dh-ov2 .product-image button{position:absolute;right:12px;top:12px;z-index:2;width:33px;height:33px;border:1px solid #c7d9ea;border-radius:50%;background:rgba(255,255,255,.92);font-size:20px;line-height:28px}
+.dh-ov2 .product-copy{min-height:131px;padding:16px 17px 18px}
+.dh-ov2 .product-copy h3{height:43px;margin:0;font:600 21px/1.05 DHOverviewCormorant,serif}
+.dh-ov2 .product-copy p{margin:8px 0 5px;color:#ed770a;font-size:17px;font-weight:600}
+.dh-ov2 .product-copy small{color:#587594;font-size:10px}
+.dh-ov2 .feed-more{margin:44px auto 0;text-align:center}
+.dh-ov2 .feed-more>a{height:46px;padding:0 28px;border:1px solid #8eb5da;border-radius:24px;background:#fff;display:inline-flex;align-items:center;font-size:13px;font-weight:600}
+.dh-ov2 .feed-more small{display:block;margin-top:10px;color:#8ba0b8;font-size:10px}
+.dh-ov2 .light-footer{padding:30px 58px 22px;border-top:1px solid var(--line);background:#fff}
+.dh-ov2 .light-footer nav{max-width:1304px;margin:0 auto;overflow:hidden;border:1px solid #e1ebf4;border-radius:12px;display:grid;grid-template-columns:repeat(4,1fr)}
+.dh-ov2 .light-footer nav a{padding:16px 12px;border-right:1px solid #e1ebf4;text-align:center;font-size:12px;font-weight:600}
+.dh-ov2 .light-footer nav a:last-child{border-right:0}
+.dh-ov2 .light-footer>div{max-width:1304px;margin:20px auto 0;display:flex;align-items:center;gap:10px;color:#7890a9;font-size:9px}
+.dh-ov2 .light-footer>div i{width:1px;height:9px;background:#cad8e6}
+.dh-ov2 .light-footer>div small{margin-left:auto}
+.dh-ov2 .light-footer>div a:last-child{margin-left:auto}
+
+@media(max-width:600px){
+.dh-ov2 .compact-help{width:354px;margin:20px 0 0;padding:20px 0 48px}
+.dh-ov2 .tail-section-heading{gap:12px;margin-bottom:16px}
+.dh-ov2 .tail-section-heading>span{width:52px}
+.dh-ov2 .tail-section-heading p,.dh-ov2 .recommend-header p{font-size:7px}
+.dh-ov2 .tail-section-heading h2{font-size:25px}
+.dh-ov2 .tail-help-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+.dh-ov2 .tail-help-card{height:68px;padding:8px;border-radius:9px;grid-template-columns:36px 1fr 20px;gap:6px}
+.dh-ov2 .tail-help-card strong{font-size:12px}
+.dh-ov2 .tail-help-card small{margin-top:3px;font-size:6px}
+.dh-ov2 .tail-icon-tray{width:32px;height:32px}
+.dh-ov2 .tail-icon-tray img{width:24px;height:24px}
+.dh-ov2 .tail-icon-tray--chevron{width:20px;height:20px}
+.dh-ov2 .tail-icon-tray--chevron img{width:14px;height:14px}
+.dh-ov2 .recommendations{width:390px;margin-left:-18px;padding:42px 11px 50px}
+.dh-ov2 .recommend-header{margin-bottom:18px;align-items:flex-end;gap:8px}
+.dh-ov2 .recommend-header h2{font-size:28px}
+.dh-ov2 .recommend-header small{max-width:245px;margin-top:6px;font-size:8px;line-height:1.3}
+.dh-ov2 .recommend-header>a{padding-bottom:2px;font-size:7px;white-space:nowrap}
+.dh-ov2 .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 9px}
+.dh-ov2 .product-card:nth-child(n+13){display:none}
+.dh-ov2 .product-card{border-radius:10px}
+.dh-ov2 .product-image>span{left:6px;top:6px;padding:4px 5px;font-size:5px}
+.dh-ov2 .product-image button{right:6px;top:6px;width:24px;height:24px;font-size:14px;line-height:20px}
+.dh-ov2 .product-copy{min-height:95px;padding:9px 9px 11px}
+.dh-ov2 .product-copy h3{height:32px;font-size:14px}
+.dh-ov2 .product-copy p{margin:6px 0 3px;font-size:12px}
+.dh-ov2 .product-copy small{font-size:5px}
+.dh-ov2 .feed-more{margin-top:26px}
+.dh-ov2 .feed-more>a{height:37px;padding:0 18px;font-size:9px}
+.dh-ov2 .feed-more small{font-size:6px}
+.dh-ov2 .light-footer{width:390px;padding:18px 11px 28px}
+.dh-ov2 .light-footer nav{border-radius:8px;grid-template-columns:repeat(2,1fr)}
+.dh-ov2 .light-footer nav a{padding:10px 5px;border-bottom:1px solid #e1ebf4;font-size:7px}
+.dh-ov2 .light-footer nav a:nth-child(2){border-right:0}
+.dh-ov2 .light-footer nav a:nth-child(n+3){border-bottom:0}
+.dh-ov2 .light-footer>div{margin-top:13px;gap:5px;flex-wrap:wrap;justify-content:center;font-size:5px}
+.dh-ov2 .light-footer>div small{order:2;width:100%;margin:2px 0 0;text-align:center}
+.dh-ov2 .light-footer>div a:last-child{margin-left:auto}
 }

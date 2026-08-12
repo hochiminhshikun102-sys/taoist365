@@ -8,6 +8,7 @@
  * small_mark_optical_alignment, wind_seeker_final. Copy unchanged.
  */
 import type { Metadata } from "next";
+import { AccountCommerceTail } from "@/components/account-overview/AccountCommerceTail";
 import "./dh-ov2.css";
 
 export const metadata: Metadata = {
@@ -341,52 +342,25 @@ export default function AccountOverviewV02TrialPage() {
           <CardWithChevron cls="support-card" copyCls="support-copy" group="support" cid="support_center" icon={TRIM("support")} href="/account/support" title="Support Center" desc="Get help with your account, orders, or questions." />
           <CardWithChevron cls="support-card" copyCls="support-copy" group="support" cid="support_policies" icon={TRIM("security")} href="/account/policies" title="Policies & Guidelines" desc="Review privacy, security, terms, and community rules." />
           <CardWithChevron cls="support-card" copyCls="support-copy" group="support" cid="support_notes" icon={TRIM("information")} href="/account/notes" title="Account Notes" desc="Important updates and information for you." />
-          <CardWithChevron cls="support-card" copyCls="support-copy" group="support" cid="support_help" icon={TRIM("support")} href="/account/support" title="Help & Support" desc="Email us or start a live chat." />
         </section>
+
+        <AccountCommerceTail />
       </main>
 
-      <footer className="account-end" data-layer="end">
-        <div className="end-grid">
-          <CardWithChevron cls="end-card" copyCls="end-copy" group="quiet_return_end" cid="end_help" icon={TRIM("support")} href="/account/support" title="Help & Support" desc="Account, order and service assistance" />
-          <CardWithChevron cls="end-card" copyCls="end-copy" group="quiet_return_end" cid="end_shipping" icon={TRIM("return")} href="/account/policies/shipping-returns" title="Shipping & Returns" desc="Delivery, tracking and return support" />
-          <CardWithChevron cls="end-card" copyCls="end-copy" group="quiet_return_end" cid="end_privacy" icon={TRIM("security")} href="/account/settings/privacy-security" title="Privacy & Security" desc="Privacy, sign-in and data controls" />
-          <CardWithChevron cls="end-card" copyCls="end-copy" group="quiet_return_end" cid="end_policies" icon={TRIM("information")} href="/account/policies" title="Policies & Guidelines" desc="Service rules and community standards" />
-        </div>
-        <div className="footer-row">
-          <nav className="legal-links" aria-label="Legal">
-            <a data-control-id="footer_terms" href="/account/policies/terms">
-              <span className="slot-text" data-slot-id="footer_terms_text">
-                Terms
-              </span>
-            </a>{" "}
-            <span aria-hidden="true">|</span>{" "}
-            <a data-control-id="footer_privacy" href="/account/policies/privacy">
-              <span className="slot-text" data-slot-id="footer_privacy_text">
-                Privacy
-              </span>
-            </a>{" "}
-            <span aria-hidden="true">|</span>{" "}
-            <a data-control-id="footer_accessibility" href="/account/policies/accessibility">
-              <span className="slot-text" data-slot-id="footer_accessibility_text">
-                Accessibility
-              </span>
-            </a>{" "}
-            <span aria-hidden="true">|</span>{" "}
-            <a data-control-id="footer_sitemap" href="/sitemap">
-              <span className="slot-text" data-slot-id="footer_sitemap_text">
-                Sitemap
-              </span>
-            </a>
-          </nav>
-          <span className="slot-text copyright" data-slot-id="footer_copyright">
-            © 2026 DOHARA. All rights reserved.
-          </span>
-          <a className="back-top" data-control-id="footer_back_to_top" href="#top">
-            ↑{" "}
-            <span className="slot-text" data-slot-id="footer_back_text">
-              Back to top
-            </span>
-          </a>
+      <footer className="light-footer" data-layer="end" data-tail-section="light-footer">
+        <nav>
+          <a href="/account/support">Help &amp; Support</a>
+          <a href="/account/policies/shipping-returns">Shipping &amp; Returns</a>
+          <a href="/account/settings/privacy-security">Privacy &amp; Security</a>
+          <a href="/account/policies">Policies &amp; Guidelines</a>
+        </nav>
+        <div>
+          <a href="/account/policies/terms">Terms</a><i />
+          <a href="/account/policies/privacy">Privacy</a><i />
+          <a href="/account/policies/accessibility">Accessibility</a><i />
+          <a href="/sitemap">Sitemap</a>
+          <small>© 2026 DOHARA. All rights reserved.</small>
+          <a href="#top">Back to top ↑</a>
         </div>
       </footer>
     </div>
