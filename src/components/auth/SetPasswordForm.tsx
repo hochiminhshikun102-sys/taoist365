@@ -45,7 +45,13 @@ export function SetPasswordForm({ flowLabel }: { flowLabel: string }) {
       setNote(result.error);
       return;
     }
-    setIdentity(result.identity);
+    setIdentity({
+      user_id: result.identity.user_id ?? null,
+      roles: Array.isArray(result.identity.roles) ? result.identity.roles : [],
+      account_status: result.identity.account_status ?? null,
+      member_id: result.identity.member_id ?? null,
+      windseeker_id: result.identity.windseeker_id ?? null,
+    });
     setPhase("success");
     setNote("Password saved. Identity is from GET /api/account/session.");
   }

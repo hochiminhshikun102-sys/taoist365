@@ -2,7 +2,12 @@ import { runAuthCallback } from "./preview-gate.js";
 
 const PASSWORD_SETUP_TYPES = new Set(["invite", "recovery"]);
 
-export function readCallbackType({ search = "", hash = "" } = {}) {
+/**
+ * @param {{ search?: string, hash?: string }} [input]
+ */
+export function readCallbackType(input = {}) {
+  const search = input.search || "";
+  const hash = input.hash || "";
   const query = new URLSearchParams(String(search).startsWith("?") ? String(search).slice(1) : String(search));
   const fragment = new URLSearchParams(String(hash).startsWith("#") ? String(hash).slice(1) : String(hash));
   return String(fragment.get("type") || query.get("type") || "")
@@ -10,20 +15,39 @@ export function readCallbackType({ search = "", hash = "" } = {}) {
     .toLowerCase();
 }
 
-export function shouldShowPasswordSetup({ type = "", authEvent = "" } = {}) {
-  if (PASSWORD_SETUP_TYPES.has(String(type).trim().toLowerCase())) return true;
-  return String(authEvent) === "PASSWORD_RECOVERY";
+/**
+ * @param {{ type?: string, authEvent?: string }} [input]
+ */
+export function shouldShowPasswordSetup(input = {}) {
+  const type = String(input.type || "")
+    .trim()
+    .toLowerCase();
+  if (PASSWORD_SETUP_TYPES.has(type)) return true;
+  return String(input.authEvent || "") === "PASSWORD_RECOVERY";
 }
 
-export async function resolveAuthCallback({
-  hostname,
-  runtimeEnv,
-  configured,
-  getSession,
-  search = "",
-  hash = "",
-  authEvent = "",
-} = {}) {
+/**
+ * @typedef {object} ResolveAuthCallbackInput
+ * @property {string} [hostname]
+ * @property {string} [runtimeEnv]
+ * @property {boolean} [configured]
+ * @property {() => Promise<{ data?: { session?: unknown }, error?: { message?: string } | null }>} [getSession]
+ * @property {string} [search]
+ * @property {string} [hash]
+ * @property {string} [authEvent]
+ */
+
+/**
+ * @param {ResolveAuthCallbackInput} [input]
+ */
+export async function resolveAuthCallback(input = {}) {
+  const hostname = input.hostname;
+  const runtimeEnv = input.runtimeEnv;
+  const configured = input.configured;
+  const getSession = input.getSession;
+  const search = input.search || "";
+  const hash = input.hash || "";
+  const authEvent = input.authEvent || "";
   const type = readCallbackType({ search, hash });
   const gate = await runAuthCallback({ hostname, runtimeEnv, configured, getSession });
   if (!gate.handled) {
@@ -41,7 +65,17 @@ export async function resolveAuthCallback({
   };
 }
 
-export async function updatePasswordAndLoadSession({ updateUser, fetchTrustedSession, password }) {
+/**
+ * @param {{
+ *   updateUser: (payload: { password: string }) => Promise<{ error?: { message?: string } | null }>,
+ *   fetchTrustedSession: () => Promise<{ status: number, body?: Record<string, unknown> }>,
+ *   password: string
+ * }} input
+ */
+export async function updatePasswordAndLoadSession(input) {
+  const updateUser = input.updateUser;
+  const fetchTrustedSession = input.fetchTrustedSession;
+  const password = input.password;
   if (typeof password !== "string" || password.length < 8) {
     return { ok: false, error: "Password is too short." };
   }
