@@ -1,0 +1,112 @@
+{
+  "objectIntakes": [
+    {
+      "id": "intake_preview_buyer_001",
+      "intake_no": "OI-PREVIEW01",
+      "source_type": "buyer_upload",
+      "identity_scope": "wind_seeker",
+      "entry_surface": "wind_seeker",
+      "supply_program": "wind_seeker",
+      "commerce_channel": "commerce_new",
+      "goods_condition": "new",
+      "source_platform": "manual",
+      "source_url": "",
+      "submitted_by": "preview-buyer",
+      "buyer_id": "preview-buyer",
+      "member_id": "",
+      "original_title": "Preview Buyer Quiet Lamp",
+      "original_description": "Redacted fixture. Not production data.",
+      "original_price": "$48.00",
+      "currency": "USD",
+      "category_hint": "wind-objects",
+      "inventory": 1,
+      "status": "review_pending",
+      "created_at": "2026-08-15T00:00:00.000Z",
+      "updated_at": "2026-08-15T00:00:00.000Z"
+    },
+    {
+      "id": "intake_preview_member_001",
+      "intake_no": "OI-PREVIEW02",
+      "source_type": "windkeep_member",
+      "identity_scope": "windkeep_member",
+      "entry_surface": "member_center",
+      "supply_program": "windkeep",
+      "commerce_channel": "windkeep_secondhand",
+      "goods_condition": "preowned",
+      "source_platform": "manual",
+      "source_url": "",
+      "submitted_by": "preview-member",
+      "buyer_id": "",
+      "member_id": "preview-member",
+      "original_title": "Preview Member Continuity Object",
+      "original_description": "Redacted fixture. Not production data.",
+      "original_price": "$36.00",
+      "currency": "USD",
+      "category_hint": "wind-objects",
+      "inventory": 1,
+      "status": "review_pending",
+      "created_at": "2026-08-15T00:00:00.000Z",
+      "updated_at": "2026-08-15T00:00:00.000Z"
+    }
+  ],
+  "objectMedia": [],
+  "objectAiDrafts": [],
+  "objectReviewQueue": [],
+  "airEngineJobs": [],
+  "objects": [
+    {
+      "id": "DH-OBJ-PREVIEW1",
+      "object_id": "DH-OBJ-PREVIEW1",
+      "intake_id": "intake_preview_published_001",
+      "source_type": "admin_upload",
+      "commerce_channel": "commerce_new",
+      "goods_condition": "new",
+      "title": "Preview Published Quiet Object",
+      "status": "published",
+      "price": "$48.00",
+      "currency": "USD"
+    }
+  ],
+  "assetRegistry": [],
+  "commerceOrders": [
+    {
+      "id": "DH-ORD-PREVIEW",
+      "order_id": "order_preview_001",
+      "status": "request_received",
+      "payment_status": "pending_manual_confirmation",
+      "fulfillment_status": "not_started",
+      "contact": {
+        "name": "Preview Buyer",
+        "email": "preview.buyer@example.invalid",
+        "address": "Preview Address Only",
+        "note": ""
+      },
+      "items": [
+        {
+          "object_id": "DH-OBJ-PREVIEW1",
+          "title": "Preview Published Quiet Object",
+          "quantity": 1,
+          "price_cents": 4800,
+          "image": ""
+        }
+      ],
+      "subtotal_cents": 4800,
+      "currency": "USD",
+      "source": "frontstage_cart"
+    }
+  ],
+  "buyerProfiles": [],
+  "adminAuditLogs": [
+    {
+      "id": "audit_preview_001",
+      "actor_id": "preview-admin",
+      "action": "review_approve",
+      "target_type": "object_intake",
+      "target_id": "intake_preview_buyer_001",
+      "before_json": { "status": "review_pending" },
+      "after_json": { "status": "approved" },
+      "note": "Preview fixture only. No production snapshot.",
+      "created_at": "2026-08-15T00:00:00.000Z"
+    }
+  ]
+}

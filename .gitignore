@@ -37,6 +37,13 @@
 .preview-screenshots/
 screenshots-homepage-hero/
 
+# P0-01A Preview Functions local state — never commit, never point at Production
+.wrangler/
+.preview-state/
+.preview-state.zip
+.preview-functions.log
+.preview-probe.json
+
 # generated preview helpers
 .civilization-preview-server.mjs
 .start-civilization-preview.ps1

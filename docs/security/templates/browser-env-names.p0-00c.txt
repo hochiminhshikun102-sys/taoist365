@@ -1,0 +1,15 @@
+# Browser env names (P0-00C)
+
+Values stay in Cloudflare Preview / local gitignored env. Names only.
+
+```text
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+NEXT_PUBLIC_DOHARA_RUNTIME_ENV=preview
+```
+
+`NEXT_PUBLIC_DOHARA_RUNTIME_ENV` must be the exact string `preview` on Cloudflare Preview. Do not set it on Production.
+
+Browser Auth is still closed on `taoist365.com`, `www.taoist365.com`, and the Pages production host `taoist365.pages.dev`. Preview branch hosts are `*.taoist365.pages.dev` only.
+
+Never put `SUPABASE_SECRET_KEY` in a `NEXT_PUBLIC_*` name or in the browser bundle.

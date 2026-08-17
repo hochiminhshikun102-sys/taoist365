@@ -13,9 +13,13 @@
     "guardrail:admin-os": "node scripts/admin-os-constitution-guardrail.mjs",
     "guardrail:continuity": "node scripts/civilization-continuity-guardrail.mjs",
     "guardrail:deployment": "node scripts/deployment-observation-guardrail.mjs",
-    "guardrail:kernel": "node scripts/continuity-kernel-guardrail.mjs"
+    "guardrail:kernel": "node scripts/continuity-kernel-guardrail.mjs",
+    "test:p0-00b": "node scripts/p0-00b-identity-tests.mjs",
+    "test:p0-00c": "node scripts/p0-00c-identity-tests.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.112.3",
+    "jose": "^6.2.9",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4"
