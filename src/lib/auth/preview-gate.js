@@ -31,9 +31,9 @@ export async function runAuthCallback({ hostname, runtimeEnv, configured, getSes
   if (!configured) {
     return { handled: false, reason: "NOT_CONFIGURED" };
   }
-  const { error } = await getSession();
+  const { data, error } = await getSession();
   if (error) {
     return { handled: true, ok: false, error: String(error.message || "Session restore failed.") };
   }
-  return { handled: true, ok: true };
+  return { handled: true, ok: true, hasSession: Boolean(data?.session) };
 }

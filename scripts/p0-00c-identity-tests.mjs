@@ -2,6 +2,11 @@ import { generateKeyPair, exportJWK, SignJWT } from "jose";
 import { onRequestGet as sessionGet } from "../functions/api/account/session.js";
 import { requireIdentity } from "../functions/_auth/require-identity.js";
 import { runAuthCallback, shouldInitSupabaseBrowserAuth } from "../src/lib/auth/preview-gate.js";
+import {
+  resolveAuthCallback,
+  shouldShowPasswordSetup,
+  updatePasswordAndLoadSession,
+} from "../src/lib/auth/callback-flow.js";
 import { signOutAndVerifyCleared } from "../src/lib/auth/logout.js";
 
 function trustedIdentityFromServer(dto) {
@@ -158,16 +163,138 @@ record(
   disabled.ok === false && disabled.response.status === 403 && (await disabled.response.clone().json()).code === "ACCOUNT_RESTRICTED",
 );
 
+const e1Count = results.length;
+record("E1 13/13 preserved", e1Count === 13);
+record("invite callback shows set-password", shouldShowPasswordSetup({ type: "invite" }) === true);
+record("recovery callback shows set-password", shouldShowPasswordSetup({ type: "recovery" }) === true);
+record(
+  "PASSWORD_RECOVERY event shows set-password",
+  shouldShowPasswordSetup({ type: "", authEvent: "PASSWORD_RECOVERY" }) === true,
+);
+record(
+  "ordinary login callback does not show set-password",
+  shouldShowPasswordSetup({ type: "" }) === false &&
+    shouldShowPasswordSetup({ type: "magiclink" }) === false &&
+    shouldShowPasswordSetup({ type: "email" }) === false &&
+    shouldShowPasswordSetup({ type: "signup" }) === false,
+);
+
+const previewHost = {
+  hostname: "feat-admin-os-p0-01a-preview.taoist365.pages.dev",
+  runtimeEnv: "preview",
+  configured: true,
+};
+const inviteResolved = await resolveAuthCallback({
+  ...previewHost,
+  search: "",
+  hash: "#type=invite",
+  getSession: async () => ({ data: { session: { access_token: "invite-session-not-logged" } }, error: null }),
+});
+record(
+  "invite callback next is set-password",
+  inviteResolved.handled === true && inviteResolved.ok === true && inviteResolved.showPasswordSetup === true && inviteResolved.next === "set-password",
+);
+
+const recoveryResolved = await resolveAuthCallback({
+  ...previewHost,
+  search: "?code=preview-code",
+  hash: "#type=recovery",
+  getSession: async () => ({ data: { session: { access_token: "recovery-session-not-logged" } }, error: null }),
+});
+record(
+  "recovery callback next is set-password",
+  recoveryResolved.handled === true && recoveryResolved.showPasswordSetup === true && recoveryResolved.next === "set-password",
+);
+
+const ordinaryResolved = await resolveAuthCallback({
+  ...previewHost,
+  search: "",
+  hash: "#type=magiclink",
+  getSession: async () => ({ data: { session: { access_token: "login-session-not-logged" } }, error: null }),
+});
+record(
+  "ordinary callback next is session",
+  ordinaryResolved.handled === true && ordinaryResolved.showPasswordSetup === false && ordinaryResolved.next === "session",
+);
+
+let nonPreviewInviteGets = 0;
+const nonPreviewInvite = await resolveAuthCallback({
+  hostname: "taoist365.pages.dev",
+  runtimeEnv: "preview",
+  configured: true,
+  search: "",
+  hash: "#type=invite",
+  getSession: async () => {
+    nonPreviewInviteGets += 1;
+    return { data: { session: { access_token: "must-not-read" } }, error: null };
+  },
+});
+record(
+  "non-Preview invite callback stays fail-closed",
+  nonPreviewInvite.handled === false &&
+    nonPreviewInvite.showPasswordSetup === false &&
+    nonPreviewInviteGets === 0,
+);
+
+const passwordProbe = "unit-only-secret-do-not-print";
+let updateCalled = false;
+let sessionCalledAfterUpdate = false;
+const passwordOk = await updatePasswordAndLoadSession({
+  updateUser: async (payload) => {
+    updateCalled = payload && typeof payload.password === "string" && payload.password.length >= 8;
+    return { error: null };
+  },
+  fetchTrustedSession: async () => {
+    sessionCalledAfterUpdate = updateCalled === true;
+    return {
+      status: 200,
+      body: {
+        authenticated: true,
+        user_id: memberClaims.sub,
+        roles: ["member"],
+        account_status: "active",
+        member_id: "MEM-PREVIEW-1",
+        windseeker_id: null,
+        email: "must-not-copy@example.invalid",
+      },
+    };
+  },
+  password: passwordProbe,
+});
+const passwordOkDump = JSON.stringify(passwordOk);
+record(
+  "updateUser then GET /api/account/session",
+  passwordOk.ok === true &&
+    sessionCalledAfterUpdate === true &&
+    passwordOk.identity.user_id === memberClaims.sub &&
+    !("email" in passwordOk.identity) &&
+    !passwordOkDump.includes(passwordProbe) &&
+    !passwordOkDump.includes("must-not-copy@example.invalid"),
+);
+
+let updateOnShort = 0;
+const shortRejected = await updatePasswordAndLoadSession({
+  updateUser: async () => {
+    updateOnShort += 1;
+    return { error: null };
+  },
+  fetchTrustedSession: async () => ({ status: 200, body: { authenticated: true } }),
+  password: "short",
+});
+record("short password does not call updateUser", shortRejected.ok === false && updateOnShort === 0);
+
 const failed = results.filter((item) => !item.pass);
 console.log(
   JSON.stringify(
     {
-      batch: "P0-00C-E1",
+      batch: "P0-00C-E3",
       total: results.length,
       passed: results.length - failed.length,
       failed: failed.map((item) => item.name),
+      E1_PRESERVED: e1Count,
       LOGOUT_OLD_SESSION: "SDK_SESSION_NULL; UNEXPIRED_JWT_STILL_VALID_ON_FUNCTIONS",
       NO_TOKEN_401: "SEPARATE_FROM_LOGOUT",
+      PASSWORD_IN_OUTPUT: false,
     },
     null,
     2,

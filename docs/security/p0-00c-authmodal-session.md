@@ -28,3 +28,11 @@ SDK_SESSION_CLEARED=TRUE
 UNEXPIRED_ACCESS_JWT_IMMEDIATE_REVOKE=FALSE
 NO_TOKEN_401=SEPARATE_FROM_LOGOUT
 ```
+
+## E3 invite / recovery set-password
+
+- `/auth/callback` reads `type` from the URL search/hash **before** the browser client may consume the fragment.
+- `invite` and `recovery` (or `PASSWORD_RECOVERY`) show **Set a new password**. Ordinary `magiclink` / `email` / `signup` / empty type redirect to `/preview/p0-00c`.
+- Submit uses `supabase.auth.updateUser({ password })`, then `GET /api/account/session`. Identity on screen is the server DTO only (no email, no password).
+- Non-Preview hosts stay fail-closed: no session restore and no set-password form.
+- Passwords are not written to logs, test JSON, or callback evidence dumps.
