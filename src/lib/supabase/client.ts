@@ -27,6 +27,13 @@ export function readSupabaseBrowserConfig() {
   };
 }
 
+export const SUPABASE_BROWSER_AUTH_OPTIONS = Object.freeze({
+  persistSession: true,
+  autoRefreshToken: true,
+  detectSessionInUrl: false,
+  flowType: "pkce",
+});
+
 export function getSupabaseBrowserClient(): SupabaseClient {
   if (!shouldInitSupabaseBrowserAuth(readBrowserGateInput())) {
     throw new Error("Preview auth is closed on this host.");
@@ -36,12 +43,7 @@ export function getSupabaseBrowserClient(): SupabaseClient {
   }
   if (!browserClient) {
     browserClient = createClient(url, publishableKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-        flowType: "pkce",
-      },
+      auth: { ...SUPABASE_BROWSER_AUTH_OPTIONS },
     });
   }
   return browserClient;

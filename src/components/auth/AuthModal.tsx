@@ -2,9 +2,17 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { fetchTrustedSession } from "@/lib/auth/private-api";
-import { signOutAndVerifyCleared } from "@/lib/auth/logout.js";
+import { SetPasswordForm } from "@/components/auth/SetPasswordForm";
+import {
+  clearPasswordSetupPending,
+  decideAuthModalSurface,
+  markPasswordSetupPending,
+  previewAuthCallbackUrl,
+  readPasswordSetupPending,
+} from "@/lib/auth/callback-flow.js";
 import { trustedIdentityFromServer, type ServerSessionDto } from "@/lib/auth/identity";
+import { signOutAndVerifyCleared } from "@/lib/auth/logout.js";
+import { fetchTrustedSession } from "@/lib/auth/private-api";
 import { getSupabaseBrowserClient, readSupabaseBrowserConfig } from "@/lib/supabase/client";
 
 type Mode = "signin" | "signup" | "magic" | "reset";
@@ -25,6 +33,7 @@ export function AuthModal() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [serverSession, setServerSession] = useState<ServerSessionDto | null>(null);
+  const [passwordSetup, setPasswordSetup] = useState<"invite" | "recovery" | "">("");
 
   const identity = useMemo(() => trustedIdentityFromServer(serverSession), [serverSession]);
 
@@ -33,7 +42,28 @@ export function AuthModal() {
     let cancelled = false;
     const supabase = getSupabaseBrowserClient();
 
+    function applySurface(pendingSetup: string, hasSession: boolean) {
+      const surface = decideAuthModalSurface({ pendingSetup, hasSession });
+      if (surface === "set-password") {
+        markPasswordSetupPending(pendingSetup === "invite" ? "invite" : "recovery");
+        setPasswordSetup(pendingSetup === "invite" ? "invite" : "recovery");
+        setServerSession(null);
+        return surface;
+      }
+      if (surface === "clear-pending-signin") {
+        clearPasswordSetupPending();
+        setPasswordSetup("");
+        setServerSession(null);
+        setPhase("error");
+        setNote("This invite or recovery link is invalid or expired.");
+        return surface;
+      }
+      setPasswordSetup("");
+      return surface;
+    }
+
     async function applySessionFromServer() {
+      if (readPasswordSetupPending()) return;
       setPhase("loading");
       try {
         const tokenProbe = await fetchTrustedSession();
@@ -69,14 +99,29 @@ export function AuthModal() {
       }
     }
 
-    void applySessionFromServer();
-    const { data } = supabase.auth.onAuthStateChange((event) => {
+    void (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (cancelled) return;
+      const surface = applySurface(readPasswordSetupPending(), Boolean(data.session));
+      if (surface === "signin" || surface === "identity") {
+        void applySessionFromServer();
+      }
+    })();
+
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY") {
+        applySurface("recovery", Boolean(session));
+        return;
+      }
       if (event === "SIGNED_OUT") {
         setServerSession(null);
         setPhase("idle");
       }
       if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
-        void applySessionFromServer();
+        const surface = applySurface(readPasswordSetupPending(), Boolean(session));
+        if (surface === "signin" || surface === "identity") {
+          void applySessionFromServer();
+        }
       }
     });
     return () => {
@@ -144,7 +189,7 @@ export function AuthModal() {
     await run(async () => {
       const { error } = await getSupabaseBrowserClient().auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        options: { emailRedirectTo: previewAuthCallbackUrl(window.location.origin) },
       });
       if (error) throw error;
       setServerSession(null);
@@ -155,7 +200,7 @@ export function AuthModal() {
     event.preventDefault();
     await run(async () => {
       const { error } = await getSupabaseBrowserClient().auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: previewAuthCallbackUrl(window.location.origin),
       });
       if (error) throw error;
       setServerSession(null);
@@ -172,6 +217,10 @@ export function AuthModal() {
       setPassword("");
       setServerSession(null);
     }, "Local SDK session is null. Unexpired access JWT is not denylisted by Functions.");
+  }
+
+  if (passwordSetup) {
+    return <SetPasswordForm flowLabel={passwordSetup} />;
   }
 
   if (!config.configured) {

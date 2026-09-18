@@ -36,3 +36,20 @@ NO_TOKEN_401=SEPARATE_FROM_LOGOUT
 - Submit uses `supabase.auth.updateUser({ password })`, then `GET /api/account/session`. Identity on screen is the server DTO only (no email, no password).
 - Non-Preview hosts stay fail-closed: no session restore and no set-password form.
 - Passwords are not written to logs, test JSON, or callback evidence dumps.
+
+## E4 recovery must stay on set-password
+
+- Real recovery mail (PKCE) lands on `/auth/callback` with a `code` query and **no** `type=recovery` in the app URL. `#type=recovery` is only an implicit/UI probe.
+- `resetPasswordForEmail` already uses `redirectTo: {origin}/auth/callback`.
+
+## E4-R1 completion (no setTimeout(0) race)
+
+- Browser client locks `detectSessionInUrl: false` so `createClient` does not consume `?code=` during init. Implicit `_initialize` still uses `setTimeout(0)`; that path is not used.
+- Locked `@supabase/auth-js@2.112.3`: `_exchangeCodeForSession` awaits `_notifyAllSubscribers(PASSWORD_RECOVERY | SIGNED_IN)` **inside** the exchange, then returns. Callback completion is that await, not a detached timer.
+- `/auth/callback` subscribes, then consumes the URL credential: PKCE `exchangeCodeForSession`, implicit `setSession({ access_token, refresh_token })`, or `verifyOtp({ token_hash, type })`. Unclassified or failed credentials stay on the page with an invalid/expired error.
+- After a successful set-password or session decision, one-time query/hash params are removed with `history.replaceState`. A real refresh then sees the stripped URL plus pending + persisted session. Tests must reuse that location, not invent an empty URL.
+- `type=invite` / `type=recovery` without URL credentials cannot use an old Session. Invite/recovery Session must come from this visit's credential or from pending-restore after strip.
+- `runPreviewCallbackPage` wraps consume + decide in `try/catch/finally`. Thrown exchange/setSession/verifyOtp shows the invalid-link error and always unsubscribes.
+- Session is required before the set-password form. Pending flag (`dohara.p0-00c.password-setup`) only chooses the surface. Pending without session clears and errors.
+- Refresh on callback with pending + session stays on set-password. Return to login without session clears the flag and errors. Ordinary login and non-Preview fail-closed stay.
+- Real recovery email is still not run in this channel.
