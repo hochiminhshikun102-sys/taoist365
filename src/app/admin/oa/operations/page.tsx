@@ -1,5 +1,5 @@
-import { PrimaryEntryPage } from "@/components/oa-skeleton/PrimaryEntryPage";
+import { CommerceReadonlyPage } from "@/components/oa-commerce/CommerceReadonlyPage";
 
 export default function OaOperationsPage() {
-  return <PrimaryEntryPage slug="operations" />;
+  return <CommerceReadonlyPage moduleId="operations" />;
 }

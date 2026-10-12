@@ -1,0 +1,92 @@
+@import "./oa-tokens.css";
+
+.oa-commerce-lead {
+  margin: 0 0 16px;
+  max-width: 760px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.oa-commerce-status-row,
+.oa-commerce-state-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.oa-commerce-state-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.oa-commerce-flag p,
+.oa-commerce-state-grid p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.oa-commerce-meta {
+  margin: 0 !important;
+  font-size: 12px !important;
+  color: var(--text-muted) !important;
+}
+
+.oa-commerce-summary {
+  margin-bottom: 14px;
+}
+
+.oa-commerce-list-card {
+  margin-bottom: 14px;
+}
+
+.oa-commerce-list-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.oa-commerce-list-head h2 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--water-blue);
+  font-weight: 600;
+}
+
+.oa-commerce-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.oa-commerce-error-card .oa-btn {
+  margin-top: 8px;
+}
+
+.oa-commerce-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.oa-commerce-footer .oa-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .oa-commerce-status-row,
+  .oa-commerce-state-grid,
+  .oa-commerce-summary.oa-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .oa-commerce-list-card {
+    overflow-x: auto;
+  }
+}
