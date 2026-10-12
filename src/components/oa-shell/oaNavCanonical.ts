@@ -243,7 +243,7 @@ export const LOGISTICS_SUBMENU: OaSubmenuItem[] = [
   },
   {
     "label": "Warehouse & Supply · 仓储供应链",
-    "route": "/admin/oa/supply",
+    "route": "/admin/oa/supply-chain",
     "owner": "10 Supply Chain"
   }
 ];

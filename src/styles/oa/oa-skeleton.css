@@ -1,0 +1,47 @@
+@import "./oa-tokens.css";
+
+.oa-skeleton-page .oa-skeleton-lead {
+  margin: 0 0 18px;
+  max-width: 720px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.oa-skeleton-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.oa-skeleton-card p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.oa-skeleton-meta {
+  margin: 0 !important;
+  font-size: 12px !important;
+  color: var(--text-muted) !important;
+}
+
+.oa-skeleton-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.oa-skeleton-actions .oa-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .oa-skeleton-status-grid {
+    grid-template-columns: 1fr;
+  }
+}
