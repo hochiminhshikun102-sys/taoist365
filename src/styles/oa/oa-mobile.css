@@ -30,4 +30,4 @@
 .oa-m-seg button { height: 34px; border: 1px solid var(--metal-gray); background: var(--base-white); border-radius: 6px; cursor: pointer; }
 .oa-m-seg button.is-on { border-color: var(--water-blue); color: var(--water-blue); background: color-mix(in srgb, var(--wood-sage) 20%, white); }
 .oa-m-empty, .oa-m-loading, .oa-m-error { border: 1px dashed var(--metal-gray); border-radius: 8px; padding: 14px; font-size: 12px; color: var(--text-muted); }
-.oa-mobile-host { background: #F7F8F9; min-height: 100vh; }
+.oa-mobile-host { background: var(--base-white); min-height: 100vh; }
