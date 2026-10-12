@@ -1,0 +1,14 @@
+:root {
+  --wood-sage: #B8C8B0;
+  --fire-amber: #D99E6B;
+  --earth-beige: #D6C7B3;
+  --metal-gray: #C8CDD2;
+  --water-blue: #5A728C;
+  --base-white: #FFFFFF;
+  --text-primary: #2F3A45;
+  --text-muted: #667788;
+  --card-radius: 8px;
+  --card-padding: 24px;
+  --sidebar-width: 240px;
+  --font-sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
