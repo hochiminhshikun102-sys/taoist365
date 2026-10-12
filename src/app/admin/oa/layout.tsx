@@ -7,6 +7,7 @@ import "@/styles/oa/oa-skeleton.css";
 import "@/styles/oa/oa-commerce.css";
 import "@/styles/oa/oa-growth.css";
 import "@/styles/oa/oa-member-service.css";
+import "@/styles/oa/oa-platform.css";
 
 export const metadata: Metadata = {
   title: "OA Admin Candidate",
