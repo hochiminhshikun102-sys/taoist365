@@ -1,0 +1,92 @@
+@import "./oa-tokens.css";
+
+.oa-member-service-lead {
+  margin: 0 0 16px;
+  max-width: 760px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.oa-member-service-status-row,
+.oa-member-service-state-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.oa-member-service-state-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.oa-member-service-flag p,
+.oa-member-service-state-grid p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.oa-member-service-meta {
+  margin: 0 !important;
+  font-size: 12px !important;
+  color: var(--text-muted) !important;
+}
+
+.oa-member-service-summary {
+  margin-bottom: 14px;
+}
+
+.oa-member-service-list-card {
+  margin-bottom: 14px;
+}
+
+.oa-member-service-list-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.oa-member-service-list-head h2 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--water-blue);
+  font-weight: 600;
+}
+
+.oa-member-service-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.oa-member-service-error-card .oa-btn {
+  margin-top: 8px;
+}
+
+.oa-member-service-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.oa-member-service-footer .oa-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .oa-member-service-status-row,
+  .oa-member-service-state-grid,
+  .oa-member-service-summary.oa-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .oa-member-service-list-card {
+    overflow-x: auto;
+  }
+}

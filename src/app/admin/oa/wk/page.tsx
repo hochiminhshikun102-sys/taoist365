@@ -1,5 +1,5 @@
-import { PrimaryEntryPage } from "@/components/oa-skeleton/PrimaryEntryPage";
+import { MemberServiceReadonlyPage } from "@/components/oa-member-service/MemberServiceReadonlyPage";
 
 export default function OaWkPage() {
-  return <PrimaryEntryPage slug="wk" />;
+  return <MemberServiceReadonlyPage moduleId="wk" />;
 }
