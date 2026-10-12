@@ -1,5 +1,5 @@
-import { PrimaryEntryPage } from "@/components/oa-skeleton/PrimaryEntryPage";
+import { GrowthReadonlyPage } from "@/components/oa-growth/GrowthReadonlyPage";
 
 export default function OaSitePage() {
-  return <PrimaryEntryPage slug="site" />;
+  return <GrowthReadonlyPage moduleId="site" />;
 }
