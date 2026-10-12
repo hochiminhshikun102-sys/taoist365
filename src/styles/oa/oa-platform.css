@@ -1,0 +1,92 @@
+@import "./oa-tokens.css";
+
+.oa-platform-lead {
+  margin: 0 0 16px;
+  max-width: 760px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.oa-platform-status-row,
+.oa-platform-state-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.oa-platform-state-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.oa-platform-flag p,
+.oa-platform-state-grid p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.oa-platform-meta {
+  margin: 0 !important;
+  font-size: 12px !important;
+  color: var(--text-muted) !important;
+}
+
+.oa-platform-summary {
+  margin-bottom: 14px;
+}
+
+.oa-platform-list-card {
+  margin-bottom: 14px;
+}
+
+.oa-platform-list-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.oa-platform-list-head h2 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--water-blue);
+  font-weight: 600;
+}
+
+.oa-platform-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.oa-platform-error-card .oa-btn {
+  margin-top: 8px;
+}
+
+.oa-platform-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.oa-platform-footer .oa-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .oa-platform-status-row,
+  .oa-platform-state-grid,
+  .oa-platform-summary.oa-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .oa-platform-list-card {
+    overflow-x: auto;
+  }
+}

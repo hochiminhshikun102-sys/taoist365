@@ -1,5 +1,5 @@
-import { PrimaryEntryPage } from "@/components/oa-skeleton/PrimaryEntryPage";
+import { PlatformReadonlyPage } from "@/components/oa-platform/PlatformReadonlyPage";
 
 export default function OaFinancePage() {
-  return <PrimaryEntryPage slug="finance" />;
+  return <PlatformReadonlyPage moduleId="finance" />;
 }

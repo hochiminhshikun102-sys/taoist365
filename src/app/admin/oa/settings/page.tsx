@@ -1,5 +1,5 @@
-import { PrimaryEntryPage } from "@/components/oa-skeleton/PrimaryEntryPage";
+import { PlatformReadonlyPage } from "@/components/oa-platform/PlatformReadonlyPage";
 
 export default function OaSettingsPage() {
-  return <PrimaryEntryPage slug="settings" />;
+  return <PlatformReadonlyPage moduleId="settings" />;
 }
