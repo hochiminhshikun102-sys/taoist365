@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { NAV_KEY_TO_PRIMARY_PATH } from "@/components/oa-skeleton/primaryEntries";
 import {
   AFTER_SALES_SUBMENU,
   CONTENT_ASSETS_SUBMENU,
@@ -21,17 +23,24 @@ const SUBMENUS: Record<string, { title: string; items: OaSubmenuItem[] }> = {
   after_sales: { title: "After-sales · 售后与退款", items: AFTER_SALES_SUBMENU },
 };
 
+const READY_PRIMARY_PATHS = new Set(Object.values(NAV_KEY_TO_PRIMARY_PATH).concat(["/admin/oa/supply-chain"]));
+
 type Props = {
   activeKey?: string;
   children: ReactNode;
 };
 
 export function OaSharedShell({ activeKey = "overview", children }: Props) {
+  const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);
   const [openKey, setOpenKey] = useState<string | null>(null);
   const [panelTop, setPanelTop] = useState(64);
-  const [status, setStatus] = useState("pc shell + overview candidate");
+  const [status, setStatus] = useState("pc shell · primary entry skeleton");
   const [active, setActive] = useState(activeKey);
+
+  useEffect(() => {
+    setActive(activeKey);
+  }, [activeKey]);
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
@@ -52,14 +61,38 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
     setOpenKey(key);
   }
 
+  function goPrimary(key: string) {
+    const href = NAV_KEY_TO_PRIMARY_PATH[key];
+    if (!href) {
+      setStatus(`primary ${key} · no mapped path`);
+      return;
+    }
+    closePanel();
+    setActive(key);
+    setStatus(`navigate ${href}`);
+    router.push(href);
+  }
+
+  function goRoute(route: string) {
+    closePanel();
+    const isPrimaryLanding = READY_PRIMARY_PATHS.has(route);
+    if (isPrimaryLanding) {
+      setStatus(`navigate ${route}`);
+      router.push(route);
+      return;
+    }
+    setStatus(`submenu candidate route ${route} · DISABLED_UNTIL_READY`);
+  }
+
   const openConf = openKey ? SUBMENUS[openKey] : null;
+  const openPrimaryHref = openKey ? NAV_KEY_TO_PRIMARY_PATH[openKey] : null;
 
   return (
     <div className="oa-root" ref={rootRef}>
       <div className={`oa-backdrop${openKey ? " is-open" : ""}`} onClick={closePanel} aria-hidden={!openKey} />
       <div className="oa-shell">
         <header className="oa-topbar">
-          <div className="oa-brand">DOHARA OA · Shared Shell R3 Candidate</div>
+          <div className="oa-brand">DOHARA OA · Shared Shell R8 Skeleton</div>
           <div className="oa-top-meta">CANDIDATE_ONLY · DATA_SOURCE=TEST_ONLY_UI_FIXTURE · NOT_FORMAL_PROVIDER · NO_15TH_DOMAIN</div>
         </header>
         <aside className="oa-rail" aria-label="OA primary navigation">
@@ -81,13 +114,7 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
                     else openPanel(item.key, event.currentTarget);
                     return;
                   }
-                  closePanel();
-                  setActive(item.key);
-                  if (item.key === "overview") {
-                    setStatus("pc overview · 1440 candidate");
-                  } else {
-                    setStatus(`primary ${item.key} scaffold · DISABLED_UNTIL_READY`);
-                  }
+                  goPrimary(item.key);
                 }}
               >
                 <span className="oa-rail-label">
@@ -109,15 +136,21 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
           {openConf ? (
             <>
               <div className="oa-floating-title">{openConf.title}</div>
+              {openPrimaryHref ? (
+                <button
+                  className="oa-floating-row"
+                  type="button"
+                  onClick={() => goRoute(openPrimaryHref)}
+                >
+                  Primary entry · 一级入口
+                </button>
+              ) : null}
               {openConf.items.map((item) => (
                 <button
                   key={item.route + item.label}
                   className="oa-floating-row"
                   type="button"
-                  onClick={() => {
-                    closePanel();
-                    setStatus(`submenu candidate route ${item.route} · DISABLED_UNTIL_READY`);
-                  }}
+                  onClick={() => goRoute(item.route)}
                 >
                   {item.label}
                 </button>
@@ -125,19 +158,7 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
             </>
           ) : null}
         </div>
-        <main className="oa-main">
-          {active === "overview" ? (
-            children
-          ) : (
-            <section className="oa-page">
-              <div className="oa-fixture-banner">
-                Primary nav &quot;{active}&quot; scaffold · DISABLED_UNTIL_READY · canonical owner mapping only
-              </div>
-              <h1 className="oa-page-title">Module scaffold · 模块骨架</h1>
-              <p>No Provider / Runtime wiring in this candidate.</p>
-            </section>
-          )}
-        </main>
+        <main className="oa-main">{children}</main>
       </div>
       <div className="oa-status" aria-live="polite">
         {status}
