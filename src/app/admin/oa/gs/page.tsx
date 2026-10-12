@@ -1,5 +1,5 @@
-import { PrimaryEntryPage } from "@/components/oa-skeleton/PrimaryEntryPage";
+import { MemberServiceReadonlyPage } from "@/components/oa-member-service/MemberServiceReadonlyPage";
 
 export default function OaGsPage() {
-  return <PrimaryEntryPage slug="gs" />;
+  return <MemberServiceReadonlyPage moduleId="gs" />;
 }
