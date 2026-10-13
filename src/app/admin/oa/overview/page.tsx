@@ -1,10 +1,10 @@
 import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
-import { OperationsOverviewBoard } from "@/components/oa-dashboard/OperationsOverviewBoard";
+import { OverviewExceptionProjectionWorkbench } from "@/components/oa-overview/OverviewExceptionProjectionWorkbench";
 
 export default function OaOverviewPage() {
   return (
     <OaSharedShell activeKey="overview">
-      <OperationsOverviewBoard />
+      <OverviewExceptionProjectionWorkbench />
     </OaSharedShell>
   );
 }

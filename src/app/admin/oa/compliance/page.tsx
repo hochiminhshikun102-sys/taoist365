@@ -1,5 +1,10 @@
-import { PlatformReadonlyPage } from "@/components/oa-platform/PlatformReadonlyPage";
+import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
+import { ComplianceProjectionWorkbench } from "@/components/oa-compliance/ComplianceProjectionWorkbench";
 
 export default function OaCompliancePage() {
-  return <PlatformReadonlyPage moduleId="compliance" />;
+  return (
+    <OaSharedShell activeKey="compliance">
+      <ComplianceProjectionWorkbench />
+    </OaSharedShell>
+  );
 }

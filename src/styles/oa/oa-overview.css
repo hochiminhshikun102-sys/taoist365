@@ -1,4 +1,15 @@
 @import "./oa-tokens.css";
+.oa-overview-proj-page .oa-proj-section { margin-bottom: 14px; }
+.oa-overview-mywork { margin-top: 8px; }
+a.oa-overview-work-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease;
+}
+a.oa-overview-work-link:hover {
+  border-color: var(--water-blue);
+}
 .oa-page { padding: 18px 24px 36px; max-width: 1440px; margin: 0 auto; }
 .oa-page-title { margin: 0 0 12px; font-size: 20px; font-weight: 600; color: var(--water-blue); }
 .oa-filter-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin-bottom: 14px; padding: 14px 16px; border: 1px solid var(--metal-gray); border-radius: var(--card-radius); background: var(--base-white); }
