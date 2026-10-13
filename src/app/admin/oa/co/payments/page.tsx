@@ -1,10 +1,10 @@
 import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
-import { CoSecondaryWorkbench } from "@/components/oa-skeleton/CoSecondaryWorkbench";
+import { PaymentsRuntimeWorkbench } from "@/components/oa-payments/PaymentsRuntimeWorkbench";
 
 export default function OaCoPaymentsPage() {
   return (
     <OaSharedShell activeKey="co">
-      <CoSecondaryWorkbench workbenchId="payments" />
+      <PaymentsRuntimeWorkbench />
     </OaSharedShell>
   );
 }

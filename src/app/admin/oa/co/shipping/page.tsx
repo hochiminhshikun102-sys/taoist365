@@ -1,10 +1,10 @@
 import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
-import { CoSecondaryWorkbench } from "@/components/oa-skeleton/CoSecondaryWorkbench";
+import { ShippingRuntimeWorkbench } from "@/components/oa-shipping/ShippingRuntimeWorkbench";
 
 export default function OaCoShippingPage() {
   return (
     <OaSharedShell activeKey="co">
-      <CoSecondaryWorkbench workbenchId="shipping" />
+      <ShippingRuntimeWorkbench />
     </OaSharedShell>
   );
 }
