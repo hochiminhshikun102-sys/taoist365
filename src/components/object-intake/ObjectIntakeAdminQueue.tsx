@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import type { EnrichedIntake } from "@/components/object-intake/ObjectIntakeTypes";
 import { productMediaUploadSpecs } from "@/config/product-media-upload-specs";
+import { resolvePublishPolicy, type PublishPolicyResult } from "@/lib/publish-policy";
 
 const statuses = ["all", "review_pending", "approved", "revision_required", "rejected", "published"] as const;
 const reviewMediaTypes = ["main", "scene", "detail", "mobile", "pc", "social", "motion"] as const;
@@ -57,11 +58,19 @@ export function ObjectIntakeAdminQueue() {
   async function publish() {
     if (!active) return;
     setBusy(true);
-    const response = await fetch(`/api/admin/object-intakes/${active.intake.id}/publish`, { method: "POST" });
+    const response = await fetch(`/api/admin/object-intakes/${active.intake.id}/publish`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        actor_type: "admin_official",
+        role: "oa_admin",
+        channel: "oa_admin",
+      }),
+    });
     const data = await response.json();
     setBusy(false);
     if (!response.ok) {
-      const reasons = Array.isArray(data.reasons) ? data.reasons.map((item: { field?: string; message?: string }) => `${item.field || "publish"}: ${item.message || "Blocked."}`).join(" / ") : "";
+      const reasons = Array.isArray(data.reasons) ? data.reasons.map((item: { field?: string; message?: string; deny_code?: string }) => `${item.field || "publish"}: ${item.message || "Blocked."}${item.deny_code ? ` (${item.deny_code})` : ""}`).join(" / ") : "";
       setNote(reasons || data.error || "Publish failed.");
       return;
     }
@@ -77,7 +86,7 @@ export function ObjectIntakeAdminQueue() {
             <p className="text-sm text-[#6B7280]">Dohara Object Intake Pipeline</p>
             <h1 className="mt-2 text-4xl font-semibold">Publish Review</h1>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-[#6B7280]">
-              OA self-operated items can publish after required fields and Air Engine main media are ready. Buyer and Windkeep/C2C supply still require review approval before storefront publication.
+              Official OA uploads may direct-publish after server policy guard and media gates. Global buyer and WindKeep / barter owner uploads require review approval. UI hints do not authorize publish.
             </p>
           </div>
           <a href="/admin/product-intake" className="rounded-xl border border-[#947A66] bg-[#947A66] px-4 py-3 text-sm text-white">Product Intake</a>
@@ -120,8 +129,8 @@ export function ObjectIntakeAdminQueue() {
                     Source: {active.intake.source_type} / {active.intake.entry_surface || "unset"} / {active.intake.identity_scope || "unset"}
                   </p>
                   {activePolicy ? (
-                    <p className={`mt-3 rounded-xl px-3 py-2 text-sm ${activePolicy.kind === "self_operated" ? "bg-[#E1F0E9] text-[#2E8B68]" : "bg-[#F8E8E4] text-[#B84537]"}`}>
-                      {activePolicy.message}
+                    <p className={`mt-3 rounded-xl px-3 py-2 text-sm ${activePolicy.can_direct_publish ? "bg-[#E1F0E9] text-[#2E8B68]" : "bg-[#F8E8E4] text-[#B84537]"}`}>
+                      {policyHintMessage(activePolicy)}
                     </p>
                   ) : null}
                   <p className="mt-2 text-sm text-[#6B7280]">
@@ -204,7 +213,7 @@ export function ObjectIntakeAdminQueue() {
                     <button disabled={busy} type="button" onClick={() => review("revision_required")} className="rounded-xl border border-[#947A66] px-4 py-3 text-sm disabled:opacity-50">Revision Required</button>
                     <button disabled={busy} type="button" onClick={() => review("reject")} className="rounded-xl border border-[#D95550] px-4 py-3 text-sm text-[#D95550] disabled:opacity-50">Reject</button>
                     <button disabled={busy || !canPublishFromUi(active, activePolicy) || publishGateMessages.length > 0} type="button" onClick={publish} className="rounded-xl border border-[#2D333A] bg-[#2D333A] px-4 py-3 text-sm text-white disabled:opacity-50">
-                      {activePolicy?.kind === "self_operated" ? "Publish Self-operated Object" : "Publish Object ID"}
+                      {activePolicy?.can_direct_publish ? "Direct Publish Official OA Object" : "Publish Object ID"}
                     </button>
                   </div>
 
@@ -249,64 +258,30 @@ function getPublishGateMessages(row: EnrichedIntake) {
   return messages;
 }
 
-function canPublishFromUi(row: EnrichedIntake, policy: ReturnType<typeof getPublishPolicy> | null) {
-  if (policy?.kind === "self_operated") return true;
+function canPublishFromUi(row: EnrichedIntake, policy: PublishPolicyResult | null) {
+  if (policy?.can_direct_publish) return true;
   return row.intake.status === "approved";
 }
 
-function getPublishPolicy(row: EnrichedIntake) {
-  if (isSelfOperatedIntake(row)) {
-    return {
-      kind: "self_operated" as const,
-      message: "Self-operated item. Review can be skipped after media and required fields are ready.",
-    };
-  }
-
-  if (isWindSeekerIntake(row)) {
-    return {
-      kind: "buyer" as const,
-      message: "Buyer-submitted item. Review approval required.",
-    };
-  }
-
-  if (isC2cIntake(row)) {
-    return {
-      kind: "c2c" as const,
-      message: "Member / Windkeep / C2C item. Review approval required.",
-    };
-  }
-
-  return {
-    kind: "review_required" as const,
-    message: "Review approval required before publish.",
-  };
+function getPublishPolicy(row: EnrichedIntake): PublishPolicyResult {
+  // OA Publish Review surface: hint with official OA actor. Server re-validates.
+  return resolvePublishPolicy({
+    intake: row.intake,
+    source_type: row.intake.source_type,
+    entry_surface: row.intake.entry_surface,
+    identity_scope: row.intake.identity_scope,
+    supply_program: row.intake.supply_program,
+    actor_type: "admin_official",
+    role: "oa_admin",
+    channel: "oa_admin",
+  });
 }
 
-function isSelfOperatedIntake(row: EnrichedIntake) {
-  return (
-    row.intake.entry_surface === "admin_os" &&
-    row.intake.identity_scope === "admin" &&
-    ["admin_upload", "boss_upload", "external_link", "supplier_batch"].includes(row.intake.source_type || "")
-  );
-}
-
-function isWindSeekerIntake(row: EnrichedIntake) {
-  return (
-    row.intake.entry_surface === "wind_seeker" ||
-    row.intake.source_type === "buyer_upload" ||
-    row.intake.identity_scope === "buyer" ||
-    row.intake.identity_scope === "wind_seeker"
-  );
-}
-
-function isC2cIntake(row: EnrichedIntake) {
-  return (
-    row.intake.entry_surface === "windkeep" ||
-    ["windkeep_member_upload", "barter_upload", "c2c_upload", "windkeep_member", "member_consignment", "neighbor_referral", "windkeep_external_link"].includes(row.intake.source_type || "") ||
-    row.intake.identity_scope === "member" ||
-    row.intake.identity_scope === "windkeep_member" ||
-    row.intake.supply_program === "windkeep"
-  );
+function policyHintMessage(policy: PublishPolicyResult) {
+  if (policy.can_direct_publish) {
+    return `Policy ${policy.publish_policy} / ${policy.policy_bucket}. Official OA upload may skip human review after server guard + media gates.`;
+  }
+  return `Policy ${policy.publish_policy} / ${policy.policy_bucket}. Review approval required before publish (${policy.deny_code || policy.reason}).`;
 }
 
 function isVideoMedia(media: EnrichedIntake["media"][number]) {
