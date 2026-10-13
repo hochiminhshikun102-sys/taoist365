@@ -109,6 +109,28 @@ export function CsCenterProjectionWorkbench() {
         </button>
       </article>
 
+      <article className="oa-card oa-proj-section">
+        <h2>CS next-step entries · 客服可见的下一步处理入口</h2>
+        <p className="oa-skeleton-meta">
+          Navigation only — open the owning CO runtime. CS Center does not write orders, refunds, or
+          shipments.
+        </p>
+        <div className="oa-skeleton-actions">
+          <Link className="oa-btn secondary" href="/admin/oa/co/orders">
+            Next · Orders inquiry · 订单查询
+          </Link>
+          <Link className="oa-btn secondary" href="/admin/oa/co/payments">
+            Next · Payment / refund inquiry · 支付退款查询
+          </Link>
+          <Link className="oa-btn secondary" href="/admin/oa/co/shipping">
+            Next · Shipping assist · 物流协助
+          </Link>
+          <button className="oa-btn" type="button" disabled>
+            Next · Open ticket · 开单 · Blocked
+          </button>
+        </div>
+      </article>
+
       <article className="oa-card">
         <h2>Shared projection fields · 共享投影字段</h2>
         <p className="oa-skeleton-meta">{SHARED_PROJECTION_FIELDS.join(" · ")}</p>
