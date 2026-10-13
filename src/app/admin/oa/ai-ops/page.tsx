@@ -1,5 +1,10 @@
-import { GrowthReadonlyPage } from "@/components/oa-growth/GrowthReadonlyPage";
+import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
+import { AiOpsReadonlyWorkbench } from "@/components/oa-ai-ops/AiOpsReadonlyWorkbench";
 
 export default function OaAiOpsPage() {
-  return <GrowthReadonlyPage moduleId="ai-ops" />;
+  return (
+    <OaSharedShell activeKey="ai_ops">
+      <AiOpsReadonlyWorkbench />
+    </OaSharedShell>
+  );
 }

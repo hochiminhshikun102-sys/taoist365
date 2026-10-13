@@ -26,7 +26,7 @@ export const PRIMARY_CAPABILITY: Record<string, OaCapabilityStatus> = {
   overview: "read_only",
   commerce: "read_only",
   operations: "read_only",
-  "ai-ops": "not_connected",
+  "ai-ops": "read_only",
   site: "not_connected",
   geo: "not_connected",
   "cs-center": "read_only",

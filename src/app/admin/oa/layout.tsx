@@ -18,6 +18,7 @@ import "@/styles/oa/oa-supply-chain.css";
 import "@/styles/oa/oa-cs-center.css";
 import "@/styles/oa/oa-compliance.css";
 import "@/styles/oa/oa-operations.css";
+import "@/styles/oa/oa-ai-ops.css";
 
 export const metadata: Metadata = {
   title: "OA Admin Candidate",
