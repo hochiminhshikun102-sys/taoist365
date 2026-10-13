@@ -73,9 +73,9 @@ export const CO_SECONDARY_CAPABILITY: Record<string, OaCapabilityRecord> = {
     route: "/admin/oa/co/orders",
     labelEn: "Orders Runtime",
     labelZh: "订单系统",
-    status: "skeleton",
-    noteEn: "Structure gate only. Wave 1B Orders Core restore next.",
-    noteZh: "仅结构门。下一单 Wave 1B 恢复 Orders Core。",
+    status: "read_only",
+    noteEn: "Wave 1B Orders Core restored with DEMO fixture. Live Provider not_connected. No real writes.",
+    noteZh: "Wave 1B 订单核心已恢复（DEMO 夹具）。真实 Provider 未接通。无真实写入。",
   },
   payments: {
     id: "payments",
