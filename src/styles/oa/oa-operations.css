@@ -1,0 +1,39 @@
+@import "./oa-tokens.css";
+
+.oa-operations-page .oa-proj-section {
+  margin-bottom: 14px;
+}
+
+.oa-ops-workstream-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.oa-ops-workstream-card h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--water-blue);
+}
+
+.oa-ops-workstream-card h4 {
+  margin: 12px 0 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.oa-ops-workstream-head .oa-capability-row {
+  margin-bottom: 4px;
+}
+
+.oa-ops-mapping-list code {
+  font-size: 11px;
+}
+
+@media (max-width: 1100px) {
+  .oa-ops-workstream-grid {
+    grid-template-columns: 1fr;
+  }
+}

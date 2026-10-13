@@ -1,5 +1,10 @@
-import { CommerceReadonlyPage } from "@/components/oa-commerce/CommerceReadonlyPage";
+import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
+import { OperationsReadonlyWorkbench } from "@/components/oa-operations/OperationsReadonlyWorkbench";
 
 export default function OaOperationsPage() {
-  return <CommerceReadonlyPage moduleId="operations" />;
+  return (
+    <OaSharedShell activeKey="operations">
+      <OperationsReadonlyWorkbench />
+    </OaSharedShell>
+  );
 }
