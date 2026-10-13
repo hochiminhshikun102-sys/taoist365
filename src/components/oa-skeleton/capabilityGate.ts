@@ -1,0 +1,103 @@
+/**
+ * Wave 0 Structure Gate — honest capability states.
+ * UI gate is not server authorization.
+ */
+export type OaCapabilityStatus = "not_connected" | "read_only" | "skeleton" | "available";
+
+export type OaCapabilityRecord = {
+  id: string;
+  route: string;
+  labelEn: string;
+  labelZh: string;
+  status: OaCapabilityStatus;
+  noteEn: string;
+  noteZh: string;
+};
+
+export const CAPABILITY_STATUS_LABEL: Record<OaCapabilityStatus, { en: string; zh: string }> = {
+  not_connected: { en: "Not connected", zh: "未接通" },
+  read_only: { en: "Read only", zh: "只读" },
+  skeleton: { en: "Skeleton", zh: "骨架" },
+  available: { en: "Available", zh: "可用" },
+};
+
+/** Primary module capability (landing pages). */
+export const PRIMARY_CAPABILITY: Record<string, OaCapabilityStatus> = {
+  overview: "read_only",
+  commerce: "skeleton",
+  operations: "not_connected",
+  "ai-ops": "not_connected",
+  site: "not_connected",
+  geo: "not_connected",
+  "cs-center": "not_connected",
+  finance: "not_connected",
+  logistics: "not_connected",
+  "supply-chain": "not_connected",
+  wk: "not_connected",
+  gs: "not_connected",
+  compliance: "not_connected",
+  settings: "not_connected",
+};
+
+/** CO secondary workbench capability. */
+export const CO_SECONDARY_CAPABILITY: Record<string, OaCapabilityRecord> = {
+  intake: {
+    id: "intake",
+    route: "/admin/oa/co/intake",
+    labelEn: "Product Intake",
+    labelZh: "宝贝入库",
+    status: "available",
+    noteEn: "Existing intake / publish / review kept. IA rebuild deferred.",
+    noteZh: "保留现有入库/发布/审核成果；IA 大重构暂缓。",
+  },
+  objects: {
+    id: "objects",
+    route: "/admin/oa/co/objects",
+    labelEn: "Objects Runtime",
+    labelZh: "商品系统",
+    status: "available",
+    noteEn: "Existing Objects Runtime entry kept under AdminOS.",
+    noteZh: "保留现有商品系统入口（AdminOS）。",
+  },
+  media: {
+    id: "media",
+    route: "/admin/oa/co/media",
+    labelEn: "Product Media",
+    labelZh: "商品素材",
+    status: "available",
+    noteEn: "Existing Product Media workspace kept.",
+    noteZh: "保留现有商品素材工作台。",
+  },
+  orders: {
+    id: "orders",
+    route: "/admin/oa/co/orders",
+    labelEn: "Orders Runtime",
+    labelZh: "订单系统",
+    status: "skeleton",
+    noteEn: "Structure gate only. Wave 1B Orders Core restore next.",
+    noteZh: "仅结构门。下一单 Wave 1B 恢复 Orders Core。",
+  },
+  payments: {
+    id: "payments",
+    route: "/admin/oa/co/payments",
+    labelEn: "Payments Runtime",
+    labelZh: "支付管理",
+    status: "skeleton",
+    noteEn: "Structure gate only. No real payment actions.",
+    noteZh: "仅结构门。无真实支付动作。",
+  },
+  shipping: {
+    id: "shipping",
+    route: "/admin/oa/co/shipping",
+    labelEn: "Shipping Runtime",
+    labelZh: "发货管理",
+    status: "skeleton",
+    noteEn: "Structure gate only. No real fulfillment writes.",
+    noteZh: "仅结构门。无真实履约/发货写入。",
+  },
+};
+
+export function capabilityLabel(status: OaCapabilityStatus): string {
+  const row = CAPABILITY_STATUS_LABEL[status];
+  return `${row.en} · ${row.zh}`;
+}

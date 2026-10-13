@@ -1,29 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { NAV_KEY_TO_PRIMARY_PATH } from "@/components/oa-skeleton/primaryEntries";
-import {
-  AFTER_SALES_SUBMENU,
-  CONTENT_ASSETS_SUBMENU,
-  LOGISTICS_SUBMENU,
-  NAV_ITEMS,
-  PRODUCTS_ORDERS_SUBMENU,
-  SEO_GEO_SUBMENU,
-  USERS_MEMBERS_SUBMENU,
-  type OaSubmenuItem,
-} from "./oaNavCanonical";
+import { CO_SECONDARY_SUBMENU, NAV_ITEMS, type OaSubmenuItem } from "./oaNavCanonical";
 
 const SUBMENUS: Record<string, { title: string; items: OaSubmenuItem[] }> = {
-  products_orders: { title: "Products & Orders · 商品与订单", items: PRODUCTS_ORDERS_SUBMENU },
-  content_assets: { title: "Content & Assets · 内容与素材", items: CONTENT_ASSETS_SUBMENU },
-  users_members: { title: "Users & Members · 用户与会员", items: USERS_MEMBERS_SUBMENU },
-  seo_geo: { title: "SEO / GEO · SEO / GEO", items: SEO_GEO_SUBMENU },
-  logistics: { title: "Logistics · 物流与仓配", items: LOGISTICS_SUBMENU },
-  after_sales: { title: "After-sales · 售后与退款", items: AFTER_SALES_SUBMENU },
+  co: { title: "CO · Products & Orders · 商品与订单", items: CO_SECONDARY_SUBMENU },
 };
-
-const READY_PRIMARY_PATHS = new Set(Object.values(NAV_KEY_TO_PRIMARY_PATH).concat(["/admin/oa/supply-chain"]));
 
 type Props = {
   activeKey?: string;
@@ -35,8 +19,14 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [openKey, setOpenKey] = useState<string | null>(null);
   const [panelTop, setPanelTop] = useState(64);
-  const [status, setStatus] = useState("pc shell · primary entry skeleton");
+  const [status, setStatus] = useState("wave0 structure gate · declared nav navigable");
   const [active, setActive] = useState(activeKey);
+
+  const declaredRoutes = useMemo(() => {
+    const routes = new Set<string>(Object.values(NAV_KEY_TO_PRIMARY_PATH));
+    for (const item of CO_SECONDARY_SUBMENU) routes.add(item.route);
+    return routes;
+  }, []);
 
   useEffect(() => {
     setActive(activeKey);
@@ -75,13 +65,12 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
 
   function goRoute(route: string) {
     closePanel();
-    const isPrimaryLanding = READY_PRIMARY_PATHS.has(route);
-    if (isPrimaryLanding) {
-      setStatus(`navigate ${route}`);
-      router.push(route);
+    if (!declaredRoutes.has(route)) {
+      setStatus(`undeclared route blocked · ${route}`);
       return;
     }
-    setStatus(`submenu candidate route ${route} · DISABLED_UNTIL_READY`);
+    setStatus(`navigate ${route}`);
+    router.push(route);
   }
 
   const openConf = openKey ? SUBMENUS[openKey] : null;
@@ -92,8 +81,10 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
       <div className={`oa-backdrop${openKey ? " is-open" : ""}`} onClick={closePanel} aria-hidden={!openKey} />
       <div className="oa-shell">
         <header className="oa-topbar">
-          <div className="oa-brand">DOHARA OA · Shared Shell R8 Skeleton</div>
-          <div className="oa-top-meta">CANDIDATE_ONLY · DATA_SOURCE=TEST_ONLY_UI_FIXTURE · NOT_FORMAL_PROVIDER · NO_15TH_DOMAIN</div>
+          <div className="oa-brand">DOHARA OA · Wave 0 Structure Gate</div>
+          <div className="oa-top-meta">
+            CANDIDATE_ONLY · ADDITIVE_ONLY · 14 MODULES · CO×6 · NO_15TH_DOMAIN · NOT_FORMAL_PROVIDER
+          </div>
         </header>
         <aside className="oa-rail" aria-label="OA primary navigation">
           {NAV_ITEMS.map((item) => {
@@ -137,12 +128,8 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
             <>
               <div className="oa-floating-title">{openConf.title}</div>
               {openPrimaryHref ? (
-                <button
-                  className="oa-floating-row"
-                  type="button"
-                  onClick={() => goRoute(openPrimaryHref)}
-                >
-                  Primary entry · 一级入口
+                <button className="oa-floating-row" type="button" onClick={() => goRoute(openPrimaryHref)}>
+                  CO hub · 商品与订单门户
                 </button>
               ) : null}
               {openConf.items.map((item) => (

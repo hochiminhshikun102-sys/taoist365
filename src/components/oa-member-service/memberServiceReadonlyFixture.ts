@@ -1,4 +1,4 @@
-import type { MemberServiceReadonlyModule } from "./memberServiceReadonlyTypes";
+﻿import type { MemberServiceReadonlyModule } from "./memberServiceReadonlyTypes";
 
 /**
  * TEST_ONLY UI fixtures for CS Center / WK / GS readonly wiring C.
@@ -14,7 +14,7 @@ export const MEMBER_SERVICE_READONLY_META = {
 export const MEMBER_SERVICE_READONLY_MODULES: Record<string, MemberServiceReadonlyModule> = {
   "cs-center": {
     id: "cs-center",
-    activeKey: "after_sales",
+    activeKey: "cs_center",
     en: "CS Center",
     zh: "客服中心",
     descriptionEn:
@@ -62,7 +62,7 @@ export const MEMBER_SERVICE_READONLY_MODULES: Record<string, MemberServiceReadon
   },
   wk: {
     id: "wk",
-    activeKey: "windkeep",
+    activeKey: "wk",
     en: "WK",
     zh: "WindKeep",
     descriptionEn:
@@ -110,7 +110,7 @@ export const MEMBER_SERVICE_READONLY_MODULES: Record<string, MemberServiceReadon
   },
   gs: {
     id: "gs",
-    activeKey: "wind_seeker",
+    activeKey: "gs",
     en: "GS",
     zh: "Guidance Services",
     descriptionEn:

@@ -1,4 +1,4 @@
-import type { GrowthReadonlyModule } from "./growthReadonlyTypes";
+﻿import type { GrowthReadonlyModule } from "./growthReadonlyTypes";
 
 /**
  * TEST_ONLY UI fixtures for Site / GEO / AI Ops readonly wiring B.
@@ -14,7 +14,7 @@ export const GROWTH_READONLY_META = {
 export const GROWTH_READONLY_MODULES: Record<string, GrowthReadonlyModule> = {
   site: {
     id: "site",
-    activeKey: "content_assets",
+    activeKey: "site",
     en: "Site",
     zh: "站点",
     descriptionEn:
@@ -62,7 +62,7 @@ export const GROWTH_READONLY_MODULES: Record<string, GrowthReadonlyModule> = {
   },
   geo: {
     id: "geo",
-    activeKey: "seo_geo",
+    activeKey: "geo",
     en: "GEO",
     zh: "GEO",
     descriptionEn:
@@ -110,7 +110,7 @@ export const GROWTH_READONLY_MODULES: Record<string, GrowthReadonlyModule> = {
   },
   "ai-ops": {
     id: "ai-ops",
-    activeKey: "marketing",
+    activeKey: "ai_ops",
     en: "AI Ops",
     zh: "AI 运营",
     descriptionEn:

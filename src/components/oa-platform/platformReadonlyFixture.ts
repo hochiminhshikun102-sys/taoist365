@@ -1,4 +1,4 @@
-import type { PlatformReadonlyModule } from "./platformReadonlyTypes";
+﻿import type { PlatformReadonlyModule } from "./platformReadonlyTypes";
 
 /**
  * TEST_ONLY UI fixtures for Finance / Compliance / Settings readonly wiring D.
@@ -62,7 +62,7 @@ export const PLATFORM_READONLY_MODULES: Record<string, PlatformReadonlyModule> =
   },
   compliance: {
     id: "compliance",
-    activeKey: "risk_control",
+    activeKey: "compliance",
     en: "Compliance",
     zh: "合规",
     descriptionEn:
@@ -110,7 +110,7 @@ export const PLATFORM_READONLY_MODULES: Record<string, PlatformReadonlyModule> =
   },
   settings: {
     id: "settings",
-    activeKey: "system_settings",
+    activeKey: "settings",
     en: "Settings",
     zh: "设置",
     descriptionEn:
