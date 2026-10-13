@@ -12,6 +12,9 @@ import "@/styles/oa/oa-orders.css";
 import "@/styles/oa/oa-payments-shipping.css";
 import "@/styles/oa/oa-objects.css";
 import "@/styles/oa/oa-media.css";
+import "@/styles/oa/oa-finance.css";
+import "@/styles/oa/oa-logistics.css";
+import "@/styles/oa/oa-supply-chain.css";
 
 export const metadata: Metadata = {
   title: "OA Admin Candidate",

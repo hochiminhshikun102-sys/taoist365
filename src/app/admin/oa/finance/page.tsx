@@ -1,5 +1,10 @@
-import { PlatformReadonlyPage } from "@/components/oa-platform/PlatformReadonlyPage";
+import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
+import { FinanceProjectionWorkbench } from "@/components/oa-finance/FinanceProjectionWorkbench";
 
 export default function OaFinancePage() {
-  return <PlatformReadonlyPage moduleId="finance" />;
+  return (
+    <OaSharedShell activeKey="finance">
+      <FinanceProjectionWorkbench />
+    </OaSharedShell>
+  );
 }

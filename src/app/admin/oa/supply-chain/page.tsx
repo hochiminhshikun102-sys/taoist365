@@ -1,5 +1,10 @@
-import { CommerceReadonlyPage } from "@/components/oa-commerce/CommerceReadonlyPage";
+import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
+import { SupplyChainProjectionWorkbench } from "@/components/oa-supply-chain/SupplyChainProjectionWorkbench";
 
 export default function OaSupplyChainPage() {
-  return <CommerceReadonlyPage moduleId="supply-chain" />;
+  return (
+    <OaSharedShell activeKey="supply_chain">
+      <SupplyChainProjectionWorkbench />
+    </OaSharedShell>
+  );
 }
