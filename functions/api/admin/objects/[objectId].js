@@ -1,14 +1,30 @@
-import { createAuditLog, json, nowIso, updateStore } from "../../../_object-intake.js";
-import { enforceServerAuthz } from "../../../_publish-policy.js";
+import { createAuditLog, json, nowIso, readStore, updateStore } from "../../../_object-intake.js";
+import { denyResponse, enforceOfficialAction } from "../../../_publish-policy.js";
 
 const allowedStatuses = new Set(["published", "archived"]);
 
 export async function onRequestPatch(context) {
-  const authz = enforceServerAuthz(context, "publish");
+  const authz = enforceOfficialAction(context, "object_patch");
   if (authz.denied) return authz.denied;
 
-  const { objectId } = context.params;
   const payload = await context.request.json().catch(() => ({}));
+  const { objectId } = context.params;
+  const snapshot = await readStore(context.env);
+  const current = snapshot.objects.find((item) => item.object_id === objectId || item.id === objectId || item.slug === objectId);
+  if (!current) return json({ error: "Object not found." }, 404);
+
+  const requestedStatus = payload.status === undefined ? undefined : String(payload.status);
+  const isPublishTransition = requestedStatus === "published" && String(current.status || "") !== "published";
+  if (isPublishTransition) {
+    return denyResponse({
+      ok: false,
+      httpStatus: 403,
+      code: "PUBLISH_GATE_REQUIRED",
+      message: "Object PATCH cannot transition status to published. Use the authoritative publish handler.",
+      write: false,
+    });
+  }
+
   let updated = null;
   let missing = false;
   let invalid = "";
@@ -20,9 +36,13 @@ export async function onRequestPatch(context) {
       return store;
     }
 
-    const nextStatus = payload.status === undefined ? object.status || "published" : String(payload.status);
+    const nextStatus = requestedStatus === undefined ? object.status || "archived" : requestedStatus;
     if (!allowedStatuses.has(nextStatus)) {
       invalid = "Object status must be published or archived.";
+      return store;
+    }
+    if (nextStatus === "published" && String(object.status || "") !== "published") {
+      invalid = "Publish transition is blocked on object PATCH.";
       return store;
     }
 
@@ -45,7 +65,15 @@ export async function onRequestPatch(context) {
       ...store,
       objects: store.objects.map((item) => (item.object_id === object.object_id ? updated : item)),
       adminAuditLogs: [
-        createAuditLog("updated_object", "object", object.object_id, before, updated, payload.admin_note || `Object updated to ${nextStatus}.`),
+        createAuditLog(
+          "updated_object",
+          "object",
+          object.object_id,
+          before,
+          updated,
+          payload.admin_note || `Object updated to ${nextStatus}.`,
+          authz.identity.sub || "DEFERRED_NO_TRUSTED_SUB",
+        ),
         ...store.adminAuditLogs,
       ],
     };

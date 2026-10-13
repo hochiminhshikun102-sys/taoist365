@@ -1,5 +1,5 @@
 import { createAuditLog, intakeStatuses, json, nowIso, updateStore } from "../../../../_object-intake.js";
-import { enforceServerAuthz } from "../../../../_publish-policy.js";
+import { enforceOfficialAction } from "../../../../_publish-policy.js";
 
 const actionToStatus = {
   approve: intakeStatuses.APPROVED,
@@ -8,7 +8,7 @@ const actionToStatus = {
 };
 
 export async function onRequestPatch(context) {
-  const authz = enforceServerAuthz(context, "review");
+  const authz = enforceOfficialAction(context, "review");
   if (authz.denied) return authz.denied;
 
   const { intakeId } = context.params;

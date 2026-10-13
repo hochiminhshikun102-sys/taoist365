@@ -8,13 +8,13 @@ import {
   resolveObjectIntakeSource,
   updateStore,
 } from "../../../_object-intake.js";
-import { enforceServerAuthz } from "../../../_publish-policy.js";
+import { enforceOfficialAction } from "../../../_publish-policy.js";
 
 const supportedPlatforms = new Set(["auto", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "jd", "other"]);
 const secondhandPlatforms = new Set(["xianyu"]);
 
 export async function onRequestPost(context) {
-  const authz = enforceServerAuthz(context, "mutate_intake");
+  const authz = enforceOfficialAction(context, "mutate_intake");
   if (authz.denied) return authz.denied;
 
   let payload;

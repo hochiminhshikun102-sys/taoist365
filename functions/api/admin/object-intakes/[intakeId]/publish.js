@@ -9,10 +9,10 @@ import {
   slugify,
   updateStore,
 } from "../../../../_object-intake.js";
-import { buildPublishPolicyInput, enforceServerAuthz, resolvePublishPolicy } from "../../../../_publish-policy.js";
+import { buildPublishPolicyInput, enforceOfficialAction, resolvePublishPolicy } from "../../../../_publish-policy.js";
 
 export async function onRequestPost(context) {
-  const authz = enforceServerAuthz(context, "publish");
+  const authz = enforceOfficialAction(context, "publish");
   if (authz.denied) return authz.denied;
 
   const { intakeId } = context.params;
