@@ -1,4 +1,5 @@
 import { createAuditLog, json, makeId, nowIso, publicUrlForMedia, updateStore } from "../../../../_object-intake.js";
+import { enforceServerAuthz } from "../../../../_publish-policy.js";
 
 const allowedStatuses = new Set(["pending", "processing", "ready", "failed"]);
 const defaultOutputs = ["original", "main", "detail", "scene", "pc", "mobile", "social"];
@@ -15,6 +16,9 @@ const outputSpecs = {
 };
 
 export async function onRequestPatch(context) {
+  const authz = enforceServerAuthz(context, "mutate_intake");
+  if (authz.denied) return authz.denied;
+
   const { jobId } = context.params;
   let payload;
   try {

@@ -1,8 +1,12 @@
 import { createAuditLog, json, nowIso, updateStore } from "../../../_object-intake.js";
+import { enforceServerAuthz } from "../../../_publish-policy.js";
 
 const allowedStatuses = new Set(["published", "archived"]);
 
 export async function onRequestPatch(context) {
+  const authz = enforceServerAuthz(context, "publish");
+  if (authz.denied) return authz.denied;
+
   const { objectId } = context.params;
   const payload = await context.request.json().catch(() => ({}));
   let updated = null;

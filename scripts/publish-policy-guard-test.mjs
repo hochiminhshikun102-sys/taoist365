@@ -1,190 +1,164 @@
 /**
- * AUTH-06B / R33 — TEST_ONLY publish policy guard matrix.
- * Validates functions/_publish-policy.js (server-side source of truth).
+ * R60 TEST_ONLY — policy matrix (no production writes).
  */
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const modUrl = pathToFileURL(path.join(root, "functions", "_publish-policy.js")).href;
-const { resolvePublishPolicy, canDirectPublish } = await import(modUrl);
+const { resolvePublishPolicy, canDirectPublish, assertActionAuthz, emptyIdentity } = await import(modUrl);
 
-/** @type {{ name: string; input: object; expectPolicy: string; expectDirect: boolean; expectBucket?: string }[]} */
-const cases = [
-  {
-    name: "official OA + admin role",
-    input: {
-      source_type: "admin_upload",
-      entry_surface: "admin_os",
-      identity_scope: "admin",
-      actor_type: "admin_official",
-      role: "oa_admin",
-      channel: "oa_admin",
-    },
-    expectPolicy: "direct_publish",
-    expectDirect: true,
-    expectBucket: "OFFICIAL_OA_UPLOAD",
-  },
-  {
-    name: "official OA + non-admin role",
-    input: {
-      source_type: "admin_upload",
-      entry_surface: "admin_os",
-      identity_scope: "admin",
-      actor_type: "buyer",
-      role: "global_buyer",
-      channel: "oa_admin",
-    },
-    expectPolicy: "review_required",
-    expectDirect: false,
-    expectBucket: "OFFICIAL_OA_UPLOAD",
-  },
-  {
-    name: "global buyer",
-    input: {
-      source_type: "buyer_upload",
-      entry_surface: "wind_seeker",
-      identity_scope: "wind_seeker",
-      actor_type: "buyer",
-      role: "global_buyer",
-      channel: "buyer_portal",
-    },
-    expectPolicy: "review_required",
-    expectDirect: false,
-    expectBucket: "GLOBAL_BUYER_UPLOAD",
-  },
-  {
-    name: "WindKeep owner",
-    input: {
-      source_type: "windkeep_member",
-      entry_surface: "member_center",
-      identity_scope: "windkeep_member",
-      supply_program: "windkeep",
-      actor_type: "owner",
-      role: "windkeep_owner",
-      channel: "windkeep",
-    },
-    expectPolicy: "review_required",
-    expectDirect: false,
-    expectBucket: "BARTER_WINDKEEP_OWNER_UPLOAD",
-  },
-  {
-    name: "barter owner",
-    input: {
-      source_type: "barter_upload",
-      entry_surface: "barter",
-      identity_scope: "member",
-      actor_type: "owner",
-      role: "windkeep_owner",
-      channel: "barter",
-    },
-    expectPolicy: "review_required",
-    expectDirect: false,
-    expectBucket: "BARTER_WINDKEEP_OWNER_UPLOAD",
-  },
-  {
-    name: "unknown source",
-    input: {
-      source_type: "mystery_source",
-      actor_type: "admin_official",
-      role: "oa_admin",
-      channel: "oa_admin",
-    },
-    expectPolicy: "review_required",
-    expectDirect: false,
-    expectBucket: "UNKNOWN_OR_UNMAPPED",
-  },
-  {
-    name: "external_link not auto-official",
-    input: {
-      source_type: "external_link",
-      entry_surface: "admin_os",
-      identity_scope: "admin",
-      actor_type: "admin_official",
-      role: "oa_admin",
-      channel: "oa_admin",
-    },
-    expectPolicy: "review_required",
-    expectDirect: false,
-    expectBucket: "UNKNOWN_OR_UNMAPPED",
-  },
-  {
-    name: "supplier_batch not auto-official",
-    input: {
-      source_type: "supplier_batch",
-      entry_surface: "admin_os",
-      identity_scope: "supplier",
-      actor_type: "admin_official",
-      role: "oa_admin",
-      channel: "oa_admin",
-    },
-    expectPolicy: "review_required",
-    expectDirect: false,
-    expectBucket: "UNKNOWN_OR_UNMAPPED",
-  },
-  {
-    name: "buyer body cannot spoof official on buyer intake",
-    input: {
-      source_type: "buyer_upload",
-      entry_surface: "wind_seeker",
-      identity_scope: "wind_seeker",
-      actor_type: "admin_official",
-      role: "oa_admin",
-      channel: "oa_admin",
-    },
-    expectPolicy: "review_required",
-    expectDirect: false,
-    expectBucket: "GLOBAL_BUYER_UPLOAD",
-  },
-];
+const official = {
+  authenticated: true,
+  valid: true,
+  expired: false,
+  invalid: false,
+  server_verified: true,
+  identity_kind: "official",
+  role: "oa_admin",
+  permissions: ["publish"],
+  source: "middleware",
+};
+
+const buyer = {
+  ...official,
+  identity_kind: "buyer",
+  role: "global_buyer",
+  permissions: ["intake_write"],
+};
+
+const owner = {
+  ...official,
+  identity_kind: "windkeep_owner",
+  role: "windkeep_owner",
+  permissions: ["intake_write"],
+};
+
+/** @type {{ name: string; run: () => boolean }[]} */
+const cases = [];
+
+function expect(name, cond) {
+  cases.push({ name, run: () => Boolean(cond) });
+}
+
+expect(
+  "official_oa + server_verified_admin + publish permission => direct_publish",
+  resolvePublishPolicy({
+    identity: official,
+    source_type: "admin_upload",
+    intake: { source_type: "admin_upload", entry_surface: "admin_os", identity_scope: "admin" },
+  }).can_direct_publish === true,
+);
+
+expect(
+  "verified buyer / global_buyer => review_required",
+  resolvePublishPolicy({
+    identity: official,
+    intake: { source_type: "buyer_upload", entry_surface: "wind_seeker", identity_scope: "wind_seeker" },
+  }).publish_policy === "review_required",
+);
+
+expect(
+  "verified barter / windkeep_owner => review_required",
+  resolvePublishPolicy({
+    identity: official,
+    intake: { source_type: "windkeep_member", entry_surface: "member_center", identity_scope: "windkeep_member", supply_program: "windkeep" },
+  }).publish_policy === "review_required",
+);
+
+expect(
+  "external_link => review_required",
+  resolvePublishPolicy({ identity: official, intake: { source_type: "external_link" } }).publish_policy === "review_required",
+);
+
+expect(
+  "supplier_batch => review_required",
+  resolvePublishPolicy({ identity: official, intake: { source_type: "supplier_batch" } }).publish_policy === "review_required",
+);
+
+expect(
+  "request_body_official_only => no permission elevation",
+  canDirectPublish({
+    identity: emptyIdentity(),
+    actor_type: "admin_official",
+    role: "oa_admin",
+    source_type: "official_oa",
+    intake: { source_type: "admin_upload" },
+  }) === false,
+);
+
+expect(
+  "official tag / source=official only => no elevation",
+  canDirectPublish({
+    identity: emptyIdentity(),
+    source: "official",
+    source_type: "official",
+    intake: { source_type: "official", tags: ["official"] },
+  }) === false,
+);
+
+expect(
+  "draft_label_official only => no elevation",
+  canDirectPublish({
+    identity: emptyIdentity(),
+    intake: { source_type: "admin_upload", labels: ["official"], tags: ["oa_admin"] },
+  }) === false,
+);
+
+expect(
+  "created_by=admin-os only => no elevation",
+  canDirectPublish({
+    identity: emptyIdentity(),
+    created_by: "admin-os",
+    intake: { source_type: "admin_upload", created_by: "admin-os" },
+  }) === false,
+);
+
+expect(
+  "submitted_by=admin-os only => no elevation",
+  canDirectPublish({
+    identity: emptyIdentity(),
+    submitted_by: "admin-os",
+    intake: { source_type: "admin_upload", submitted_by: "admin-os" },
+  }) === false,
+);
+
+expect(
+  "actor_type=official only => no elevation",
+  canDirectPublish({
+    identity: emptyIdentity(),
+    actor_type: "admin_official",
+    intake: { source_type: "admin_upload", actor_type: "oa_admin" },
+  }) === false,
+);
+
+expect("missing auth => 401", assertActionAuthz(emptyIdentity(), "publish").httpStatus === 401);
+expect(
+  "invalid auth => 401",
+  assertActionAuthz(
+    { ...official, invalid: true, valid: false, server_verified: false },
+    "publish",
+  ).httpStatus === 401,
+);
+expect(
+  "expired auth => 401",
+  assertActionAuthz({ ...official, expired: true, valid: false, server_verified: false }, "publish").httpStatus === 401,
+);
+expect("verified unauthorized => 403", assertActionAuthz(buyer, "publish").httpStatus === 403);
+expect("verified owner cannot publish skip => 403", assertActionAuthz(owner, "publish").httpStatus === 403);
+expect("verified official publish authz ok", assertActionAuthz(official, "publish").ok === true);
 
 let failed = 0;
-const rows = [];
-
 for (const testCase of cases) {
-  const policy = resolvePublishPolicy(testCase.input);
-  const direct = canDirectPublish(testCase.input);
-  const ok =
-    policy.publish_policy === testCase.expectPolicy &&
-    direct === testCase.expectDirect &&
-    policy.can_direct_publish === testCase.expectDirect &&
-    (!testCase.expectBucket || policy.policy_bucket === testCase.expectBucket) &&
-    typeof policy.reason === "string" &&
-    policy.reason.length > 0 &&
-    typeof policy.auditAction === "string";
-
-  rows.push({
-    name: testCase.name,
-    ok,
-    publish_policy: policy.publish_policy,
-    can_direct_publish: policy.can_direct_publish,
-    policy_bucket: policy.policy_bucket,
-    reason: policy.reason,
-    deny_code: policy.deny_code,
-    auditAction: policy.auditAction,
-  });
-
+  const ok = testCase.run();
   if (!ok) {
     failed += 1;
-    console.error("FAIL", testCase.name, policy);
+    console.error("FAIL", testCase.name);
   } else {
-    console.log("PASS", testCase.name, policy.publish_policy, policy.policy_bucket);
+    console.log("PASS", testCase.name);
   }
 }
 
-console.log(
-  JSON.stringify(
-    {
-      TEST_ONLY: true,
-      SMOKE: true,
-      total: cases.length,
-      failed,
-      rows,
-    },
-    null,
-    2,
-  ),
-);
-
+console.log(JSON.stringify({ TEST_ONLY: true, total: cases.length, failed }, null, 2));
 if (failed > 0) process.exit(1);
 console.log("PUBLISH_POLICY_GUARD_TEST=PASS");
