@@ -1,5 +1,6 @@
-import { CommerceReadonlyPage } from "@/components/oa-commerce/CommerceReadonlyPage";
+import { PrimaryEntryPage } from "@/components/oa-skeleton/PrimaryEntryPage";
 
+/** CO hub — six secondary workbenches via structure gate. */
 export default function OaCommercePage() {
-  return <CommerceReadonlyPage moduleId="commerce" />;
+  return <PrimaryEntryPage slug="commerce" />;
 }

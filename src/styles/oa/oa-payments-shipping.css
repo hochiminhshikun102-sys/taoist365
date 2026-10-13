@@ -1,0 +1,25 @@
+@import "./oa-tokens.css";
+
+.oa-ps-queues {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.oa-ps-panel-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.oa-ps-page .oa-card h2,
+.oa-ps-page .oa-card h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  color: var(--water-blue, #355f7a);
+}
+
+@media (max-width: 1100px) {
+  .oa-ps-queues {
+    grid-template-columns: 1fr 1fr;
+  }
+}

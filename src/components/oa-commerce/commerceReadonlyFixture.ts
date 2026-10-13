@@ -1,4 +1,4 @@
-import type { CommerceReadonlyModule } from "./commerceReadonlyTypes";
+﻿import type { CommerceReadonlyModule } from "./commerceReadonlyTypes";
 
 /**
  * TEST_ONLY UI fixtures for Commerce A readonly wiring.
@@ -16,7 +16,7 @@ export const COMMERCE_READONLY_META = {
 export const COMMERCE_READONLY_MODULES: Record<string, CommerceReadonlyModule> = {
   commerce: {
     id: "commerce",
-    activeKey: "products_orders",
+    activeKey: "co",
     en: "CO",
     zh: "商业订单",
     descriptionEn:
@@ -60,7 +60,7 @@ export const COMMERCE_READONLY_MODULES: Record<string, CommerceReadonlyModule> =
   },
   operations: {
     id: "operations",
-    activeKey: "users_members",
+    activeKey: "operations",
     en: "Operations",
     zh: "运营",
     descriptionEn:
@@ -148,7 +148,7 @@ export const COMMERCE_READONLY_MODULES: Record<string, CommerceReadonlyModule> =
   },
   "supply-chain": {
     id: "supply-chain",
-    activeKey: "logistics",
+    activeKey: "supply_chain",
     en: "Supply Chain",
     zh: "供应链",
     descriptionEn:
