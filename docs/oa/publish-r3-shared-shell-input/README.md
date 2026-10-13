@@ -17,14 +17,17 @@ VISUAL_CONFIRMATION_PASSED=FALSE（Shell 视觉另见 R66B 包）。
 | 项 | 值 |
 | --- | --- |
 | PRODUCT_BRANCH | `dogdan/oa-shared-shell-nav-ux-polish-r66-20261014` |
-| PRODUCT_HEAD（已推送 tip） | `93201cdb12249f70c4356fe999843afdf4174417` |
+| PRODUCT_MASTER | `bf83dc4e8f1ceeaabfc4d2788271c40bc04d9817`（未 merge Shell） |
+| PRODUCT_HEAD（已推送 tip） | docs tip `10d8493`；**冻结源码对象** `93201cdb12249f70c4356fe999843afdf4174417` |
+| 3666 现场 | `http://localhost:3666/admin/oa/co/intake`（进程在听；服务工作区脏树，**不是**冻结 HEAD） |
+| 固定回执 | `docs/oa/publish-r3-shared-shell-input/RECEIPT.txt` |
 | 语言修正提交 | `f0c6ce20974203255bb26200ce785d59d485e589` |
 | R66 主候选 | `5f9df3488b9f980319cf0b8f887254db08a3b895` |
 | PRODUCT_BASE | `bf83dc4e8f1ceeaabfc4d2788271c40bc04d9817` |
 | R66B 确认包 | `docs/oa/r66b-visual-confirm/` @ `93201cd` |
 | 工作区脏树 | TRUE（见第 10 节，**不得冒充冻结对象**） |
 
-冻结对象一律用 `git cat-file blob <sha>` 对 `PRODUCT_HEAD`。工作区补丁见 `patches/`。
+冻结对象一律用 `git cat-file blob <sha>` 对 `93201cd`。工作区补丁见 `patches/`。Plus 机读回执：`RECEIPT.txt`。
 
 ---
 

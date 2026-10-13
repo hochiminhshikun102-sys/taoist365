@@ -1,0 +1,86 @@
+FINAL_DECISION=A. OA_SHARED_SHELL_FIXED_INPUT_READY_FOR_04
+SOURCE_MASTER_SHA=bf83dc4e8f1ceeaabfc4d2788271c40bc04d9817
+SHELL_CANDIDATE_SHA=93201cdb12249f70c4356fe999843afdf4174417
+SHELL_CANDIDATE_BRANCH=dogdan/oa-shared-shell-nav-ux-polish-r66-20261014
+SHELL_MERGED=FALSE
+SHELL_BRANCH_CANDIDATE_ONLY=TRUE
+HANDOFF_DOCS_SHA=10d8493dca9924ff2ac8dab0c0fd48591aa8a623
+R66_SHA=5f9df3488b9f980319cf0b8f887254db08a3b895
+R66A_LOCALE_SHA=f0c6ce20974203255bb26200ce785d59d485e589
+R66B_CONFIRM_PACK_SHA=93201cdb12249f70c4356fe999843afdf4174417
+CONTINUATION_SHA=303cccbd74f573e514a727fb564d7703e594d4d6
+CONTINUATION_IN_PRODUCT_TREE=FALSE
+LIVE_3666=http://localhost:3666/admin/oa/co/intake
+LIVE_3666_LISTENING=TRUE
+LIVE_3666_IS_WORKING_TREE=TRUE
+LIVE_3666_IS_FROZEN_HEAD=FALSE
+WORKING_TREE_DIRTY=TRUE
+FROZEN_GIT_OBJECTS_AT=93201cdb12249f70c4356fe999843afdf4174417
+
+SHELL_COMPONENT_PATHS=src/components/oa-shell/OaSharedShell.tsx; src/components/oa-shell/oaNavCanonical.ts; src/components/oa-shell/useOaUiLocale.ts
+SHELL_COMPONENT_HASHES_READY=TRUE
+STYLE_PATHS=src/app/admin/oa/layout.tsx; src/styles/oa/oa-shell.css; src/styles/oa/oa-tokens.css; src/styles/oa/oa-skeleton.css
+STYLE_HASHES_READY=TRUE
+NAV_CONFIG_PATH=src/components/oa-shell/oaNavCanonical.ts; src/components/oa-skeleton/primaryEntries.ts
+LANGUAGE_INTERFACE_PATH=src/components/oa-shell/useOaUiLocale.ts
+LANGUAGE_STORAGE_KEY=dohara.oa.language
+LANGUAGE_EVENT=dohara-oa-language
+LAYOUT_CHAIN_FOR_ADMIN_OA_CO_INTAKE=src/app/layout.tsx -> src/app/admin/layout.tsx -> src/app/admin/oa/layout.tsx -> src/app/admin/oa/co/intake/page.tsx
+CONTENT_SLOT_FOR_04=OaSharedShell children in src/app/admin/oa/co/intake/page.tsx (renders .oa-main)
+INTAKE_ENTRY_WRITE_LOCK_RELEASED_TO_04=TRUE
+DOGDAN_OWNED_PATHS=src/components/oa-shell/** ; src/styles/oa/oa-shell.css ; src/styles/oa/oa-tokens.css ; src/app/admin/oa/layout.tsx ; src/app/admin/layout.tsx ; src/app/layout.tsx ; src/components/oa-skeleton/primaryEntries.ts ; src/components/oa-shell/oaNavCanonical.ts
+DIGUA04_ALLOWED_PATHS=src/app/admin/oa/co/intake/page.tsx (children only; keep OaSharedShell activeKey=co) ; src/components/oa-publish/Publish.tsx ; src/components/oa-publish/publish.module.css ; src/components/oa-publish/copy.ts ; src/lib/oa-publish/bridge.ts
+NO_DOUBLE_SIDEBAR_CONTRACT=TRUE
+NO_DOUBLE_TOPBAR_CONTRACT=TRUE
+NO_DOUBLE_LANGUAGE_SWITCH_CONTRACT=TRUE
+PUBLIC_SHELL_OWNED_BY_DOGDAN=TRUE
+PUBLISH_CONTENT_OWNED_BY_04=TRUE
+NO_PAGE_REBUILD=TRUE
+NO_REPEAT_TEST=TRUE
+NO_PROVIDER_WIRING=TRUE
+REAL_BUSINESS_WRITE=FALSE
+DEPLOY=FALSE
+PR=FALSE
+MERGE=FALSE
+
+# Frozen blobs @ SHELL_CANDIDATE_SHA=93201cd (not working tree)
+FROZEN src/components/oa-shell/OaSharedShell.tsx=3bcae3ff168b57836ff8e4015d11e1c6ede46058 CANDIDATE
+FROZEN src/components/oa-shell/oaNavCanonical.ts=22c4ae2dd29b52f1cc5db89dd85309f386a21ba4 CANDIDATE
+FROZEN src/components/oa-shell/useOaUiLocale.ts=6da55a33e450b85a8f0b8c39fc2d4b6337614d43 CANDIDATE
+FROZEN src/app/layout.tsx=c72ac4264a9cafd3125d8e84baaf0e3e7f0ce4bc SAME_AS_MASTER_LINEAGE
+FROZEN src/app/admin/layout.tsx=b37a728f4aa34f65756c3278c7bdcad3c3348ebd SAME_AS_MASTER_LINEAGE
+FROZEN src/app/admin/oa/layout.tsx=37849b7d132d0b79e12936ac59e7c983e0201954 CANDIDATE_LINEAGE
+FROZEN src/app/admin/oa/co/intake/page.tsx=0dddd70e1ebf14d08f8ea2fe312ac35e2f510367 WRITE_LOCK_RELEASED_TO_04
+FROZEN src/components/oa-skeleton/primaryEntries.ts=d41d751be290b2608105ebee106637762851ba30 CANDIDATE
+FROZEN src/components/oa-skeleton/capabilityGate.ts=c12b8c6789712a3e666548916def467b66cd3517 CANDIDATE
+FROZEN src/styles/oa/oa-shell.css=1ddf78347ba9fc75ac7459a1a458be332bd58671 CANDIDATE
+FROZEN src/styles/oa/oa-tokens.css=d8df65b723a9b2340e4b01ad9c8dce0dccef456d CANDIDATE
+FROZEN src/styles/oa/oa-skeleton.css=31ba5a25f86144ffb78f4aac06e53f3008030083 CANDIDATE
+OaLoc.tsx NOT_IN_HEAD NOT_FROZEN
+
+# Header/Sidebar/Flyout/Drawer: single file OaSharedShell.tsx (no split Header/Sidebar components)
+# Header=.oa-topbar  Sidebar=.oa-rail  Flyout=.oa-floating-panel  Drawer=mobile .oa-drawer
+# 04 MUST NOT add a second rail/topbar/language switch.
+
+# Locale consume (frozen API)
+# type OaUiLocale = "zh-CN" | "en"
+# oaPick(locale, zh, en)
+# useOaUiLocale() -> { locale, setLocale, isZh }
+# nav labels: locale==="en" ? item.labelEn : item.labelZh  (single language, never mixed)
+# TECH_FLAGS chips remain English tokens: read_only / not_connected / deploy disabled
+
+# Route smoke (optional, not required for 04 consume)
+ROUTE_SMOKE=scripts/oa-r66-route-smoke.mjs
+
+# Fixed links
+COLLAB_RECEIPT_PATH=docs/oa/publish-r3-shared-shell-input/README.md
+COLLAB_RECEIPT_BLOBS=docs/oa/publish-r3-shared-shell-input/BLOBS.txt
+COLLAB_RECEIPT_THIS=docs/oa/publish-r3-shared-shell-input/RECEIPT.txt
+R66B_PACK=docs/oa/r66b-visual-confirm/README.md
+PRODUCT_REPO=https://github.com/hochiminhshikun102-sys/taoist365
+MASTER_COMMIT=https://github.com/hochiminhshikun102-sys/taoist365/commit/bf83dc4e8f1ceeaabfc4d2788271c40bc04d9817
+SHELL_CANDIDATE_COMMIT=https://github.com/hochiminhshikun102-sys/taoist365/commit/93201cdb12249f70c4356fe999843afdf4174417
+SHELL_CANDIDATE_TREE=https://github.com/hochiminhshikun102-sys/taoist365/tree/dogdan/oa-shared-shell-nav-ux-polish-r66-20261014
+HANDOFF_COMMIT=https://github.com/hochiminhshikun102-sys/taoist365/commit/10d8493dca9924ff2ac8dab0c0fd48591aa8a623
+HANDOFF_TREE=https://github.com/hochiminhshikun102-sys/taoist365/blob/dogdan/oa-shared-shell-nav-ux-polish-r66-20261014/docs/oa/publish-r3-shared-shell-input/README.md
+R66B_TREE=https://github.com/hochiminhshikun102-sys/taoist365/blob/dogdan/oa-shared-shell-nav-ux-polish-r66-20261014/docs/oa/r66b-visual-confirm/README.md
