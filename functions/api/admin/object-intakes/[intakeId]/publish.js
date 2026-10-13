@@ -9,16 +9,18 @@ import {
   slugify,
   updateStore,
 } from "../../../../_object-intake.js";
-import { buildPublishPolicyInput, resolvePublishPolicy } from "../../../../_publish-policy.js";
+import { buildPublishPolicyInput, enforceServerAuthz, resolvePublishPolicy } from "../../../../_publish-policy.js";
 
 export async function onRequestPost(context) {
+  const authz = enforceServerAuthz(context, "publish");
+  if (authz.denied) return authz.denied;
+
   const { intakeId } = context.params;
   let published = null;
   let missing = false;
   let invalid = "";
   let invalidReasons = [];
   let policySnapshot = null;
-  const actorClaims = await readActorClaims(context.request);
 
   await updateStore(context.env, (store) => {
     const intake = store.objectIntakes.find((item) => item.id === intakeId);
@@ -26,7 +28,7 @@ export async function onRequestPost(context) {
       missing = true;
       return store;
     }
-    const publishPolicy = resolvePublishPolicy(buildPublishPolicyInput(intake, actorClaims));
+    const publishPolicy = resolvePublishPolicy(buildPublishPolicyInput(intake, authz.identity));
     policySnapshot = publishPolicy;
     if (!publishPolicy.canSkipReview && intake.status !== intakeStatuses.APPROVED && intake.status !== intakeStatuses.PUBLISHED) {
       invalid = "Only approved intakes can be published.";
@@ -139,28 +141,6 @@ export async function onRequestPost(context) {
     path: `/objects/${published.object_id}`,
     publish_policy: policySnapshot,
   }, 201);
-}
-
-async function readActorClaims(request) {
-  const claims = {
-    actor_type: String(request.headers.get("x-oa-actor-type") || "").trim(),
-    role: String(request.headers.get("x-oa-actor-role") || "").trim(),
-    channel: String(request.headers.get("x-oa-channel") || "").trim(),
-  };
-  try {
-    const contentType = String(request.headers.get("content-type") || "");
-    if (contentType.includes("application/json")) {
-      const body = await request.clone().json();
-      if (body && typeof body === "object") {
-        if (body.actor_type) claims.actor_type = String(body.actor_type).trim();
-        if (body.role || body.created_by_role) claims.role = String(body.role || body.created_by_role).trim();
-        if (body.channel) claims.channel = String(body.channel).trim();
-      }
-    }
-  } catch {
-    // empty / non-JSON body is fine; policy may infer official actor from official intake shape
-  }
-  return claims;
 }
 
 function makeDetailModules(intake, draft, media) {

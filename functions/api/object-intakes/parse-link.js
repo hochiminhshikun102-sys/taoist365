@@ -1,8 +1,12 @@
 import { json } from "../../_object-intake.js";
+import { enforceServerAuthz } from "../../_publish-policy.js";
 
 const supportedPlatforms = new Set(["1688", "taobao", "tmall", "pinduoduo", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "jd", "unknown"]);
 
 export async function onRequestPost(context) {
+  const authz = enforceServerAuthz(context, "mutate_intake");
+  if (authz.denied) return authz.denied;
+
   let payload;
   try {
     payload = await context.request.json();

@@ -1,4 +1,5 @@
 import { createAuditLog, json, makeId, nowIso, updateStore, readStore } from "../../_object-intake.js";
+import { enforceServerAuthz } from "../../_publish-policy.js";
 
 const assetScopes = new Set(["brand", "product_media", "social", "prompt_pack", "safe_area", "object_intake", "air_engine"]);
 const assetStatuses = new Set(["uploaded", "draft", "review_pending", "approved", "published", "archived"]);
@@ -31,6 +32,9 @@ export async function onRequestGet(context) {
 }
 
 export async function onRequestPost(context) {
+  const authz = enforceServerAuthz(context, "mutate_intake");
+  if (authz.denied) return authz.denied;
+
   let form;
   try {
     form = await context.request.formData();

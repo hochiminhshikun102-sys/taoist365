@@ -264,16 +264,12 @@ function canPublishFromUi(row: EnrichedIntake, policy: PublishPolicyResult | nul
 }
 
 function getPublishPolicy(row: EnrichedIntake): PublishPolicyResult {
-  // OA Publish Review surface: hint with official OA actor. Server re-validates.
   return resolvePublishPolicy({
     intake: row.intake,
     source_type: row.intake.source_type,
     entry_surface: row.intake.entry_surface,
     identity_scope: row.intake.identity_scope,
     supply_program: row.intake.supply_program,
-    actor_type: "admin_official",
-    role: "oa_admin",
-    channel: "oa_admin",
   });
 }
 

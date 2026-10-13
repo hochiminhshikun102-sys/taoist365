@@ -1,17 +1,20 @@
 /**
- * AUTH-06B / R33 — server-side publish policy guard.
- * Normative: official OA upload + official role → direct_publish;
- * buyer / barter / windkeep owner / unknown / external_link / supplier_batch → review_required.
- * UI hints must not authorize publish.
+ * R60 — server-side publish identity + policy.
+ * Official identity is server-verified only.
+ * Untrusted fields never grant identity or direct_publish:
+ * request body, draft tags, submitted_by, created_by, source, actor_type,
+ * UI hints, local draft metadata, client headers.
+ *
+ * Authz order:
+ * 1) missing / invalid / expired identity → HTTP 401, ZERO_WRITE
+ * 2) verified but unauthorized → HTTP 403, ZERO_WRITE
+ * 3) only then business split: official+permission → direct_publish;
+ *    verified buyer / WindKeep / barter → review_required
+ * review_required is not a fallback for unauthenticated callers.
  */
 
 const OFFICIAL_SOURCE_TYPES = new Set(["official_oa", "admin_upload", "boss_upload"]);
-const BUYER_SOURCE_TYPES = new Set([
-  "global_buyer",
-  "buyer_upload",
-  "marketplace",
-  "external_buyer",
-]);
+const BUYER_SOURCE_TYPES = new Set(["global_buyer", "buyer_upload", "marketplace", "external_buyer"]);
 const OWNER_SOURCE_TYPES = new Set([
   "barter_owner",
   "windkeep_owner",
@@ -24,42 +27,167 @@ const OWNER_SOURCE_TYPES = new Set([
   "neighbor_referral",
   "windkeep_external_link",
 ]);
-/** Explicitly NOT official under AUTH-06A/B. */
 const NON_OFFICIAL_ADMIN_SURFACE_SOURCES = new Set(["external_link", "supplier_batch", "legacy_product_sample"]);
-
-const OFFICIAL_ACTOR_TYPES = new Set(["admin_official", "oa_admin", "admin", "boss"]);
-const OFFICIAL_ROLES = new Set(["oa_admin", "admin", "boss", "admin_official", "owner_operator"]);
-
-const OA_CHANNELS = new Set(["oa_admin", "admin_os"]);
 const BUYER_CHANNELS = new Set(["buyer_portal", "wind_seeker"]);
 const OWNER_CHANNELS = new Set(["windkeep", "barter", "member_center"]);
+const OFFICIAL_ROLES = new Set(["oa_admin", "admin", "boss", "admin_official", "owner_operator"]);
+const TRUSTED_IDENTITY_SOURCES = new Set(["session", "jwt", "app_metadata", "allowlist", "middleware"]);
 
 /**
- * @typedef {object} PublishPolicyInput
- * @property {string} [source_type]
- * @property {string} [actor_type]
- * @property {string} [channel]
- * @property {string} [role]
- * @property {string} [created_by_role]
- * @property {string} [review_status]
- * @property {string} [entry_surface]
- * @property {string} [identity_scope]
- * @property {string} [supply_program]
- * @property {object} [intake]
+ * @param {object} [context]
  */
+export function readServerVerifiedIdentity(context = {}) {
+  const trusted = context?.data?.serverAuth;
+  if (!trusted || typeof trusted !== "object") {
+    return emptyIdentity("none");
+  }
+  return normalizeTrustedIdentity(trusted);
+}
+
+export function emptyIdentity(source = "none") {
+  return {
+    authenticated: false,
+    valid: false,
+    expired: false,
+    invalid: false,
+    server_verified: false,
+    identity_kind: "",
+    role: "",
+    permissions: [],
+    source,
+  };
+}
+
+function normalizeTrustedIdentity(raw) {
+  const expired = Boolean(raw.expired);
+  const invalid = Boolean(raw.invalid);
+  const authenticated = Boolean(raw.authenticated);
+  const source = TRUSTED_IDENTITY_SOURCES.has(norm(raw.source)) ? norm(raw.source) : "middleware";
+  const role = norm(raw.role);
+  const identityKind = norm(raw.identity_kind);
+  const permissions = Array.isArray(raw.permissions) ? raw.permissions.map((p) => norm(p)).filter(Boolean) : [];
+  const serverVerified = Boolean(raw.server_verified) && authenticated && !expired && !invalid;
+  return {
+    authenticated,
+    valid: authenticated && !expired && !invalid && serverVerified,
+    expired,
+    invalid,
+    server_verified: serverVerified,
+    identity_kind: identityKind,
+    role,
+    permissions,
+    source,
+  };
+}
 
 /**
- * @param {PublishPolicyInput} input
+ * @param {ReturnType<typeof readServerVerifiedIdentity>} identity
+ * @param {"publish"|"review"|"mutate_intake"} [action]
+ */
+export function assertActionAuthz(identity, action = "publish") {
+  if (!identity || !identity.authenticated || identity.source === "none") {
+    return deny(401, "AUTH_MISSING", "Server-verified identity is required.");
+  }
+  if (identity.expired) {
+    return deny(401, "AUTH_EXPIRED", "Server-verified identity is expired.");
+  }
+  if (identity.invalid || !identity.valid || !identity.server_verified) {
+    return deny(401, "AUTH_INVALID", "Server-verified identity is invalid.");
+  }
+
+  const official = isOfficialIdentity(identity);
+  const buyer = identity.identity_kind === "buyer" || identity.identity_kind === "global_buyer";
+  const owner =
+    identity.identity_kind === "windkeep_owner" ||
+    identity.identity_kind === "barter_owner" ||
+    identity.identity_kind === "owner";
+  const has = (perm) => identity.permissions.includes(perm);
+
+  if (action === "publish") {
+    if (official && (has("publish") || has("publish_direct") || OFFICIAL_ROLES.has(identity.role))) {
+      return allow(identity);
+    }
+    return deny(403, "AUTH_FORBIDDEN", "Verified identity is not authorized to publish.");
+  }
+
+  if (action === "review") {
+    if (official && (has("review") || has("publish") || OFFICIAL_ROLES.has(identity.role))) {
+      return allow(identity);
+    }
+    return deny(403, "AUTH_FORBIDDEN", "Verified identity is not authorized to review.");
+  }
+
+  if (action === "mutate_intake") {
+    if (official || buyer || owner || has("intake_write")) {
+      return allow(identity);
+    }
+    return deny(403, "AUTH_FORBIDDEN", "Verified identity is not authorized to write intake.");
+  }
+
+  return deny(403, "AUTH_FORBIDDEN", "Verified identity is not authorized.");
+}
+
+export function enforceServerAuthz(context, action = "publish") {
+  const identity = readServerVerifiedIdentity(context);
+  const gate = assertActionAuthz(identity, action);
+  if (!gate.ok) {
+    return {
+      denied: jsonDenied(gate),
+      identity: null,
+      gate,
+    };
+  }
+  return { denied: null, identity, gate };
+}
+
+function jsonDenied(gate) {
+  return new Response(
+    JSON.stringify({
+      ok: false,
+      code: gate.code,
+      error: gate.message,
+      write: false,
+      zero_write: true,
+    }),
+    {
+      status: gate.httpStatus,
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": "no-store",
+      },
+    },
+  );
+}
+
+function deny(httpStatus, code, message) {
+  return { ok: false, httpStatus, code, message, write: false };
+}
+
+function allow(identity) {
+  return { ok: true, httpStatus: 200, code: "", message: "", write: true, identity };
+}
+
+export function isOfficialIdentity(identity) {
+  return Boolean(
+    identity?.server_verified &&
+      identity.valid &&
+      identity.identity_kind === "official" &&
+      OFFICIAL_ROLES.has(norm(identity.role)),
+  );
+}
+
+/**
+ * Business split only. Callers must already pass assertActionAuthz.
+ * Untrusted actor/source/body fields cannot grant official identity.
  */
 export function resolvePublishPolicy(input = {}) {
+  const identity = input.identity && typeof input.identity === "object" ? input.identity : emptyIdentity();
   const intake = input.intake && typeof input.intake === "object" ? input.intake : {};
-  const sourceType = norm(input.source_type ?? intake.source_type);
-  const entrySurface = norm(input.entry_surface ?? intake.entry_surface);
-  const identityScope = norm(input.identity_scope ?? intake.identity_scope);
-  const supplyProgram = norm(input.supply_program ?? intake.supply_program);
-  const channel = norm(input.channel || entrySurface);
-  const role = norm(input.role || input.created_by_role);
-  const actorType = resolveActorType(input, intake, role);
+  const sourceType = norm(intake.source_type ?? input.source_type);
+  const entrySurface = norm(intake.entry_surface ?? input.entry_surface);
+  const identityScope = norm(intake.identity_scope ?? input.identity_scope);
+  const supplyProgram = norm(intake.supply_program ?? input.supply_program);
+  const channel = norm(intake.entry_surface || input.channel);
   const reviewStatus = norm(input.review_status || mapReviewStatus(intake.status));
 
   const classification = classifySource({
@@ -70,77 +198,57 @@ export function resolvePublishPolicy(input = {}) {
     channel,
   });
 
-  const officialRole = isOfficialRole(actorType, role);
-  const canDirect =
-    classification.bucket === "OFFICIAL_OA_UPLOAD" &&
-    officialRole &&
-    isOaChannel(channel, entrySurface, identityScope);
-
+  const official = isOfficialIdentity(identity);
+  const canDirect = official && classification.bucket === "OFFICIAL_OA_UPLOAD";
   const publishPolicy = canDirect ? "direct_publish" : "review_required";
-  const canSkipReview = canDirect;
-  const denyCode = canDirect ? "" : denyCodeFor(classification, officialRole, actorType, role);
 
   return {
     publish_policy: publishPolicy,
-    canSkipReview,
+    canSkipReview: canDirect,
     can_direct_publish: canDirect,
     require_review_before_publish: !canDirect,
     policy_bucket: classification.bucket,
     source_classification: classification.source_classification,
     source_type: sourceType || "",
-    actor_type: actorType,
+    actor_type: identity.identity_kind || "unknown",
     channel: channel || entrySurface || "",
-    role: role || derivedRole(actorType),
+    role: identity.role || "",
     review_status: reviewStatus,
     reason: canDirect
-      ? "official_oa_upload_with_official_role"
-      : classification.reason || "review_required_fail_closed",
-    deny_code: denyCode,
+      ? "official_oa_upload_with_server_verified_identity"
+      : classification.reason || "review_required_after_authz",
+    deny_code: canDirect ? "" : denyCodeFor(classification.bucket),
     auditAction: auditActionFor(classification.bucket, canDirect),
     auditReason: auditReasonFor(classification.bucket, canDirect),
-    actorId: officialRole ? "admin_official" : actorType || "unknown",
+    actorId: official ? "admin_official" : identity.identity_kind || "unknown",
+    identity_source: identity.source || "none",
+    server_verified: Boolean(identity.server_verified),
   };
 }
 
-/**
- * @param {PublishPolicyInput} input
- */
 export function canDirectPublish(input = {}) {
-  const policy = resolvePublishPolicy(input);
-  return Boolean(policy.can_direct_publish);
+  return Boolean(resolvePublishPolicy(input).can_direct_publish);
 }
 
-/**
- * Build policy input from intake + optional request actor claims.
- * Body actor cannot upgrade a non-official intake to direct_publish.
- * @param {object} intake
- * @param {object} [actorClaims]
- */
-export function buildPublishPolicyInput(intake, actorClaims = {}) {
+export function buildPublishPolicyInput(intake, identity) {
   return {
     intake,
+    identity,
     source_type: intake?.source_type,
     entry_surface: intake?.entry_surface,
     identity_scope: intake?.identity_scope,
     supply_program: intake?.supply_program,
-    channel: actorClaims.channel || intake?.entry_surface,
-    actor_type: actorClaims.actor_type,
-    role: actorClaims.role || actorClaims.created_by_role,
-    created_by_role: actorClaims.created_by_role,
-    review_status: actorClaims.review_status,
   };
 }
 
 function classifySource({ sourceType, entrySurface, identityScope, supplyProgram, channel }) {
-  // Source/channel/scope classify the bucket. Actor/role only gate canDirectPublish.
   if (NON_OFFICIAL_ADMIN_SURFACE_SOURCES.has(sourceType)) {
     return {
       bucket: "UNKNOWN_OR_UNMAPPED",
       source_classification: sourceType,
-      reason: `${sourceType}_not_auto_official`,
+      reason: `${sourceType}_review_required`,
     };
   }
-
   if (
     BUYER_SOURCE_TYPES.has(sourceType) ||
     BUYER_CHANNELS.has(channel) ||
@@ -154,7 +262,6 @@ function classifySource({ sourceType, entrySurface, identityScope, supplyProgram
       reason: "global_buyer_review_required",
     };
   }
-
   if (
     OWNER_SOURCE_TYPES.has(sourceType) ||
     OWNER_CHANNELS.has(channel) ||
@@ -170,26 +277,13 @@ function classifySource({ sourceType, entrySurface, identityScope, supplyProgram
       reason: "owner_upload_review_required",
     };
   }
-
   if (OFFICIAL_SOURCE_TYPES.has(sourceType)) {
-    const oaSurface =
-      isOaChannel(channel, entrySurface, identityScope) ||
-      identityScope === "admin" ||
-      entrySurface === "admin_os";
-    if (oaSurface) {
-      return {
-        bucket: "OFFICIAL_OA_UPLOAD",
-        source_classification: sourceType,
-        reason: "official_oa_source",
-      };
-    }
     return {
-      bucket: "UNKNOWN_OR_UNMAPPED",
+      bucket: "OFFICIAL_OA_UPLOAD",
       source_classification: sourceType,
-      reason: "official_source_without_oa_channel",
+      reason: "official_oa_source_class_only",
     };
   }
-
   if (!sourceType) {
     return {
       bucket: "UNKNOWN_OR_UNMAPPED",
@@ -197,7 +291,6 @@ function classifySource({ sourceType, entrySurface, identityScope, supplyProgram
       reason: "missing_source_type",
     };
   }
-
   return {
     bucket: "UNKNOWN_OR_UNMAPPED",
     source_classification: sourceType,
@@ -205,44 +298,9 @@ function classifySource({ sourceType, entrySurface, identityScope, supplyProgram
   };
 }
 
-function resolveActorType(input, intake, role) {
-  const explicit = norm(input.actor_type);
-  if (explicit) return explicit;
-  if (OFFICIAL_ROLES.has(role)) return "admin_official";
-  if (role === "global_buyer" || role === "buyer") return "buyer";
-  if (role === "windkeep_owner" || role === "owner") return "owner";
-
-  // Legacy OA publish path (no auth provider yet): infer official actor only for official-shaped intakes.
-  const sourceType = norm(intake.source_type);
-  if (
-    OFFICIAL_SOURCE_TYPES.has(sourceType) &&
-    !NON_OFFICIAL_ADMIN_SURFACE_SOURCES.has(sourceType) &&
-    norm(intake.entry_surface) === "admin_os" &&
-    norm(intake.identity_scope) === "admin"
-  ) {
-    return "admin_official";
-  }
-
-  return "unknown";
-}
-
-function isOfficialRole(actorType, role) {
-  return OFFICIAL_ACTOR_TYPES.has(actorType) || OFFICIAL_ROLES.has(role);
-}
-
-function isOaChannel(channel, entrySurface, identityScope) {
-  return OA_CHANNELS.has(channel) || OA_CHANNELS.has(entrySurface) || identityScope === "admin";
-}
-
-function denyCodeFor(classification, officialRole, actorType, role) {
-  if (classification.bucket === "OFFICIAL_OA_UPLOAD" && !officialRole) {
-    return "FORBIDDEN_ROLE";
-  }
-  if (classification.bucket === "GLOBAL_BUYER_UPLOAD") return "POLICY_REVIEW_REQUIRED";
-  if (classification.bucket === "BARTER_WINDKEEP_OWNER_UPLOAD") return "POLICY_REVIEW_REQUIRED";
-  if (classification.bucket === "UNKNOWN_OR_UNMAPPED") return "POLICY_UNMAPPED";
-  if (!actorType || actorType === "unknown") return "AUTH_REQUIRED";
-  if (role && !officialRole) return "FORBIDDEN_ROLE";
+function denyCodeFor(bucket) {
+  if (bucket === "GLOBAL_BUYER_UPLOAD" || bucket === "BARTER_WINDKEEP_OWNER_UPLOAD") return "POLICY_REVIEW_REQUIRED";
+  if (bucket === "UNKNOWN_OR_UNMAPPED") return "POLICY_UNMAPPED";
   return "POLICY_REVIEW_REQUIRED";
 }
 
@@ -254,7 +312,7 @@ function auditActionFor(bucket, canDirect) {
 }
 
 function auditReasonFor(bucket, canDirect) {
-  if (canDirect) return "official_oa_direct_publish_after_server_guard";
+  if (canDirect) return "official_oa_direct_publish_after_server_verified_identity";
   if (bucket === "GLOBAL_BUYER_UPLOAD") return "buyer_publish_after_review";
   if (bucket === "BARTER_WINDKEEP_OWNER_UPLOAD") return "owner_publish_after_review";
   return "standard_publish_after_review";
@@ -263,22 +321,8 @@ function auditReasonFor(bucket, canDirect) {
 function mapReviewStatus(intakeStatus) {
   const status = norm(intakeStatus);
   if (!status) return "";
-  if (status === "approved") return "approved";
-  if (status === "rejected") return "rejected";
-  if (status === "review_pending") return "review_pending";
-  if (status === "published") return "published";
+  if (status === "approved" || status === "rejected" || status === "review_pending" || status === "published") return status;
   return "draft";
-}
-
-function derivedRole(actorType) {
-  if (OFFICIAL_ACTOR_TYPES.has(actorType)) return "oa_admin";
-  if (actorType === "buyer" || actorType === "global_buyer" || actorType === "wind_seeker" || actorType === "marketplace") {
-    return "global_buyer";
-  }
-  if (actorType === "owner" || actorType === "windkeep_owner" || actorType === "barter_owner" || actorType === "member") {
-    return "windkeep_owner";
-  }
-  return "unknown";
 }
 
 function norm(value) {

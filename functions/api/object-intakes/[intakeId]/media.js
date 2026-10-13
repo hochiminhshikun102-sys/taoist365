@@ -1,8 +1,12 @@
 import { createAuditLog, intakeStatuses, json, makeId, nowIso, updateStore } from "../../../_object-intake.js";
+import { enforceServerAuthz } from "../../../_publish-policy.js";
 
 const mediaTypes = new Set(["original", "normalized", "main", "detail", "scene", "pc", "mobile", "social", "motion"]);
 
 export async function onRequestPost(context) {
+  const authz = enforceServerAuthz(context, "mutate_intake");
+  if (authz.denied) return authz.denied;
+
   const { intakeId } = context.params;
   let form;
   try {
