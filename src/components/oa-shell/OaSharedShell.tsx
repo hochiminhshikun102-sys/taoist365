@@ -3,9 +3,39 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { PRIMARY_CAPABILITY, capabilityLabel } from "@/components/oa-skeleton/capabilityGate";
+import { PRIMARY_CAPABILITY } from "@/components/oa-skeleton/capabilityGate";
 import { NAV_KEY_TO_PRIMARY_PATH } from "@/components/oa-skeleton/primaryEntries";
 import { NAV_ITEMS, OA_SUBMENUS, type OaSubmenuItem } from "./oaNavCanonical";
+import { useOaUiLocale, type OaUiLocale } from "./useOaUiLocale";
+
+const SHELL_COPY = {
+  "zh-CN": {
+    menu: "菜单",
+    brand: "DOHARA OA · 只读地基",
+    nav: "OA 一级导航",
+    flags: "OA 环境边界",
+    openHub: "打开看板",
+    lang: "语言",
+  },
+  en: {
+    menu: "Menu",
+    brand: "DOHARA OA · Readonly Foundation",
+    nav: "OA primary navigation",
+    flags: "OA environment boundaries",
+    openHub: "Open hub",
+    lang: "Language",
+  },
+} as const;
+
+const TECH_FLAGS = ["read_only", "not_connected", "deploy disabled", "real write disabled"] as const;
+
+function primaryLabel(item: (typeof NAV_ITEMS)[number], locale: OaUiLocale) {
+  return locale === "en" ? item.en : item.zh;
+}
+
+function subLabel(item: OaSubmenuItem, locale: OaUiLocale) {
+  return locale === "en" ? item.labelEn : item.labelZh;
+}
 
 type Props = {
   activeKey?: string;
@@ -27,10 +57,12 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
   const closeTimer = useRef<number | null>(null);
   const [flyout, setFlyout] = useState<FlyoutBox | null>(null);
   const [railOpen, setRailOpen] = useState(false);
-  const [status, setStatus] = useState("OA readonly foundation · 只读地基");
+  const [status, setStatus] = useState("read_only");
   const [active, setActive] = useState(activeKey);
   const [hash, setHash] = useState("");
   const [fineHover, setFineHover] = useState(false);
+  const { locale, setLocale } = useOaUiLocale();
+  const copy = SHELL_COPY[locale];
 
   const declaredRoutes = useMemo(() => {
     const routes = new Set<string>(Object.values(NAV_KEY_TO_PRIMARY_PATH));
@@ -180,21 +212,42 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
                 setRailOpen((open) => !open);
               }}
             >
-              Menu · 导航
+              {copy.menu}
             </button>
-            <div className="oa-brand">DOHARA OA · Readonly Foundation · 只读地基</div>
+            <div className="oa-brand">{copy.brand}</div>
           </div>
-          <div className="oa-banner-flags" aria-label="OA environment boundaries">
-            <span className="oa-flag">OA readonly foundation · 只读地基</span>
-            <span className="oa-flag is-warn">Provider not connected · 未接通</span>
-            <span className="oa-flag is-warn">Production deploy disabled · 禁止上线</span>
-            <span className="oa-flag is-warn">Real business write disabled · 禁止真实写入</span>
+          <div className="oa-topbar-tools">
+            <div className="oa-lang-switch" role="group" aria-label={copy.lang}>
+              <button
+                type="button"
+                className={locale === "zh-CN" ? "is-active" : ""}
+                aria-pressed={locale === "zh-CN"}
+                onClick={() => setLocale("zh-CN")}
+              >
+                中文
+              </button>
+              <button
+                type="button"
+                className={locale === "en" ? "is-active" : ""}
+                aria-pressed={locale === "en"}
+                onClick={() => setLocale("en")}
+              >
+                EN
+              </button>
+            </div>
+            <div className="oa-banner-flags" aria-label={copy.flags}>
+              {TECH_FLAGS.map((flag) => (
+                <span key={flag} className={flag === "read_only" ? "oa-flag" : "oa-flag is-warn"}>
+                  {flag}
+                </span>
+              ))}
+            </div>
           </div>
         </header>
         <aside
           id="oa-primary-rail"
           className={`oa-rail${railOpen ? " is-open" : ""}`}
-          aria-label="OA primary navigation"
+          aria-label={copy.nav}
         >
           {NAV_ITEMS.map((item) => {
             const hasSub = Boolean(OA_SUBMENUS[item.key]);
@@ -231,9 +284,8 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
                   }}
                 >
                   <span className="oa-rail-label">
-                    {item.en} · {item.zh}
-                    <span className="oa-rail-canonical">canonical {item.canonical}</span>
-                    <span className={`oa-rail-status is-${cap}`}>{capabilityLabel(cap)}</span>
+                    {primaryLabel(item, locale)}
+                    <span className={`oa-rail-status is-${cap}`}>{cap}</span>
                   </span>
                 </Link>
                 {hasSub ? (
@@ -242,7 +294,7 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
                     type="button"
                     aria-expanded={flyout?.key === item.key}
                     aria-haspopup="menu"
-                    aria-label={`${item.en} submenu`}
+                    aria-label={locale === "en" ? `${item.en} submenu` : `${item.zh} 子菜单`}
                     onClick={(event) => {
                       event.preventDefault();
                       event.stopPropagation();
@@ -263,7 +315,7 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
           <div
             className={`oa-floating-panel is-open${flyout.flip ? " is-flip" : ""}`}
             role="menu"
-            aria-label={openConf.title}
+            aria-label={locale === "en" ? openConf.titleEn : openConf.titleZh}
             style={{ top: flyout.top, left: flyout.left, maxHeight: flyout.maxHeight }}
             onMouseEnter={clearCloseTimer}
             onMouseLeave={() => {
@@ -271,24 +323,24 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
             }}
           >
             <div className="oa-flyout-bridge" aria-hidden="true" />
-            <div className="oa-floating-title">{openConf.title}</div>
+            <div className="oa-floating-title">{locale === "en" ? openConf.titleEn : openConf.titleZh}</div>
             {openPrimaryHref ? (
               <button
                 className={`oa-floating-row${pathname === openPrimaryHref ? " is-active" : ""}`}
                 type="button"
                 onClick={() => goPrimary(flyout.key)}
               >
-                Open hub · 打开看板
+                {copy.openHub}
               </button>
             ) : null}
             {openConf.items.map((item: OaSubmenuItem) => (
               <button
-                key={item.route + item.label}
+                key={item.route + item.labelEn}
                 className={`oa-floating-row${isSubActive(item.route) ? " is-active" : ""}`}
                 type="button"
                 onClick={() => goRoute(item.route)}
               >
-                {item.label}
+                {subLabel(item, locale)}
                 {item.hint ? <span className="oa-floating-hint">{item.hint}</span> : null}
               </button>
             ))}

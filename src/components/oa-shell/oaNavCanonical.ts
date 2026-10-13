@@ -11,10 +11,17 @@ export type OaNavItem = {
 };
 
 export type OaSubmenuItem = {
-  label: string;
+  labelEn: string;
+  labelZh: string;
   route: string;
   owner: string;
   hint?: string;
+};
+
+export type OaSubmenuGroup = {
+  titleEn: string;
+  titleZh: string;
+  items: OaSubmenuItem[];
 };
 
 /**
@@ -181,61 +188,61 @@ export const NAV_ITEMS: OaNavItem[] = [
 
 /** Approved CO six secondary workbenches — Additive-only; do not delete/rename/merge. */
 export const CO_SECONDARY_SUBMENU: OaSubmenuItem[] = [
-  { label: "intake · 宝贝入库", route: "/admin/oa/co/intake", owner: "02 CO", hint: "read_only" },
-  { label: "objects · 商品系统", route: "/admin/oa/co/objects", owner: "02 CO", hint: "read_only" },
-  { label: "media · 商品素材", route: "/admin/oa/co/media", owner: "02 CO", hint: "read_only" },
-  { label: "orders · 订单系统", route: "/admin/oa/co/orders", owner: "02 CO", hint: "read_only" },
-  { label: "payments · 支付管理", route: "/admin/oa/co/payments", owner: "02 CO", hint: "read_only" },
-  { label: "shipping · 发货管理", route: "/admin/oa/co/shipping", owner: "02 CO", hint: "read_only" },
+  { labelEn: "Intake", labelZh: "宝贝入库", route: "/admin/oa/co/intake", owner: "02 CO", hint: "read_only" },
+  { labelEn: "Objects", labelZh: "商品系统", route: "/admin/oa/co/objects", owner: "02 CO", hint: "read_only" },
+  { labelEn: "Media", labelZh: "商品素材", route: "/admin/oa/co/media", owner: "02 CO", hint: "read_only" },
+  { labelEn: "Orders", labelZh: "订单系统", route: "/admin/oa/co/orders", owner: "02 CO", hint: "read_only" },
+  { labelEn: "Payments", labelZh: "支付管理", route: "/admin/oa/co/payments", owner: "02 CO", hint: "read_only" },
+  { labelEn: "Shipping", labelZh: "发货管理", route: "/admin/oa/co/shipping", owner: "02 CO", hint: "read_only" },
 ];
 
 export const OPERATIONS_SUBMENU: OaSubmenuItem[] = [
-  { label: "03A · Member Operations · 会员运营", route: "/admin/oa/operations#03A_member_ops", owner: "03 Operations", hint: "read_only" },
-  { label: "03B · Points & Benefits · 积分与权益", route: "/admin/oa/operations#03B_points_benefits", owner: "03 Operations", hint: "read_only" },
-  { label: "03C · Member Services · 会员服务", route: "/admin/oa/operations#03C_member_services", owner: "03 Operations", hint: "read_only" },
-  { label: "03D · Member Content · 会员内容", route: "/admin/oa/operations#03D_member_content", owner: "03 Operations", hint: "read_only" },
-  { label: "03E · Creator Operations · 创作者运营", route: "/admin/oa/operations#03E_creator", owner: "03 Operations", hint: "read_only" },
-  { label: "03F · Growth & Rewards · 增长与奖励", route: "/admin/oa/operations#03F_growth_rewards", owner: "03 Operations", hint: "read_only" },
-  { label: "03G · Messaging · 消息触达", route: "/admin/oa/operations#03G_messaging", owner: "03 Operations", hint: "read_only" },
+  { labelEn: "03A Member Operations", labelZh: "03A 会员运营", route: "/admin/oa/operations#03A_member_ops", owner: "03 Operations", hint: "read_only" },
+  { labelEn: "03B Points & Benefits", labelZh: "03B 积分与权益", route: "/admin/oa/operations#03B_points_benefits", owner: "03 Operations", hint: "read_only" },
+  { labelEn: "03C Member Services", labelZh: "03C 会员服务", route: "/admin/oa/operations#03C_member_services", owner: "03 Operations", hint: "read_only" },
+  { labelEn: "03D Member Content", labelZh: "03D 会员内容", route: "/admin/oa/operations#03D_member_content", owner: "03 Operations", hint: "read_only" },
+  { labelEn: "03E Creator Operations", labelZh: "03E 创作者运营", route: "/admin/oa/operations#03E_creator", owner: "03 Operations", hint: "read_only" },
+  { labelEn: "03F Growth & Rewards", labelZh: "03F 增长与奖励", route: "/admin/oa/operations#03F_growth_rewards", owner: "03 Operations", hint: "read_only" },
+  { labelEn: "03G Messaging", labelZh: "03G 消息触达", route: "/admin/oa/operations#03G_messaging", owner: "03 Operations", hint: "read_only" },
 ];
 
 export const SITE_SUBMENU: OaSubmenuItem[] = [
-  { label: "S1 · Site Overview · 站点总览", route: "/admin/oa/site#site_overview", owner: "05 Site", hint: "read_only" },
-  { label: "S2 · Route & Page Registry · 路由与页面登记", route: "/admin/oa/site#route_page_registry", owner: "05 Site", hint: "read_only" },
-  { label: "S3 · Content Blocks · 内容区块", route: "/admin/oa/site#content_blocks", owner: "05 Site", hint: "read_only" },
-  { label: "S4 · SEO Metadata · SEO 元数据", route: "/admin/oa/site#seo_metadata_control", owner: "05 Site", hint: "read_only" },
-  { label: "S5 · Visual & Asset Mapping · 视觉与资产", route: "/admin/oa/site#visual_asset_mapping", owner: "05 Site", hint: "read_only" },
-  { label: "S6 · Site Review Queue · 站点审核队列", route: "/admin/oa/site#site_review_queue", owner: "05 Site", hint: "read_only" },
-  { label: "S7 · Publish Readiness · 发布就绪", route: "/admin/oa/site#publish_readiness", owner: "05 Site", hint: "read_only" },
+  { labelEn: "S1 Site Overview", labelZh: "S1 站点总览", route: "/admin/oa/site#site_overview", owner: "05 Site", hint: "read_only" },
+  { labelEn: "S2 Route & Page Registry", labelZh: "S2 路由与页面登记", route: "/admin/oa/site#route_page_registry", owner: "05 Site", hint: "read_only" },
+  { labelEn: "S3 Content Blocks", labelZh: "S3 内容区块", route: "/admin/oa/site#content_blocks", owner: "05 Site", hint: "read_only" },
+  { labelEn: "S4 SEO Metadata", labelZh: "S4 SEO 元数据", route: "/admin/oa/site#seo_metadata_control", owner: "05 Site", hint: "read_only" },
+  { labelEn: "S5 Visual & Asset Mapping", labelZh: "S5 视觉与资产", route: "/admin/oa/site#visual_asset_mapping", owner: "05 Site", hint: "read_only" },
+  { labelEn: "S6 Site Review Queue", labelZh: "S6 站点审核队列", route: "/admin/oa/site#site_review_queue", owner: "05 Site", hint: "read_only" },
+  { labelEn: "S7 Publish Readiness", labelZh: "S7 发布就绪", route: "/admin/oa/site#publish_readiness", owner: "05 Site", hint: "read_only" },
 ];
 
 export const GEO_SUBMENU: OaSubmenuItem[] = [
-  { label: "G1 · GEO Overview · 全球市场总览", route: "/admin/oa/geo#geo_overview", owner: "06 GEO", hint: "read_only" },
-  { label: "G2 · Market Matrix · 市场矩阵", route: "/admin/oa/geo#market_matrix", owner: "06 GEO", hint: "read_only" },
-  { label: "G3 · Search & AI Discovery · 搜索与发现", route: "/admin/oa/geo#search_ai_discovery", owner: "06 GEO", hint: "read_only" },
-  { label: "G4 · Localization Queue · 本地化队列", route: "/admin/oa/geo#localization_queue", owner: "06 GEO", hint: "read_only" },
-  { label: "G5 · Channel Signals · 渠道信号", route: "/admin/oa/geo#channel_signals", owner: "06 GEO", hint: "read_only" },
-  { label: "G6 · Regional Compliance · 区域合规", route: "/admin/oa/geo#regional_compliance_flags", owner: "06 GEO", hint: "read_only" },
-  { label: "G7 · GEO Content Actions · GEO 内容动作", route: "/admin/oa/geo#geo_content_actions", owner: "06 GEO", hint: "read_only" },
+  { labelEn: "G1 GEO Overview", labelZh: "G1 全球市场总览", route: "/admin/oa/geo#geo_overview", owner: "06 GEO", hint: "read_only" },
+  { labelEn: "G2 Market Matrix", labelZh: "G2 市场矩阵", route: "/admin/oa/geo#market_matrix", owner: "06 GEO", hint: "read_only" },
+  { labelEn: "G3 Search & AI Discovery", labelZh: "G3 搜索与发现", route: "/admin/oa/geo#search_ai_discovery", owner: "06 GEO", hint: "read_only" },
+  { labelEn: "G4 Localization Queue", labelZh: "G4 本地化队列", route: "/admin/oa/geo#localization_queue", owner: "06 GEO", hint: "read_only" },
+  { labelEn: "G5 Channel Signals", labelZh: "G5 渠道信号", route: "/admin/oa/geo#channel_signals", owner: "06 GEO", hint: "read_only" },
+  { labelEn: "G6 Regional Compliance", labelZh: "G6 区域合规", route: "/admin/oa/geo#regional_compliance_flags", owner: "06 GEO", hint: "read_only" },
+  { labelEn: "G7 GEO Content Actions", labelZh: "G7 GEO 内容动作", route: "/admin/oa/geo#geo_content_actions", owner: "06 GEO", hint: "read_only" },
 ];
 
 export const AI_OPS_SUBMENU: OaSubmenuItem[] = [
-  { label: "A1 · Global Dashboard · AI 运行总览", route: "/admin/oa/ai-ops#global_dashboard", owner: "04 AI Operations", hint: "read_only" },
-  { label: "A2 · Task Queue · AI 任务队列", route: "/admin/oa/ai-ops#task_queue", owner: "04 AI Operations", hint: "read_only" },
-  { label: "A3 · Model & Provider · 模型配置", route: "/admin/oa/ai-ops#model_provider_config", owner: "04 AI Operations", hint: "not_connected" },
-  { label: "A4 · Material Generation · 素材生成", route: "/admin/oa/ai-ops#material_generation", owner: "04 AI Operations", hint: "read_only" },
-  { label: "A5 · Material Library · 产物素材库", route: "/admin/oa/ai-ops#material_library", owner: "04 AI Operations", hint: "read_only" },
-  { label: "A6 · Compliance & Source · 合规与来源", route: "/admin/oa/ai-ops#compliance_source", owner: "04 AI Operations", hint: "read_only" },
-  { label: "A7 · Traffic & Reports · 流量与报告", route: "/admin/oa/ai-ops#traffic_reports", owner: "04 AI Operations", hint: "read_only" },
-  { label: "A8 · Short Video Factory · 短视频工厂", route: "/admin/oa/ai-ops#short_video_factory", owner: "04 AI Operations", hint: "read_only" },
+  { labelEn: "A1 Global Dashboard", labelZh: "A1 AI 运行总览", route: "/admin/oa/ai-ops#global_dashboard", owner: "04 AI Operations", hint: "read_only" },
+  { labelEn: "A2 Task Queue", labelZh: "A2 AI 任务队列", route: "/admin/oa/ai-ops#task_queue", owner: "04 AI Operations", hint: "read_only" },
+  { labelEn: "A3 Model & Provider", labelZh: "A3 模型配置", route: "/admin/oa/ai-ops#model_provider_config", owner: "04 AI Operations", hint: "not_connected" },
+  { labelEn: "A4 Material Generation", labelZh: "A4 素材生成", route: "/admin/oa/ai-ops#material_generation", owner: "04 AI Operations", hint: "read_only" },
+  { labelEn: "A5 Material Library", labelZh: "A5 产物素材库", route: "/admin/oa/ai-ops#material_library", owner: "04 AI Operations", hint: "read_only" },
+  { labelEn: "A6 Compliance & Source", labelZh: "A6 合规与来源", route: "/admin/oa/ai-ops#compliance_source", owner: "04 AI Operations", hint: "read_only" },
+  { labelEn: "A7 Traffic & Reports", labelZh: "A7 流量与报告", route: "/admin/oa/ai-ops#traffic_reports", owner: "04 AI Operations", hint: "read_only" },
+  { labelEn: "A8 Short Video Factory", labelZh: "A8 短视频工厂", route: "/admin/oa/ai-ops#short_video_factory", owner: "04 AI Operations", hint: "read_only" },
 ];
 
-export const OA_SUBMENUS: Record<string, { title: string; items: OaSubmenuItem[] }> = {
-  co: { title: "CO · 商品与订单看板", items: CO_SECONDARY_SUBMENU },
-  operations: { title: "Operations · 运营营销看板", items: OPERATIONS_SUBMENU },
-  site: { title: "Site · 站点前台看板", items: SITE_SUBMENU },
-  geo: { title: "GEO · 区域配置看板", items: GEO_SUBMENU },
-  ai_ops: { title: "AI Ops · AI 推广看板", items: AI_OPS_SUBMENU },
+export const OA_SUBMENUS: Record<string, OaSubmenuGroup> = {
+  co: { titleEn: "CO board", titleZh: "商品与订单看板", items: CO_SECONDARY_SUBMENU },
+  operations: { titleEn: "Operations board", titleZh: "运营营销看板", items: OPERATIONS_SUBMENU },
+  site: { titleEn: "Site board", titleZh: "站点前台看板", items: SITE_SUBMENU },
+  geo: { titleEn: "GEO board", titleZh: "区域配置看板", items: GEO_SUBMENU },
+  ai_ops: { titleEn: "AI Ops board", titleZh: "AI 推广看板", items: AI_OPS_SUBMENU },
 };
 
 /** @deprecated alias kept for any residual import; prefer CO_SECONDARY_SUBMENU */

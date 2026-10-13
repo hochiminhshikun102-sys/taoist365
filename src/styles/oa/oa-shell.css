@@ -7,6 +7,10 @@
 .oa-topbar-lead { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .oa-mobile-nav-toggle { display: none; border: 1px solid var(--metal-gray); background: var(--base-white); color: var(--water-blue); border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 12px; }
 .oa-brand { color: var(--water-blue); font-weight: 600; letter-spacing: 0.02em; font-size: 13px; overflow-wrap: anywhere; }
+.oa-topbar-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; }
+.oa-lang-switch { display: inline-flex; border: 1px solid var(--metal-gray); border-radius: 6px; overflow: hidden; }
+.oa-lang-switch button { border: 0; background: var(--base-white); color: var(--text-muted); padding: 5px 10px; cursor: pointer; font-size: 12px; }
+.oa-lang-switch button.is-active { background: color-mix(in srgb, var(--wood-sage) 28%, white); color: var(--water-blue); }
 .oa-banner-flags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 .oa-flag { font-size: 11px; color: var(--text-muted); border: 1px solid var(--metal-gray); background: var(--base-white); border-radius: 999px; padding: 4px 8px; line-height: 1.3; }
 .oa-flag.is-warn { color: var(--water-blue); border-color: var(--earth-beige); background: color-mix(in srgb, var(--earth-beige) 28%, white); }
