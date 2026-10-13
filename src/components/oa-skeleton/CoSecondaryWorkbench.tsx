@@ -79,6 +79,26 @@ export function CoSecondaryWorkbench({ workbenchId }: Props) {
         </div>
       )}
 
+      {workbenchId === "intake" ? (
+        <article className="oa-card" style={{ marginTop: 14 }}>
+          <h3>R47 cross-links · 交叉链接（无 IA 重构）</h3>
+          <p className="oa-skeleton-meta">
+            Product Intake keeps legacy links above. Cross-workbench jumps only — no intake IA rebuild.
+          </p>
+          <div className="oa-skeleton-actions">
+            <Link className="oa-btn secondary" href="/admin/oa/co/objects">
+              Objects Runtime · 商品系统
+            </Link>
+            <Link className="oa-btn secondary" href="/admin/oa/co/media">
+              Product Media · 商品素材
+            </Link>
+            <Link className="oa-btn secondary" href="/admin/oa/co/orders">
+              Orders Runtime · 订单系统
+            </Link>
+          </div>
+        </article>
+      ) : null}
+
       <div className="oa-skeleton-actions" style={{ marginTop: 12 }}>
         <Link className="oa-btn secondary" href="/admin/oa/commerce">
           Back to CO hub · 返回商品与订单

@@ -381,6 +381,12 @@ export function OrdersRuntimeWorkbench() {
           <Link className="oa-btn secondary" href="/admin/oa/co/shipping">
             Shipping Runtime preserved · 发货管理
           </Link>
+          <Link className="oa-btn secondary" href="/admin/oa/co/objects">
+            Objects Runtime · 商品系统
+          </Link>
+          <Link className="oa-btn secondary" href="/admin/oa/co/media">
+            Product Media · 商品素材
+          </Link>
           <Link className="oa-btn secondary" href="/admin/oa/commerce">
             Back to CO hub · 返回 CO
           </Link>

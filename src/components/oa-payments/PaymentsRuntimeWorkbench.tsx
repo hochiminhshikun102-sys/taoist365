@@ -247,6 +247,12 @@ export function PaymentsRuntimeWorkbench() {
           <Link className="oa-btn secondary" href="/admin/oa/co/shipping">
             Shipping Runtime · 发货管理
           </Link>
+          <Link className="oa-btn secondary" href="/admin/oa/co/objects">
+            Objects Runtime · 商品系统
+          </Link>
+          <Link className="oa-btn secondary" href="/admin/oa/commerce">
+            CO Overview · 总入口
+          </Link>
           <Link className="oa-btn secondary" href="/admin/oa/finance">
             Finance · 财务中心
           </Link>
