@@ -25,7 +25,7 @@ export const CAPABILITY_STATUS_LABEL: Record<OaCapabilityStatus, { en: string; z
 export const PRIMARY_CAPABILITY: Record<string, OaCapabilityStatus> = {
   overview: "read_only",
   commerce: "read_only",
-  operations: "not_connected",
+  operations: "read_only",
   "ai-ops": "not_connected",
   site: "not_connected",
   geo: "not_connected",
