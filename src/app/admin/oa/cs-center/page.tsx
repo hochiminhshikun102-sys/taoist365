@@ -1,5 +1,10 @@
-import { MemberServiceReadonlyPage } from "@/components/oa-member-service/MemberServiceReadonlyPage";
+import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
+import { CsCenterProjectionWorkbench } from "@/components/oa-cs-center/CsCenterProjectionWorkbench";
 
 export default function OaCsCenterPage() {
-  return <MemberServiceReadonlyPage moduleId="cs-center" />;
+  return (
+    <OaSharedShell activeKey="cs_center">
+      <CsCenterProjectionWorkbench />
+    </OaSharedShell>
+  );
 }

@@ -29,13 +29,13 @@ export const PRIMARY_CAPABILITY: Record<string, OaCapabilityStatus> = {
   "ai-ops": "not_connected",
   site: "not_connected",
   geo: "not_connected",
-  "cs-center": "not_connected",
+  "cs-center": "read_only",
   finance: "read_only",
   logistics: "read_only",
   "supply-chain": "read_only",
   wk: "not_connected",
   gs: "not_connected",
-  compliance: "not_connected",
+  compliance: "read_only",
   settings: "not_connected",
 };
 
