@@ -346,21 +346,54 @@ export function bindCreateSource(identity, requestedRaw) {
     if (OFFICIAL_REQUEST_ALIASES.has(requested) || OFFICIAL_SOURCE_TYPES.has(requested)) {
       return deny(403, "SOURCE_BINDING_DENIED", "External subject cannot bind an official intake source.");
     }
-    return { ok: true, httpStatus: 200, sourceType: "buyer_upload", originator_kind: "buyer" };
+    return { ok: true, httpStatus: 200, sourceType: "buyer_upload", originator_kind: "buyer", external_origin: true, empty_source_default: false };
   }
   if (kind === "windkeep_owner" || kind === "barter_owner" || kind === "owner") {
     if (OFFICIAL_REQUEST_ALIASES.has(requested) || OFFICIAL_SOURCE_TYPES.has(requested)) {
       return deny(403, "SOURCE_BINDING_DENIED", "External subject cannot bind an official intake source.");
     }
     const ownerType = OWNER_SOURCE_TYPES.has(requested) ? requested : "windkeep_member";
-    return { ok: true, httpStatus: 200, sourceType: ownerType, originator_kind: kind };
+    return { ok: true, httpStatus: 200, sourceType: ownerType, originator_kind: kind, external_origin: true, empty_source_default: false };
   }
   if (isOfficialIdentity(identity)) {
-    if (BUYER_SOURCE_TYPES.has(requested) || OWNER_SOURCE_TYPES.has(requested)) {
-      return { ok: true, httpStatus: 200, sourceType: requested, originator_kind: requested.includes("buyer") ? "buyer" : "windkeep_owner" };
+    if (!requested) {
+      return {
+        ok: true,
+        httpStatus: 200,
+        sourceType: "admin_upload",
+        originator_kind: "official",
+        external_origin: false,
+        empty_source_default: true,
+      };
     }
-    const officialType = OFFICIAL_SOURCE_TYPES.has(requested) ? requested : "admin_upload";
-    return { ok: true, httpStatus: 200, sourceType: officialType, originator_kind: "official" };
+    if (OFFICIAL_SOURCE_TYPES.has(requested) || OFFICIAL_REQUEST_ALIASES.has(requested)) {
+      const officialType = OFFICIAL_SOURCE_TYPES.has(requested) ? requested : "admin_upload";
+      return {
+        ok: true,
+        httpStatus: 200,
+        sourceType: officialType,
+        originator_kind: "official",
+        external_origin: false,
+        empty_source_default: false,
+      };
+    }
+    if (BUYER_SOURCE_TYPES.has(requested)) {
+      return { ok: true, httpStatus: 200, sourceType: requested, originator_kind: "buyer", external_origin: true, empty_source_default: false };
+    }
+    if (OWNER_SOURCE_TYPES.has(requested)) {
+      return { ok: true, httpStatus: 200, sourceType: requested, originator_kind: "windkeep_owner", external_origin: true, empty_source_default: false };
+    }
+    if (NON_OFFICIAL_ADMIN_SURFACE_SOURCES.has(requested)) {
+      return {
+        ok: true,
+        httpStatus: 200,
+        sourceType: requested,
+        originator_kind: "official",
+        external_origin: true,
+        empty_source_default: false,
+      };
+    }
+    return deny(403, "SOURCE_BINDING_DENIED", "Unrecognized source_type cannot be bound as an official upload.");
   }
   return deny(403, "SOURCE_BINDING_DENIED", "Cannot bind intake source for this identity.");
 }
