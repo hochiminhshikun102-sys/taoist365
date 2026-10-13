@@ -90,3 +90,51 @@
     overflow-x: auto;
   }
 }
+
+/* R47 CO Overview hub */
+.oa-co-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.oa-co-kpi-card h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--text-muted, #6b7280);
+  font-weight: 500;
+}
+
+.oa-co-kpi-value {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 650;
+  color: var(--text-primary, #2d333a);
+}
+
+.oa-co-alert-card {
+  margin-bottom: 14px;
+}
+
+.oa-co-overview-grid {
+  margin-bottom: 14px;
+}
+
+.oa-co-overview-grid .oa-co-workbench-card em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--water-blue, #355f7a);
+}
+
+@media (max-width: 1100px) {
+  .oa-co-kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .oa-co-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

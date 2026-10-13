@@ -1,10 +1,10 @@
 import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
-import { CoSecondaryWorkbench } from "@/components/oa-skeleton/CoSecondaryWorkbench";
+import { MediaRuntimeWorkbench } from "@/components/oa-media/MediaRuntimeWorkbench";
 
 export default function OaCoMediaPage() {
   return (
     <OaSharedShell activeKey="co">
-      <CoSecondaryWorkbench workbenchId="media" />
+      <MediaRuntimeWorkbench />
     </OaSharedShell>
   );
 }

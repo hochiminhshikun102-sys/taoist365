@@ -24,7 +24,7 @@ export const CAPABILITY_STATUS_LABEL: Record<OaCapabilityStatus, { en: string; z
 /** Primary module capability (landing pages). */
 export const PRIMARY_CAPABILITY: Record<string, OaCapabilityStatus> = {
   overview: "read_only",
-  commerce: "skeleton",
+  commerce: "read_only",
   operations: "not_connected",
   "ai-ops": "not_connected",
   site: "not_connected",
@@ -55,18 +55,18 @@ export const CO_SECONDARY_CAPABILITY: Record<string, OaCapabilityRecord> = {
     route: "/admin/oa/co/objects",
     labelEn: "Objects Runtime",
     labelZh: "商品系统",
-    status: "available",
-    noteEn: "Existing Objects Runtime entry kept under AdminOS.",
-    noteZh: "保留现有商品系统入口（AdminOS）。",
+    status: "read_only",
+    noteEn: "R47 read-only product ledger skeleton. DEMO fixture. Live Provider not_connected. No publish writes.",
+    noteZh: "R47 只读商品台账骨架（DEMO）。真实 Provider 未接通。无发布写入。",
   },
   media: {
     id: "media",
     route: "/admin/oa/co/media",
     labelEn: "Product Media",
     labelZh: "商品素材",
-    status: "available",
-    noteEn: "Existing Product Media workspace kept.",
-    noteZh: "保留现有商品素材工作台。",
+    status: "read_only",
+    noteEn: "R47 read-only media ledger skeleton. DEMO fixture. Live Provider not_connected. No upload/delete.",
+    noteZh: "R47 只读素材台账骨架（DEMO）。真实 Provider 未接通。无上传/删除。",
   },
   orders: {
     id: "orders",

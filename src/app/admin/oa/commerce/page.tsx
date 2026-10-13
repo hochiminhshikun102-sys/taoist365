@@ -1,6 +1,11 @@
-import { PrimaryEntryPage } from "@/components/oa-skeleton/PrimaryEntryPage";
+import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
+import { CoOverviewWorkbench } from "@/components/oa-commerce/CoOverviewWorkbench";
 
-/** CO hub — six secondary workbenches via structure gate. */
+/** CO hub — six workbench overview (R47 read-only operations entry). */
 export default function OaCommercePage() {
-  return <PrimaryEntryPage slug="commerce" />;
+  return (
+    <OaSharedShell activeKey="co">
+      <CoOverviewWorkbench />
+    </OaSharedShell>
+  );
 }
