@@ -1,0 +1,21 @@
+﻿diff --git a/src/components/oa-shell/oaNavCanonical.ts b/src/components/oa-shell/oaNavCanonical.ts
+index 22c4ae2..36f365b 100644
+--- a/src/components/oa-shell/oaNavCanonical.ts
++++ b/src/components/oa-shell/oaNavCanonical.ts
+@@ -181,7 +181,7 @@ export const NAV_ITEMS: OaNavItem[] = [
+     canonical: "14 Settings",
+     canonical_domain_id: "14",
+     owner_domain: "14 Settings",
+-    has_submenu: false,
++    has_submenu: true,
+     capabilitySlug: "settings",
+   },
+ ];
+@@ -243,6 +243,7 @@ export const OA_SUBMENUS: Record<string, OaSubmenuGroup> = {
+   site: { titleEn: "Site board", titleZh: "绔欑偣鍓嶅彴鐪嬫澘", items: SITE_SUBMENU },
+   geo: { titleEn: "GEO board", titleZh: "鍖哄煙閰嶇疆鐪嬫澘", items: GEO_SUBMENU },
+   ai_ops: { titleEn: "AI Ops board", titleZh: "AI 鎺ㄥ箍鐪嬫澘", items: AI_OPS_SUBMENU },
++  settings: { titleEn: "Settings", titleZh: "绯荤粺搴曞骇", items: [] },
+ };
+ 
+ /** @deprecated alias kept for any residual import; prefer CO_SECONDARY_SUBMENU */

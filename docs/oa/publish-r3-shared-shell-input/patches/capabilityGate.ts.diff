@@ -1,0 +1,16 @@
+﻿diff --git a/src/components/oa-skeleton/capabilityGate.ts b/src/components/oa-skeleton/capabilityGate.ts
+index c12b8c6..1bb6a53 100644
+--- a/src/components/oa-skeleton/capabilityGate.ts
++++ b/src/components/oa-skeleton/capabilityGate.ts
+@@ -97,7 +97,9 @@ export const CO_SECONDARY_CAPABILITY: Record<string, OaCapabilityRecord> = {
+   },
+ };
+ 
+-export function capabilityLabel(status: OaCapabilityStatus): string {
++export function capabilityLabel(status: OaCapabilityStatus, locale?: "zh-CN" | "en"): string {
+   const row = CAPABILITY_STATUS_LABEL[status];
+-  return `${row.en} 路 ${row.zh}`;
++  if (locale === "en") return row.en;
++  if (locale === "zh-CN") return row.zh;
++  return status;
+ }

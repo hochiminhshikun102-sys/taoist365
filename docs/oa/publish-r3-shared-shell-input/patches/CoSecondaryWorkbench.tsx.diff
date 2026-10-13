@@ -1,0 +1,94 @@
+﻿diff --git a/src/components/oa-skeleton/CoSecondaryWorkbench.tsx b/src/components/oa-skeleton/CoSecondaryWorkbench.tsx
+index e3ef857..1ed2883 100644
+--- a/src/components/oa-skeleton/CoSecondaryWorkbench.tsx
++++ b/src/components/oa-skeleton/CoSecondaryWorkbench.tsx
+@@ -1,4 +1,5 @@
+ import Link from "next/link";
++import { OaLoc } from "@/components/oa-shell/OaLoc";
+ import {
+   CO_SECONDARY_CAPABILITY,
+   capabilityLabel,
+@@ -39,25 +40,25 @@ export function CoSecondaryWorkbench({ workbenchId }: Props) {
+       </div>
+ 
+       <h1 className="oa-page-title">
+-        {entry.labelEn} 路 {entry.labelZh}
++        <OaLoc zh={entry.labelZh} en={entry.labelEn} />
+       </h1>
+       <p className="oa-skeleton-lead">
+-        {entry.noteEn} {entry.noteZh}
++        <OaLoc zh={entry.noteZh} en={entry.noteEn} />
+       </p>
+ 
+       <div className="oa-skeleton-status-grid">
+         <article className="oa-card oa-skeleton-card">
+-          <h3>Capability 路 鑳藉姏鐘舵€?/h3>
++          <h3><OaLoc mixed={"Capability 路 鑳藉姏鐘舵€?} /></h3>
+           <p>{capabilityLabel(entry.status)}</p>
+           <p className="oa-skeleton-meta">UI gate 鈮?server auth</p>
+         </article>
+         <article className="oa-card oa-skeleton-card">
+-          <h3>Write gate 路 鍐欏叆闂ㄧ</h3>
++          <h3><OaLoc mixed={"Write gate 路 鍐欏叆闂ㄧ"} /></h3>
+           <p>Real order / payment / fulfillment writes blocked</p>
+           <p className="oa-skeleton-meta">ORDERS_BUSINESS_WRITE=FALSE</p>
+         </article>
+         <article className="oa-card oa-skeleton-card">
+-          <h3>Next wave 路 涓嬩竴娉?/h3>
++          <h3><OaLoc mixed={"Next wave 路 涓嬩竴娉?} /></h3>
+           <p>{workbenchId === "orders" || workbenchId === "payments" || workbenchId === "shipping" ? "Wave 1B Orders Core" : "Keep existing 路 IA rebuild deferred"}</p>
+           <p className="oa-skeleton-meta">Structure gate only this round</p>
+         </article>
+@@ -67,45 +68,33 @@ export function CoSecondaryWorkbench({ workbenchId }: Props) {
+         <div className="oa-skeleton-actions">
+           {legacy.map((item) => (
+             <Link key={item.href} className="oa-btn" href={item.href}>
+-              {item.label}
++              <OaLoc mixed={item.label} />
+             </Link>
+           ))}
+         </div>
+       ) : (
+         <div className="oa-skeleton-actions">
+-          <button className="oa-btn" type="button" disabled title="Wave 1B pending">
+-            Business restore pending 路 涓氬姟鎭㈠寰?Wave 1B
+-          </button>
++          <button className="oa-btn" type="button" disabled title="Wave 1B pending"><OaLoc mixed={"\r\n            Business restore pending 路 涓氬姟鎭㈠寰?Wave 1B\r\n          "} /></button>
+         </div>
+       )}
+ 
+       {workbenchId === "intake" ? (
+         <article className="oa-card" style={{ marginTop: 14 }}>
+-          <h3>R47 cross-links 路 浜ゅ弶閾炬帴锛堟棤 IA 閲嶆瀯锛?/h3>
++          <h3><OaLoc mixed={"R47 cross-links 路 浜ゅ弶閾炬帴锛堟棤 IA 閲嶆瀯锛?} /></h3>
+           <p className="oa-skeleton-meta">
+             Product Intake keeps legacy links above. Cross-workbench jumps only 鈥?no intake IA rebuild.
+           </p>
+           <div className="oa-skeleton-actions">
+-            <Link className="oa-btn secondary" href="/admin/oa/co/objects">
+-              Objects Runtime 路 鍟嗗搧绯荤粺
+-            </Link>
+-            <Link className="oa-btn secondary" href="/admin/oa/co/media">
+-              Product Media 路 鍟嗗搧绱犳潗
+-            </Link>
+-            <Link className="oa-btn secondary" href="/admin/oa/co/orders">
+-              Orders Runtime 路 璁㈠崟绯荤粺
+-            </Link>
++            <Link className="oa-btn secondary" href="/admin/oa/co/objects"><OaLoc mixed={"\r\n              Objects Runtime 路 鍟嗗搧绯荤粺\r\n            "} /></Link>
++            <Link className="oa-btn secondary" href="/admin/oa/co/media"><OaLoc mixed={"\r\n              Product Media 路 鍟嗗搧绱犳潗\r\n            "} /></Link>
++            <Link className="oa-btn secondary" href="/admin/oa/co/orders"><OaLoc mixed={"\r\n              Orders Runtime 路 璁㈠崟绯荤粺\r\n            "} /></Link>
+           </div>
+         </article>
+       ) : null}
+ 
+       <div className="oa-skeleton-actions" style={{ marginTop: 12 }}>
+-        <Link className="oa-btn secondary" href="/admin/oa/commerce">
+-          Back to CO hub 路 杩斿洖鍟嗗搧涓庤鍗?-        </Link>
+-        <Link className="oa-btn secondary" href="/admin/oa/overview">
+-          Back to Overview 路 杩斿洖鎬昏
+-        </Link>
++        <Link className="oa-btn secondary" href="/admin/oa/commerce"><OaLoc mixed={"\r\n          Back to CO hub 路 杩斿洖鍟嗗搧涓庤鍗昞r\n        "} /></Link>
++        <Link className="oa-btn secondary" href="/admin/oa/overview"><OaLoc mixed={"\r\n          Back to Overview 路 杩斿洖鎬昏\r\n        "} /></Link>
+       </div>
+     </section>
+   );

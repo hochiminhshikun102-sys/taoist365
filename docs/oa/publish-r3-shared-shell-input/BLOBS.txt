@@ -1,0 +1,28 @@
+PRODUCT_HEAD=93201cdb12249f70c4356fe999843afdf4174417
+PRODUCT_BRANCH=dogdan/oa-shared-shell-nav-ux-polish-r66-20261014
+PRODUCT_BASE=bf83dc4e8f1ceeaabfc4d2788271c40bc04d9817
+CONTINUATION_SHA=303cccbd74f573e514a727fb564d7703e594d4d6
+CONTINUATION_IN_PRODUCT_TREE=FALSE
+
+FROZEN src/app/layout.tsx=c72ac4264a9cafd3125d8e84baaf0e3e7f0ce4bc
+FROZEN src/app/admin/layout.tsx=b37a728f4aa34f65756c3278c7bdcad3c3348ebd
+FROZEN src/app/admin/oa/layout.tsx=37849b7d132d0b79e12936ac59e7c983e0201954
+FROZEN src/app/admin/oa/co/intake/page.tsx=0dddd70e1ebf14d08f8ea2fe312ac35e2f510367
+FROZEN src/components/oa-shell/OaSharedShell.tsx=3bcae3ff168b57836ff8e4015d11e1c6ede46058
+FROZEN src/components/oa-shell/oaNavCanonical.ts=22c4ae2dd29b52f1cc5db89dd85309f386a21ba4
+FROZEN src/components/oa-shell/useOaUiLocale.ts=6da55a33e450b85a8f0b8c39fc2d4b6337614d43
+FROZEN src/components/oa-skeleton/primaryEntries.ts=d41d751be290b2608105ebee106637762851ba30
+FROZEN src/styles/oa/oa-shell.css=1ddf78347ba9fc75ac7459a1a458be332bd58671
+FROZEN src/styles/oa/oa-tokens.css=d8df65b723a9b2340e4b01ad9c8dce0dccef456d
+FROZEN src/styles/oa/oa-skeleton.css=31ba5a25f86144ffb78f4aac06e53f3008030083
+
+NOT_FROZEN src/components/oa-shell/OaSharedShell.tsx WT=f264b98e7a1a08dee45866b9b8ab9524a3d0a8ab
+NOT_FROZEN src/components/oa-shell/oaNavCanonical.ts WT=36f365b38140ba84572bebfe9e6d6cc2eedaf9e4
+NOT_FROZEN src/components/oa-shell/useOaUiLocale.ts WT=4b34c9dd31950a443b26e2e461deaf7c063d43f7
+NOT_FROZEN src/components/oa-shell/OaLoc.tsx WT=b2afdd7895ca8e33d3c259f8cf67a6454b5be131 MISSING_IN_HEAD=TRUE
+NOT_FROZEN src/styles/oa/oa-shell.css WT=63030b5f069f196c551d11295017b3c43e20113f
+NOT_FROZEN src/styles/oa/oa-tokens.css WT=48b64f997b38f795a632003fdc46fcf64741d0a7
+FROZEN src/components/oa-skeleton/CoSecondaryWorkbench.tsx=e3ef8570bc2f5d029baa686e3789865738fbf433
+FROZEN src/components/oa-skeleton/capabilityGate.ts=c12b8c6789712a3e666548916def467b66cd3517
+NOT_FROZEN src/components/oa-skeleton/CoSecondaryWorkbench.tsx WT=1ed2883388be0ccfb908f1f134f657768f70de24
+NOT_FROZEN src/components/oa-skeleton/capabilityGate.ts WT=1bb6a53b05c5b036a68213b431c42f2ca7e2823f
