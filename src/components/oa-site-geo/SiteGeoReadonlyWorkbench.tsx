@@ -86,7 +86,7 @@ export function SiteGeoReadonlyWorkbench() {
         </p>
         <div className="oa-site-geo-panel-grid">
           {data.panels.map((panel) => (
-            <article key={panel.id} className="oa-card oa-site-geo-panel-card" data-panel={panel.id}>
+            <article key={panel.id} id={panel.id} className="oa-card oa-site-geo-panel-card" data-panel={panel.id} style={{ scrollMarginTop: 80 }}>
               <div className="oa-site-geo-panel-head">
                 <h3>
                   {panel.code} · {panel.title_en} · {panel.title_zh}

@@ -7,12 +7,14 @@ export type OaNavItem = {
   canonical_domain_id: string;
   owner_domain: string;
   has_submenu: boolean;
+  capabilitySlug: string;
 };
 
 export type OaSubmenuItem = {
   label: string;
   route: string;
   owner: string;
+  hint?: string;
 };
 
 /**
@@ -25,21 +27,23 @@ export const NAV_ITEMS: OaNavItem[] = [
     id: "01",
     key: "overview",
     en: "Overview",
-    zh: "全局总览",
+    zh: "全局看板",
     canonical: "01 Overview",
     canonical_domain_id: "01",
     owner_domain: "01 Overview",
     has_submenu: false,
+    capabilitySlug: "overview",
   },
   {
     id: "02",
     key: "co",
-    en: "CO · Products & Orders",
+    en: "CO",
     zh: "商品与订单",
     canonical: "02 CO",
     canonical_domain_id: "02",
     owner_domain: "02 CO",
     has_submenu: true,
+    capabilitySlug: "commerce",
   },
   {
     id: "03",
@@ -49,17 +53,19 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical: "03 Operations",
     canonical_domain_id: "03",
     owner_domain: "03 Operations",
-    has_submenu: false,
+    has_submenu: true,
+    capabilitySlug: "operations",
   },
   {
     id: "04",
     key: "ai_ops",
-    en: "AI Operations",
+    en: "AI Ops",
     zh: "AI 推广中心",
     canonical: "04 AI Operations",
     canonical_domain_id: "04",
     owner_domain: "04 AI Operations",
-    has_submenu: false,
+    has_submenu: true,
+    capabilitySlug: "ai-ops",
   },
   {
     id: "05",
@@ -69,7 +75,8 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical: "05 Site",
     canonical_domain_id: "05",
     owner_domain: "05 Site",
-    has_submenu: false,
+    has_submenu: true,
+    capabilitySlug: "site",
   },
   {
     id: "06",
@@ -79,7 +86,8 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical: "06 GEO",
     canonical_domain_id: "06",
     owner_domain: "06 GEO",
-    has_submenu: false,
+    has_submenu: true,
+    capabilitySlug: "geo",
   },
   {
     id: "07",
@@ -90,6 +98,7 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical_domain_id: "07",
     owner_domain: "07 CS Center",
     has_submenu: false,
+    capabilitySlug: "cs-center",
   },
   {
     id: "08",
@@ -100,6 +109,7 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical_domain_id: "08",
     owner_domain: "08 Finance",
     has_submenu: false,
+    capabilitySlug: "finance",
   },
   {
     id: "09",
@@ -110,6 +120,7 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical_domain_id: "09",
     owner_domain: "09 Logistics",
     has_submenu: false,
+    capabilitySlug: "logistics",
   },
   {
     id: "10",
@@ -120,26 +131,29 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical_domain_id: "10",
     owner_domain: "10 Supply Chain",
     has_submenu: false,
+    capabilitySlug: "supply-chain",
   },
   {
     id: "11",
     key: "wk",
-    en: "WK · WindKeep",
+    en: "WK",
     zh: "WindKeep",
     canonical: "11 WK",
     canonical_domain_id: "11",
     owner_domain: "11 WK",
     has_submenu: false,
+    capabilitySlug: "wk",
   },
   {
     id: "12",
     key: "gs",
-    en: "GS · WindSeeker",
+    en: "GS",
     zh: "全球买手",
     canonical: "12 GS",
     canonical_domain_id: "12",
     owner_domain: "12 GS",
     has_submenu: false,
+    capabilitySlug: "gs",
   },
   {
     id: "13",
@@ -150,6 +164,7 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical_domain_id: "13",
     owner_domain: "13 Compliance",
     has_submenu: false,
+    capabilitySlug: "compliance",
   },
   {
     id: "14",
@@ -160,42 +175,68 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical_domain_id: "14",
     owner_domain: "14 Settings",
     has_submenu: false,
+    capabilitySlug: "settings",
   },
 ];
 
 /** Approved CO six secondary workbenches — Additive-only; do not delete/rename/merge. */
 export const CO_SECONDARY_SUBMENU: OaSubmenuItem[] = [
-  {
-    label: "Product Intake · 宝贝入库",
-    route: "/admin/oa/co/intake",
-    owner: "02 CO",
-  },
-  {
-    label: "Objects Runtime · 商品系统",
-    route: "/admin/oa/co/objects",
-    owner: "02 CO",
-  },
-  {
-    label: "Product Media · 商品素材",
-    route: "/admin/oa/co/media",
-    owner: "02 CO",
-  },
-  {
-    label: "Orders Runtime · 订单系统",
-    route: "/admin/oa/co/orders",
-    owner: "02 CO",
-  },
-  {
-    label: "Payments Runtime · 支付管理",
-    route: "/admin/oa/co/payments",
-    owner: "02 CO",
-  },
-  {
-    label: "Shipping Runtime · 发货管理",
-    route: "/admin/oa/co/shipping",
-    owner: "02 CO",
-  },
+  { label: "intake · 宝贝入库", route: "/admin/oa/co/intake", owner: "02 CO", hint: "read_only" },
+  { label: "objects · 商品系统", route: "/admin/oa/co/objects", owner: "02 CO", hint: "read_only" },
+  { label: "media · 商品素材", route: "/admin/oa/co/media", owner: "02 CO", hint: "read_only" },
+  { label: "orders · 订单系统", route: "/admin/oa/co/orders", owner: "02 CO", hint: "read_only" },
+  { label: "payments · 支付管理", route: "/admin/oa/co/payments", owner: "02 CO", hint: "read_only" },
+  { label: "shipping · 发货管理", route: "/admin/oa/co/shipping", owner: "02 CO", hint: "read_only" },
 ];
+
+export const OPERATIONS_SUBMENU: OaSubmenuItem[] = [
+  { label: "03A · Member Operations · 会员运营", route: "/admin/oa/operations#03A_member_ops", owner: "03 Operations", hint: "read_only" },
+  { label: "03B · Points & Benefits · 积分与权益", route: "/admin/oa/operations#03B_points_benefits", owner: "03 Operations", hint: "read_only" },
+  { label: "03C · Member Services · 会员服务", route: "/admin/oa/operations#03C_member_services", owner: "03 Operations", hint: "read_only" },
+  { label: "03D · Member Content · 会员内容", route: "/admin/oa/operations#03D_member_content", owner: "03 Operations", hint: "read_only" },
+  { label: "03E · Creator Operations · 创作者运营", route: "/admin/oa/operations#03E_creator", owner: "03 Operations", hint: "read_only" },
+  { label: "03F · Growth & Rewards · 增长与奖励", route: "/admin/oa/operations#03F_growth_rewards", owner: "03 Operations", hint: "read_only" },
+  { label: "03G · Messaging · 消息触达", route: "/admin/oa/operations#03G_messaging", owner: "03 Operations", hint: "read_only" },
+];
+
+export const SITE_SUBMENU: OaSubmenuItem[] = [
+  { label: "S1 · Site Overview · 站点总览", route: "/admin/oa/site#site_overview", owner: "05 Site", hint: "read_only" },
+  { label: "S2 · Route & Page Registry · 路由与页面登记", route: "/admin/oa/site#route_page_registry", owner: "05 Site", hint: "read_only" },
+  { label: "S3 · Content Blocks · 内容区块", route: "/admin/oa/site#content_blocks", owner: "05 Site", hint: "read_only" },
+  { label: "S4 · SEO Metadata · SEO 元数据", route: "/admin/oa/site#seo_metadata_control", owner: "05 Site", hint: "read_only" },
+  { label: "S5 · Visual & Asset Mapping · 视觉与资产", route: "/admin/oa/site#visual_asset_mapping", owner: "05 Site", hint: "read_only" },
+  { label: "S6 · Site Review Queue · 站点审核队列", route: "/admin/oa/site#site_review_queue", owner: "05 Site", hint: "read_only" },
+  { label: "S7 · Publish Readiness · 发布就绪", route: "/admin/oa/site#publish_readiness", owner: "05 Site", hint: "read_only" },
+];
+
+export const GEO_SUBMENU: OaSubmenuItem[] = [
+  { label: "G1 · GEO Overview · 全球市场总览", route: "/admin/oa/geo#geo_overview", owner: "06 GEO", hint: "read_only" },
+  { label: "G2 · Market Matrix · 市场矩阵", route: "/admin/oa/geo#market_matrix", owner: "06 GEO", hint: "read_only" },
+  { label: "G3 · Search & AI Discovery · 搜索与发现", route: "/admin/oa/geo#search_ai_discovery", owner: "06 GEO", hint: "read_only" },
+  { label: "G4 · Localization Queue · 本地化队列", route: "/admin/oa/geo#localization_queue", owner: "06 GEO", hint: "read_only" },
+  { label: "G5 · Channel Signals · 渠道信号", route: "/admin/oa/geo#channel_signals", owner: "06 GEO", hint: "read_only" },
+  { label: "G6 · Regional Compliance · 区域合规", route: "/admin/oa/geo#regional_compliance_flags", owner: "06 GEO", hint: "read_only" },
+  { label: "G7 · GEO Content Actions · GEO 内容动作", route: "/admin/oa/geo#geo_content_actions", owner: "06 GEO", hint: "read_only" },
+];
+
+export const AI_OPS_SUBMENU: OaSubmenuItem[] = [
+  { label: "A1 · Global Dashboard · AI 运行总览", route: "/admin/oa/ai-ops#global_dashboard", owner: "04 AI Operations", hint: "read_only" },
+  { label: "A2 · Task Queue · AI 任务队列", route: "/admin/oa/ai-ops#task_queue", owner: "04 AI Operations", hint: "read_only" },
+  { label: "A3 · Model & Provider · 模型配置", route: "/admin/oa/ai-ops#model_provider_config", owner: "04 AI Operations", hint: "not_connected" },
+  { label: "A4 · Material Generation · 素材生成", route: "/admin/oa/ai-ops#material_generation", owner: "04 AI Operations", hint: "read_only" },
+  { label: "A5 · Material Library · 产物素材库", route: "/admin/oa/ai-ops#material_library", owner: "04 AI Operations", hint: "read_only" },
+  { label: "A6 · Compliance & Source · 合规与来源", route: "/admin/oa/ai-ops#compliance_source", owner: "04 AI Operations", hint: "read_only" },
+  { label: "A7 · Traffic & Reports · 流量与报告", route: "/admin/oa/ai-ops#traffic_reports", owner: "04 AI Operations", hint: "read_only" },
+  { label: "A8 · Short Video Factory · 短视频工厂", route: "/admin/oa/ai-ops#short_video_factory", owner: "04 AI Operations", hint: "read_only" },
+];
+
+export const OA_SUBMENUS: Record<string, { title: string; items: OaSubmenuItem[] }> = {
+  co: { title: "CO · 商品与订单看板", items: CO_SECONDARY_SUBMENU },
+  operations: { title: "Operations · 运营营销看板", items: OPERATIONS_SUBMENU },
+  site: { title: "Site · 站点前台看板", items: SITE_SUBMENU },
+  geo: { title: "GEO · 区域配置看板", items: GEO_SUBMENU },
+  ai_ops: { title: "AI Ops · AI 推广看板", items: AI_OPS_SUBMENU },
+};
 
 /** @deprecated alias kept for any residual import; prefer CO_SECONDARY_SUBMENU */
 export const PRODUCTS_ORDERS_SUBMENU = CO_SECONDARY_SUBMENU;

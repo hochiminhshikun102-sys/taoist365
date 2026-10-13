@@ -19,7 +19,7 @@ export function PrimaryEntrySkeleton({ entry }: Props) {
 
       <div className="oa-capability-row">
         <span className={`oa-capability-pill is-${status}`}>{capabilityLabel(status)}</span>
-        <span className="oa-capability-owner">Dashboard is projection only · 总览仅投影</span>
+          <span className="oa-capability-owner">Dashboard is projection only · 看板仅投影</span>
       </div>
 
       <h1 className="oa-page-title">

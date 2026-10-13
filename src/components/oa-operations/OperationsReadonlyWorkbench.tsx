@@ -82,7 +82,7 @@ export function OperationsReadonlyWorkbench() {
         </p>
         <div className="oa-ops-workstream-grid">
           {workstreams.map((ws) => (
-            <article key={ws.id} className="oa-card oa-ops-workstream-card" data-workstream={ws.id}>
+            <article key={ws.id} id={ws.id} className="oa-card oa-ops-workstream-card" data-workstream={ws.id} style={{ scrollMarginTop: 80 }}>
               <div className="oa-ops-workstream-head">
                 <h3>
                   {ws.code} · {ws.title_en} · {ws.title_zh}

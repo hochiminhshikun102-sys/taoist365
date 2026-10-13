@@ -84,7 +84,7 @@ export function AiOpsReadonlyWorkbench() {
         </p>
         <div className="oa-ai-ops-panel-grid">
           {panels.map((panel) => (
-            <article key={panel.id} className="oa-card oa-ai-ops-panel-card" data-panel={panel.id}>
+            <article key={panel.id} id={panel.id} className="oa-card oa-ai-ops-panel-card" data-panel={panel.id} style={{ scrollMarginTop: 80 }}>
               <div className="oa-ai-ops-panel-head">
                 <h3>
                   {panel.code} · {panel.title_en} · {panel.title_zh}
