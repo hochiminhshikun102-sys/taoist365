@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { PRIMARY_CAPABILITY, capabilityLabel } from "@/components/oa-skeleton/capabilityGate";
 import { NAV_KEY_TO_PRIMARY_PATH } from "@/components/oa-skeleton/primaryEntries";
 import { NAV_ITEMS, OA_SUBMENUS, type OaSubmenuItem } from "./oaNavCanonical";
@@ -12,16 +12,25 @@ type Props = {
   children: ReactNode;
 };
 
+type FlyoutBox = {
+  key: string;
+  top: number;
+  left: number;
+  maxHeight: number;
+  flip: boolean;
+};
+
 export function OaSharedShell({ activeKey = "overview", children }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const rootRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);
-  const [openKey, setOpenKey] = useState<string | null>(null);
-  const [panelTop, setPanelTop] = useState(64);
+  const [flyout, setFlyout] = useState<FlyoutBox | null>(null);
   const [railOpen, setRailOpen] = useState(false);
   const [status, setStatus] = useState("OA readonly foundation · 只读地基");
   const [active, setActive] = useState(activeKey);
+  const [hash, setHash] = useState("");
+  const [fineHover, setFineHover] = useState(false);
 
   const declaredRoutes = useMemo(() => {
     const routes = new Set<string>(Object.values(NAV_KEY_TO_PRIMARY_PATH));
@@ -36,9 +45,26 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
   }, [activeKey]);
 
   useEffect(() => {
-    function onKey(event: KeyboardEvent) {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const sync = () => setFineHover(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    function syncHash() {
+      setHash(window.location.hash.replace(/^#/, ""));
+    }
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => window.removeEventListener("hashchange", syncHash);
+  }, [pathname]);
+
+  useEffect(() => {
+    function onKey(event: globalThis.KeyboardEvent) {
       if (event.key === "Escape") {
-        setOpenKey(null);
+        setFlyout(null);
         setRailOpen(false);
       }
     }
@@ -47,12 +73,11 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
   }, []);
 
   useEffect(() => {
-    const hash = typeof window !== "undefined" ? window.location.hash.replace(/^#/, "") : "";
     if (!hash) return;
     window.requestAnimationFrame(() => {
       document.getElementById(hash)?.scrollIntoView({ block: "start", behavior: "smooth" });
     });
-  }, [pathname, children]);
+  }, [pathname, hash, children]);
 
   function clearCloseTimer() {
     if (closeTimer.current) {
@@ -63,21 +88,30 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
 
   function closePanelSoon() {
     clearCloseTimer();
-    closeTimer.current = window.setTimeout(() => setOpenKey(null), 140);
+    closeTimer.current = window.setTimeout(() => setFlyout(null), 160);
   }
 
   function openPanel(key: string, anchor: HTMLElement) {
-    if (!OA_SUBMENUS[key] || !rootRef.current) return;
+    if (!OA_SUBMENUS[key]) return;
     clearCloseTimer();
-    const top = Math.max(56, anchor.getBoundingClientRect().top - rootRef.current.getBoundingClientRect().top);
-    setPanelTop(top);
-    setOpenKey(key);
+    const rail = document.getElementById("oa-primary-rail");
+    const railBox = rail?.getBoundingClientRect();
+    const rowBox = anchor.getBoundingClientRect();
+    const panelWidth = Math.min(300, Math.max(220, window.innerWidth - 16));
+    const preferredLeft = Math.round((railBox?.right ?? rowBox.right) - 8);
+    const left = Math.max(8, Math.min(preferredLeft, window.innerWidth - panelWidth - 8));
+    const maxHeight = Math.min(520, Math.round(window.innerHeight * 0.7));
+    const flip = rowBox.bottom > window.innerHeight * 0.62;
+    const top = flip
+      ? Math.max(12, Math.round(window.innerHeight - maxHeight - 12))
+      : Math.max(12, Math.round(rowBox.top));
+    setFlyout({ key, top, left, maxHeight, flip });
   }
 
   function goPrimary(key: string) {
     const href = NAV_KEY_TO_PRIMARY_PATH[key];
     if (!href) return;
-    setOpenKey(null);
+    setFlyout(null);
     setRailOpen(false);
     setActive(key);
     setStatus(`navigate ${href} · read_only`);
@@ -90,24 +124,48 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
       setStatus(`undeclared route blocked · ${route}`);
       return;
     }
-    setOpenKey(null);
+    setFlyout(null);
     setRailOpen(false);
     setStatus(`navigate ${route} · hint only · no write`);
     router.push(route);
   }
 
-  const openConf = openKey ? OA_SUBMENUS[openKey] : null;
-  const openPrimaryHref = openKey ? NAV_KEY_TO_PRIMARY_PATH[openKey] : null;
+  function isSubActive(route: string) {
+    const [path, fragment] = route.split("#");
+    if (pathname !== path) return false;
+    if (!fragment) return true;
+    return hash === fragment;
+  }
+
+  function onRowKey(event: KeyboardEvent<HTMLElement>, key: string, hasSub: boolean, row: HTMLElement) {
+    if (!hasSub) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (flyout?.key === key) setFlyout(null);
+      else openPanel(key, row);
+    }
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      openPanel(key, row);
+    }
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      setFlyout(null);
+    }
+  }
+
+  const openConf = flyout ? OA_SUBMENUS[flyout.key] : null;
+  const openPrimaryHref = flyout ? NAV_KEY_TO_PRIMARY_PATH[flyout.key] : null;
 
   return (
     <div className="oa-root" ref={rootRef}>
       <div
-        className={`oa-backdrop${openKey || railOpen ? " is-open" : ""}`}
+        className={`oa-backdrop${railOpen || flyout ? " is-open" : ""}${fineHover && flyout && !railOpen ? " is-hover-only" : ""}`}
         onClick={() => {
-          setOpenKey(null);
+          setFlyout(null);
           setRailOpen(false);
         }}
-        aria-hidden={!(openKey || railOpen)}
+        aria-hidden
       />
       <div className="oa-shell">
         <header className="oa-topbar">
@@ -117,7 +175,10 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
               type="button"
               aria-expanded={railOpen}
               aria-controls="oa-primary-rail"
-              onClick={() => setRailOpen((open) => !open)}
+              onClick={() => {
+                setFlyout(null);
+                setRailOpen((open) => !open);
+              }}
             >
               Menu · 导航
             </button>
@@ -143,11 +204,17 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
             return (
               <div
                 key={item.key}
-                className="oa-rail-row"
+                className={`oa-rail-row${flyout?.key === item.key ? " is-open" : ""}`}
+                data-nav-key={item.key}
                 onMouseEnter={(event) => {
+                  if (!fineHover) return;
                   if (hasSub) openPanel(item.key, event.currentTarget);
+                  else setFlyout(null);
                 }}
-                onMouseLeave={hasSub ? closePanelSoon : undefined}
+                onMouseLeave={() => {
+                  if (fineHover) closePanelSoon();
+                }}
+                onKeyDown={(event) => onRowKey(event, item.key, hasSub, event.currentTarget)}
               >
                 <Link
                   href={href}
@@ -156,8 +223,10 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
                   aria-current={isActive ? "page" : undefined}
                   onClick={() => {
                     setActive(item.key);
-                    setRailOpen(false);
-                    setOpenKey(null);
+                    if (!hasSub || !railOpen) {
+                      setRailOpen(false);
+                      setFlyout(null);
+                    }
                     setStatus(`navigate ${href} · read_only`);
                   }}
                 >
@@ -171,13 +240,16 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
                   <button
                     className="oa-rail-caret"
                     type="button"
-                    aria-expanded={openKey === item.key}
-                    aria-haspopup="dialog"
+                    aria-expanded={flyout?.key === item.key}
+                    aria-haspopup="menu"
                     aria-label={`${item.en} submenu`}
                     onClick={(event) => {
                       event.preventDefault();
-                      if (openKey === item.key) setOpenKey(null);
-                      else openPanel(item.key, event.currentTarget.parentElement || event.currentTarget);
+                      event.stopPropagation();
+                      const row = event.currentTarget.parentElement;
+                      if (!row) return;
+                      if (flyout?.key === item.key) setFlyout(null);
+                      else openPanel(item.key, row);
                     }}
                   >
                     ▸
@@ -187,38 +259,41 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
             );
           })}
         </aside>
-        <div
-          className={`oa-floating-panel${openKey ? " is-open" : ""}`}
-          role="dialog"
-          aria-modal="false"
-          aria-hidden={!openKey}
-          hidden={!openKey}
-          style={{ top: panelTop }}
-          onMouseEnter={clearCloseTimer}
-          onMouseLeave={closePanelSoon}
-        >
-          {openConf ? (
-            <>
-              <div className="oa-floating-title">{openConf.title}</div>
-              {openPrimaryHref ? (
-                <button className="oa-floating-row" type="button" onClick={() => goPrimary(openKey || "")}>
-                  Open hub · 打开看板
-                </button>
-              ) : null}
-              {openConf.items.map((item: OaSubmenuItem) => (
-                <button
-                  key={item.route + item.label}
-                  className="oa-floating-row"
-                  type="button"
-                  onClick={() => goRoute(item.route)}
-                >
-                  {item.label}
-                  {item.hint ? <span className="oa-floating-hint">{item.hint}</span> : null}
-                </button>
-              ))}
-            </>
-          ) : null}
-        </div>
+        {flyout && openConf ? (
+          <div
+            className={`oa-floating-panel is-open${flyout.flip ? " is-flip" : ""}`}
+            role="menu"
+            aria-label={openConf.title}
+            style={{ top: flyout.top, left: flyout.left, maxHeight: flyout.maxHeight }}
+            onMouseEnter={clearCloseTimer}
+            onMouseLeave={() => {
+              if (fineHover) closePanelSoon();
+            }}
+          >
+            <div className="oa-flyout-bridge" aria-hidden="true" />
+            <div className="oa-floating-title">{openConf.title}</div>
+            {openPrimaryHref ? (
+              <button
+                className={`oa-floating-row${pathname === openPrimaryHref ? " is-active" : ""}`}
+                type="button"
+                onClick={() => goPrimary(flyout.key)}
+              >
+                Open hub · 打开看板
+              </button>
+            ) : null}
+            {openConf.items.map((item: OaSubmenuItem) => (
+              <button
+                key={item.route + item.label}
+                className={`oa-floating-row${isSubActive(item.route) ? " is-active" : ""}`}
+                type="button"
+                onClick={() => goRoute(item.route)}
+              >
+                {item.label}
+                {item.hint ? <span className="oa-floating-hint">{item.hint}</span> : null}
+              </button>
+            ))}
+          </div>
+        ) : null}
         <main className="oa-main">{children}</main>
       </div>
       <div className="oa-status" aria-live="polite">

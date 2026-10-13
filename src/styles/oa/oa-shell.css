@@ -11,8 +11,8 @@
 .oa-flag { font-size: 11px; color: var(--text-muted); border: 1px solid var(--metal-gray); background: var(--base-white); border-radius: 999px; padding: 4px 8px; line-height: 1.3; }
 .oa-flag.is-warn { color: var(--water-blue); border-color: var(--earth-beige); background: color-mix(in srgb, var(--earth-beige) 28%, white); }
 .oa-top-meta { color: var(--text-muted); font-size: 12px; }
-.oa-rail { grid-row: 2; background: var(--base-white); border-right: 1px solid var(--metal-gray); padding: 8px 0 24px; position: relative; overflow: auto; }
-.oa-rail-row { display: flex; align-items: stretch; }
+.oa-rail { grid-row: 2; background: var(--base-white); border-right: 1px solid var(--metal-gray); padding: 8px 0 24px; position: relative; overflow-y: auto; overflow-x: hidden; z-index: 40; }
+.oa-rail-row { display: flex; align-items: stretch; position: relative; }
 .oa-rail-item { flex: 1; min-width: 0; text-align: left; border: 0; background: transparent; padding: 11px 8px 11px 16px; color: var(--text-primary); cursor: pointer; position: relative; display: flex; gap: 8px; align-items: flex-start; text-decoration: none; }
 .oa-rail-caret { width: 28px; flex: 0 0 28px; border: 0; background: transparent; color: var(--text-muted); cursor: pointer; }
 .oa-rail-item:hover, .oa-rail-item:focus-visible { background: color-mix(in srgb, var(--wood-sage) 32%, white); outline: none; }
@@ -24,15 +24,18 @@
 .oa-rail-status.is-read_only { border-color: var(--wood-sage); background: color-mix(in srgb, var(--wood-sage) 22%, white); }
 .oa-rail-status.is-not_connected { border-color: var(--earth-beige); background: color-mix(in srgb, var(--earth-beige) 28%, white); }
 .oa-main { grid-row: 2; min-width: 0; background: var(--base-white); overflow: auto; overflow-x: hidden; }
-.oa-floating-panel { position: absolute; left: calc(var(--sidebar-width) - 6px); top: 64px; width: 300px; max-height: min(70vh, 520px); overflow: auto; background: var(--base-white); border: 1px solid var(--metal-gray); border-radius: 8px; box-shadow: 0 10px 28px rgba(47, 58, 69, 0.08); padding: 8px; z-index: 30; display: none; }
+.oa-floating-panel { position: fixed; width: 300px; overflow: auto; background: var(--base-white); border: 1px solid var(--metal-gray); border-radius: 8px; box-shadow: 0 10px 28px rgba(47, 58, 69, 0.08); padding: 8px 8px 8px 12px; z-index: 40; display: none; }
 .oa-floating-panel.is-open { display: block; }
+.oa-flyout-bridge { position: absolute; left: -12px; top: 0; bottom: 0; width: 16px; }
 .oa-floating-title { font-size: 12px; color: var(--text-muted); padding: 8px 10px 6px; border-bottom: 1px solid color-mix(in srgb, var(--earth-beige) 70%, white); margin-bottom: 4px; }
 .oa-floating-row { width: 100%; border: 0; background: transparent; text-align: left; padding: 10px 12px; border-radius: 6px; cursor: pointer; color: var(--text-primary); font-size: 13px; }
 .oa-floating-row:hover, .oa-floating-row:focus-visible { background: color-mix(in srgb, var(--wood-sage) 40%, white); outline: none; }
+.oa-floating-row.is-active { color: var(--water-blue); background: color-mix(in srgb, var(--wood-sage) 22%, white); }
 .oa-floating-hint { display: block; font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-.oa-backdrop { position: fixed; inset: 0; background: transparent; z-index: 20; display: none; }
+.oa-backdrop { position: fixed; inset: 0; background: transparent; z-index: 30; display: none; }
 .oa-backdrop.is-open { display: block; }
-.oa-status { position: fixed; right: 12px; bottom: 12px; z-index: 50; background: #fff; border: 1px solid #C8CDD2; border-radius: 8px; padding: 8px 10px; font: 12px/1.4 sans-serif; color: #667788; max-width: min(360px, calc(100vw - 24px)); overflow-wrap: anywhere; }
+.oa-backdrop.is-hover-only { pointer-events: none; }
+.oa-status { position: fixed; right: 12px; bottom: 12px; z-index: 25; background: #fff; border: 1px solid #C8CDD2; border-radius: 8px; padding: 8px 10px; font: 12px/1.4 sans-serif; color: #667788; max-width: min(360px, calc(100vw - 24px)); overflow-wrap: anywhere; }
 @media (max-width: 900px) {
   .oa-shell { grid-template-columns: 1fr; }
   .oa-mobile-nav-toggle { display: inline-flex; }
@@ -51,9 +54,8 @@
   }
   .oa-rail.is-open { transform: none; box-shadow: 8px 0 24px rgba(47, 58, 69, 0.08); }
   .oa-floating-panel {
-    left: min(248px, 84vw);
     width: min(260px, calc(100vw - 16px));
     max-height: 46vh;
   }
-  .oa-main { overflow-x: hidden; }
+  .oa-root, .oa-shell, .oa-main { overflow-x: hidden; }
 }
