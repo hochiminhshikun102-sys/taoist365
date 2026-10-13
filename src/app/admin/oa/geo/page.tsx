@@ -1,5 +1,10 @@
-import { GrowthReadonlyPage } from "@/components/oa-growth/GrowthReadonlyPage";
+import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
+import { GeoReadonlyWorkbench } from "@/components/oa-site-geo/GeoReadonlyWorkbench";
 
 export default function OaGeoPage() {
-  return <GrowthReadonlyPage moduleId="geo" />;
+  return (
+    <OaSharedShell activeKey="geo">
+      <GeoReadonlyWorkbench />
+    </OaSharedShell>
+  );
 }
