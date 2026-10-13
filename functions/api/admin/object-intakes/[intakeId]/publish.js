@@ -9,6 +9,7 @@ import {
   slugify,
   updateStore,
 } from "../../../../_object-intake.js";
+import { buildPublishPolicyInput, resolvePublishPolicy } from "../../../../_publish-policy.js";
 
 export async function onRequestPost(context) {
   const { intakeId } = context.params;
@@ -16,6 +17,8 @@ export async function onRequestPost(context) {
   let missing = false;
   let invalid = "";
   let invalidReasons = [];
+  let policySnapshot = null;
+  const actorClaims = await readActorClaims(context.request);
 
   await updateStore(context.env, (store) => {
     const intake = store.objectIntakes.find((item) => item.id === intakeId);
@@ -23,9 +26,19 @@ export async function onRequestPost(context) {
       missing = true;
       return store;
     }
-    const publishPolicy = resolvePublishPolicy(intake);
+    const publishPolicy = resolvePublishPolicy(buildPublishPolicyInput(intake, actorClaims));
+    policySnapshot = publishPolicy;
     if (!publishPolicy.canSkipReview && intake.status !== intakeStatuses.APPROVED && intake.status !== intakeStatuses.PUBLISHED) {
       invalid = "Only approved intakes can be published.";
+      invalidReasons = [
+        {
+          field: "publish_policy",
+          message: publishPolicy.reason || "Review approval required before publish.",
+          deny_code: publishPolicy.deny_code || "POLICY_REVIEW_REQUIRED",
+          publish_policy: publishPolicy.publish_policy,
+          policy_bucket: publishPolicy.policy_bucket,
+        },
+      ];
       return store;
     }
 
@@ -108,73 +121,46 @@ export async function onRequestPost(context) {
   });
 
   if (missing) return json({ error: "Intake not found." }, 404);
-  if (invalid) return json({ ok: false, code: "PUBLISH_BLOCKED", error: invalid, reasons: invalidReasons }, 400);
-  return json({ object: published, object_id: published.object_id, path: `/objects/${published.object_id}` }, 201);
+  if (invalid) {
+    return json(
+      {
+        ok: false,
+        code: "PUBLISH_BLOCKED",
+        error: invalid,
+        reasons: invalidReasons,
+        publish_policy: policySnapshot,
+      },
+      400,
+    );
+  }
+  return json({
+    object: published,
+    object_id: published.object_id,
+    path: `/objects/${published.object_id}`,
+    publish_policy: policySnapshot,
+  }, 201);
 }
 
-function resolvePublishPolicy(intake) {
-  if (isSelfOperatedIntake(intake)) {
-    return {
-      canSkipReview: true,
-      auditAction: "self_operated_publish",
-      auditReason: "admin_os_self_operated_fast_publish",
-      actorId: "admin",
-    };
-  }
-
-  if (isWindSeekerIntake(intake)) {
-    return {
-      canSkipReview: false,
-      auditAction: "buyer_publish_after_review",
-      auditReason: "buyer_publish_after_review",
-      actorId: "admin",
-    };
-  }
-
-  if (isC2cIntake(intake)) {
-    return {
-      canSkipReview: false,
-      auditAction: "c2c_publish_after_review",
-      auditReason: "c2c_publish_after_review",
-      actorId: "admin",
-    };
-  }
-
-  return {
-    canSkipReview: false,
-    auditAction: "published_object",
-    auditReason: "standard_publish_after_review",
-    actorId: "admin",
+async function readActorClaims(request) {
+  const claims = {
+    actor_type: String(request.headers.get("x-oa-actor-type") || "").trim(),
+    role: String(request.headers.get("x-oa-actor-role") || "").trim(),
+    channel: String(request.headers.get("x-oa-channel") || "").trim(),
   };
-}
-
-function isSelfOperatedIntake(intake) {
-  const selfOperatedSources = new Set(["admin_upload", "boss_upload", "external_link", "supplier_batch"]);
-  return (
-    intake.entry_surface === "admin_os" &&
-    intake.identity_scope === "admin" &&
-    selfOperatedSources.has(String(intake.source_type || ""))
-  );
-}
-
-function isWindSeekerIntake(intake) {
-  return (
-    intake.entry_surface === "wind_seeker" ||
-    intake.source_type === "buyer_upload" ||
-    intake.identity_scope === "buyer" ||
-    intake.identity_scope === "wind_seeker"
-  );
-}
-
-function isC2cIntake(intake) {
-  const c2cSources = new Set(["windkeep_member_upload", "barter_upload", "c2c_upload", "windkeep_member", "member_consignment", "neighbor_referral", "windkeep_external_link"]);
-  return (
-    intake.entry_surface === "windkeep" ||
-    c2cSources.has(String(intake.source_type || "")) ||
-    intake.identity_scope === "member" ||
-    intake.identity_scope === "windkeep_member" ||
-    intake.supply_program === "windkeep"
-  );
+  try {
+    const contentType = String(request.headers.get("content-type") || "");
+    if (contentType.includes("application/json")) {
+      const body = await request.clone().json();
+      if (body && typeof body === "object") {
+        if (body.actor_type) claims.actor_type = String(body.actor_type).trim();
+        if (body.role || body.created_by_role) claims.role = String(body.role || body.created_by_role).trim();
+        if (body.channel) claims.channel = String(body.channel).trim();
+      }
+    }
+  } catch {
+    // empty / non-JSON body is fine; policy may infer official actor from official intake shape
+  }
+  return claims;
 }
 
 function makeDetailModules(intake, draft, media) {
