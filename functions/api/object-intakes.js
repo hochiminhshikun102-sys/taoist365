@@ -1,5 +1,5 @@
 import { createAuditLog, intakeStatuses, json, makeId, nowIso, readStore, resolveObjectIntakeSource, updateStore } from "../_object-intake.js";
-import { enforceServerAuthz } from "../_publish-policy.js";
+import { auditActorId, bindCreateSource, denyResponse, enforceServerAuthz } from "../_publish-policy.js";
 
 const sourcePlatforms = new Set(["manual", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "jd", "other"]);
 
@@ -22,7 +22,7 @@ export async function onRequestGet(context) {
 }
 
 export async function onRequestPost(context) {
-  const authz = enforceServerAuthz(context, "mutate_intake");
+  const authz = enforceServerAuthz(context, "intake_create");
   if (authz.denied) return authz.denied;
 
   let payload;
@@ -32,10 +32,14 @@ export async function onRequestPost(context) {
     return json({ error: "Invalid intake payload." }, 400);
   }
 
+  const requestedSource = payload.source_type || payload.source || payload.actor_type || payload.ui_hint;
+  const bound = bindCreateSource(authz.identity, requestedSource);
+  if (!bound.ok) return denyResponse(bound);
+
   const now = nowIso();
   const id = makeId("intake");
   const intakeNo = `OI-${Date.now().toString().slice(-8)}`;
-  const source = resolveObjectIntakeSource(payload.source_type);
+  const source = resolveObjectIntakeSource(bound.sourceType);
   const sourceUrl = String(payload.source_url || "").trim();
   const requestedPlatform = sourcePlatforms.has(payload.source_platform) ? payload.source_platform : "manual";
   const sourcePlatform = sourceUrl && requestedPlatform === "manual" ? detectPlatform(sourceUrl) : requestedPlatform;
@@ -73,8 +77,13 @@ export async function onRequestPost(context) {
     media_rights_status: sourceUrl ? "reference_only" : "owned_or_original",
     media_transform_required: Boolean(sourceUrl),
     air_engine_policy: sourceUrl ? "rebuild_or_replace_before_publish" : "direct_review",
-    submitted_by: String(payload.submitted_by || "admin-os").trim(),
-    buyer_id: String(payload.buyer_id || "").trim(),
+    submitted_by: auditActorId(authz.identity),
+    owner_sub: String(authz.identity.sub || "").trim(),
+    owner_kind: authz.identity.identity_kind,
+    originator_kind: bound.originator_kind,
+    source_bound_by: "server_identity",
+    external_origin: bound.originator_kind !== "official",
+    buyer_id: bound.originator_kind === "buyer" ? String(authz.identity.sub || payload.buyer_id || "").trim() : String(payload.buyer_id || "").trim(),
     member_id: String(payload.member_id || "").trim(),
     referral_code: String(payload.referral_code || "").trim(),
     country: String(payload.country || "").trim(),

@@ -1,11 +1,17 @@
-import { createAuditLog, intakeStatuses, json, makeId, makeProductDraft, nowIso, updateStore } from "../../../_object-intake.js";
-import { enforceServerAuthz } from "../../../_publish-policy.js";
+import { createAuditLog, intakeStatuses, json, makeId, makeProductDraft, nowIso, readStore, updateStore } from "../../../_object-intake.js";
+import { assertTargetOwnership, denyResponse, enforceServerAuthz } from "../../../_publish-policy.js";
 
 export async function onRequestPost(context) {
-  const authz = enforceServerAuthz(context, "mutate_intake");
+  const authz = enforceServerAuthz(context, "ai_draft");
   if (authz.denied) return authz.denied;
 
   const { intakeId } = context.params;
+  const snapshot = await readStore(context.env);
+  const existing = snapshot.objectIntakes.find((item) => item.id === intakeId);
+  if (!existing) return json({ error: "Intake not found." }, 404);
+  const owned = assertTargetOwnership(authz.identity, existing);
+  if (!owned.ok) return denyResponse(owned);
+
   let created = null;
   let missing = false;
 

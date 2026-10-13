@@ -54,7 +54,9 @@ export function emptyIdentity(source = "none") {
     identity_kind: "",
     role: "",
     permissions: [],
+    sub: "",
     source,
+    subject_deferred: true,
   };
 }
 
@@ -66,6 +68,7 @@ function normalizeTrustedIdentity(raw) {
   const role = norm(raw.role);
   const identityKind = norm(raw.identity_kind);
   const permissions = Array.isArray(raw.permissions) ? raw.permissions.map((p) => norm(p)).filter(Boolean) : [];
+  const sub = String(raw.sub || raw.subject || "").trim();
   const serverVerified = Boolean(raw.server_verified) && authenticated && !expired && !invalid;
   return {
     authenticated,
@@ -76,13 +79,28 @@ function normalizeTrustedIdentity(raw) {
     identity_kind: identityKind,
     role,
     permissions,
+    sub,
     source,
+    subject_deferred: !sub,
   };
 }
 
+const ACTION_PERMISSIONS = {
+  publish: ["publish"],
+  review: ["review"],
+  intake_create: ["intake_create"],
+  intake_mutate: ["intake_mutate"],
+  mutate_intake: ["intake_mutate"],
+  ai_draft: ["ai_draft"],
+  media: ["media"],
+  object_patch: ["object_patch"],
+  object_patch_publish: ["object_patch_publish"],
+};
+
 /**
+ * Role alone does not grant actions. Explicit permission is required.
  * @param {ReturnType<typeof readServerVerifiedIdentity>} identity
- * @param {"publish"|"review"|"mutate_intake"} [action]
+ * @param {keyof typeof ACTION_PERMISSIONS | string} [action]
  */
 export function assertActionAuthz(identity, action = "publish") {
   if (!identity || !identity.authenticated || identity.source === "none") {
@@ -95,36 +113,12 @@ export function assertActionAuthz(identity, action = "publish") {
     return deny(401, "AUTH_INVALID", "Server-verified identity is invalid.");
   }
 
-  const official = isOfficialIdentity(identity);
-  const buyer = identity.identity_kind === "buyer" || identity.identity_kind === "global_buyer";
-  const owner =
-    identity.identity_kind === "windkeep_owner" ||
-    identity.identity_kind === "barter_owner" ||
-    identity.identity_kind === "owner";
-  const has = (perm) => identity.permissions.includes(perm);
-
-  if (action === "publish") {
-    if (official && (has("publish") || has("publish_direct") || OFFICIAL_ROLES.has(identity.role))) {
-      return allow(identity);
-    }
-    return deny(403, "AUTH_FORBIDDEN", "Verified identity is not authorized to publish.");
+  const needed = ACTION_PERMISSIONS[action] || [String(action || "")];
+  const hasNeeded = needed.some((perm) => identity.permissions.includes(perm));
+  if (!hasNeeded) {
+    return deny(403, "AUTH_FORBIDDEN", `Verified identity is not authorized for action ${action}.`);
   }
-
-  if (action === "review") {
-    if (official && (has("review") || has("publish") || OFFICIAL_ROLES.has(identity.role))) {
-      return allow(identity);
-    }
-    return deny(403, "AUTH_FORBIDDEN", "Verified identity is not authorized to review.");
-  }
-
-  if (action === "mutate_intake") {
-    if (official || buyer || owner || has("intake_write")) {
-      return allow(identity);
-    }
-    return deny(403, "AUTH_FORBIDDEN", "Verified identity is not authorized to write intake.");
-  }
-
-  return deny(403, "AUTH_FORBIDDEN", "Verified identity is not authorized.");
+  return allow(identity);
 }
 
 export function enforceServerAuthz(context, action = "publish") {
@@ -138,6 +132,17 @@ export function enforceServerAuthz(context, action = "publish") {
     };
   }
   return { denied: null, identity, gate };
+}
+
+/** Admin-only handlers: action permission is not enough for buyer/owner identities. */
+export function enforceOfficialAction(context, action) {
+  const authz = enforceServerAuthz(context, action);
+  if (authz.denied) return authz;
+  if (!isOfficialIdentity(authz.identity)) {
+    const gate = deny(403, "AUTH_FORBIDDEN", "Official identity is required for this admin action.");
+    return { denied: jsonDenied(gate), identity: null, gate };
+  }
+  return authz;
 }
 
 function jsonDenied(gate) {
@@ -199,7 +204,8 @@ export function resolvePublishPolicy(input = {}) {
   });
 
   const official = isOfficialIdentity(identity);
-  const canDirect = official && classification.bucket === "OFFICIAL_OA_UPLOAD";
+  const externalOrigin = isExternalOrigin(intake);
+  const canDirect = official && classification.bucket === "OFFICIAL_OA_UPLOAD" && !externalOrigin;
   const publishPolicy = canDirect ? "direct_publish" : "review_required";
 
   return {
@@ -220,7 +226,7 @@ export function resolvePublishPolicy(input = {}) {
     deny_code: canDirect ? "" : denyCodeFor(classification.bucket),
     auditAction: auditActionFor(classification.bucket, canDirect),
     auditReason: auditReasonFor(classification.bucket, canDirect),
-    actorId: official ? "admin_official" : identity.identity_kind || "unknown",
+    actorId: auditActorId(identity),
     identity_source: identity.source || "none",
     server_verified: Boolean(identity.server_verified),
   };
@@ -316,6 +322,66 @@ function auditReasonFor(bucket, canDirect) {
   if (bucket === "GLOBAL_BUYER_UPLOAD") return "buyer_publish_after_review";
   if (bucket === "BARTER_WINDKEEP_OWNER_UPLOAD") return "owner_publish_after_review";
   return "standard_publish_after_review";
+}
+
+export function auditActorId(identity) {
+  if (identity?.sub) return String(identity.sub);
+  return "DEFERRED_NO_TRUSTED_SUB";
+}
+
+export function isExternalOrigin(intake = {}) {
+  const kind = norm(intake.originator_kind || intake.owner_kind);
+  return kind === "buyer" || kind === "global_buyer" || kind === "windkeep_owner" || kind === "barter_owner" || kind === "owner" || intake.external_origin === true;
+}
+
+const OFFICIAL_REQUEST_ALIASES = new Set(["official", "official_oa", "admin_upload", "boss_upload", "admin", "oa_admin", "admin_official"]);
+
+export function bindCreateSource(identity, requestedRaw) {
+  const requested = norm(requestedRaw);
+  const kind = norm(identity?.identity_kind);
+  if ((kind === "buyer" || kind === "global_buyer" || kind === "windkeep_owner" || kind === "barter_owner" || kind === "owner") && !String(identity?.sub || "").trim()) {
+    return deny(401, "AUTH_MISSING", "Trusted subject sub is required for external create.");
+  }
+  if (kind === "buyer" || kind === "global_buyer") {
+    if (OFFICIAL_REQUEST_ALIASES.has(requested) || OFFICIAL_SOURCE_TYPES.has(requested)) {
+      return deny(403, "SOURCE_BINDING_DENIED", "External subject cannot bind an official intake source.");
+    }
+    return { ok: true, httpStatus: 200, sourceType: "buyer_upload", originator_kind: "buyer" };
+  }
+  if (kind === "windkeep_owner" || kind === "barter_owner" || kind === "owner") {
+    if (OFFICIAL_REQUEST_ALIASES.has(requested) || OFFICIAL_SOURCE_TYPES.has(requested)) {
+      return deny(403, "SOURCE_BINDING_DENIED", "External subject cannot bind an official intake source.");
+    }
+    const ownerType = OWNER_SOURCE_TYPES.has(requested) ? requested : "windkeep_member";
+    return { ok: true, httpStatus: 200, sourceType: ownerType, originator_kind: kind };
+  }
+  if (isOfficialIdentity(identity)) {
+    if (BUYER_SOURCE_TYPES.has(requested) || OWNER_SOURCE_TYPES.has(requested)) {
+      return { ok: true, httpStatus: 200, sourceType: requested, originator_kind: requested.includes("buyer") ? "buyer" : "windkeep_owner" };
+    }
+    const officialType = OFFICIAL_SOURCE_TYPES.has(requested) ? requested : "admin_upload";
+    return { ok: true, httpStatus: 200, sourceType: officialType, originator_kind: "official" };
+  }
+  return deny(403, "SOURCE_BINDING_DENIED", "Cannot bind intake source for this identity.");
+}
+
+export function assertTargetOwnership(identity, target) {
+  if (!target) {
+    return deny(404, "TARGET_NOT_FOUND", "Target was not found.");
+  }
+  if (isOfficialIdentity(identity)) {
+    return allow(identity);
+  }
+  const sub = String(identity?.sub || "").trim();
+  const ownerSub = String(target.owner_sub || "").trim();
+  if (!sub || !ownerSub || sub !== ownerSub) {
+    return deny(403, "TARGET_OWNERSHIP_DENIED", "Verified identity cannot mutate another subject's target.");
+  }
+  return allow(identity);
+}
+
+export function denyResponse(gate) {
+  return jsonDenied(gate);
 }
 
 function mapReviewStatus(intakeStatus) {

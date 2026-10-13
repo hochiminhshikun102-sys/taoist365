@@ -147,6 +147,24 @@ expect(
 expect("verified unauthorized => 403", assertActionAuthz(buyer, "publish").httpStatus === 403);
 expect("verified owner cannot publish skip => 403", assertActionAuthz(owner, "publish").httpStatus === 403);
 expect("verified official publish authz ok", assertActionAuthz(official, "publish").ok === true);
+expect(
+  "official + oa_admin + permissions=[] cannot publish",
+  assertActionAuthz({ ...official, permissions: [] }, "publish").httpStatus === 403,
+);
+expect(
+  "external origin cannot be washed to direct_publish",
+  resolvePublishPolicy({
+    identity: official,
+    intake: { source_type: "admin_upload", originator_kind: "buyer", external_origin: true },
+  }).can_direct_publish === false,
+);
+expect(
+  "server_verified_official_create_buyer_source => not direct_publish",
+  resolvePublishPolicy({
+    identity: official,
+    intake: { source_type: "buyer_upload", originator_kind: "buyer", external_origin: true },
+  }).publish_policy === "review_required",
+);
 
 let failed = 0;
 for (const testCase of cases) {

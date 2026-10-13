@@ -8,7 +8,7 @@ import {
   resolveObjectIntakeSource,
   updateStore,
 } from "../../../_object-intake.js";
-import { enforceServerAuthz } from "../../../_publish-policy.js";
+import { enforceOfficialAction } from "../../../_publish-policy.js";
 
 const requestedOutputs = ["main", "detail", "scene", "pc", "mobile", "social", "motion"];
 
@@ -111,7 +111,7 @@ const legacyProductSamples = [
 ];
 
 export async function onRequestPost(context) {
-  const authz = enforceServerAuthz(context, "mutate_intake");
+  const authz = enforceOfficialAction(context, "mutate_intake");
   if (authz.denied) return authz.denied;
 
   let payload;

@@ -1,5 +1,5 @@
 import { createAuditLog, json, makeId, nowIso, publicUrlForMedia, updateStore } from "../../../../../_object-intake.js";
-import { enforceServerAuthz } from "../../../../../_publish-policy.js";
+import { enforceOfficialAction } from "../../../../../_publish-policy.js";
 
 const outputTypes = new Set(["main", "detail", "scene", "pc", "mobile", "social", "motion"]);
 const outputSpecs = {
@@ -13,7 +13,7 @@ const outputSpecs = {
 };
 
 export async function onRequestPost(context) {
-  const authz = enforceServerAuthz(context, "mutate_intake");
+  const authz = enforceOfficialAction(context, "mutate_intake");
   if (authz.denied) return authz.denied;
 
   const { jobId } = context.params;
