@@ -240,6 +240,79 @@ await check("server_verified_official_create_buyer_source => not direct_publish"
   };
 });
 
+async function officialCreate(sourceType) {
+  const kv = makeKv(emptyStore());
+  const body = sourceType === undefined ? { original_title: "Official item" } : { source_type: sourceType, original_title: "Official item" };
+  const out = await parse(
+    await createIntake(ctx({ auth: official(["intake_create"]), kv, url: "https://example.test/api/object-intakes", body })),
+    kv,
+  );
+  const policy = out.json.intake
+    ? resolvePublishPolicy({ identity: official(["publish"]), intake: out.json.intake })
+    : null;
+  return { ...out, policy, source_type: out.json.intake?.source_type, empty_source_default: out.json.intake?.empty_source_default };
+}
+
+await check("official_create_source_external_link => preserve + review_required", async () => {
+  const out = await officialCreate("external_link");
+  return {
+    ok: out.status === 201 && out.source_type === "external_link" && out.policy?.can_direct_publish === false && out.policy?.publish_policy === "review_required",
+    detail: { status: out.status, source_type: out.source_type, direct: out.policy?.can_direct_publish },
+  };
+});
+
+await check("official_create_source_supplier_batch => preserve + review_required", async () => {
+  const out = await officialCreate("supplier_batch");
+  return {
+    ok: out.status === 201 && out.source_type === "supplier_batch" && out.policy?.can_direct_publish === false,
+    detail: { status: out.status, source_type: out.source_type, direct: out.policy?.can_direct_publish },
+  };
+});
+
+await check("official_create_source_legacy_product_sample => preserve + review_required", async () => {
+  const out = await officialCreate("legacy_product_sample");
+  return {
+    ok: out.status === 201 && out.source_type === "legacy_product_sample" && out.policy?.can_direct_publish === false,
+    detail: { status: out.status, source_type: out.source_type, direct: out.policy?.can_direct_publish },
+  };
+});
+
+await check("official_create_source_unrecognized_non_empty => reject + ZERO_WRITE", async () => {
+  const out = await officialCreate("unrecognized_source");
+  return {
+    ok: out.status === 403 && out.puts === 0 && out.json.zero_write === true && out.json.code === "SOURCE_BINDING_DENIED",
+    detail: out,
+  };
+});
+
+await check("official_create_admin_upload_supported_source => allowed, policy direct only after identity+source class", async () => {
+  const out = await officialCreate("admin_upload");
+  return {
+    ok: out.status === 201 && out.source_type === "admin_upload" && out.policy?.can_direct_publish === true && out.json.intake?.empty_source_default !== true,
+    detail: { status: out.status, source_type: out.source_type, direct: out.policy?.can_direct_publish },
+  };
+});
+
+await check("official_create_empty_source_default => admin_upload explicit empty default", async () => {
+  const out = await officialCreate(undefined);
+  return {
+    ok: out.status === 201 && out.source_type === "admin_upload" && out.empty_source_default === true,
+    detail: { status: out.status, source_type: out.source_type, empty_source_default: out.empty_source_default },
+  };
+});
+
+await check("buyer_create_allowed_source => previous R62 allowed path preserved", async () => {
+  const kv = makeKv(emptyStore());
+  const out = await parse(
+    await createIntake(ctx({ auth: buyer("buyer-A"), kv, url: "https://example.test/api/object-intakes", body: { original_title: "Buyer cup" } })),
+    kv,
+  );
+  return {
+    ok: out.status === 201 && out.json.intake?.source_type === "buyer_upload" && out.json.intake?.external_origin === true,
+    detail: { status: out.status, source_type: out.json.intake?.source_type },
+  };
+});
+
 await check("buyer_A_mutates_buyer_A_allowed_draft => allowed", async () => {
   const kv = makeKv(seedAB());
   const out = await parse(

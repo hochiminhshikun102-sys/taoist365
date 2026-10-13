@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const modUrl = pathToFileURL(path.join(root, "functions", "_publish-policy.js")).href;
-const { resolvePublishPolicy, canDirectPublish, assertActionAuthz, emptyIdentity } = await import(modUrl);
+const { resolvePublishPolicy, canDirectPublish, assertActionAuthz, emptyIdentity, bindCreateSource } = await import(modUrl);
 
 const official = {
   authenticated: true,
@@ -164,6 +164,33 @@ expect(
     identity: official,
     intake: { source_type: "buyer_upload", originator_kind: "buyer", external_origin: true },
   }).publish_policy === "review_required",
+);
+expect(
+  "official empty source defaults admin_upload explicitly",
+  bindCreateSource(official, "").sourceType === "admin_upload" && bindCreateSource(official, "").empty_source_default === true,
+);
+expect(
+  "official unknown string is not empty-source default",
+  bindCreateSource(official, "unrecognized_source").ok === false && bindCreateSource(official, "unrecognized_source").httpStatus === 403,
+);
+expect(
+  "official external_link preserved not admin_upload",
+  bindCreateSource(official, "external_link").sourceType === "external_link" && bindCreateSource(official, "external_link").external_origin === true,
+);
+expect(
+  "official supplier_batch preserved not admin_upload",
+  bindCreateSource(official, "supplier_batch").sourceType === "supplier_batch",
+);
+expect(
+  "official legacy_product_sample preserved not admin_upload",
+  bindCreateSource(official, "legacy_product_sample").sourceType === "legacy_product_sample",
+);
+expect(
+  "official external_link cannot direct_publish",
+  resolvePublishPolicy({
+    identity: official,
+    intake: { source_type: "external_link", originator_kind: "official", external_origin: true },
+  }).can_direct_publish === false,
 );
 
 let failed = 0;

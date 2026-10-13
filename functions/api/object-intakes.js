@@ -48,7 +48,7 @@ export async function onRequestPost(context) {
   const intake = {
     id,
     intake_no: intakeNo,
-    source_type: source.source_type,
+    source_type: bound.sourceType,
     identity_scope: source.identity_scope,
     entry_surface: source.entry_surface,
     supply_program: source.supply_program,
@@ -82,7 +82,8 @@ export async function onRequestPost(context) {
     owner_kind: authz.identity.identity_kind,
     originator_kind: bound.originator_kind,
     source_bound_by: "server_identity",
-    external_origin: bound.originator_kind !== "official",
+    empty_source_default: Boolean(bound.empty_source_default),
+    external_origin: Boolean(bound.external_origin),
     buyer_id: bound.originator_kind === "buyer" ? String(authz.identity.sub || payload.buyer_id || "").trim() : String(payload.buyer_id || "").trim(),
     member_id: String(payload.member_id || "").trim(),
     referral_code: String(payload.referral_code || "").trim(),
