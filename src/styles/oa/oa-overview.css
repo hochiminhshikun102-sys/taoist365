@@ -39,6 +39,56 @@ a.oa-overview-work-link:hover {
 .oa-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
 .oa-list li { border: 1px solid var(--metal-gray); border-radius: 6px; padding: 10px 12px; font-size: 13px; }
 .oa-fixture-banner { margin-bottom: 10px; padding: 9px 12px; border: 1px dashed var(--earth-beige); border-radius: 6px; font-size: 12px; color: var(--text-muted); background: color-mix(in srgb, var(--earth-beige) 16%, white); }
+
+.oa-readiness-board { margin: 0 0 14px; }
+.oa-readiness-head { margin-bottom: 12px; }
+.oa-readiness-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--water-blue);
+}
+.oa-readiness-lead {
+  margin: 0;
+  max-width: 860px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+.oa-readiness-global {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.oa-readiness-risks { margin-bottom: 14px; }
+.oa-readiness-risks ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.oa-readiness-table-wrap { overflow-x: auto; }
+.oa-readiness-table { min-width: 1080px; }
+.oa-readiness-table td { vertical-align: top; font-size: 12px; }
+.oa-readiness-route {
+  color: var(--water-blue);
+  font-weight: 650;
+  text-decoration: none;
+  word-break: break-all;
+}
+.oa-readiness-route:hover { text-decoration: underline; }
+.oa-readiness-board .oa-capability-pill.is-ready_for_review {
+  background: color-mix(in srgb, var(--water-blue) 16%, white);
+  color: #355f7a;
+}
+.oa-readiness-board .oa-capability-pill.is-provider_pending,
+.oa-readiness-board .oa-capability-pill.is-blocked {
+  background: color-mix(in srgb, var(--fire-amber) 22%, white);
+  color: #6a4a2a;
+}
+
 @media (max-width: 1100px) {
   .oa-grid-4, .oa-row-2, .oa-row-3 { grid-template-columns: 1fr 1fr; }
 }
