@@ -182,7 +182,7 @@ record("object_media_unpublished_motion_401", motionDraft.status === 401, String
 const unmappedOpen = await objectMediaGet(
   ctx(mediaEnv, "http://127.0.0.1/api/object-media/media-unmapped", { params: { mediaId: "media-unmapped" } }),
 );
-record("object_media_unmapped_remains_open", unmappedOpen.status === 200, String(unmappedOpen.status));
+record("object_media_unknown_type_fail_closed", unmappedOpen.status === 401, String(unmappedOpen.status));
 
 const mainPub = await objectMediaGet(
   ctx(mediaEnv, "http://127.0.0.1/api/object-media/media-public-main", { params: { mediaId: "media-public-main" } }),
@@ -195,15 +195,15 @@ const originalDenied = await objectMediaGet(
 record("object_media_original_401", originalDenied.status === 401, String(originalDenied.status));
 
 const assetSource = read("functions/api/assets/[assetId].js");
-record("asset_byte_get_unchanged_no_auth_gate", !assetSource.includes("requireOaPrivateRead") && assetSource.includes("cache-control"));
+record("asset_byte_get_reuses_verification", assetSource.includes("requireOaPrivateRead") && assetSource.includes("classifyAssetByteAccess"));
 
 const assetEnv = kvEnv([], [], [{ id: "asset-secret", data_url: PIXEL, mime_type: "image/png", scope: "prompt_pack" }]);
 const assetAnon = await assetByteGet(
   ctx(assetEnv, "http://127.0.0.1/api/assets/asset-secret", { params: { assetId: "asset-secret" } }),
 );
 record(
-  "asset_byte_get_still_serves_until_owner_contract",
-  assetAnon.status === 200,
+  "asset_byte_get_denied_without_explicit_public_binding",
+  assetAnon.status === 401,
   String(assetAnon.status),
 );
 

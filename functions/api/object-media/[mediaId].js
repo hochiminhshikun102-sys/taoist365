@@ -29,17 +29,15 @@ export async function onRequestGet(context) {
   }
 
   const access = classifyObjectMediaAccess(store, media);
-  if (access === "private") {
+  // Unknown media types are private until a formal publication policy maps them.
+  if (access !== "public") {
     const gate = await requireOaPrivateRead(context);
     if (!gate.ok) return gate.response;
     return serveMedia(context, media, "no-store");
   }
 
-  if (access === "unmapped") {
-    return serveMedia(context, media, media.data_url ? "no-store" : "public, max-age=31536000, immutable");
-  }
-
-  return serveMedia(context, media, media.data_url ? "no-store" : "public, max-age=31536000, immutable");
+  // Only a verified published-media binding may be served anonymously.
+  return serveMedia(context, media, media.data_url ? "no-store" : "public, max-age=60, must-revalidate");
 }
 
 async function serveMedia(context, media, cacheControl) {
