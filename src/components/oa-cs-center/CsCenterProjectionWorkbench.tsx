@@ -70,8 +70,8 @@ export function CsCenterProjectionWorkbench() {
         </article>
         <article className="oa-card">
           <h3>Complaint / callback · 投诉回访</h3>
-          <p className="oa-co-kpi-value">—</p>
-          <p className="oa-skeleton-meta">future slot · {capabilityLabel("not_connected")}</p>
+          <p className="oa-co-kpi-value">not_connected</p>
+          <p className="oa-skeleton-meta">No complaint Provider · slot reserved · write disabled</p>
         </article>
       </div>
 

@@ -39,6 +39,13 @@ a.oa-overview-work-link:hover {
 .oa-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
 .oa-list li { border: 1px solid var(--metal-gray); border-radius: 6px; padding: 10px 12px; font-size: 13px; }
 .oa-fixture-banner { margin-bottom: 10px; padding: 9px 12px; border: 1px dashed var(--earth-beige); border-radius: 6px; font-size: 12px; color: var(--text-muted); background: color-mix(in srgb, var(--earth-beige) 16%, white); }
+.oa-desktop-status {
+  padding: 12px 24px 0;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.oa-desktop-status-row { margin-bottom: 0; }
+.oa-desktop-status-next { margin: 8px 0 0; }
 
 .oa-readiness-board { margin: 0 0 14px; }
 .oa-readiness-head { margin-bottom: 12px; }
