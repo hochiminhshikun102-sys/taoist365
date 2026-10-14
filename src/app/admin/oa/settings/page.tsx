@@ -1,6 +1,7 @@
 import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
 import { OaDesktopStatusStrip } from "@/components/oa-overview/OaDesktopStatusStrip";
-import { PlatformReadonlyBoard } from "@/components/oa-platform/PlatformReadonlyBoard";
+import { ProviderConnectionCenter } from "@/components/oa-settings/ProviderConnectionCenter";
+import "@/styles/oa/oa-settings.css";
 
 export default function OaSettingsPage() {
   return (
@@ -11,7 +12,7 @@ export default function OaSettingsPage() {
         nextHref="/admin/oa/overview"
         nextKey="overview"
       />
-      <PlatformReadonlyBoard moduleId="settings" />
+      <ProviderConnectionCenter />
     </OaSharedShell>
   );
 }
