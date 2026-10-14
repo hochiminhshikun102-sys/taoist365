@@ -1,10 +1,14 @@
 import { createAuditLog, json, makeId, nowIso, updateStore, readStore } from "../../_object-intake.js";
 import { enforceOfficialAction } from "../../_publish-policy.js";
+import { requireOaPrivateRead } from "../../_auth/require-oa-private-read.js";
 
 const assetScopes = new Set(["brand", "product_media", "social", "prompt_pack", "safe_area", "object_intake", "air_engine"]);
 const assetStatuses = new Set(["uploaded", "draft", "review_pending", "approved", "published", "archived"]);
 
 export async function onRequestGet(context) {
+  const gate = await requireOaPrivateRead(context);
+  if (!gate.ok) return gate.response;
+
   const url = new URL(context.request.url);
   const scope = url.searchParams.get("scope");
   const objectId = url.searchParams.get("object_id");
