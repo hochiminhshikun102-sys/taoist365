@@ -64,6 +64,7 @@ function syntheticStore() {
       { id: "media-original", media_type: "original", intake_id: "intake-pub", data_url: PIXEL, mime_type: "image/png" },
       { id: "media-rights", media_type: "rights", intake_id: "intake-pub", data_url: PIXEL, mime_type: "image/png" },
       { id: "media-draft-main", media_type: "main", intake_id: "intake-draft", data_url: PIXEL, mime_type: "image/png" },
+      { id: "media-new-unapproved-main", media_type: "main", intake_id: "intake-pub", data_url: PIXEL, mime_type: "image/png" },
     ],
     objects: [
       {
@@ -223,6 +224,15 @@ const rightsNone = await objectMediaGet(ctx(kvEnv, "http://127.0.0.1/api/object-
 record("rights media no token 401", rightsNone.status === 401);
 const draftMain = await objectMediaGet(ctx(kvEnv, "http://127.0.0.1/api/object-media/media-draft-main", { params: { mediaId: "media-draft-main" } }));
 record("unpublished main media no token 401", draftMain.status === 401);
+const newUnapproved = await objectMediaGet(
+  ctx(kvEnv, "http://127.0.0.1/api/object-media/media-new-unapproved-main", { params: { mediaId: "media-new-unapproved-main" } }),
+);
+record("new media on published intake still requires explicit published media binding", newUnapproved.status === 401);
+record(
+  "published media_ids snapshot does not leak later draft upload",
+  classifyObjectMediaAccess(store, store.objectMedia[4]) === "private",
+);
+
 const originalAdmin = await objectMediaGet(
   ctx(kvEnv, "http://127.0.0.1/api/object-media/media-original", { token: adminToken, params: { mediaId: "media-original" } }),
 );

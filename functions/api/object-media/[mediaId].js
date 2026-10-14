@@ -10,7 +10,10 @@ export function classifyObjectMediaAccess(store, media) {
   if (!PUBLIC_PRODUCT_MEDIA_TYPES.has(type)) return "unmapped";
   const published = (store.objects || []).some((object) => {
     if (object.status !== "published") return false;
-    if (Array.isArray(object.media_ids) && object.media_ids.includes(media.id)) return true;
+    // The published media_ids snapshot is authoritative when present.
+    // A new draft upload on the same intake cannot become public merely by sharing intake_id.
+    if (Array.isArray(object.media_ids)) return object.media_ids.includes(media.id);
+    // Historical objects without media_ids retain their existing intake linkage.
     return Boolean(object.intake_id && media.intake_id && object.intake_id === media.intake_id);
   });
   return published ? "public" : "private";
