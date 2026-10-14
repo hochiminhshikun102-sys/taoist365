@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { OaAdminAuthGate } from "@/components/oa-auth/OaAdminAuthGate";
 import "@/styles/oa/oa-shell.css";
+import "@/styles/oa/oa-auth.css";
 import "@/styles/oa/oa-overview.css";
 import "@/styles/oa/oa-mobile.css";
 import "@/styles/oa/oa-skeleton.css";
@@ -27,5 +29,5 @@ export const metadata: Metadata = {
 };
 
 export default function OaAdminLayout({ children }: Readonly<{ children: ReactNode }>) {
-  return children;
+  return <OaAdminAuthGate>{children}</OaAdminAuthGate>;
 }
