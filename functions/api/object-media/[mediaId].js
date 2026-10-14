@@ -2,7 +2,7 @@ import { readStore } from "../../_object-intake.js";
 import { requireOaPrivateRead } from "../../_auth/require-oa-private-read.js";
 
 const PRIVATE_MEDIA_TYPES = new Set(["original", "rights", "private"]);
-const PUBLIC_PRODUCT_MEDIA_TYPES = new Set(["main", "detail", "scene", "pc", "mobile", "social"]);
+const PUBLIC_PRODUCT_MEDIA_TYPES = new Set(["main", "detail", "scene", "pc", "mobile", "social", "motion"]);
 
 export function classifyObjectMediaAccess(store, media) {
   const type = String(media?.media_type || "");

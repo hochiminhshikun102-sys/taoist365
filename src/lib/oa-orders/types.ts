@@ -69,6 +69,20 @@ export type OaOrderRecord = {
   source_updated_at: string;
   retrieved_at: string;
   queue_tags: Array<"awaiting_action" | "fulfilling" | "needs_attention" | "aftersales">;
+  source_order_status?: string;
+  source_payment_status?: string;
+  field_mapping_note?: string;
+  amount_known?: boolean;
+  unit_amounts_known?: boolean;
 };
 
-export type OrdersWorkbenchViewState = "ready" | "loading" | "empty" | "failed" | "not_connected";
+export type OrdersWorkbenchViewState =
+  | "ready"
+  | "loading"
+  | "empty"
+  | "failed"
+  | "not_connected"
+  | "auth_required"
+  | "permission_denied"
+  | "provider_unavailable"
+  | "demo";

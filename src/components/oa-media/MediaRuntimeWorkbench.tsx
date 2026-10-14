@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { capabilityLabel } from "@/components/oa-skeleton/capabilityGate";
+import {
+  createCoReadController,
+  oaPrivateGetJson,
+  subscribeOaAuthEpoch,
+  type CoReadErrorCode,
+} from "@/lib/oa-auth/oaPrivateReadClient";
 import { statusLabel } from "@/lib/oa-orders/format";
 import {
   MEDIA_BOUNDARY_NOTES,
@@ -10,6 +16,7 @@ import {
   MEDIA_CROSS_LINKS,
   MEDIA_FIXTURE,
 } from "@/lib/oa-media/fixture";
+import { mapAdminAssetRows } from "@/lib/oa-media/trustedReadAdapter";
 import type { MediaQueueTag, OaMediaRecord } from "@/lib/oa-media/types";
 
 type QueueKey = MediaQueueTag;
@@ -24,35 +31,78 @@ const QUEUES: Array<{ key: QueueKey; en: string; zh: string }> = [
 ];
 
 export function MediaRuntimeWorkbench() {
+  const [demoMode, setDemoMode] = useState(false);
+  const [viewState, setViewState] = useState("loading");
+  const [errorCode, setErrorCode] = useState<CoReadErrorCode | null>(null);
+  const [storage, setStorage] = useState<string | null>(null);
+  const [liveRows, setLiveRows] = useState<OaMediaRecord[]>([]);
   const [queue, setQueue] = useState<QueueKey>("all");
-  const [selectedId, setSelectedId] = useState(MEDIA_FIXTURE[0]?.media_id ?? "");
+  const [selectedId, setSelectedId] = useState("");
+  const controllerRef = useRef(createCoReadController());
 
-  const counts = useMemo(() => {
-    const map: Record<string, number> = { all: MEDIA_FIXTURE.length };
-    for (const q of QUEUES) if (q.key !== "all") map[q.key] = 0;
-    for (const row of MEDIA_FIXTURE) for (const tag of row.queue_tags) map[tag] = (map[tag] || 0) + 1;
-    return map;
+  const loadLive = useCallback(async () => {
+    const ctl = controllerRef.current;
+    const { generation, signal } = ctl.next();
+    setLiveRows([]);
+    setSelectedId("");
+    setErrorCode(null);
+    setViewState("loading");
+    const result = await oaPrivateGetJson<{ rows?: unknown; storage?: string }>("/api/admin/assets", signal);
+    if (!ctl.isCurrent(generation)) return;
+    if (!result.ok) {
+      setErrorCode(result.code);
+      setViewState(result.code === "preview_read_unavailable" ? "provider_unavailable" : result.code);
+      return;
+    }
+    const mapped = mapAdminAssetRows(result.payload.rows, new Date().toISOString());
+    setStorage(result.storage);
+    setLiveRows(mapped);
+    setViewState(mapped.length ? "ready" : "empty");
+    setSelectedId(mapped[0]?.media_id ?? "");
   }, []);
 
+  useEffect(() => {
+    const ctl = controllerRef.current;
+    void loadLive();
+    const stop = subscribeOaAuthEpoch(() => {
+      void loadLive();
+    });
+    return () => {
+      ctl.clear();
+      stop();
+    };
+  }, [loadLive]);
+
+  const sourceRows = demoMode ? MEDIA_FIXTURE : liveRows;
+  const liveBlocked = !demoMode && viewState !== "ready" && viewState !== "empty";
+
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { all: sourceRows.length };
+    for (const q of QUEUES) if (q.key !== "all") map[q.key] = 0;
+    for (const row of sourceRows) for (const tag of row.queue_tags) map[tag] = (map[tag] || 0) + 1;
+    return map;
+  }, [sourceRows]);
+
   const rows = useMemo(() => {
-    if (queue === "all") return MEDIA_FIXTURE;
-    return MEDIA_FIXTURE.filter((row) => row.queue_tags.includes(queue));
-  }, [queue]);
+    if (liveBlocked) return [];
+    if (queue === "all") return sourceRows;
+    return sourceRows.filter((row) => row.queue_tags.includes(queue));
+  }, [queue, sourceRows, liveBlocked]);
 
   const selected: OaMediaRecord | null =
     rows.find((row) => row.media_id === selectedId) ?? rows[0] ?? null;
+  const dataSource = demoMode ? MEDIA_CORE_META.data_source : "VERIFIED_LOCAL_READ_SOURCE";
 
   return (
     <section className="oa-page oa-media-page" data-oa-media-core="r47">
       <div className="oa-fixture-banner">
-        R47_MEDIA_READONLY · DATA_SOURCE={MEDIA_CORE_META.data_source} · LIVE_PROVIDER=
-        {MEDIA_CORE_META.live_provider} · capability={MEDIA_CORE_META.capability} · REAL_UPLOAD=FALSE
+        R47_MEDIA_READONLY · DATA_SOURCE={dataSource} · LIVE_PROVIDER=not_connected · storage=
+        {demoMode ? "TEST_ONLY" : storage || "—"} · capability=read_only · REAL_UPLOAD=FALSE ·
+        DEMO_LIVE_MIX=FALSE
       </div>
 
       <div className="oa-capability-row">
-        <span className={`oa-capability-pill is-${MEDIA_CORE_META.capability}`}>
-          {capabilityLabel(MEDIA_CORE_META.capability)}
-        </span>
+        <span className="oa-capability-pill is-read_only">{capabilityLabel("read_only")}</span>
         <span className="oa-capability-pill is-not_connected">
           Live Provider · {capabilityLabel("not_connected")}
         </span>
@@ -63,11 +113,14 @@ export function MediaRuntimeWorkbench() {
         <div>
           <h1 className="oa-page-title">Product Media · 商品素材</h1>
           <p className="oa-skeleton-lead">
-            Read-only media ledger skeleton. original_asset ≠ public_asset; rights_evidence ≠ product_image;
-            ai_derivative ≠ approved_public_asset.
+            Read-only Preview GET. original_asset ≠ public_asset; rights_evidence ≠ product_image;
+            ai_derivative ≠ approved_public_asset. No bare /api/assets img src.
           </p>
         </div>
         <div className="oa-orders-header-actions">
+          <button className="oa-btn" type="button" onClick={() => void loadLive()} disabled={demoMode}>
+            Refresh read · 刷新只读
+          </button>
           <button className="oa-btn" type="button" disabled>
             Upload · 上传 · Blocked
           </button>
@@ -77,6 +130,38 @@ export function MediaRuntimeWorkbench() {
         </div>
       </header>
 
+      <div className="oa-orders-state-toggles" aria-label="Workbench data mode">
+        <button
+          type="button"
+          className={`oa-orders-chip${!demoMode ? " is-active" : ""}`}
+          onClick={() => setDemoMode(false)}
+        >
+          Live Preview read
+        </button>
+        <button
+          type="button"
+          className={`oa-orders-chip${demoMode ? " is-active" : ""}`}
+          onClick={() => setDemoMode(true)}
+        >
+          TEST_ONLY DEMO structure
+        </button>
+      </div>
+
+      {!demoMode && viewState !== "ready" && viewState !== "empty" ? (
+        <article className={`oa-card oa-orders-state-card${errorCode ? " is-error" : ""}`} data-oa-read-state={viewState}>
+          {viewState === "loading"
+            ? "Loading Preview read source… · 加载中"
+            : `${viewState} · Preview media metadata read did not succeed.`}
+          {errorCode === "provider_unavailable" ? (
+            <div>
+              <button className="oa-btn secondary" type="button" onClick={() => void loadLive()}>
+                Retry · 重试
+              </button>
+            </div>
+          ) : null}
+        </article>
+      ) : null}
+
       <article className="oa-card oa-media-boundary">
         <h2>Boundary locks · 边界锁</h2>
         <ul className="oa-orders-lines">
@@ -85,6 +170,9 @@ export function MediaRuntimeWorkbench() {
               <code>{note}</code>
             </li>
           ))}
+          <li>
+            <code>asset byte GET /api/assets/[id] = OWNER_CONTRACT_PENDING</code>
+          </li>
         </ul>
       </article>
 
@@ -108,44 +196,53 @@ export function MediaRuntimeWorkbench() {
         <article className="oa-card">
           <div className="oa-commerce-list-head">
             <h2>Media ledger · 素材台账</h2>
-            <span className="oa-skeleton-meta">{rows.length} DEMO rows</span>
+            <span className="oa-skeleton-meta">
+              {rows.length} {demoMode ? "DEMO rows" : "LIVE_PREVIEW_READ rows"}
+            </span>
           </div>
-          <div className="oa-orders-table-wrap">
-            <table className="oa-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Title</th>
-                  <th>source</th>
-                  <th>kind</th>
-                  <th>rights</th>
-                  <th>review</th>
-                  <th>SKU</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr
-                    key={row.media_id}
-                    className={selected?.media_id === row.media_id ? "is-selected" : undefined}
-                    onClick={() => setSelectedId(row.media_id)}
-                  >
-                    <td>
-                      <button type="button" className="oa-orders-linkish" onClick={() => setSelectedId(row.media_id)}>
-                        {row.media_id}
-                      </button>
-                    </td>
-                    <td>{row.title}</td>
-                    <td>{statusLabel(row.source)}</td>
-                    <td>{statusLabel(row.asset_kind)}</td>
-                    <td>{statusLabel(row.rights_status)}</td>
-                    <td>{statusLabel(row.review_status)}</td>
-                    <td>{row.object_sku}</td>
+          {rows.length === 0 ? (
+            <div className="oa-orders-empty">
+              <h3>Empty state · 空状态</h3>
+              <p>{liveBlocked ? "Live list hidden until a successful trusted read." : "No rows."}</p>
+            </div>
+          ) : (
+            <div className="oa-orders-table-wrap">
+              <table className="oa-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>source</th>
+                    <th>kind</th>
+                    <th>rights</th>
+                    <th>review</th>
+                    <th>SKU</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {rows.map((row) => (
+                    <tr
+                      key={row.media_id}
+                      className={selected?.media_id === row.media_id ? "is-selected" : undefined}
+                      onClick={() => setSelectedId(row.media_id)}
+                    >
+                      <td>
+                        <button type="button" className="oa-orders-linkish" onClick={() => setSelectedId(row.media_id)}>
+                          {row.media_id}
+                        </button>
+                      </td>
+                      <td>{row.title}</td>
+                      <td>{statusLabel(row.source)}</td>
+                      <td>{statusLabel(row.asset_kind)}</td>
+                      <td>{statusLabel(row.rights_status)}</td>
+                      <td>{statusLabel(row.review_status)}</td>
+                      <td>{row.object_sku}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </article>
 
         <aside className="oa-card oa-orders-summary">
@@ -197,6 +294,10 @@ export function MediaRuntimeWorkbench() {
                 <div>
                   <dt>object_sku</dt>
                   <dd>{selected.object_sku}</dd>
+                </div>
+                <div>
+                  <dt>preview_href</dt>
+                  <dd>blocked</dd>
                 </div>
               </dl>
               <p className="oa-skeleton-meta">{selected.compliance_note}</p>

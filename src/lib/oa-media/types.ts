@@ -2,7 +2,7 @@ export type MediaSource = "studio_capture" | "supplier_pack" | "owner_upload" | 
 
 export type RightsStatus = "unknown" | "claimed" | "evidenced" | "cleared" | "blocked";
 
-export type ReviewStatus = "not_submitted" | "in_review" | "approved" | "rejected" | "expired";
+export type ReviewStatus = "not_submitted" | "in_review" | "approved" | "rejected" | "expired" | "unknown";
 
 export type AssetKind = "original_asset" | "public_asset" | "ai_derivative" | "rights_evidence";
 
@@ -31,4 +31,7 @@ export type OaMediaRecord = {
   compliance_note: string;
   updated_at: string;
   queue_tags: MediaQueueTag[];
+  preview_href_blocked?: boolean;
+  source_scope?: string;
+  source_status?: string;
 };
