@@ -181,7 +181,7 @@ export const NAV_ITEMS: OaNavItem[] = [
     canonical: "14 Settings",
     canonical_domain_id: "14",
     owner_domain: "14 Settings",
-    has_submenu: false,
+    has_submenu: true,
     capabilitySlug: "settings",
   },
 ];
@@ -243,6 +243,7 @@ export const OA_SUBMENUS: Record<string, OaSubmenuGroup> = {
   site: { titleEn: "Site board", titleZh: "站点前台看板", items: SITE_SUBMENU },
   geo: { titleEn: "GEO board", titleZh: "区域配置看板", items: GEO_SUBMENU },
   ai_ops: { titleEn: "AI Ops board", titleZh: "AI 推广看板", items: AI_OPS_SUBMENU },
+  settings: { titleEn: "Settings", titleZh: "系统底座", items: [] },
 };
 
 /** @deprecated alias kept for any residual import; prefer CO_SECONDARY_SUBMENU */

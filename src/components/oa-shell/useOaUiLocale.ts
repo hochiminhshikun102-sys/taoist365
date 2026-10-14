@@ -8,6 +8,25 @@ export const OA_LANGUAGE_EVENT = "dohara-oa-language";
 
 export type OaUiLocale = "zh-CN" | "en";
 
+export function oaPick(locale: OaUiLocale, zh: string, en: string) {
+  return locale === "en" ? en : zh;
+}
+
+/** Prefer one language when a leftover mixed `English · 中文` string is still in fixtures. */
+export function oaSplitMixed(text: string, locale: OaUiLocale) {
+  const parts = text
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(/\s*·\s*/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (parts.length < 2) return text;
+  const zhParts = parts.filter((part) => /[\u4e00-\u9fff]/.test(part));
+  const enParts = parts.filter((part) => !/[\u4e00-\u9fff]/.test(part));
+  if (locale === "en") return enParts.join(" · ") || text;
+  return zhParts.join(" · ") || text;
+}
+
 function readStoredLocale(): OaUiLocale {
   try {
     const value = window.localStorage.getItem(OA_LANGUAGE_STORAGE_KEY);

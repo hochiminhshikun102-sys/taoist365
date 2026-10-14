@@ -1,0 +1,17 @@
+PREVIOUS_SHELL_FREEZE=93201cdb12249f70c4356fe999843afdf4174417
+PRODUCT_BASE=bf83dc4e8f1ceeaabfc4d2788271c40bc04d9817
+PRODUCT_BRANCH=dogdan/oa-r68-shell-3666-visual-freeze-20261014
+NEW_SHELL_FREEZE_SHA=PENDING_COMMIT
+
+PUBLIC_SHELL src/components/oa-shell/OaSharedShell.tsx=f264b98e7a1a08dee45866b9b8ab9524a3d0a8ab
+PUBLIC_SHELL src/components/oa-shell/oaNavCanonical.ts=36f365b38140ba84572bebfe9e6d6cc2eedaf9e4
+PUBLIC_SHELL src/components/oa-shell/useOaUiLocale.ts=4b34c9dd31950a443b26e2e461deaf7c063d43f7
+PUBLIC_SHELL src/components/oa-shell/OaLoc.tsx=b2afdd7895ca8e33d3c259f8cf67a6454b5be131
+PUBLIC_SHELL src/styles/oa/oa-shell.css=63030b5f069f196c551d11295017b3c43e20113f
+PUBLIC_SHELL src/styles/oa/oa-tokens.css=48b64f997b38f795a632003fdc46fcf64741d0a7
+
+UNCHANGED_CONTRACT src/app/admin/oa/layout.tsx=37849b7d132d0b79e12936ac59e7c983e0201954
+UNCHANGED_CONTRACT src/app/admin/oa/co/intake/page.tsx=0dddd70e1ebf14d08f8ea2fe312ac35e2f510367
+
+DOCS_ONLY docs/oa/r68-shell-3666-visual-freeze/**
+SCREENSHOTS_ONLY docs/oa/r68-shell-3666-visual-freeze/screenshots/**

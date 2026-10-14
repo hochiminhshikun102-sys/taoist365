@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { PRIMARY_CAPABILITY } from "@/components/oa-skeleton/capabilityGate";
 import { NAV_KEY_TO_PRIMARY_PATH } from "@/components/oa-skeleton/primaryEntries";
 import { NAV_ITEMS, OA_SUBMENUS, type OaSubmenuItem } from "./oaNavCanonical";
 import { useOaUiLocale, type OaUiLocale } from "./useOaUiLocale";
@@ -27,7 +26,7 @@ const SHELL_COPY = {
   },
 } as const;
 
-const TECH_FLAGS = ["read_only", "not_connected", "deploy disabled", "real write disabled"] as const;
+const TECH_FLAGS = ["read_only", "not_connected", "deploy disabled"] as const;
 
 function primaryLabel(item: (typeof NAV_ITEMS)[number], locale: OaUiLocale) {
   return locale === "en" ? item.en : item.zh;
@@ -252,7 +251,6 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
           {NAV_ITEMS.map((item) => {
             const hasSub = Boolean(OA_SUBMENUS[item.key]);
             const isActive = item.key === active;
-            const cap = PRIMARY_CAPABILITY[item.capabilitySlug] ?? "not_connected";
             const href = NAV_KEY_TO_PRIMARY_PATH[item.key];
             return (
               <div
@@ -283,10 +281,8 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
                     setStatus(`navigate ${href} · read_only`);
                   }}
                 >
-                  <span className="oa-rail-label">
-                    {primaryLabel(item, locale)}
-                    <span className={`oa-rail-status is-${cap}`}>{cap}</span>
-                  </span>
+                  <span className={`oa-rail-glyph is-${item.key}`} aria-hidden="true" />
+                  <span className="oa-rail-label">{primaryLabel(item, locale)}</span>
                 </Link>
                 {hasSub ? (
                   <button
@@ -311,43 +307,42 @@ export function OaSharedShell({ activeKey = "overview", children }: Props) {
             );
           })}
         </aside>
-        {flyout && openConf ? (
-          <div
-            className={`oa-floating-panel is-open${flyout.flip ? " is-flip" : ""}`}
-            role="menu"
-            aria-label={locale === "en" ? openConf.titleEn : openConf.titleZh}
-            style={{ top: flyout.top, left: flyout.left, maxHeight: flyout.maxHeight }}
-            onMouseEnter={clearCloseTimer}
-            onMouseLeave={() => {
-              if (fineHover) closePanelSoon();
-            }}
-          >
-            <div className="oa-flyout-bridge" aria-hidden="true" />
-            <div className="oa-floating-title">{locale === "en" ? openConf.titleEn : openConf.titleZh}</div>
-            {openPrimaryHref ? (
-              <button
-                className={`oa-floating-row${pathname === openPrimaryHref ? " is-active" : ""}`}
-                type="button"
-                onClick={() => goPrimary(flyout.key)}
-              >
-                {copy.openHub}
-              </button>
-            ) : null}
-            {openConf.items.map((item: OaSubmenuItem) => (
-              <button
-                key={item.route + item.labelEn}
-                className={`oa-floating-row${isSubActive(item.route) ? " is-active" : ""}`}
-                type="button"
-                onClick={() => goRoute(item.route)}
-              >
-                {subLabel(item, locale)}
-                {item.hint ? <span className="oa-floating-hint">{item.hint}</span> : null}
-              </button>
-            ))}
-          </div>
-        ) : null}
         <main className="oa-main">{children}</main>
       </div>
+      {flyout && openConf ? (
+        <div
+          className={`oa-floating-panel is-open${flyout.flip ? " is-flip" : ""}`}
+          role="menu"
+          aria-label={locale === "en" ? openConf.titleEn : openConf.titleZh}
+          style={{ top: flyout.top, left: flyout.left, maxHeight: flyout.maxHeight }}
+          onMouseEnter={clearCloseTimer}
+          onMouseLeave={() => {
+            if (fineHover) closePanelSoon();
+          }}
+        >
+          <div className="oa-flyout-bridge" aria-hidden="true" />
+          <div className="oa-floating-title">{locale === "en" ? openConf.titleEn : openConf.titleZh}</div>
+          {openPrimaryHref ? (
+            <button
+              className={`oa-floating-row${pathname === openPrimaryHref ? " is-active" : ""}`}
+              type="button"
+              onClick={() => goPrimary(flyout.key)}
+            >
+              {copy.openHub}
+            </button>
+          ) : null}
+          {openConf.items.map((item: OaSubmenuItem) => (
+            <button
+              key={item.route + item.labelEn}
+              className={`oa-floating-row${isSubActive(item.route) ? " is-active" : ""}`}
+              type="button"
+              onClick={() => goRoute(item.route)}
+            >
+              {subLabel(item, locale)}
+            </button>
+          ))}
+        </div>
+      ) : null}
       <div className="oa-status" aria-live="polite">
         {status}
       </div>
