@@ -5,7 +5,7 @@ import { OverviewExceptionProjectionWorkbench } from "@/components/oa-overview/O
 export default function OaOverviewPage() {
   return (
     <OaSharedShell activeKey="overview">
-      <OaDesktopStatusStrip moduleLabel="Overview · 全局看板" status="read_only" />
+      <OaDesktopStatusStrip moduleKey="overview" status="read_only" />
       <OverviewExceptionProjectionWorkbench />
     </OaSharedShell>
   );

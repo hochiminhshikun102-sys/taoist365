@@ -45,6 +45,11 @@ a.oa-overview-work-link:hover {
   margin: 0 auto;
 }
 .oa-desktop-status-row { margin-bottom: 0; }
+.oa-desktop-status-lang { display: flex; gap: 8px; margin-bottom: 8px; }
+.oa-desktop-status-lang .oa-btn[aria-pressed="true"] {
+  background: var(--water-blue);
+  color: white;
+}
 .oa-desktop-status-next { margin: 8px 0 0; }
 
 .oa-readiness-board { margin: 0 0 14px; }

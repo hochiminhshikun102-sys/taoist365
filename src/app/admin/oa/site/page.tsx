@@ -5,7 +5,7 @@ import { SiteGeoReadonlyWorkbench } from "@/components/oa-site-geo/SiteGeoReadon
 export default function OaSitePage() {
   return (
     <OaSharedShell activeKey="site">
-      <OaDesktopStatusStrip moduleLabel="Site · 站点前台" status="read_only" />
+      <OaDesktopStatusStrip moduleKey="site" status="read_only" />
       <SiteGeoReadonlyWorkbench />
     </OaSharedShell>
   );

@@ -5,7 +5,7 @@ import { SupplyChainProjectionWorkbench } from "@/components/oa-supply-chain/Sup
 export default function OaSupplyChainPage() {
   return (
     <OaSharedShell activeKey="supply_chain">
-      <OaDesktopStatusStrip moduleLabel="Supply Chain · 供应链管理" status="read_only" />
+      <OaDesktopStatusStrip moduleKey="supply_chain" status="read_only" />
       <SupplyChainProjectionWorkbench />
     </OaSharedShell>
   );

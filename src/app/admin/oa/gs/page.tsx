@@ -6,10 +6,10 @@ export default function OaGsPage() {
   return (
     <OaSharedShell activeKey="gs">
       <OaDesktopStatusStrip
-        moduleLabel="GS · 全球买手"
+        moduleKey="gs"
         status="not_connected"
         nextHref="/admin/oa/overview"
-        nextLabel="Next · Overview · 返回总览"
+        nextKey="overview"
       />
       <MemberServiceReadonlyBoard moduleId="gs" />
     </OaSharedShell>

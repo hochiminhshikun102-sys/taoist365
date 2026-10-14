@@ -5,7 +5,7 @@ import { OaDesktopStatusStrip } from "@/components/oa-overview/OaDesktopStatusSt
 export default function OaAiOpsPage() {
   return (
     <OaSharedShell activeKey="ai_ops">
-      <OaDesktopStatusStrip moduleLabel="AI Ops · AI 推广中心" status="read_only" />
+      <OaDesktopStatusStrip moduleKey="ai_ops" status="read_only" />
       <AiOpsReadonlyWorkbench />
     </OaSharedShell>
   );
