@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
-import type { User } from "@supabase/supabase-js";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { decideOaAccess, type OaAuthDecision } from "@/lib/oa-auth/oaAuthClaims";
 import {
+  fetchOaServerSession,
   getOaSupabaseBrowserClient,
   hasOaSupabasePublicEnv,
   isOaPreviewRuntime,
@@ -17,53 +17,85 @@ type Props = {
 export function OaAdminAuthGate({ children }: Props) {
   const [phase, setPhase] = useState<OaAuthDecision>({ ok: false, reason: "auth_required" });
   const [checking, setChecking] = useState(true);
+  const generationRef = useRef(0);
 
-  const evaluate = useCallback((user: User | null) => {
-    setPhase(
-      decideOaAccess({
-        previewRuntime: isOaPreviewRuntime(),
-        publicEnvPresent: hasOaSupabasePublicEnv(),
-        user,
-      }),
-    );
+  const close = useCallback((reason: Extract<OaAuthDecision, { ok: false }>) => {
+    setPhase(reason);
+    setChecking(false);
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
-    const client = getOaSupabaseBrowserClient();
-    const preview = isOaPreviewRuntime();
-    const envOk = hasOaSupabasePublicEnv();
+  const refreshFromServer = useCallback(async (accessToken: string | null) => {
+    const generation = ++generationRef.current;
+    const previewRuntime = isOaPreviewRuntime();
+    const publicEnvPresent = hasOaSupabasePublicEnv();
 
-    if (!preview || !envOk || !client) {
-      evaluate(null);
+    if (!previewRuntime || !publicEnvPresent) {
+      if (generation !== generationRef.current) return;
+      setPhase(
+        decideOaAccess({
+          previewRuntime,
+          publicEnvPresent,
+          httpStatus: null,
+          body: null,
+        }),
+      );
       setChecking(false);
       return;
     }
 
-    client.auth
-      .getUser()
-      .then(({ data, error }) => {
-        if (cancelled) return;
-        if (error) evaluate(null);
-        else evaluate(data.user ?? null);
-      })
-      .catch(() => {
-        if (!cancelled) evaluate(null);
-      })
-      .finally(() => {
-        if (!cancelled) setChecking(false);
-      });
-
-    const { data: sub } = client.auth.onAuthStateChange((_event, session) => {
-      evaluate(session?.user ?? null);
+    if (!accessToken) {
+      if (generation !== generationRef.current) return;
+      setPhase({ ok: false, reason: "auth_required" });
       setChecking(false);
+      return;
+    }
+
+    try {
+      const result = await fetchOaServerSession(accessToken);
+      if (generation !== generationRef.current) return;
+      setPhase(
+        decideOaAccess({
+          previewRuntime: true,
+          publicEnvPresent: true,
+          httpStatus: result.status,
+          body: result.body,
+        }),
+      );
+    } catch {
+      if (generation !== generationRef.current) return;
+      setPhase({ ok: false, reason: "auth_required" });
+    } finally {
+      if (generation === generationRef.current) setChecking(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const client = getOaSupabaseBrowserClient();
+    if (!isOaPreviewRuntime() || !hasOaSupabasePublicEnv() || !client) {
+      void refreshFromServer(null);
+      return;
+    }
+
+    void client.auth.getSession().then(({ data, error }) => {
+      const token = error ? "" : String(data.session?.access_token || "").trim();
+      void refreshFromServer(token || null);
+    });
+
+    const { data: sub } = client.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        generationRef.current += 1;
+        close({ ok: false, reason: "auth_required" });
+        return;
+      }
+      const token = String(session?.access_token || "").trim();
+      void refreshFromServer(token || null);
     });
 
     return () => {
-      cancelled = true;
+      generationRef.current += 1;
       sub.subscription.unsubscribe();
     };
-  }, [evaluate]);
+  }, [close, refreshFromServer]);
 
   if (checking) {
     return <OaAdminAuthState reason="checking" />;

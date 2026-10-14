@@ -13,31 +13,38 @@ export type OaAuthDecision =
   | { ok: true; role: OaAllowedRole; accountStatus: typeof OA_ACTIVE_ACCOUNT_STATUS }
   | { ok: false; reason: OaAuthDenyReason };
 
-export function readOaAppMetadata(user: { app_metadata?: Record<string, unknown> } | null): {
-  role: string | null;
-  accountStatus: string | null;
-} {
-  const meta = user?.app_metadata ?? {};
-  return {
-    role: typeof meta.role === "string" ? meta.role : null,
-    accountStatus: typeof meta.account_status === "string" ? meta.account_status : null,
-  };
+export type OaServerSessionBody = {
+  authenticated?: boolean;
+  oa_role?: string | null;
+  account_status?: string | null;
+  code?: string;
+  error?: string;
+};
+
+export function isOaAllowedRole(role: string | null | undefined): role is OaAllowedRole {
+  return typeof role === "string" && (OA_ALLOWED_ROLES as readonly string[]).includes(role);
 }
 
-export function isOaAllowedRole(role: string | null): role is OaAllowedRole {
-  return role !== null && (OA_ALLOWED_ROLES as readonly string[]).includes(role);
-}
-
+/** Authorize only from the verified GET /api/oa/session projection. Never from browser user/app_metadata. */
 export function decideOaAccess(input: {
   previewRuntime: boolean;
   publicEnvPresent: boolean;
-  user: { app_metadata?: Record<string, unknown> } | null;
+  fetchFailed?: boolean;
+  httpStatus?: number | null;
+  body?: OaServerSessionBody | null;
 }): OaAuthDecision {
   if (!input.previewRuntime) return { ok: false, reason: "runtime_not_preview" };
   if (!input.publicEnvPresent) return { ok: false, reason: "env_missing" };
-  if (!input.user) return { ok: false, reason: "auth_required" };
-  const { role, accountStatus } = readOaAppMetadata(input.user);
+  if (input.fetchFailed) return { ok: false, reason: "auth_required" };
+
+  const status = input.httpStatus ?? null;
+  const body = input.body ?? null;
+  if (status === 401 || status == null) return { ok: false, reason: "auth_required" };
+  if (status === 403 && body?.code === "ACCOUNT_RESTRICTED") return { ok: false, reason: "account_inactive" };
+  if (status === 403) return { ok: false, reason: "role_not_allowed" };
+  if (status !== 200 || body?.authenticated !== true) return { ok: false, reason: "auth_required" };
+  const role = body.oa_role ?? null;
   if (!isOaAllowedRole(role)) return { ok: false, reason: "role_not_allowed" };
-  if (accountStatus !== OA_ACTIVE_ACCOUNT_STATUS) return { ok: false, reason: "account_inactive" };
+  if (body.account_status !== OA_ACTIVE_ACCOUNT_STATUS) return { ok: false, reason: "account_inactive" };
   return { ok: true, role, accountStatus: OA_ACTIVE_ACCOUNT_STATUS };
 }
