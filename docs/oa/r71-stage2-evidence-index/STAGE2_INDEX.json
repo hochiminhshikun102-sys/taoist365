@@ -1,0 +1,152 @@
+{
+  "stage": "OA_STAGE2",
+  "task_id": "OA_R71_STAGE2_EVIDENCE_INDEX",
+  "owner": "DOGDAN02",
+  "product_base": "bf83dc4e8f1ceeaabfc4d2788271c40bc04d9817",
+  "collab_task": "3faa7e833d5c6cab16efcdd9d47d88a4ee9cb1f4",
+  "generated_at": "2026-10-14",
+  "status": "READY_FOR_CONTROLLER_REVIEW_NOT_WORK_PASSED",
+  "scope": "read_only_evidence_index_docs_and_smoke_only",
+  "accepted_items": [
+    {
+      "id": "product_publish_r3_r68_fixed_package",
+      "title": "Product Publish R3/R68 fixed package (Digua04)",
+      "status": "RETAINED_FIXED_PACKAGE_WITH_OPEN_ITEMS",
+      "refs": {
+        "R3_FINAL_ADDENDUM": "83376945115fc66d85554ab37e092dfcb1a4fba4",
+        "R68_FIXED_PACKAGE": "ceff7f0cb678b2b7a6cafeab675336de9f47ddb6",
+        "R68_SOURCE_HEAD": "98dba65c8f1e9c0cab3050392fc13efac38ec7db",
+        "LEGACY_STORAGE_FIX": "969e8ac",
+        "R68_CONTROLLER_REVIEW": "3a3fffc48a1c0e15c80b785c8b11e6a26f1c42d5"
+      },
+      "notes": "Retained; not retested or overwritten by R67/R69/R70/R71/R72. Open visual/identity/provider items preserved."
+    },
+    {
+      "id": "r67_overview_readiness_board",
+      "title": "R67 Overview Readiness Control Board",
+      "status": "ACCEPTED_SCOPED",
+      "refs": {
+        "R67_PRODUCT_HEAD": "24545a0b65290c6453eae4bc486ec232a4bc7f5a",
+        "R67_CONTROLLER_REVIEW": "723d61b77711f56dba281bbceab48506050a87e2"
+      },
+      "notes": "Readonly UI fixture board; not live Provider."
+    },
+    {
+      "id": "r69a_route_owner_ledger",
+      "title": "R69A Route / Owner / Write-lock Ledger",
+      "status": "ACCEPTED",
+      "refs": {
+        "R69A_PRODUCT_HEAD": "db60d329d56d38841a817f3fbcb0830d0e58962f",
+        "R69A_CONTROLLER_REVIEW": "c150b7d7c4e4e3e77e59ed6108224623ecdbd25f",
+        "STATUS_PRODUCT_HEAD_FIELD": "039d38e48ccdfeb14e7079797745aff2c58cd4df"
+      },
+      "notes": "Docs + smoke only; freeze pins recorded."
+    },
+    {
+      "id": "r72_stage2_integration_candidate",
+      "title": "R72 Stage2 Integration Candidate (R67+R69A)",
+      "status": "ACCEPTED_FOR_R70_AUDIT",
+      "refs": {
+        "R72_PRODUCT_BRANCH": "dogdan/oa-stage2-r67-r69a-integration-20261014",
+        "R72_PRODUCT_HEAD": "c2a680ef006df21b2f76276b11b1dc413af35ee8",
+        "R72_CONTROLLER_REVIEW": "959eb001cd17889a77f54712e67aeb04a03ea3bf"
+      },
+      "notes": "9-file delta vs base; Plus accepted for R70 audit gate."
+    },
+    {
+      "id": "r70a_no_write_provider_boundary_audit",
+      "title": "R70A No-write / Provider Boundary Audit",
+      "status": "ACCEPTED",
+      "refs": {
+        "R70A_PRODUCT_HEAD": "7b5356787a07669649ae57d0c378acf10e8aa7cc",
+        "R70A_CONTROLLER_REVIEW": "a29ce1576ba6ba159f79bd4d0abdcdcaf73b838d",
+        "OPEN_FINDINGS_COUNT": 0,
+        "AUDIT_TARGET_HEAD": "c2a680ef006df21b2f76276b11b1dc413af35ee8"
+      },
+      "notes": "OPEN_FINDINGS_COUNT=0 means no new R72-delta boundary regressions only; NOT stage2 full PASS."
+    }
+  ],
+  "open_items": [
+    {
+      "id": "r68_new_visual_screenshot_acceptance",
+      "status": "OPEN",
+      "claim_forbidden": "PASS"
+    },
+    {
+      "id": "screenshot_api_failure_recorded_no_forged_screenshots",
+      "status": "OPEN_RECORDED",
+      "claim_forbidden": "PASS_WITH_FORGED_EVIDENCE"
+    },
+    {
+      "id": "formal_identity_not_complete",
+      "status": "OPEN"
+    },
+    {
+      "id": "provider_not_connected",
+      "status": "OPEN"
+    },
+    {
+      "id": "cloud_decode_not_connected",
+      "status": "OPEN"
+    },
+    {
+      "id": "real_device_phone_not_complete_for_stage2_close",
+      "status": "OPEN",
+      "notes": "AUTH-03 R31 phone smoke existed earlier as controlled TEST_ONLY; does not close stage2 visual/identity/provider package."
+    },
+    {
+      "id": "historical_unknown_untouched",
+      "status": "OPEN"
+    },
+    {
+      "id": "not_deployed",
+      "status": "OPEN_REQUIRED_FALSE",
+      "value": "DEPLOY=FALSE"
+    },
+    {
+      "id": "no_real_business_write",
+      "status": "OPEN_REQUIRED_FALSE",
+      "value": "REAL_BUSINESS_WRITE=FALSE"
+    },
+    {
+      "id": "work_stage_review_not_complete",
+      "status": "OPEN"
+    },
+    {
+      "id": "pr_not_created",
+      "status": "OPEN",
+      "value": "PR=FALSE"
+    },
+    {
+      "id": "merge_not_occurred",
+      "status": "OPEN",
+      "value": "MERGE=FALSE"
+    }
+  ],
+  "forbidden_claims": [
+    "stage2_work_review_passed",
+    "provider_connected",
+    "deploy=true",
+    "deploy_authorized",
+    "real_write_enabled",
+    "r68_visual_screenshot_pass",
+    "formal_identity_complete",
+    "cloud_decode_connected",
+    "all_unknown_cleared",
+    "r70_open_findings_zero_means_full_stage2_pass"
+  ],
+  "next_steps": [
+    "Plus controller review of R71 evidence index",
+    "Prepare PR QA package materials from this index (no auto PR by dogdan02)",
+    "Work stage review entry: handoff/oa/stage2-evidence-index/STAGE2_WORK_REVIEW_ENTRY_CN.md",
+    "Keep Digua04 R3/R68 fixed package untouched pending visual/identity/provider closeouts",
+    "Do not start R73+ or reopen R67/R69/R70 source unless Plus re-authorizes"
+  ],
+  "line_boundaries": {
+    "dogdan01": "source/integration stopped after R67/R72",
+    "dogdan02": "R71 evidence index only; no src/functions writes",
+    "dogdan03": "paused",
+    "dogdan04": "paused",
+    "digua04": "R3/R68 fixed package retained; final close/independent review only"
+  }
+}
