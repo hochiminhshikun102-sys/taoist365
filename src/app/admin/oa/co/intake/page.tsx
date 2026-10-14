@@ -1,8 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { OaSharedShell } from "@/components/oa-shell/OaSharedShell";
 import Publish from "@/components/oa-publish/Publish";
+import { useOaDesktopLocale } from "@/components/oa-overview/useOaDesktopLocale";
 
 export default function OaCoIntakePage() {
+  const { t } = useOaDesktopLocale();
+
   return (
     <OaSharedShell activeKey="co">
       <section className="oa-page" data-oa-co-workbench="intake" data-oa-r85-entry="publish">
@@ -11,21 +16,21 @@ export default function OaCoIntakePage() {
           <span className="oa-capability-pill is-not_connected">read_only_preview</span>
           <span className="oa-capability-pill is-not_connected">real_write_false</span>
         </div>
-        <nav className="oa-skeleton-actions" aria-label="CO publish return paths">
+        <nav className="oa-skeleton-actions" aria-label={t("商品发布返回路径", "CO publish return paths")}>
           <Link className="oa-btn secondary" href="/admin/oa/commerce">
-            Back to CO hub · 返回商品与订单
+            {t("返回商品与订单", "Back to CO hub")}
           </Link>
           <Link className="oa-btn secondary" href="/admin/oa/overview">
-            Back to Overview · 返回总览
+            {t("返回总览", "Back to Overview")}
           </Link>
           <Link className="oa-btn secondary" href="/admin/oa/co/objects">
-            Objects Runtime · 商品系统
+            {t("商品系统", "Objects Runtime")}
           </Link>
           <Link className="oa-btn secondary" href="/admin/oa/co/media">
-            Product Media · 商品素材
+            {t("商品素材", "Product Media")}
           </Link>
           <Link className="oa-btn secondary" href="/admin/oa/co/orders">
-            Orders Runtime · 订单系统
+            {t("订单系统", "Orders Runtime")}
           </Link>
         </nav>
         <Publish embedded />

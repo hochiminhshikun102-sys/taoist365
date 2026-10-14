@@ -24,6 +24,12 @@ const shell = read("src/components/oa-shell/OaSharedShell.tsx");
 record("OA intake uses OaSharedShell", intake.includes("OaSharedShell") && intake.includes('activeKey="co"'));
 record("OA intake reuses Publish embedded", intake.includes("<Publish embedded") && !intake.includes("CoSecondaryWorkbench") && !intake.includes("AdminOSAccess"));
 record("OA intake keeps CO return paths", ["/admin/oa/commerce", "/admin/oa/overview", "/admin/oa/co/objects", "/admin/oa/co/media", "/admin/oa/co/orders"].every((href) => intake.includes(href)));
+record(
+  "OA intake return links follow OA locale",
+  intake.includes("useOaDesktopLocale") &&
+    !intake.includes("Back to CO hub · 返回") &&
+    intake.includes('t("返回商品与订单", "Back to CO hub")'),
+);
 record("legacy publish entry unchanged", legacy.includes("AdminOSAccess") && legacy.includes("<Publish") && !legacy.includes("embedded"));
 record("photo link manual UI present", ["'photo'", "'link'", "'manual'"].every((m) => publish.includes(m)) && copy.includes("photo:") && copy.includes("link:") && copy.includes("manual:"));
 record("SKU media draft submit preserved", publish.includes("setSkus") && publish.includes("addFiles") && publish.includes("save()") && publish.includes("restore()") && publish.includes("submitPublishIntake") && publish.includes("validate()"));

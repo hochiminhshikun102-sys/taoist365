@@ -5,7 +5,7 @@
 @media(max-width:1023px){.otherStep{display:none}.grid{display:block}.grid>div{display:contents}.mobileOnly{display:block}.desktopOnly{display:none}.steps{position:sticky;top:0;background:#f3f7fa;z-index:15;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;padding:10px 0}.steps button{flex-direction:column;font-size:12px;gap:5px;padding:7px 1px}.steps button span{width:25px;height:25px}.root .tabs{gap:5px}.tabs button{font-size:12px;padding:10px}.footer{padding-bottom:max(12px,env(safe-area-inset-bottom))}.root main{padding-bottom:145px}.root .bar{align-items:flex-start}.bar>.chips{max-width:190px;justify-content:flex-end}.bar>.chips button{font-size:11px;padding:9px}.root .steps{scroll-margin-top:10px}}
 
 .embedded{background:transparent;min-height:0;color:#2f3a45}
-.embedded .embedMain{margin:0;padding:8px 0 28px;max-width:none}
+.embedded .embedMain{margin:0;padding:8px 0 96px;max-width:none}
 .embedHead{margin:18px 0 8px}
 .embedHead p{margin:0 0 6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#667788}
 .embedHead h1{margin:0;font-size:28px;letter-spacing:-.4px;font-weight:650;color:#2f3a45}
@@ -14,7 +14,10 @@
 .embedded .card{border-color:#c8cdd2;border-radius:8px;box-shadow:0 1px 0 #5a728c14}
 .embedded .upload{background:#f7f9fb;border-color:#5a728c66}
 .embedded .primary,.embedded .tabs button[aria-pressed=true],.embedded .steps button[aria-current=step] span{background:#5a728c;border-color:#5a728c}
-.embedded .footer{position:sticky;left:auto;right:auto;bottom:0;margin-top:12px;border-radius:8px;border:1px solid #c8cdd2;background:#fffffff8}
+.embedded .footer{position:sticky;left:auto;right:auto;bottom:0;margin-top:12px;border-radius:8px;border:1px solid #c8cdd2;background:#fffffff8;z-index:20;flex-wrap:wrap}
+.embedded .empty{min-height:88px;display:flex;align-items:center;justify-content:center;padding:28px 16px}
+.embedded .chips{row-gap:8px}
+.embedded .rights{display:flex;align-items:flex-start;gap:8px;margin:14px 0 8px}
 .embedded .status{border-color:#5a728c55;background:#f4f7f9}
 .embedded .note{border-left-color:#5a728c;background:#f7f9fb}
 @media(max-width:1023px){.embedded .footer{position:sticky}.embedded .embedMain{padding-bottom:24px}.embedHead h1{font-size:22px}}
