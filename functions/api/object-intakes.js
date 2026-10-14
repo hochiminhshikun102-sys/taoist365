@@ -1,9 +1,13 @@
 import { createAuditLog, intakeStatuses, json, makeId, nowIso, readStore, resolveObjectIntakeSource, updateStore } from "../_object-intake.js";
 import { auditActorId, bindCreateSource, denyResponse, enforceServerAuthz } from "../_publish-policy.js";
+import { requireOaPrivateRead } from "../_auth/require-oa-private-read.js";
 
 const sourcePlatforms = new Set(["manual", "taobao", "tmall", "1688", "pdd", "xianyu", "tiktok", "temu", "amazon", "etsy", "shopify", "jd", "other"]);
 
 export async function onRequestGet(context) {
+  const gate = await requireOaPrivateRead(context);
+  if (!gate.ok) return gate.response;
+
   const url = new URL(context.request.url);
   const status = url.searchParams.get("status");
   const submittedBy = url.searchParams.get("submitted_by");

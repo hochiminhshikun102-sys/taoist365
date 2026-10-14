@@ -1,6 +1,10 @@
 import { json, readStore } from "../../_object-intake.js";
+import { requireOaPrivateRead } from "../../_auth/require-oa-private-read.js";
 
 export async function onRequestGet(context) {
+  const gate = await requireOaPrivateRead(context);
+  if (!gate.ok) return gate.response;
+
   const url = new URL(context.request.url);
   const status = url.searchParams.get("status");
   const query = String(url.searchParams.get("q") || "").toLowerCase();

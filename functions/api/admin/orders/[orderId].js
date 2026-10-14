@@ -1,8 +1,24 @@
 import { createAuditLog, json, nowIso, updateStore } from "../../../_object-intake.js";
+import { authCodes, deny } from "../../../_auth/auth-errors.js";
+import { requireOaPrivateRead } from "../../../_auth/require-oa-private-read.js";
 
 const allowedStatuses = new Set(["request_received", "confirmed", "payment_pending", "paid", "packing", "shipped", "completed", "cancelled"]);
 
 export async function onRequestPatch(context) {
+  const gate = await requireOaPrivateRead(context);
+  if (!gate.ok) return gate.response;
+
+  // Role is not an order-write grant. No confirmed CO action/permission exists in _publish-policy ACTION_PERMISSIONS.
+  return deny(
+    authCodes.PERMISSION_DENIED,
+    "Permission denied.",
+    403,
+    gate.requestId,
+  );
+}
+
+/** Preserved order-status updater. Not invoked until CO Owner confirms an explicit write-action contract. */
+export async function applyOrderStatusUpdate(context) {
   const { orderId } = context.params;
   let payload;
   try {
