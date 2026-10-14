@@ -75,9 +75,10 @@ export function createCoReadController() {
 }
 
 export async function resolvePrivateReadAccess(signal?: AbortSignal): Promise<CoPrivateAccess> {
-  const token = String((await readAccessToken()) || "").trim();
-  if (!token) return { allow: false, code: "auth_required" };
+  if (signal?.aborted) return { allow: false, code: "provider_unavailable" };
   try {
+    const token = String((await readAccessToken()) || "").trim();
+    if (!token) return { allow: false, code: "auth_required" };
     const result = await fetchTrustedOaSession();
     if (signal?.aborted) return { allow: false, code: "provider_unavailable" };
     if (result.status === 401) return { allow: false, code: "auth_required" };
@@ -123,7 +124,8 @@ export async function oaPrivateGetJson<T extends { storage?: string }>(
     } catch {
       return { ok: false, status: response.status, code: "provider_unavailable" };
     }
-    if (!payload || typeof payload !== "object") {
+    if (!payload || typeof payload !== "object" || !Array.isArray((payload as { rows?: unknown }).rows)) {
+      // A malformed or missing rows collection is not an empty live result.
       return { ok: false, status: 200, code: "provider_unavailable" };
     }
     const storage = typeof payload.storage === "string" ? payload.storage : null;

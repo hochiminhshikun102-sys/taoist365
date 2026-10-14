@@ -18,6 +18,7 @@ export type CommerceOrderSource = {
   contact?: { name?: unknown; email?: unknown; address?: unknown } | null;
   items?: unknown;
   subtotal_cents?: unknown;
+  total_cents?: unknown;
   currency?: unknown;
   created_at?: unknown;
   updated_at?: unknown;
@@ -113,6 +114,9 @@ export function mapCommerceOrder(source: CommerceOrderSource, retrievedAt: strin
   const sourceFulfillment = asString(source.fulfillment_status) || "unknown";
   const currency = asString(source.currency) || "unknown";
   const subtotal = asFiniteInt(source.subtotal_cents);
+  // The legacy order source exposes a subtotal, not the payable order total.
+  const sourceTotal = asFiniteInt(source.total_cents);
+  const total = sourceTotal !== null && sourceTotal >= 0 ? sourceTotal : null;
   const { lines, summary } = mapLines(source.items, currency);
   const orderStatus = mapOrderStatus(sourceOrderStatus);
   const paymentStatus = mapPaymentStatus(sourcePaymentStatus);
@@ -143,7 +147,7 @@ export function mapCommerceOrder(source: CommerceOrderSource, retrievedAt: strin
     discount_minor: 0,
     shipping_minor: 0,
     tax_minor: 0,
-    total_minor: subtotal ?? 0,
+    total_minor: total ?? 0,
     order_status: orderStatus,
     payment_status: paymentStatus,
     fulfillment_status: fulfillmentStatus,
@@ -162,7 +166,7 @@ export function mapCommerceOrder(source: CommerceOrderSource, retrievedAt: strin
       orderStatus === "unknown" || paymentStatus === "unknown"
         ? "字段待映射/来源不确认"
         : "",
-    amount_known: subtotal != null,
+    amount_known: total != null,
     unit_amounts_known: lines.every((line, index) => {
       const raw = Array.isArray(source.items) ? source.items[index] : null;
       const row = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};

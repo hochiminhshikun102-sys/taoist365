@@ -50,8 +50,13 @@ record(
 );
 record("order_status_not_false_mapped", orderMapped.order_status === "unknown" && orderMapped.source_order_status === "request_received");
 record("order_payment_not_inferred_paid", orderMapped.payment_status === "unknown" && orderMapped.source_payment_status === "pending_manual_confirmation");
-record("order_shipping_discount_not_claimed_known", orderMapped.amount_known === true);
-record("order_total_is_known_subtotal_only", orderMapped.total_minor === 4800 && orderMapped.amount_known === true);
+record("order_subtotal_does_not_claim_payable_total", orderMapped.amount_known === false && orderMapped.subtotal_minor === 4800);
+record("order_total_missing_is_not_fabricated", orderMapped.total_minor === 0 && orderMapped.amount_known === false);
+const orderWithTotal = mapCommerceOrder(
+  { id: "DH-ORD-TOTAL", subtotal_cents: 4800, total_cents: 5200, currency: "USD" },
+  "2026-10-15T01:00:00.000Z",
+);
+record("order_payable_total_only_when_explicit", orderWithTotal.amount_known === true && orderWithTotal.total_minor === 5200);
 record("order_no_packages_invented", orderMapped.packages.length === 0);
 record("order_queue_awaiting_from_source_only", orderMapped.queue_tags.includes("awaiting_action") && !orderMapped.queue_tags.includes("aftersales"));
 record("mask_empty", maskPersonName("") === "—");
@@ -218,6 +223,16 @@ record("r84_session_untouched", read("functions/api/oa/session.js").includes("on
 record("r87_helper_untouched", read("functions/_auth/require-oa-private-read.js").includes("oa_admin"));
 
 const clientSrc = read("src/lib/oa-auth/oaPrivateReadClient.ts");
+record(
+  "credential_retrieval_errors_are_caught",
+  clientSrc.indexOf("try {", clientSrc.indexOf("resolvePrivateReadAccess")) <
+    clientSrc.indexOf("await readAccessToken()", clientSrc.indexOf("resolvePrivateReadAccess")),
+);
+record(
+  "malformed_read_collection_is_not_reported_as_empty",
+  clientSrc.includes('!Array.isArray((payload as { rows?: unknown }).rows)') &&
+    clientSrc.includes('status: 200, code: "provider_unavailable"'),
+);
 record("client_reuses_privateFetch", clientSrc.includes("privateFetch") && clientSrc.includes("fetchTrustedOaSession"));
 record("client_viewer_no_private_list", clientSrc.includes("OA_PRIVATE_READ_ROLES") && clientSrc.includes('code: "permission_denied"') && clientSrc.includes("if (!token)"));
 record("client_maps_401_403_network", clientSrc.includes("auth_required") && clientSrc.includes("permission_denied") && clientSrc.includes("provider_unavailable"));
