@@ -1,10 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { capabilityLabel } from "@/components/oa-skeleton/capabilityGate";
+import {
+  createCoReadController,
+  oaPrivateGetJson,
+  subscribeOaAuthEpoch,
+  type CoReadErrorCode,
+} from "@/lib/oa-auth/oaPrivateReadClient";
 import { formatMinor, statusLabel } from "@/lib/oa-orders/format";
 import { OBJECT_CROSS_LINKS, OBJECTS_CORE_META, OBJECTS_FIXTURE } from "@/lib/oa-objects/fixture";
+import { mapAdminObjectRows } from "@/lib/oa-objects/trustedReadAdapter";
 import type { ObjectQueueTag, OaObjectRecord } from "@/lib/oa-objects/types";
 
 type QueueKey = ObjectQueueTag;
@@ -18,36 +25,84 @@ const QUEUES: Array<{ key: QueueKey; en: string; zh: string }> = [
   { key: "media_gap", en: "Media gap", zh: "素材缺口" },
 ];
 
-export function ObjectsRuntimeWorkbench() {
-  const [queue, setQueue] = useState<QueueKey>("all");
-  const [selectedId, setSelectedId] = useState(OBJECTS_FIXTURE[0]?.object_id ?? "");
+function money(amount: number, currency: string, known = true, sourceText?: string): string {
+  if (!known) return sourceText && sourceText !== "—" ? `${sourceText} · not minor` : "—";
+  return formatMinor(amount, currency || "unknown");
+}
 
-  const counts = useMemo(() => {
-    const map: Record<string, number> = { all: OBJECTS_FIXTURE.length };
-    for (const q of QUEUES) if (q.key !== "all") map[q.key] = 0;
-    for (const row of OBJECTS_FIXTURE) for (const tag of row.queue_tags) map[tag] = (map[tag] || 0) + 1;
-    return map;
+export function ObjectsRuntimeWorkbench() {
+  const [demoMode, setDemoMode] = useState(false);
+  const [viewState, setViewState] = useState("loading");
+  const [errorCode, setErrorCode] = useState<CoReadErrorCode | null>(null);
+  const [storage, setStorage] = useState<string | null>(null);
+  const [liveRows, setLiveRows] = useState<OaObjectRecord[]>([]);
+  const [queue, setQueue] = useState<QueueKey>("all");
+  const [selectedId, setSelectedId] = useState("");
+  const controllerRef = useRef(createCoReadController());
+
+  const loadLive = useCallback(async () => {
+    const ctl = controllerRef.current;
+    const { generation, signal } = ctl.next();
+    setLiveRows([]);
+    setSelectedId("");
+    setErrorCode(null);
+    setViewState("loading");
+    const result = await oaPrivateGetJson<{ rows?: unknown; storage?: string }>("/api/admin/objects", signal);
+    if (!ctl.isCurrent(generation)) return;
+    if (!result.ok) {
+      setErrorCode(result.code);
+      setViewState(result.code === "preview_read_unavailable" ? "provider_unavailable" : result.code);
+      return;
+    }
+    const mapped = mapAdminObjectRows(result.payload.rows, new Date().toISOString());
+    setStorage(result.storage);
+    setLiveRows(mapped);
+    setViewState(mapped.length ? "ready" : "empty");
+    setSelectedId(mapped[0]?.object_id ?? "");
   }, []);
 
+  useEffect(() => {
+    const ctl = controllerRef.current;
+    void loadLive();
+    const stop = subscribeOaAuthEpoch(() => {
+      void loadLive();
+    });
+    return () => {
+      ctl.clear();
+      stop();
+    };
+  }, [loadLive]);
+
+  const sourceRows = demoMode ? OBJECTS_FIXTURE : liveRows;
+  const liveBlocked = !demoMode && viewState !== "ready" && viewState !== "empty";
+
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { all: sourceRows.length };
+    for (const q of QUEUES) if (q.key !== "all") map[q.key] = 0;
+    for (const row of sourceRows) for (const tag of row.queue_tags) map[tag] = (map[tag] || 0) + 1;
+    return map;
+  }, [sourceRows]);
+
   const rows = useMemo(() => {
-    if (queue === "all") return OBJECTS_FIXTURE;
-    return OBJECTS_FIXTURE.filter((row) => row.queue_tags.includes(queue));
-  }, [queue]);
+    if (liveBlocked) return [];
+    if (queue === "all") return sourceRows;
+    return sourceRows.filter((row) => row.queue_tags.includes(queue));
+  }, [queue, sourceRows, liveBlocked]);
 
   const selected: OaObjectRecord | null =
     rows.find((row) => row.object_id === selectedId) ?? rows[0] ?? null;
+  const dataSource = demoMode ? OBJECTS_CORE_META.data_source : "VERIFIED_LOCAL_READ_SOURCE";
 
   return (
     <section className="oa-page oa-objects-page" data-oa-objects-core="r47">
       <div className="oa-fixture-banner">
-        R47_OBJECTS_READONLY · DATA_SOURCE={OBJECTS_CORE_META.data_source} · LIVE_PROVIDER=
-        {OBJECTS_CORE_META.live_provider} · capability={OBJECTS_CORE_META.capability} · REAL_PUBLISH=FALSE
+        R47_OBJECTS_READONLY · DATA_SOURCE={dataSource} · LIVE_PROVIDER=not_connected · storage=
+        {demoMode ? "TEST_ONLY" : storage || "—"} · capability=read_only · REAL_PUBLISH=FALSE ·
+        DEMO_LIVE_MIX=FALSE
       </div>
 
       <div className="oa-capability-row">
-        <span className={`oa-capability-pill is-${OBJECTS_CORE_META.capability}`}>
-          {capabilityLabel(OBJECTS_CORE_META.capability)}
-        </span>
+        <span className="oa-capability-pill is-read_only">{capabilityLabel("read_only")}</span>
         <span className="oa-capability-pill is-not_connected">
           Live Provider · {capabilityLabel("not_connected")}
         </span>
@@ -58,11 +113,14 @@ export function ObjectsRuntimeWorkbench() {
         <div>
           <h1 className="oa-page-title">Objects Runtime · 商品系统</h1>
           <p className="oa-skeleton-lead">
-            Read-only product ledger skeleton. Six independent status dimensions — publish success is not sale
-            readiness; media completeness is not rights clearance.
+            Read-only Preview GET. Six independent status dimensions — publish success is not sale readiness;
+            media completeness is not rights clearance. Missing SKU stays unknown.
           </p>
         </div>
         <div className="oa-orders-header-actions">
+          <button className="oa-btn" type="button" onClick={() => void loadLive()} disabled={demoMode}>
+            Refresh read · 刷新只读
+          </button>
           <button className="oa-btn" type="button" disabled>
             Publish · 发布 · Blocked
           </button>
@@ -71,6 +129,38 @@ export function ObjectsRuntimeWorkbench() {
           </button>
         </div>
       </header>
+
+      <div className="oa-orders-state-toggles" aria-label="Workbench data mode">
+        <button
+          type="button"
+          className={`oa-orders-chip${!demoMode ? " is-active" : ""}`}
+          onClick={() => setDemoMode(false)}
+        >
+          Live Preview read
+        </button>
+        <button
+          type="button"
+          className={`oa-orders-chip${demoMode ? " is-active" : ""}`}
+          onClick={() => setDemoMode(true)}
+        >
+          TEST_ONLY DEMO structure
+        </button>
+      </div>
+
+      {!demoMode && viewState !== "ready" && viewState !== "empty" ? (
+        <article className={`oa-card oa-orders-state-card${errorCode ? " is-error" : ""}`} data-oa-read-state={viewState}>
+          {viewState === "loading"
+            ? "Loading Preview read source… · 加载中"
+            : `${viewState} · Preview object read did not succeed.`}
+          {errorCode === "provider_unavailable" ? (
+            <div>
+              <button className="oa-btn secondary" type="button" onClick={() => void loadLive()}>
+                Retry · 重试
+              </button>
+            </div>
+          ) : null}
+        </article>
+      ) : null}
 
       <div className="oa-orders-queues oa-objects-queues">
         {QUEUES.map((item) => (
@@ -92,49 +182,58 @@ export function ObjectsRuntimeWorkbench() {
         <article className="oa-card">
           <div className="oa-commerce-list-head">
             <h2>Object ledger · 商品台账</h2>
-            <span className="oa-skeleton-meta">{rows.length} DEMO rows</span>
+            <span className="oa-skeleton-meta">
+              {rows.length} {demoMode ? "DEMO rows" : "LIVE_PREVIEW_READ rows"}
+            </span>
           </div>
-          <div className="oa-orders-table-wrap">
-            <table className="oa-table">
-              <thead>
-                <tr>
-                  <th>SKU</th>
-                  <th>Title</th>
-                  <th>Price</th>
-                  <th>object</th>
-                  <th>publish</th>
-                  <th>sale</th>
-                  <th>media</th>
-                  <th>risk</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr
-                    key={row.object_id}
-                    className={selected?.object_id === row.object_id ? "is-selected" : undefined}
-                    onClick={() => setSelectedId(row.object_id)}
-                  >
-                    <td>
-                      <button type="button" className="oa-orders-linkish" onClick={() => setSelectedId(row.object_id)}>
-                        {row.sku}
-                      </button>
-                    </td>
-                    <td>
-                      {row.title}
-                      <div className="oa-skeleton-meta">{row.title_zh}</div>
-                    </td>
-                    <td>{formatMinor(row.price_minor, row.currency)}</td>
-                    <td>{statusLabel(row.object_status)}</td>
-                    <td>{statusLabel(row.publish_status)}</td>
-                    <td>{statusLabel(row.sale_status)}</td>
-                    <td>{statusLabel(row.media_status)}</td>
-                    <td>{statusLabel(row.risk_status)}</td>
+          {rows.length === 0 ? (
+            <div className="oa-orders-empty">
+              <h3>Empty state · 空状态</h3>
+              <p>{liveBlocked ? "Live list hidden until a successful trusted read." : "No rows."}</p>
+            </div>
+          ) : (
+            <div className="oa-orders-table-wrap">
+              <table className="oa-table">
+                <thead>
+                  <tr>
+                    <th>SKU</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>object</th>
+                    <th>publish</th>
+                    <th>sale</th>
+                    <th>media</th>
+                    <th>risk</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {rows.map((row) => (
+                    <tr
+                      key={row.object_id}
+                      className={selected?.object_id === row.object_id ? "is-selected" : undefined}
+                      onClick={() => setSelectedId(row.object_id)}
+                    >
+                      <td>
+                        <button type="button" className="oa-orders-linkish" onClick={() => setSelectedId(row.object_id)}>
+                          {row.sku}
+                        </button>
+                      </td>
+                      <td>
+                        {row.title}
+                        <div className="oa-skeleton-meta">{row.title_zh}</div>
+                      </td>
+                      <td>{money(row.price_minor, row.currency, row.price_known !== false, row.source_price_text)}</td>
+                      <td>{statusLabel(row.object_status)}</td>
+                      <td>{statusLabel(row.publish_status)}</td>
+                      <td>{statusLabel(row.sale_status)}</td>
+                      <td>{statusLabel(row.media_status)}</td>
+                      <td>{statusLabel(row.risk_status)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </article>
 
         <aside className="oa-card oa-orders-summary">
@@ -172,8 +271,12 @@ export function ObjectsRuntimeWorkbench() {
                   <dd>{selected.inventory_projection_status}</dd>
                 </div>
                 <div>
+                  <dt>source_inventory</dt>
+                  <dd>{selected.source_inventory == null ? "—" : String(selected.source_inventory)}</dd>
+                </div>
+                <div>
                   <dt>price</dt>
-                  <dd>{formatMinor(selected.price_minor, selected.currency)}</dd>
+                  <dd>{money(selected.price_minor, selected.currency, selected.price_known !== false, selected.source_price_text)}</dd>
                 </div>
                 <div>
                   <dt>intake_ref</dt>
@@ -185,7 +288,7 @@ export function ObjectsRuntimeWorkbench() {
                 </div>
                 <div>
                   <dt>order_line_hits</dt>
-                  <dd>{selected.order_line_hits}</dd>
+                  <dd>{selected.order_line_hits_known === false ? "—" : String(selected.order_line_hits)}</dd>
                 </div>
               </dl>
               <p className="oa-skeleton-meta">{selected.note}</p>

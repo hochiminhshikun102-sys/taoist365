@@ -1,16 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { capabilityLabel } from "@/components/oa-skeleton/capabilityGate";
+import {
+  createCoReadController,
+  oaPrivateGetJson,
+  subscribeOaAuthEpoch,
+  type CoReadErrorCode,
+} from "@/lib/oa-auth/oaPrivateReadClient";
 import { CROSS_MODULE_PROJECTIONS, ORDERS_CORE_META, ORDERS_FIXTURE } from "@/lib/oa-orders/fixture";
 import { formatMinor, statusLabel } from "@/lib/oa-orders/format";
+import { mapCommerceOrderRows } from "@/lib/oa-orders/trustedReadAdapter";
 import type {
   FulfillmentStatus,
   OaOrderRecord,
   OrdersWorkbenchViewState,
   PaymentStatus,
 } from "@/lib/oa-orders/types";
-import { capabilityLabel } from "@/components/oa-skeleton/capabilityGate";
 
 type QueueKey = "all" | "awaiting_action" | "fulfilling" | "needs_attention" | "aftersales";
 
@@ -22,32 +29,87 @@ const QUEUE_DEFS: Array<{ key: QueueKey; en: string; zh: string }> = [
   { key: "aftersales", en: "After-sales linked", zh: "售后关联" },
 ];
 
+function money(amount: number, currency: string, known = true): string {
+  if (!known) return "—";
+  return formatMinor(amount, currency || "unknown");
+}
+
+function liveStateMessage(state: OrdersWorkbenchViewState): string | null {
+  if (state === "loading") return "Loading Preview read source… · 加载中";
+  if (state === "auth_required") return "auth_required · Sign in required. Retry is safe GET only.";
+  if (state === "permission_denied") return "permission_denied · Viewer cannot read order PII.";
+  if (state === "provider_unavailable") return "provider_unavailable · Preview read source unavailable. Retry.";
+  if (state === "failed") return "Provider request failed · 正式源读取失败.";
+  if (state === "not_connected") return "Live orders Provider not connected · 真实订单源未接通.";
+  return null;
+}
+
 export function OrdersRuntimeWorkbench() {
-  const [viewState, setViewState] = useState<OrdersWorkbenchViewState>("ready");
+  const [demoMode, setDemoMode] = useState(false);
+  const [viewState, setViewState] = useState<OrdersWorkbenchViewState>("loading");
+  const [liveRows, setLiveRows] = useState<OaOrderRecord[]>([]);
+  const [storage, setStorage] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<CoReadErrorCode | null>(null);
   const [queue, setQueue] = useState<QueueKey>("all");
   const [keyword, setKeyword] = useState("");
   const [paymentFilter, setPaymentFilter] = useState<PaymentStatus | "all">("all");
   const [fulfillmentFilter, setFulfillmentFilter] = useState<FulfillmentStatus | "all">("all");
-  const [selectedId, setSelectedId] = useState(ORDERS_FIXTURE[0]?.order_id ?? "");
+  const [selectedId, setSelectedId] = useState("");
+  const controllerRef = useRef(createCoReadController());
+
+  const loadLive = useCallback(async () => {
+    const ctl = controllerRef.current;
+    const { generation, signal } = ctl.next();
+    setLiveRows([]);
+    setSelectedId("");
+    setErrorCode(null);
+    setViewState("loading");
+    const result = await oaPrivateGetJson<{ rows?: unknown; storage?: string }>("/api/admin/orders", signal);
+    if (!ctl.isCurrent(generation)) return;
+    if (!result.ok) {
+      setErrorCode(result.code);
+      setViewState(result.code === "preview_read_unavailable" ? "provider_unavailable" : result.code);
+      return;
+    }
+    const mapped = mapCommerceOrderRows(result.payload.rows, new Date().toISOString());
+    setStorage(result.storage);
+    setLiveRows(mapped);
+    setViewState(mapped.length ? "ready" : "empty");
+    setSelectedId(mapped[0]?.order_id ?? "");
+  }, []);
+
+  useEffect(() => {
+    const ctl = controllerRef.current;
+    void loadLive();
+    const stop = subscribeOaAuthEpoch(() => {
+      void loadLive();
+    });
+    return () => {
+      ctl.clear();
+      stop();
+    };
+  }, [loadLive]);
+
+  const sourceRows = demoMode ? ORDERS_FIXTURE : liveRows;
 
   const queueCounts = useMemo(() => {
     const counts: Record<QueueKey, number> = {
-      all: ORDERS_FIXTURE.length,
+      all: sourceRows.length,
       awaiting_action: 0,
       fulfilling: 0,
       needs_attention: 0,
       aftersales: 0,
     };
-    for (const row of ORDERS_FIXTURE) {
+    for (const row of sourceRows) {
       for (const tag of row.queue_tags) counts[tag] += 1;
     }
     return counts;
-  }, []);
+  }, [sourceRows]);
 
   const filtered = useMemo(() => {
-    if (viewState === "empty") return [] as OaOrderRecord[];
+    if (!demoMode && (viewState === "empty" || viewState === "loading")) return [] as OaOrderRecord[];
     const q = keyword.trim().toLowerCase();
-    return ORDERS_FIXTURE.filter((row) => {
+    return sourceRows.filter((row) => {
       if (queue !== "all" && !row.queue_tags.includes(queue)) return false;
       if (paymentFilter !== "all" && row.payment_status !== paymentFilter) return false;
       if (fulfillmentFilter !== "all" && row.fulfillment_status !== fulfillmentFilter) return false;
@@ -59,27 +121,26 @@ export function OrdersRuntimeWorkbench() {
         row.order_id.toLowerCase().includes(q)
       );
     });
-  }, [queue, keyword, paymentFilter, fulfillmentFilter, viewState]);
+  }, [queue, keyword, paymentFilter, fulfillmentFilter, viewState, sourceRows, demoMode]);
 
   const selected = filtered.find((row) => row.order_id === selectedId) ?? filtered[0] ?? null;
+  const liveBlocked = !demoMode && viewState !== "ready" && viewState !== "empty";
+  const dataSource = demoMode ? ORDERS_CORE_META.data_source : "VERIFIED_LOCAL_READ_SOURCE";
 
   function openSummary(orderId: string) {
     setSelectedId(orderId);
-    // Opening summary must never trigger write actions.
   }
 
   return (
     <section className="oa-page oa-orders-page" data-oa-orders-core="r43">
       <div className="oa-fixture-banner">
-        WAVE1B_ORDERS_CORE · DATA_SOURCE={ORDERS_CORE_META.data_source} · LIVE_PROVIDER=
-        {ORDERS_CORE_META.live_provider} · capability={ORDERS_CORE_META.capability} · REAL_WRITE=FALSE ·
-        CROSS_CURRENCY_SUM=FALSE
+        WAVE1B_ORDERS_CORE · DATA_SOURCE={dataSource} · LIVE_PROVIDER=not_connected · storage=
+        {demoMode ? "TEST_ONLY" : storage || "—"} · capability=read_only · REAL_WRITE=FALSE ·
+        CROSS_CURRENCY_SUM=FALSE · DEMO_LIVE_MIX=FALSE
       </div>
 
       <div className="oa-capability-row">
-        <span className={`oa-capability-pill is-${ORDERS_CORE_META.capability}`}>
-          {capabilityLabel(ORDERS_CORE_META.capability)}
-        </span>
+        <span className="oa-capability-pill is-read_only">{capabilityLabel("read_only")}</span>
         <span className="oa-capability-pill is-not_connected">
           Live Provider · {capabilityLabel("not_connected")}
         </span>
@@ -90,13 +151,13 @@ export function OrdersRuntimeWorkbench() {
         <div>
           <h1 className="oa-page-title">Orders Runtime · 订单系统</h1>
           <p className="oa-skeleton-lead">
-            Wave 1B core skeleton for Finance / Logistics / Supply / CS / Compliance projections. Synthetic DEMO
-            rows only. Independent status dimensions — payment success is not order completed.
+            Preview trusted GET only. Independent status dimensions — payment success is not order completed.
+            Missing amounts and after-sales stay unknown.
           </p>
         </div>
         <div className="oa-orders-header-actions">
-          <button className="oa-btn" type="button" disabled title="Provider write blocked">
-            Refresh live · 刷新真实源 · Not connected
+          <button className="oa-btn" type="button" onClick={() => void loadLive()} disabled={demoMode}>
+            Refresh read · 刷新只读
           </button>
           <button className="oa-btn secondary" type="button" disabled title="Export blocked">
             Export · 导出 · Disabled
@@ -104,26 +165,43 @@ export function OrdersRuntimeWorkbench() {
         </div>
       </header>
 
-      <div className="oa-orders-state-toggles" aria-label="Workbench view state demos">
-        {(
-          [
-            ["ready", "Fixture ready"],
-            ["loading", "Loading"],
-            ["empty", "Empty"],
-            ["failed", "Failed"],
-            ["not_connected", "Not connected"],
-          ] as const
-        ).map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            className={`oa-orders-chip${viewState === key ? " is-active" : ""}`}
-            onClick={() => setViewState(key)}
-          >
-            {label}
-          </button>
-        ))}
+      <div className="oa-orders-state-toggles" aria-label="Workbench data mode">
+        <button
+          type="button"
+          className={`oa-orders-chip${!demoMode ? " is-active" : ""}`}
+          onClick={() => setDemoMode(false)}
+        >
+          Live Preview read
+        </button>
+        <button
+          type="button"
+          className={`oa-orders-chip${demoMode ? " is-active" : ""}`}
+          onClick={() => setDemoMode(true)}
+        >
+          TEST_ONLY DEMO structure
+        </button>
       </div>
+
+      {!demoMode && liveStateMessage(viewState) ? (
+        <article
+          className={`oa-card oa-orders-state-card${errorCode ? " is-error" : ""}`}
+          data-oa-read-state={viewState}
+        >
+          {liveStateMessage(viewState)}
+          {errorCode === "provider_unavailable" ? (
+            <div>
+              <button className="oa-btn secondary" type="button" onClick={() => void loadLive()}>
+                Retry · 重试
+              </button>
+            </div>
+          ) : null}
+        </article>
+      ) : null}
+      {demoMode ? (
+        <article className="oa-card oa-orders-state-card">
+          TEST_ONLY DEMO · not mixed with live rows or KPIs.
+        </article>
+      ) : null}
 
       <div className="oa-orders-queues" role="tablist" aria-label="Work queues">
         {QUEUE_DEFS.map((item) => (
@@ -165,6 +243,7 @@ export function OrdersRuntimeWorkbench() {
             <option value="partial_refund">partial_refund</option>
             <option value="refunded">refunded</option>
             <option value="failed">failed</option>
+            <option value="unknown">unknown</option>
           </select>
         </label>
         <label className="oa-orders-field">
@@ -179,6 +258,7 @@ export function OrdersRuntimeWorkbench() {
             <option value="shipped">shipped</option>
             <option value="delivered">delivered</option>
             <option value="exception">exception</option>
+            <option value="unknown">unknown</option>
           </select>
         </label>
         <button
@@ -195,35 +275,24 @@ export function OrdersRuntimeWorkbench() {
         </button>
       </div>
 
-      {viewState === "loading" ? (
-        <article className="oa-card oa-orders-state-card">Loading fixture projection… · 加载中</article>
-      ) : null}
-      {viewState === "failed" ? (
-        <article className="oa-card oa-orders-state-card is-error">
-          Provider request failed · 正式源读取失败. Retry disabled until Formal Provider wiring.
-        </article>
-      ) : null}
-      {viewState === "not_connected" ? (
-        <article className="oa-card oa-orders-state-card">
-          Live orders Provider not connected · 真实订单源未接通. Showing DEMO fixture for structure only — not
-          production success.
-        </article>
-      ) : null}
-
       <div className="oa-orders-layout">
         <article className="oa-card oa-orders-list-card">
           <div className="oa-commerce-list-head">
             <h2>Orders list · 订单列表</h2>
-            <span className="oa-skeleton-meta">{filtered.length} rows · TEST_ONLY</span>
+            <span className="oa-skeleton-meta">
+              {filtered.length} rows · {demoMode ? "TEST_ONLY" : "LIVE_PREVIEW_READ"}
+            </span>
           </div>
 
-          {viewState === "empty" || filtered.length === 0 ? (
+          {liveBlocked || filtered.length === 0 ? (
             <div className="oa-orders-empty">
               <h3>Empty state · 空状态</h3>
               <p>
-                {viewState === "empty"
-                  ? "No DEMO rows in this simulated empty state."
-                  : "No rows match current filters. Clear filters to restore DEMO list."}
+                {liveBlocked
+                  ? "Live list hidden until a successful trusted read."
+                  : demoMode
+                    ? "No DEMO rows match current filters."
+                    : "No rows from Preview read source."}
               </p>
             </div>
           ) : (
@@ -258,9 +327,9 @@ export function OrdersRuntimeWorkbench() {
                       </td>
                       <td>{row.customer_display_masked}</td>
                       <td>{row.line_summary}</td>
-                      <td>{formatMinor(row.total_minor, row.currency)}</td>
-                      <td>{statusLabel(row.order_status)}</td>
-                      <td>{statusLabel(row.payment_status)}</td>
+                      <td>{money(row.total_minor, row.currency, row.amount_known !== false)}</td>
+                      <td>{statusLabel(row.source_order_status || row.order_status)}</td>
+                      <td>{statusLabel(row.source_payment_status || row.payment_status)}</td>
                       <td>{statusLabel(row.fulfillment_status)}</td>
                       <td>{statusLabel(row.after_sales_status)}</td>
                       <td>{statusLabel(row.risk_status)}</td>
@@ -275,7 +344,7 @@ export function OrdersRuntimeWorkbench() {
 
         <aside className="oa-card oa-orders-summary" aria-label="Order summary">
           <h2>Order summary · 订单摘要</h2>
-          {!selected ? (
+          {!selected || liveBlocked ? (
             <p className="oa-skeleton-meta">Select a row to open summary. No write on open.</p>
           ) : (
             <>
@@ -289,15 +358,18 @@ export function OrdersRuntimeWorkbench() {
                 </div>
                 <div>
                   <dt>Amount</dt>
-                  <dd>{formatMinor(selected.total_minor, selected.currency)} (minor {selected.total_minor})</dd>
+                  <dd>
+                    {money(selected.total_minor, selected.currency, selected.amount_known !== false)}
+                    {selected.amount_known === false ? " · 字段待映射" : ""}
+                  </dd>
                 </div>
                 <div>
                   <dt>order_status</dt>
-                  <dd>{selected.order_status}</dd>
+                  <dd>{selected.source_order_status || selected.order_status}</dd>
                 </div>
                 <div>
                   <dt>payment_status</dt>
-                  <dd>{selected.payment_status}</dd>
+                  <dd>{selected.source_payment_status || selected.payment_status}</dd>
                 </div>
                 <div>
                   <dt>fulfillment_status</dt>
@@ -317,7 +389,7 @@ export function OrdersRuntimeWorkbench() {
                 </div>
                 <div>
                   <dt>policy_snapshot</dt>
-                  <dd>{selected.policy_snapshot_id || "待核对"}</dd>
+                  <dd>{selected.policy_snapshot_id || "字段待映射"}</dd>
                 </div>
               </dl>
 
@@ -325,7 +397,7 @@ export function OrdersRuntimeWorkbench() {
               <ul className="oa-orders-lines">
                 {selected.lines.map((line) => (
                   <li key={line.line_id}>
-                    {line.title_snapshot} ×{line.quantity} · {formatMinor(line.unit_amount_minor, line.currency)}
+                    {line.title_snapshot} ×{line.quantity} · {money(line.unit_amount_minor, line.currency, selected.unit_amounts_known !== false)}
                   </li>
                 ))}
               </ul>
@@ -363,7 +435,7 @@ export function OrdersRuntimeWorkbench() {
         <h2>Cross-module projections · 跨模块投影</h2>
         <p className="oa-skeleton-meta">
           Orders Core is the commerce fact surface for projections. Overview aggregates only. Links land on existing
-          OA module shells (no 404). Live providers remain not_connected.
+          OA module shells (no 404). Live providers remain not_connected. DEMO fixture is never mixed into live KPIs.
         </p>
         <div className="oa-orders-projection-grid">
           {CROSS_MODULE_PROJECTIONS.map((item) => (
