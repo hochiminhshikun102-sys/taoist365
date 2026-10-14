@@ -12,16 +12,12 @@ function readEnv(env, key) {
 }
 
 function readRequestHost(request) {
-  const raw =
-    request?.headers?.get?.("x-forwarded-host") ||
-    request?.headers?.get?.("host") ||
-    "";
-  return String(raw)
-    .split(",")[0]
-    .trim()
-    .toLowerCase()
-    .replace(/:\d+$/, "")
-    .replace(/\.$/, "");
+  try {
+    // Never trust caller-provided X-Forwarded-Host for the Preview trust boundary.
+    return new URL(request.url).hostname.toLowerCase().replace(/\.$/, "");
+  } catch {
+    return "";
+  }
 }
 
 export function isAllowedPreviewFunctionHost(host) {

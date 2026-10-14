@@ -26,6 +26,9 @@ export function OaAdminAuthGate({ children }: Props) {
 
   const refreshFromServer = useCallback(async (accessToken: string | null) => {
     const generation = ++generationRef.current;
+    // Invalidate visible authorization immediately on any session change.
+    setPhase({ ok: false, reason: "auth_required" });
+    setChecking(true);
     const previewRuntime = isOaPreviewRuntime();
     const publicEnvPresent = hasOaSupabasePublicEnv();
 
@@ -76,10 +79,17 @@ export function OaAdminAuthGate({ children }: Props) {
       return;
     }
 
-    void client.auth.getSession().then(({ data, error }) => {
-      const token = error ? "" : String(data.session?.access_token || "").trim();
-      void refreshFromServer(token || null);
-    });
+    const initialGeneration = generationRef.current;
+    void client.auth.getSession()
+      .then(({ data, error }) => {
+        if (generationRef.current !== initialGeneration) return;
+        const token = error ? "" : String(data.session?.access_token || "").trim();
+        void refreshFromServer(token || null);
+      })
+      .catch(() => {
+        if (generationRef.current !== initialGeneration) return;
+        void refreshFromServer(null);
+      });
 
     const { data: sub } = client.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT") {

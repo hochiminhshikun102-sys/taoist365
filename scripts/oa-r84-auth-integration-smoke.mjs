@@ -3,7 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exportJWK, generateKeyPair, SignJWT } from "jose";
 import { onRequestGet as accountSessionGet } from "../functions/api/account/session.js";
-import { onRequestGet as oaSessionGet } from "../functions/api/oa/session.js";
+import { onRequestGet as oaSessionGet, isOaPreviewRequest } from "../functions/api/oa/session.js";
 import { verifySupabaseAccessToken, resolveAuthConfig, FIXED_PREVIEW_SUPABASE_URL, FIXED_PREVIEW_ISSUER } from "../functions/_auth/supabase-identity.js";
 
 const OA_ALLOWED_ROLES = ["oa_admin", "oa_operator", "oa_viewer"];
@@ -42,6 +42,8 @@ function requestWithBearer(token, url = "http://127.0.0.1:8788/api/oa/session") 
 
 async function makeEnv(publicJwk, extra = {}) {
   return {
+    NEXT_PUBLIC_DOHARA_RUNTIME_ENV: "preview",
+    NEXT_PUBLIC_SUPABASE_URL: FIXED_PREVIEW_SUPABASE_URL,
     SUPABASE_ISSUER: issuer,
     SUPABASE_JWT_AUD: audience,
     SUPABASE_JWKS_JSON: JSON.stringify({ keys: Array.isArray(publicJwk) ? publicJwk : [publicJwk] }),
@@ -255,6 +257,74 @@ record(
 );
 record("OA gate uses server session not client user metadata", gateSrc.includes("fetchOaServerSession") && !gateSrc.includes("session?.user") && !gateSrc.includes("app_metadata"));
 record("OA gate invalidates in-flight on sign-out", gateSrc.includes("SIGNED_OUT") && gateSrc.includes("generationRef"));
+
+
+const previewTestContext = {
+  request: new Request("https://b317808a.taoist365.pages.dev/api/oa/session"),
+  env: {
+    NEXT_PUBLIC_DOHARA_RUNTIME_ENV: "preview",
+    NEXT_PUBLIC_SUPABASE_URL: FIXED_PREVIEW_SUPABASE_URL,
+  },
+};
+record("OA Preview request guard admits allowed Preview host", isOaPreviewRequest(previewTestContext));
+
+const spoofedProductionContext = {
+  request: new Request("https://www.taoist365.com/api/oa/session", {
+    headers: { "x-forwarded-host": "b317808a.taoist365.pages.dev" },
+  }),
+  env: {
+    NEXT_PUBLIC_DOHARA_RUNTIME_ENV: "preview",
+    NEXT_PUBLIC_SUPABASE_URL: FIXED_PREVIEW_SUPABASE_URL,
+    SUPABASE_ISSUER: FIXED_PREVIEW_ISSUER,
+  },
+};
+record("OA production origin rejects spoofed forwarded host", !isOaPreviewRequest(spoofedProductionContext));
+const spoofedProdAccess = await oaSessionGet({
+  request: new Request("https://www.taoist365.com/api/oa/session", {
+    headers: { authorization: `Bearer ${oaAdminToken}`, "x-forwarded-host": "b317808a.taoist365.pages.dev" },
+  }),
+  env: { ...env },
+});
+record("OA production origin returns 401 even with valid local test token", spoofedProdAccess.status === 401);
+
+record(
+  "OA production runtime is denied despite explicit identity config",
+  !isOaPreviewRequest({
+    request: new Request("https://b317808a.taoist365.pages.dev/api/oa/session"),
+    env: { ...previewTestContext.env, SUPABASE_ISSUER: FIXED_PREVIEW_ISSUER, NEXT_PUBLIC_DOHARA_RUNTIME_ENV: "production" },
+  }),
+);
+record(
+  "OA mismatched issuer and JWKS are denied on Preview host",
+  !isOaPreviewRequest({
+    request: new Request("https://b317808a.taoist365.pages.dev/api/oa/session"),
+    env: { ...previewTestContext.env, SUPABASE_ISSUER: "https://another.supabase.co/auth/v1" },
+  }) &&
+  !isOaPreviewRequest({
+    request: new Request("https://b317808a.taoist365.pages.dev/api/oa/session"),
+    env: { ...previewTestContext.env, SUPABASE_JWKS_URL: "https://another.supabase.co/keys" },
+  }),
+);
+record(
+  "OA synthetic JWKS fixture is never accepted on deployed Preview",
+  !isOaPreviewRequest({
+    request: new Request("https://b317808a.taoist365.pages.dev/api/oa/session"),
+    env: { ...previewTestContext.env, SUPABASE_JWKS_JSON: "{}" },
+  }),
+);
+record(
+  "OA gate closes previous authorization before each async revalidation",
+  gateSrc.includes("setChecking(true)") &&
+    gateSrc.includes('setPhase({ ok: false, reason: "auth_required" })') &&
+    gateSrc.includes("initialGeneration"),
+);
+const authModalSrc = readFileSync(join(repoRoot, "src/components/auth/AuthModal.tsx"), "utf8");
+const callbackSrc = readFileSync(join(repoRoot, "src/app/auth/callback/page.tsx"), "utf8");
+record(
+  "unapproved Preview password setup and callback stay closed",
+  authModalSrc.includes("const PREVIEW_PASSWORD_SETUP_ENABLED = false") &&
+    callbackSrc.includes("const PREVIEW_ONE_TIME_CALLBACK_ENABLED = false"),
+);
 
 const failed = results.filter((item) => !item.pass);
 console.log(JSON.stringify({ batch: "R84", total: results.length, passed: results.length - failed.length, failed: failed.map((item) => item.name) }, null, 2));

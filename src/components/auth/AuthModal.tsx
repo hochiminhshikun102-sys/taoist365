@@ -24,6 +24,8 @@ const PREVIEW_AUTH_LIVE_ACTIONS: Record<Mode, boolean> = {
   magic: false,
   reset: false,
 };
+// Only sign-in / sign-out are authorized for the current Preview stage.
+const PREVIEW_PASSWORD_SETUP_ENABLED = false;
 
 function messageFromUnknown(error: unknown, fallback: string) {
   if (error && typeof error === "object" && "message" in error && typeof error.message === "string" && error.message.trim()) {
@@ -52,6 +54,14 @@ export function AuthModal() {
     function applySurface(pendingSetup: string, hasSession: boolean) {
       const surface = decideAuthModalSurface({ pendingSetup, hasSession });
       if (surface === "set-password") {
+        if (!PREVIEW_PASSWORD_SETUP_ENABLED) {
+          clearPasswordSetupPending();
+          setPasswordSetup("");
+          setServerSession(null);
+          setPhase("error");
+          setNote("Invite and recovery password setup are not enabled in this Preview stage.");
+          return "blocked";
+        }
         markPasswordSetupPending(pendingSetup === "invite" ? "invite" : "recovery");
         setPasswordSetup(pendingSetup === "invite" ? "invite" : "recovery");
         setServerSession(null);

@@ -14,11 +14,19 @@ import {
 } from "@/lib/auth/callback-flow.js";
 import { getSupabaseBrowserClient, readSupabaseBrowserConfig } from "@/lib/supabase/client";
 
+// Preserve the archived callback logic without activating unapproved
+// one-time invite, recovery, signup or email flows.
+const PREVIEW_ONE_TIME_CALLBACK_ENABLED = false;
+
 function AuthCallbackInner() {
   const [note, setNote] = useState("Restoring Preview session…");
   const [passwordFlow, setPasswordFlow] = useState<"invite" | "recovery" | null>(null);
 
   useEffect(() => {
+    if (!PREVIEW_ONE_TIME_CALLBACK_ENABLED) {
+      setNote("One-time auth callback actions are not enabled for this Preview stage.");
+      return;
+    }
     const config = readSupabaseBrowserConfig();
     const search = window.location.search;
     const hash = window.location.hash;
