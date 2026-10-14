@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { capabilityLabel } from "@/components/oa-skeleton/capabilityGate";
 import { ProjectionTable } from "@/components/oa-projections/ProjectionTable";
+import { OverviewReadinessControlBoard } from "@/components/oa-overview/OverviewReadinessControlBoard";
 import { buildOverviewExceptionProjections } from "@/lib/oa-projections/fromCoFixtures";
 import { PROJECTION_META, SHARED_PROJECTION_FIELDS } from "@/lib/oa-projections/types";
 
@@ -46,6 +47,8 @@ export function OverviewExceptionProjectionWorkbench() {
           </p>
         </div>
       </header>
+
+      <OverviewReadinessControlBoard />
 
       <article className="oa-card oa-proj-section">
         <h2>My Work · 我的待办</h2>
