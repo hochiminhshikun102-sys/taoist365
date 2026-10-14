@@ -10,7 +10,10 @@ export type OaNavItem = {
 };
 
 export type OaSubmenuItem = {
+  /** Backward-compatible mixed label; Shell renders zh/en via locale. */
   label: string;
+  zh: string;
+  en: string;
   route: string;
   owner: string;
 };
@@ -167,31 +170,43 @@ export const NAV_ITEMS: OaNavItem[] = [
 export const CO_SECONDARY_SUBMENU: OaSubmenuItem[] = [
   {
     label: "Product Intake · 宝贝入库",
+    zh: "宝贝入库",
+    en: "Product Intake",
     route: "/admin/oa/co/intake",
     owner: "02 CO",
   },
   {
     label: "Objects Runtime · 商品系统",
+    zh: "商品系统",
+    en: "Objects Runtime",
     route: "/admin/oa/co/objects",
     owner: "02 CO",
   },
   {
     label: "Product Media · 商品素材",
+    zh: "商品素材",
+    en: "Product Media",
     route: "/admin/oa/co/media",
     owner: "02 CO",
   },
   {
     label: "Orders Runtime · 订单系统",
+    zh: "订单系统",
+    en: "Orders Runtime",
     route: "/admin/oa/co/orders",
     owner: "02 CO",
   },
   {
     label: "Payments Runtime · 支付管理",
+    zh: "支付管理",
+    en: "Payments Runtime",
     route: "/admin/oa/co/payments",
     owner: "02 CO",
   },
   {
     label: "Shipping Runtime · 发货管理",
+    zh: "发货管理",
+    en: "Shipping Runtime",
     route: "/admin/oa/co/shipping",
     owner: "02 CO",
   },
