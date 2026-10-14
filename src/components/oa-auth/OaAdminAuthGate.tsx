@@ -17,8 +17,6 @@ type Props = {
 export function OaAdminAuthGate({ children }: Props) {
   const [phase, setPhase] = useState<OaAuthDecision>({ ok: false, reason: "auth_required" });
   const [checking, setChecking] = useState(true);
-  const [notice, setNotice] = useState("");
-  const [pending, setPending] = useState(false);
 
   const evaluate = useCallback((user: User | null) => {
     setPhase(
@@ -67,39 +65,12 @@ export function OaAdminAuthGate({ children }: Props) {
     };
   }, [evaluate]);
 
-  async function signIn(email: string, password: string) {
-    setPending(true);
-    setNotice("");
-    const client = getOaSupabaseBrowserClient();
-    if (!client) {
-      evaluate(null);
-      setPending(false);
-      return;
-    }
-    const { data, error } = await client.auth.signInWithPassword({ email, password });
-    if (error || !data.user) {
-      setNotice("Sign-in failed. OA content stays closed.");
-      evaluate(null);
-      setPending(false);
-      return;
-    }
-    evaluate(data.user);
-    setPending(false);
-  }
-
   if (checking) {
     return <OaAdminAuthState reason="checking" />;
   }
 
   if (!phase.ok) {
-    return (
-      <OaAdminAuthState
-        reason={phase.reason}
-        notice={notice}
-        pending={pending}
-        onSignIn={phase.reason === "auth_required" ? signIn : undefined}
-      />
-    );
+    return <OaAdminAuthState reason={phase.reason} />;
   }
 
   return children;
