@@ -7,10 +7,10 @@ export default function OaCommercePage() {
   return (
     <OaSharedShell activeKey="co">
       <OaDesktopStatusStrip
-        moduleLabel="CO · 商品与订单"
+        moduleKey="co"
         status="read_only"
         nextHref="/admin/oa/co/orders"
-        nextLabel="Next · Orders runtime · 订单系统"
+        nextKey="orders"
       />
       <CoOverviewWorkbench />
     </OaSharedShell>

@@ -5,7 +5,7 @@ import { OaDesktopStatusStrip } from "@/components/oa-overview/OaDesktopStatusSt
 export default function OaGeoPage() {
   return (
     <OaSharedShell activeKey="geo">
-      <OaDesktopStatusStrip moduleLabel="GEO · 区域全局配置" status="read_only" />
+      <OaDesktopStatusStrip moduleKey="geo" status="read_only" />
       <GeoReadonlyWorkbench />
     </OaSharedShell>
   );

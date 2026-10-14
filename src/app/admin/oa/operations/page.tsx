@@ -5,7 +5,7 @@ import { OperationsReadonlyWorkbench } from "@/components/oa-operations/Operatio
 export default function OaOperationsPage() {
   return (
     <OaSharedShell activeKey="operations">
-      <OaDesktopStatusStrip moduleLabel="Operations · 运营营销" status="read_only" />
+      <OaDesktopStatusStrip moduleKey="operations" status="read_only" />
       <OperationsReadonlyWorkbench />
     </OaSharedShell>
   );

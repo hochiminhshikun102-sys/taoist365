@@ -6,10 +6,10 @@ export default function OaWkPage() {
   return (
     <OaSharedShell activeKey="wk">
       <OaDesktopStatusStrip
-        moduleLabel="WK · WindKeep"
+        moduleKey="wk"
         status="not_connected"
         nextHref="/admin/oa/overview"
-        nextLabel="Next · Overview · 返回总览"
+        nextKey="overview"
       />
       <MemberServiceReadonlyBoard moduleId="wk" />
     </OaSharedShell>

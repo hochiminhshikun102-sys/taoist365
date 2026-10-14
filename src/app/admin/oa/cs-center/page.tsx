@@ -6,10 +6,10 @@ export default function OaCsCenterPage() {
   return (
     <OaSharedShell activeKey="cs_center">
       <OaDesktopStatusStrip
-        moduleLabel="CS Center · 客户满意中心"
+        moduleKey="cs_center"
         status="read_only"
         nextHref="/admin/oa/co/orders"
-        nextLabel="Next · Orders inquiry · 订单查询"
+        nextKey="orders"
       />
       <CsCenterProjectionWorkbench />
     </OaSharedShell>

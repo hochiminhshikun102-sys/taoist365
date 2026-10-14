@@ -6,10 +6,10 @@ export default function OaLogisticsPage() {
   return (
     <OaSharedShell activeKey="logistics">
       <OaDesktopStatusStrip
-        moduleLabel="Logistics · 物流管理"
+        moduleKey="logistics"
         status="read_only"
         nextHref="/admin/oa/co/shipping"
-        nextLabel="Next · Shipping runtime · 发货管理"
+        nextKey="shipping"
       />
       <LogisticsProjectionWorkbench />
     </OaSharedShell>

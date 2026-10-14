@@ -6,10 +6,10 @@ export default function OaSettingsPage() {
   return (
     <OaSharedShell activeKey="settings">
       <OaDesktopStatusStrip
-        moduleLabel="Settings · 系统底座"
+        moduleKey="settings"
         status="not_connected"
         nextHref="/admin/oa/overview"
-        nextLabel="Next · Overview · 返回总览"
+        nextKey="overview"
       />
       <PlatformReadonlyBoard moduleId="settings" />
     </OaSharedShell>

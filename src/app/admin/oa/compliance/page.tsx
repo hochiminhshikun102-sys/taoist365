@@ -5,7 +5,7 @@ import { OaDesktopStatusStrip } from "@/components/oa-overview/OaDesktopStatusSt
 export default function OaCompliancePage() {
   return (
     <OaSharedShell activeKey="compliance">
-      <OaDesktopStatusStrip moduleLabel="Compliance · 合规法务" status="read_only" />
+      <OaDesktopStatusStrip moduleKey="compliance" status="read_only" />
       <ComplianceProjectionWorkbench />
     </OaSharedShell>
   );
