@@ -1,13 +1,9 @@
 "use client";
 
-import type { FormEvent } from "react";
 import type { OaAuthDenyReason } from "@/lib/oa-auth/oaAuthClaims";
 
 type Props = {
   reason: OaAuthDenyReason | "checking";
-  notice?: string;
-  onSignIn?: (email: string, password: string) => void;
-  pending?: boolean;
 };
 
 const COPY: Record<
@@ -46,7 +42,7 @@ const COPY: Record<
   },
 };
 
-export function OaAdminAuthState({ reason, notice, onSignIn, pending }: Props) {
+export function OaAdminAuthState({ reason }: Props) {
   if (reason === "checking") {
     return (
       <section className="oa-page oa-auth-block" data-oa-auth-state="checking">
@@ -65,15 +61,6 @@ export function OaAdminAuthState({ reason, notice, onSignIn, pending }: Props) {
 
   const copy = COPY[reason];
 
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!onSignIn) return;
-    const form = event.currentTarget;
-    const email = String(new FormData(form).get("email") || "").trim();
-    const password = String(new FormData(form).get("password") || "");
-    onSignIn(email, password);
-  }
-
   return (
     <section className="oa-page oa-auth-block" data-oa-auth-state={reason}>
       <article className="oa-card">
@@ -87,22 +74,6 @@ export function OaAdminAuthState({ reason, notice, onSignIn, pending }: Props) {
             </span>
           ))}
         </div>
-        {reason === "auth_required" && onSignIn ? (
-          <form className="oa-auth-sign-in" onSubmit={submit}>
-            <label>
-              Email
-              <input name="email" type="email" autoComplete="username" required disabled={pending} />
-            </label>
-            <label>
-              Password
-              <input name="password" type="password" autoComplete="current-password" required disabled={pending} />
-            </label>
-            <button className="oa-btn" type="submit" disabled={pending}>
-              Sign in
-            </button>
-          </form>
-        ) : null}
-        {notice ? <p className="oa-skeleton-meta">{notice}</p> : null}
       </article>
     </section>
   );
