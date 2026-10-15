@@ -160,6 +160,41 @@ export function resolveObjectIntakeSource(sourceType) {
   };
 }
 
+const WINDKEEP_SOURCE_TYPES = new Set(
+  Object.entries(objectIntakeSourceDefinitions)
+    .filter(([, def]) => def.commerce_channel === "windkeep_secondhand" || def.supply_program === "windkeep")
+    .map(([type]) => type),
+);
+const WINDKEEP_IDENTITY_SCOPES = new Set(["windkeep_member", "windkeep_referral"]);
+export const MALL_COMMERCE_CHANNEL = "commerce_new";
+export const WINDKEEP_COMMERCE_CHANNEL = "windkeep_secondhand";
+
+/** Server-side WindKeep binding. Do not infer from public DTO `source`. */
+export function isWindkeepBound(record = {}) {
+  const channel = String(record.commerce_channel || "").trim();
+  if (channel === WINDKEEP_COMMERCE_CHANNEL) return true;
+  if (String(record.supply_program || "").trim() === "windkeep") return true;
+  if (WINDKEEP_IDENTITY_SCOPES.has(String(record.identity_scope || "").trim())) return true;
+  if (WINDKEEP_SOURCE_TYPES.has(String(record.source_type || "").trim())) return true;
+  if (String(record.entry_surface || "").trim() === "member_center") return true;
+  return false;
+}
+
+/**
+ * Resolve the publish/public channel without washing WindKeep or unknown
+ * records into the mall via `|| commerce_new`.
+ */
+export function resolvePublishedCommerceChannel(record = {}) {
+  if (isWindkeepBound(record)) return WINDKEEP_COMMERCE_CHANNEL;
+  const channel = String(record.commerce_channel || "").trim();
+  if (channel === MALL_COMMERCE_CHANNEL) return MALL_COMMERCE_CHANNEL;
+  if (channel === WINDKEEP_COMMERCE_CHANNEL) return WINDKEEP_COMMERCE_CHANNEL;
+  const mapped = objectIntakeSourceDefinitions[String(record.source_type || "").trim()];
+  if (mapped?.commerce_channel === MALL_COMMERCE_CHANNEL) return MALL_COMMERCE_CHANNEL;
+  if (mapped?.commerce_channel === WINDKEEP_COMMERCE_CHANNEL) return WINDKEEP_COMMERCE_CHANNEL;
+  return "";
+}
+
 export const jsonHeaders = {
   "content-type": "application/json; charset=utf-8",
   "cache-control": "no-store",

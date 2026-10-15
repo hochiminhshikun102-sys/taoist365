@@ -6,6 +6,7 @@ import {
   mediaForIntake,
   nowIso,
   publicUrlForMedia,
+  resolvePublishedCommerceChannel,
   slugify,
   updateStore,
 } from "../../../../_object-intake.js";
@@ -75,7 +76,7 @@ export async function onRequestPost(context) {
       identity_scope: intake.identity_scope || "",
       entry_surface: intake.entry_surface || "",
       supply_program: intake.supply_program || "",
-      commerce_channel: intake.commerce_channel || "commerce_new",
+      commerce_channel: resolvePublishedCommerceChannel(intake) || intake.commerce_channel || "",
       goods_condition: intake.goods_condition || "new",
       slug: `${slugify(title)}-${objectId.toLowerCase()}`,
       title,

@@ -1,4 +1,5 @@
 import { projectPublicObject, onRequestGet } from "../functions/api/public/objects.js";
+import { resolvePublishedCommerceChannel } from "../functions/_object-intake.js";
 
 const IMG = "data:image/png;base64,aGVsbG8=";
 const PRIVATE_DATA = "data:image/png;base64,U0VDUkVUX09SSUdJTkFM";
@@ -47,11 +48,57 @@ const legacy = {
   media: [],
 };
 const unpublished = { object_id: "DH-OBJ-DRAFT", title: "draft", status: "draft", commerce_channel: "commerce_new" };
+const windkeepPublished = {
+  object_id: "DH-OBJ-WK",
+  title: "WindKeep chair",
+  status: "published",
+  commerce_channel: "windkeep_secondhand",
+  source_type: "windkeep_member",
+  supply_program: "windkeep",
+  price: "$9.00",
+  inventory: 1,
+  media: [{ id: "wk-main", type: "main", url: "/api/object-media/wk-main", mime_type: "image/png" }],
+};
+const windkeepMissingChannel = {
+  object_id: "DH-OBJ-WK-GAP",
+  title: "WK missing channel",
+  status: "published",
+  source_type: "windkeep_member",
+  supply_program: "windkeep",
+  price: "$8.00",
+};
+const untrustedMissingChannel = {
+  object_id: "DH-OBJ-ORPHAN",
+  title: "Orphan published",
+  status: "published",
+  price: "$7.00",
+};
+const trustedMallMissingChannel = {
+  object_id: "DH-OBJ-TRUSTED-GAP",
+  title: "Trusted mall missing channel",
+  status: "published",
+  source_type: "admin_upload",
+  price: "$6.00",
+  primary_image_url: "/objects-derived/1-hero.webp",
+};
 let reads = 0;
 let writes = 0;
 const env = {
   OBJECT_INTAKE_KV: {
-    async get() { reads += 1; return JSON.stringify({ objects: [published, legacy, unpublished] }); },
+    async get() {
+      reads += 1;
+      return JSON.stringify({
+        objects: [
+          published,
+          legacy,
+          unpublished,
+          windkeepPublished,
+          windkeepMissingChannel,
+          untrustedMissingChannel,
+          trustedMallMissingChannel,
+        ],
+      });
+    },
     async put() { writes += 1; throw new Error("zero writes allowed"); },
   },
 };
@@ -83,8 +130,14 @@ check("detail endpoint retains public media", detailResp.status === 200 && detai
 check("detail endpoint removes private fields", !JSON.stringify(detailPayload).includes("private-buyer-id") && !JSON.stringify(detailPayload).includes(PRIVATE_DATA));
 const listResp = await onRequestGet({ request: new Request("http://localhost/api/public/objects"), env });
 const listPayload = await listResp.json();
-check("list only published", listResp.status === 200 && listPayload.rows.length === 2);
+check(
+  "list only published mall",
+  listResp.status === 200 &&
+    listPayload.rows.length === 3 &&
+    listPayload.rows.every((row) => ["DH-OBJ-10", "DH-OBJ-LEGACY", "DH-OBJ-TRUSTED-GAP"].includes(row.object_id)),
+);
 check("list retains object refs", listPayload.rows.some((row) => row.object_id === "DH-OBJ-10") && listPayload.rows.some((row) => row.object_id === "DH-OBJ-LEGACY"));
+check("list excludes windkeep objects", !JSON.stringify(listPayload).includes("DH-OBJ-WK"));
 check("list does not expose private bytes", !JSON.stringify(listPayload).includes(PRIVATE_DATA) && !JSON.stringify(listPayload).includes("storage_key"));
 const missing = await onRequestGet({ request: new Request("http://localhost/api/public/objects?object_id=not-found"), env });
 check("unknown object remains 404", missing.status === 404);
@@ -145,6 +198,32 @@ check(
     !sourcedJson.includes("external_url") &&
     sourced.object_id === "DH-OBJ-10" &&
     sourced.primary_image_url === "/api/object-media/main-1",
+);
+
+check("channel: windkeep source stays windkeep", resolvePublishedCommerceChannel({ source_type: "windkeep_member" }) === "windkeep_secondhand");
+check("channel: missing channel does not wash to mall", resolvePublishedCommerceChannel({ status: "published" }) === "");
+check("channel: trusted admin_upload may remain mall", resolvePublishedCommerceChannel({ source_type: "admin_upload" }) === "commerce_new");
+check("channel: bind windkeep_external_link", resolvePublishedCommerceChannel({ source_type: "windkeep_external_link" }) === "windkeep_secondhand");
+
+const wkQuery = await onRequestGet({ request: new Request("http://localhost/api/public/objects?commerce_channel=windkeep_secondhand"), env });
+const wkQueryBody = await wkQuery.json();
+check("anon cannot switch public catalog to windkeep", wkQuery.status === 404 && !wkQueryBody.rows);
+const wkDetail = await onRequestGet({ request: new Request("http://localhost/api/public/objects?object_id=DH-OBJ-WK"), env });
+check("windkeep object_id is not mall-public", wkDetail.status === 404);
+const trustedGap = await onRequestGet({ request: new Request("http://localhost/api/public/objects?object_id=DH-OBJ-TRUSTED-GAP"), env });
+const trustedGapBody = await trustedGap.json();
+check("trusted mall source without channel remains purchasable", trustedGap.status === 200 && trustedGapBody.object.primary_image_url === "/objects-derived/1-hero.webp");
+const orphan = await onRequestGet({ request: new Request("http://localhost/api/public/objects?object_id=DH-OBJ-ORPHAN"), env });
+check("untrusted missing channel stays off mall", orphan.status === 404);
+const mallDetail = await onRequestGet({ request: new Request("http://localhost/api/public/objects?object_id=DH-OBJ-10"), env });
+const mallBody = await mallDetail.json();
+check(
+  "mall product media and price still public",
+  mallDetail.status === 200 &&
+    mallBody.object.price === "$24.00" &&
+    mallBody.object.inventory === 3 &&
+    mallBody.object.media.some((item) => item.type === "main") &&
+    mallBody.object.media.some((item) => item.type === "motion"),
 );
 
 console.log(JSON.stringify({ batch: "R90_PUBLIC_PRODUCT_PROJECTION", passed, total, failed: total-passed },null,2));

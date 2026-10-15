@@ -1,4 +1,4 @@
-import { json, readStore } from "../../_object-intake.js";
+import { json, MALL_COMMERCE_CHANNEL, readStore, resolvePublishedCommerceChannel } from "../../_object-intake.js";
 
 // Public storefront DTO: admin-source metadata and non-public media may never
 // be serialized from a published intake's raw Store record.
@@ -111,13 +111,22 @@ export function projectPublicObject(source) {
   return projected;
 }
 
+function mallPublished(item) {
+  return item?.status === "published" && resolvePublishedCommerceChannel(item) === MALL_COMMERCE_CHANNEL;
+}
+
 export async function onRequestGet(context) {
   const url = new URL(context.request.url);
   const objectId = url.searchParams.get("object_id");
   const includeTests = url.searchParams.get("include_tests") === "1";
-  const commerceChannel = url.searchParams.get("commerce_channel") || "commerce_new";
+  const requestedChannel = url.searchParams.get("commerce_channel");
+  // Mall catalog is not a channel switcher. Anonymous callers cannot select
+  // WindKeep (or any other market) by rewriting the query string.
+  if (requestedChannel && requestedChannel !== MALL_COMMERCE_CHANNEL) {
+    return json({ error: "Object not found." }, 404);
+  }
   const store = await readStore(context.env);
-  const published = store.objects.filter((item) => item.status === "published" && (item.commerce_channel || "commerce_new") === commerceChannel);
+  const published = store.objects.filter(mallPublished);
 
   if (objectId) {
     const object = published.find((item) => item.object_id === objectId || item.slug === objectId);
