@@ -7,11 +7,22 @@ export const PAYMENTS_CORE_META = {
   real_write: false,
 } as const;
 
+const DEMO_KNOWN = {
+  amount_known: true,
+  intent_known: true,
+  provider_known: true,
+  refund_amount_known: true,
+  settlement_known: true,
+  risk_known: true,
+} as const;
+
 export const PAYMENTS_FIXTURE: OaPaymentRecord[] = [
   {
+    row_key: "pi_demo_1001",
     order_id: "ord_demo_r43_001",
     order_number: "DH-ORD-R43-1001",
     payment_status: "paid",
+    source_payment_status: "paid",
     payment_provider: "DEMO_STRIPE",
     payment_intent_ref: "pi_demo_1001",
     currency: "USD",
@@ -22,11 +33,14 @@ export const PAYMENTS_FIXTURE: OaPaymentRecord[] = [
     risk_status: "clear",
     updated_at: "2026-10-13T09:02:00+08:00",
     queue_tags: ["settling"],
+    ...DEMO_KNOWN,
   },
   {
+    row_key: "pi_demo_1003",
     order_id: "ord_demo_r43_003",
     order_number: "DH-ORD-R43-1003",
     payment_status: "partial_refund",
+    source_payment_status: "partial_refund",
     payment_provider: "DEMO_STRIPE",
     payment_intent_ref: "pi_demo_1003",
     currency: "EUR",
@@ -37,11 +51,14 @@ export const PAYMENTS_FIXTURE: OaPaymentRecord[] = [
     risk_status: "hold",
     updated_at: "2026-10-12T16:44:00+08:00",
     queue_tags: ["refund_queue", "risk_hold", "recon_queue"],
+    ...DEMO_KNOWN,
   },
   {
+    row_key: "pi_demo_1004",
     order_id: "ord_demo_r43_004",
     order_number: "DH-ORD-R43-1004",
     payment_status: "unpaid",
+    source_payment_status: "unpaid",
     payment_provider: "DEMO_STRIPE",
     payment_intent_ref: "pi_demo_1004",
     currency: "USD",
@@ -52,11 +69,14 @@ export const PAYMENTS_FIXTURE: OaPaymentRecord[] = [
     risk_status: "clear",
     updated_at: "2026-10-09T09:20:00+08:00",
     queue_tags: ["awaiting_capture"],
+    ...DEMO_KNOWN,
   },
   {
+    row_key: "pi_demo_1006",
     order_id: "ord_demo_r43_006",
     order_number: "DH-ORD-R43-1006",
     payment_status: "failed",
+    source_payment_status: "failed",
     payment_provider: "DEMO_STRIPE",
     payment_intent_ref: "pi_demo_1006",
     currency: "JPY",
@@ -67,13 +87,15 @@ export const PAYMENTS_FIXTURE: OaPaymentRecord[] = [
     risk_status: "watch",
     updated_at: "2026-10-08T01:05:00+08:00",
     queue_tags: ["recon_queue", "risk_hold"],
+    ...DEMO_KNOWN,
   },
 ];
 
 export const PAYMENT_ORDER_FIELD_MAP = [
-  { payments_field: "order_id / order_number", orders_source: "Orders Core identity" },
-  { payments_field: "payment_status", orders_source: "Orders.payment_status (independent dim)" },
-  { payments_field: "refund_status / refund_amount_minor", orders_source: "Orders.refund_status + finance projection" },
-  { payments_field: "risk_status", orders_source: "Orders.risk_status → Compliance / Finance" },
-  { payments_field: "amount_minor / currency", orders_source: "Orders.total_minor / currency (no FX sum)" },
+  { payments_field: "order_id / order_number", orders_source: "GET /api/admin/orders identity" },
+  { payments_field: "payment_status", orders_source: "Orders.payment_status (independent dim; unmapped → unknown)" },
+  { payments_field: "payment_intent_ref / provider", orders_source: "only if source fields exist · else not_connected" },
+  { payments_field: "refund_status / refund_amount_minor", orders_source: "source refund_* only · never inferred from paid" },
+  { payments_field: "settlement / risk", orders_source: "Finance ledger Provider not_connected unless source field present" },
+  { payments_field: "amount_minor / currency", orders_source: "Orders.total_cents only · subtotal is not payable total" },
 ] as const;
