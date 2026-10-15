@@ -2,6 +2,7 @@
 
 import { privateFetch } from "@/lib/auth/private-api";
 import { fetchTrustedOaSession, getOaSupabaseBrowserClient } from "@/lib/oa-auth/supabaseClient";
+import { classifyPreviewContentType } from "@/lib/oa-media/trustedReadAdapter";
 import { readAccessToken } from "@/lib/supabase/client";
 
 export const OA_PRIVATE_READ_ROLES = ["oa_admin", "oa_operator"] as const;
@@ -97,8 +98,8 @@ export async function resolvePrivateReadAccess(signal?: AbortSignal): Promise<Co
 }
 
 export type CoBlobGetResult =
-  | { ok: true; blob: Blob; contentType: string }
-  | { ok: false; status: number | null; code: CoReadErrorCode | "not_found" };
+  | { ok: true; blob: Blob; contentType: string; kind: "image" | "video" }
+  | { ok: false; status: number | null; code: CoReadErrorCode | "not_found" | "restricted" };
 
 export function isTrustedPrivateBytePath(path: string): boolean {
   return /^\/api\/(?:assets|object-media)\/[A-Za-z0-9._-]+$/.test(path);
@@ -128,7 +129,9 @@ export async function oaPrivateGetBlob(path: string, signal: AbortSignal): Promi
     if (response.status !== 200) return { ok: false, status: response.status, code: "provider_unavailable" };
     const blob = await response.blob();
     const contentType = response.headers.get("content-type") || blob.type || "";
-    return { ok: true, blob, contentType };
+    const kind = classifyPreviewContentType(contentType);
+    if (!kind) return { ok: false, status: response.status, code: "restricted" };
+    return { ok: true, blob, contentType, kind };
   } catch (error) {
     if (signal.aborted || (error instanceof DOMException && error.name === "AbortError")) {
       return { ok: false, status: null, code: "provider_unavailable" };

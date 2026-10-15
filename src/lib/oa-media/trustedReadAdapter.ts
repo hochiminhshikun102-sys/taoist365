@@ -25,6 +25,16 @@ export function isTrustedMediaBytePath(path: string): boolean {
   return /^\/api\/(?:assets|object-media)\/[A-Za-z0-9._-]+$/.test(path);
 }
 
+/** Response Content-Type must be a real image/video. HTML/JSON/unknown are never a preview success. */
+export function classifyPreviewContentType(contentType: string): "image" | "video" | null {
+  const raw = String(contentType || "").split(";")[0].trim().toLowerCase();
+  if (raw === "image/png" || raw === "image/jpeg" || raw === "image/jpg" || raw === "image/gif" || raw === "image/webp" || raw === "image/avif") {
+    return "image";
+  }
+  if (raw === "video/mp4" || raw === "video/webm" || raw === "video/quicktime") return "video";
+  return null;
+}
+
 function asString(value: unknown): string {
   return String(value ?? "").trim();
 }

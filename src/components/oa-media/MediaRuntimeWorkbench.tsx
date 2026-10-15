@@ -23,7 +23,7 @@ import type { MediaQueueTag, OaMediaRecord } from "@/lib/oa-media/types";
 type QueueKey = MediaQueueTag;
 type PreviewState =
   | { status: "idle" | "loading" | "demo" }
-  | { status: "ready"; url: string; kind: "image" | "video" | "unknown"; contentType: string }
+  | { status: "ready"; url: string; kind: "image" | "video"; contentType: string }
   | { status: "auth_required" | "permission_denied" | "not_found" | "provider_unavailable" | "restricted" };
 
 function previewStatusMessage(status: Exclude<PreviewState["status"], "ready">): string {
@@ -33,7 +33,7 @@ function previewStatusMessage(status: Exclude<PreviewState["status"], "ready">):
   if (status === "permission_denied") return "permission_denied · Viewer cannot read private bytes.";
   if (status === "not_found") return "not_found · Media bytes missing.";
   if (status === "provider_unavailable") return "provider_unavailable · Preview byte read failed.";
-  if (status === "restricted") return "restricted · No trusted byte path.";
+  if (status === "restricted") return "restricted · Unsupported or untrusted media type.";
   return "Select a row · 选择一行";
 }
 
@@ -58,6 +58,7 @@ export function MediaRuntimeWorkbench() {
   const controllerRef = useRef(createCoReadController());
   const previewAbortRef = useRef<AbortController | null>(null);
   const previewUrlsRef = useRef(new Set<string>());
+  const previewGenerationRef = useRef(0);
 
   function revokePreviewUrls() {
     for (const url of previewUrlsRef.current) {
@@ -73,9 +74,10 @@ export function MediaRuntimeWorkbench() {
   const loadLive = useCallback(async () => {
     const ctl = controllerRef.current;
     const { generation, signal } = ctl.next();
+    previewGenerationRef.current += 1;
     previewAbortRef.current?.abort();
-    revokePreviewUrls();
     setPreview({ status: "idle" });
+    revokePreviewUrls();
     setLiveRows([]);
     setSelectedId("");
     setErrorCode(null);
@@ -129,47 +131,56 @@ export function MediaRuntimeWorkbench() {
   const dataSource = demoMode ? MEDIA_CORE_META.data_source : "VERIFIED_LOCAL_READ_SOURCE";
 
   useEffect(() => {
+    const generation = ++previewGenerationRef.current;
     previewAbortRef.current?.abort();
-    revokePreviewUrls();
     if (demoMode) {
       setPreview({ status: "demo" });
+      revokePreviewUrls();
       return;
     }
     if (liveBlocked || !selected) {
       setPreview({ status: "idle" });
+      revokePreviewUrls();
       return;
     }
     const path = selected.preview_path || "";
     if (!path) {
       setPreview({ status: "restricted" });
+      revokePreviewUrls();
       return;
     }
+    setPreview({ status: "loading" });
+    revokePreviewUrls();
     const abort = new AbortController();
     previewAbortRef.current = abort;
-    setPreview({ status: "loading" });
     void oaPrivateGetBlob(path, abort.signal).then((result) => {
-      if (abort.signal.aborted) return;
+      if (generation !== previewGenerationRef.current || abort.signal.aborted) return;
       if (!result.ok) {
-        const code = result.code === "preview_read_unavailable" ? "provider_unavailable" : result.code;
+        let code: Exclude<PreviewState["status"], "ready"> = "provider_unavailable";
+        if (result.code === "restricted") code = "restricted";
+        else if (result.code === "not_found") code = "not_found";
+        else if (result.code === "auth_required") code = "auth_required";
+        else if (result.code === "permission_denied") code = "permission_denied";
         setPreview({ status: code });
         return;
       }
       const url = URL.createObjectURL(result.blob);
+      if (generation !== previewGenerationRef.current || abort.signal.aborted) {
+        URL.revokeObjectURL(url);
+        return;
+      }
       previewUrlsRef.current.add(url);
       controllerRef.current.trackBlob(url);
-      const kind =
-        result.contentType.startsWith("video/") || selected.preview_kind === "video"
-          ? "video"
-          : result.contentType.startsWith("image/") || selected.preview_kind === "image"
-            ? "image"
-            : selected.preview_kind || "unknown";
-      setPreview({ status: "ready", url, kind, contentType: result.contentType });
+      setPreview({ status: "ready", url, kind: result.kind, contentType: result.contentType });
     });
     return () => {
       abort.abort();
-      revokePreviewUrls();
+      if (generation === previewGenerationRef.current) {
+        setPreview({ status: "idle" });
+        revokePreviewUrls();
+      }
     };
-  }, [demoMode, liveBlocked, selected?.media_id, selected?.preview_path, selected?.preview_kind]);
+  }, [demoMode, liveBlocked, selected?.media_id, selected?.preview_path]);
 
   return (
     <section className="oa-page oa-media-page" data-oa-media-core="r47">

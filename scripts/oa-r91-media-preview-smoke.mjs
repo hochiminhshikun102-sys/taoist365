@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { isTrustedMediaBytePath, mapAdminAsset } from "../src/lib/oa-media/trustedReadAdapter.ts";
+import { classifyPreviewContentType, isTrustedMediaBytePath, mapAdminAsset } from "../src/lib/oa-media/trustedReadAdapter.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const results = [];
@@ -63,6 +63,20 @@ record("401 403 not_found states", ui.includes("auth_required") && ui.includes("
 record("client blob helper fail-closed path", client.includes("oaPrivateGetBlob") && client.includes('code: "not_found"'));
 record("legacy product-media not rewritten", !read("src/components/admin/AssetRegistryAdmin.tsx").includes("oaPrivateGetBlob"));
 record("r90 public objects untouched", !read("functions/api/public/objects.js").includes("oaPrivateGetBlob"));
+
+record("mime image/png allowed", classifyPreviewContentType("image/png") === "image");
+record("mime image/jpeg charset allowed", classifyPreviewContentType("image/jpeg; charset=binary") === "image");
+record("mime video/mp4 allowed", classifyPreviewContentType("video/mp4") === "video");
+record("mime html rejected", classifyPreviewContentType("text/html") === null);
+record("mime json rejected", classifyPreviewContentType("application/json") === null);
+record("mime octet-stream rejected", classifyPreviewContentType("application/octet-stream") === null);
+record("mime empty rejected", classifyPreviewContentType("") === null);
+
+const css = read("src/styles/oa/oa-media.css");
+record("preview uses OA tokens not cream/black", css.includes("var(--base-white)") && css.includes("var(--water-blue)") && !css.includes("#f7f4f1") && !css.includes("#111") && !css.includes("#5c534c"));
+record("blob helper rejects non image/video mime", client.includes("classifyPreviewContentType") && client.includes('code: "restricted"'));
+record("preview generation guards stale fill", ui.includes("previewGenerationRef") && ui.includes("generation !== previewGenerationRef.current"));
+record("revoke after leaving ready state", ui.includes("setPreview({ status: \"loading\" })") && ui.includes("revokePreviewUrls()"));
 
 const failed = results.filter((item) => !item.pass);
 console.log(`R91_SMOKE ${results.filter((i) => i.pass).length}/${results.length}`);
