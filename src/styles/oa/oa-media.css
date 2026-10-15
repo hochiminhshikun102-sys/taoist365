@@ -20,6 +20,33 @@
   font-size: 12px;
 }
 
+.oa-media-preview {
+  margin: 12px 0;
+  min-height: 132px;
+  border: 1px solid color-mix(in srgb, #947a66 22%, #ece7e1);
+  background: #f7f4f1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.oa-media-preview img,
+.oa-media-preview video {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  background: #111;
+}
+
+.oa-media-preview-msg {
+  margin: 0;
+  padding: 16px;
+  font-size: 12px;
+  color: #5c534c;
+  text-align: center;
+}
+
 @media (max-width: 1100px) {
   .oa-media-queues {
     grid-template-columns: 1fr;
