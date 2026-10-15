@@ -1,11 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { capabilityLabel } from "@/components/oa-skeleton/capabilityGate";
+import {
+  createCoReadController,
+  oaPrivateGetJson,
+  subscribeOaAuthEpoch,
+  type CoReadErrorCode,
+} from "@/lib/oa-auth/oaPrivateReadClient";
 import { statusLabel } from "@/lib/oa-orders/format";
 import { SHIPPING_CORE_META, SHIPPING_FIXTURE, SHIPPING_ORDER_FIELD_MAP } from "@/lib/oa-shipping/fixture";
-import type { OaShipmentRecord, ShippingWorkbenchStatus } from "@/lib/oa-shipping/types";
+import { mapCommerceShipmentRows } from "@/lib/oa-shipping/trustedReadAdapter";
+import type { OaShipmentRecord, ShippingWorkbenchStatus, ShippingWorkbenchViewState } from "@/lib/oa-shipping/types";
 
 type QueueKey = "all" | ShippingWorkbenchStatus;
 
@@ -18,37 +25,90 @@ const QUEUES: Array<{ key: QueueKey; en: string; zh: string }> = [
   { key: "handoff", en: "Handoff", zh: "交接" },
 ];
 
-export function ShippingRuntimeWorkbench() {
-  const [queue, setQueue] = useState<QueueKey>("all");
-  const [selectedId, setSelectedId] = useState(SHIPPING_FIXTURE[0]?.shipment_id ?? "");
-  const [panel, setPanel] = useState<"detail" | "tracking" | "returns">("detail");
+function liveStateMessage(state: ShippingWorkbenchViewState): string | null {
+  if (state === "loading") return "Loading Preview read source… · 加载中";
+  if (state === "auth_required") return "auth_required · Sign in required. Retry is safe GET only.";
+  if (state === "permission_denied") return "permission_denied · Viewer cannot read fulfillment fields.";
+  if (state === "provider_unavailable") return "provider_unavailable · Preview read source unavailable. Retry.";
+  if (state === "failed") return "Provider request failed · 正式源读取失败.";
+  if (state === "not_connected") return "Live shipping Provider not connected · 真实运单源未接通.";
+  return null;
+}
 
-  const counts = useMemo(() => {
-    const map: Record<string, number> = { all: SHIPPING_FIXTURE.length };
-    for (const q of QUEUES) if (q.key !== "all") map[q.key] = 0;
-    for (const row of SHIPPING_FIXTURE) for (const tag of row.queue_tags) map[tag] = (map[tag] || 0) + 1;
-    return map;
+export function ShippingRuntimeWorkbench() {
+  const [demoMode, setDemoMode] = useState(false);
+  const [viewState, setViewState] = useState<ShippingWorkbenchViewState>("loading");
+  const [liveRows, setLiveRows] = useState<OaShipmentRecord[]>([]);
+  const [storage, setStorage] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<CoReadErrorCode | null>(null);
+  const [queue, setQueue] = useState<QueueKey>("all");
+  const [selectedId, setSelectedId] = useState("");
+  const [panel, setPanel] = useState<"detail" | "tracking" | "returns">("detail");
+  const controllerRef = useRef(createCoReadController());
+
+  const loadLive = useCallback(async () => {
+    const ctl = controllerRef.current;
+    const { generation, signal } = ctl.next();
+    setLiveRows([]);
+    setSelectedId("");
+    setErrorCode(null);
+    setViewState("loading");
+    const result = await oaPrivateGetJson<{ rows?: unknown; storage?: string }>("/api/admin/orders", signal);
+    if (!ctl.isCurrent(generation)) return;
+    if (!result.ok) {
+      setErrorCode(result.code);
+      setViewState(result.code === "preview_read_unavailable" ? "provider_unavailable" : result.code);
+      return;
+    }
+    const mapped = mapCommerceShipmentRows(result.payload.rows);
+    setStorage(result.storage);
+    setLiveRows(mapped);
+    setViewState(mapped.length ? "ready" : "empty");
+    setSelectedId(mapped[0]?.row_key ?? "");
   }, []);
 
+  useEffect(() => {
+    const ctl = controllerRef.current;
+    void loadLive();
+    const stop = subscribeOaAuthEpoch(() => {
+      void loadLive();
+    });
+    return () => {
+      ctl.clear();
+      stop();
+    };
+  }, [loadLive]);
+
+  const sourceRows = demoMode ? SHIPPING_FIXTURE : liveRows;
+  const liveBlocked = !demoMode && viewState !== "ready" && viewState !== "empty";
+  const dataSource = demoMode ? SHIPPING_CORE_META.data_source : "VERIFIED_LOCAL_READ_SOURCE";
+
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { all: sourceRows.length };
+    for (const q of QUEUES) if (q.key !== "all") map[q.key] = 0;
+    for (const row of sourceRows) for (const tag of row.queue_tags) map[tag] = (map[tag] || 0) + 1;
+    return map;
+  }, [sourceRows]);
+
   const rows = useMemo(() => {
-    if (queue === "all") return SHIPPING_FIXTURE;
-    return SHIPPING_FIXTURE.filter((row) => row.queue_tags.includes(queue));
-  }, [queue]);
+    if (liveBlocked) return [] as OaShipmentRecord[];
+    if (queue === "all") return sourceRows;
+    return sourceRows.filter((row) => row.queue_tags.includes(queue));
+  }, [queue, sourceRows, liveBlocked]);
 
   const selected: OaShipmentRecord | null =
-    rows.find((row) => row.shipment_id === selectedId) ?? rows[0] ?? null;
+    rows.find((row) => row.row_key === selectedId) ?? rows[0] ?? null;
 
   return (
     <section className="oa-page oa-ps-page" data-oa-shipping-core="r44">
       <div className="oa-fixture-banner">
-        WAVE1C_SHIPPING_SKELETON · DATA_SOURCE={SHIPPING_CORE_META.data_source} · LIVE_PROVIDER=
-        {SHIPPING_CORE_META.live_provider} · capability={SHIPPING_CORE_META.capability} · REAL_WRITE=FALSE
+        R92_SHIPPING_TRUSTED_READ · DATA_SOURCE={dataSource} · LIVE_PROVIDER=not_connected ·
+        CARRIER_PROVIDER=not_connected · WAREHOUSE_PROVIDER=not_connected · storage=
+        {demoMode ? "TEST_ONLY" : storage || "—"} · capability=read_only · REAL_WRITE=FALSE · DEMO_LIVE_MIX=FALSE
       </div>
 
       <div className="oa-capability-row">
-        <span className={`oa-capability-pill is-${SHIPPING_CORE_META.capability}`}>
-          {capabilityLabel(SHIPPING_CORE_META.capability)}
-        </span>
+        <span className="oa-capability-pill is-read_only">{capabilityLabel("read_only")}</span>
         <span className="oa-capability-pill is-not_connected">
           Live Provider · {capabilityLabel("not_connected")}
         </span>
@@ -59,11 +119,14 @@ export function ShippingRuntimeWorkbench() {
         <div>
           <h1 className="oa-page-title">Shipping Runtime · 发货管理</h1>
           <p className="oa-skeleton-lead">
-            Read-only skeleton for Logistics / Supply Chain / CS return-logistics projections. DEMO only — no label,
-            ship, or tracking writes.
+            Trusted GET /api/admin/orders only. Paid does not mean shipped. Missing packages / tracking / warehouse stay
+            unknown. No label, ship, or tracking writes.
           </p>
         </div>
         <div className="oa-orders-header-actions">
+          <button className="oa-btn" type="button" onClick={() => void loadLive()} disabled={demoMode}>
+            Refresh read · 刷新只读
+          </button>
           <button className="oa-btn" type="button" disabled>
             Create label · 面单 · Blocked
           </button>
@@ -72,6 +135,44 @@ export function ShippingRuntimeWorkbench() {
           </button>
         </div>
       </header>
+
+      <div className="oa-orders-state-toggles" aria-label="Workbench data mode">
+        <button
+          type="button"
+          className={`oa-orders-chip${!demoMode ? " is-active" : ""}`}
+          onClick={() => setDemoMode(false)}
+        >
+          Live Preview read
+        </button>
+        <button
+          type="button"
+          className={`oa-orders-chip${demoMode ? " is-active" : ""}`}
+          onClick={() => setDemoMode(true)}
+        >
+          TEST_ONLY DEMO structure
+        </button>
+      </div>
+
+      {!demoMode && liveStateMessage(viewState) ? (
+        <article
+          className={`oa-card oa-orders-state-card${errorCode ? " is-error" : ""}`}
+          data-oa-read-state={viewState}
+        >
+          {liveStateMessage(viewState)}
+          {errorCode === "provider_unavailable" ? (
+            <div>
+              <button className="oa-btn secondary" type="button" onClick={() => void loadLive()}>
+                Retry · 重试
+              </button>
+            </div>
+          ) : null}
+        </article>
+      ) : null}
+      {demoMode ? (
+        <article className="oa-card oa-orders-state-card">
+          TEST_ONLY DEMO · not mixed with live rows. Not a carrier waybill or warehouse movement.
+        </article>
+      ) : null}
 
       <div className="oa-orders-queues oa-ps-queues">
         {QUEUES.map((item) => (
@@ -84,7 +185,7 @@ export function ShippingRuntimeWorkbench() {
             <span>
               {item.en} · {item.zh}
             </span>
-            <strong>{counts[item.key] || 0}</strong>
+            <strong>{liveBlocked ? 0 : counts[item.key] || 0}</strong>
           </button>
         ))}
       </div>
@@ -93,52 +194,74 @@ export function ShippingRuntimeWorkbench() {
         <article className="oa-card">
           <div className="oa-commerce-list-head">
             <h2>Package list skeleton · 包裹列表骨架</h2>
-            <span className="oa-skeleton-meta">{rows.length} DEMO rows</span>
+            <span className="oa-skeleton-meta">
+              {rows.length} rows · {demoMode ? "TEST_ONLY" : "LIVE_PREVIEW_READ"}
+            </span>
           </div>
-          <div className="oa-orders-table-wrap">
-            <table className="oa-table">
-              <thead>
-                <tr>
-                  <th>Order / Line</th>
-                  <th>Shipment</th>
-                  <th>Fulfillment</th>
-                  <th>Shipment status</th>
-                  <th>Source</th>
-                  <th>Carrier / Tracking</th>
-                  <th>Warehouse</th>
-                  <th>Handoff</th>
-                  <th>Exception</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr
-                    key={row.shipment_id}
-                    className={selected?.shipment_id === row.shipment_id ? "is-selected" : undefined}
-                    onClick={() => setSelectedId(row.shipment_id)}
-                  >
-                    <td>
-                      {row.order_number}
-                      <div className="oa-skeleton-meta">
-                        {row.order_id} · {row.line_id}
-                      </div>
-                    </td>
-                    <td>{row.shipment_id}</td>
-                    <td>{statusLabel(row.fulfillment_status)}</td>
-                    <td>{statusLabel(row.shipment_status)}</td>
-                    <td>{row.fulfillment_source}</td>
-                    <td>
-                      {row.carrier}
-                      <div className="oa-skeleton-meta">{row.tracking_ref || "tracking pending"}</div>
-                    </td>
-                    <td>{row.warehouse_ref}</td>
-                    <td>{statusLabel(row.handoff_status)}</td>
-                    <td>{statusLabel(row.exception_status)}</td>
+          {liveBlocked || rows.length === 0 ? (
+            <div className="oa-orders-empty">
+              <h3>Empty state · 空状态</h3>
+              <p>
+                {liveBlocked
+                  ? "Live list hidden until a successful trusted read."
+                  : demoMode
+                    ? "No DEMO rows match current filters."
+                    : "No rows from Preview order read source."}
+              </p>
+            </div>
+          ) : (
+            <div className="oa-orders-table-wrap">
+              <table className="oa-table">
+                <thead>
+                  <tr>
+                    <th>Order / Line</th>
+                    <th>Shipment</th>
+                    <th>Fulfillment</th>
+                    <th>Shipment status</th>
+                    <th>Source</th>
+                    <th>Carrier / Tracking</th>
+                    <th>Warehouse</th>
+                    <th>Handoff</th>
+                    <th>Exception</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {rows.map((row) => (
+                    <tr
+                      key={row.row_key}
+                      className={selected?.row_key === row.row_key ? "is-selected" : undefined}
+                      onClick={() => setSelectedId(row.row_key)}
+                    >
+                      <td>
+                        {row.order_number}
+                        <div className="oa-skeleton-meta">
+                          {row.order_id} · {row.line_id}
+                        </div>
+                      </td>
+                      <td>{row.shipment_known ? row.shipment_id : "—"}</td>
+                      <td>
+                        {statusLabel(row.fulfillment_status)}
+                        {row.source_fulfillment_status !== row.fulfillment_status ? (
+                          <div className="oa-skeleton-meta">source {row.source_fulfillment_status}</div>
+                        ) : null}
+                      </td>
+                      <td>{statusLabel(row.shipment_status)}</td>
+                      <td>{row.fulfillment_source}</td>
+                      <td>
+                        {row.carrier_known ? row.carrier : "not_connected"}
+                        <div className="oa-skeleton-meta">
+                          {row.tracking_known ? row.tracking_ref : "tracking unknown"}
+                        </div>
+                      </td>
+                      <td>{row.warehouse_known ? row.warehouse_ref : "unknown"}</td>
+                      <td>{row.handoff_known ? statusLabel(row.handoff_status) : "unknown"}</td>
+                      <td>{row.exception_known ? statusLabel(row.exception_status) : "unknown"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </article>
 
         <aside className="oa-card">
@@ -173,11 +296,16 @@ export function ShippingRuntimeWorkbench() {
               </div>
               <div>
                 <dt>shipment_id</dt>
-                <dd>{selected.shipment_id}</dd>
+                <dd>{selected.shipment_known ? selected.shipment_id : "unknown · not invented"}</dd>
               </div>
               <div>
                 <dt>fulfillment_status</dt>
-                <dd>{selected.fulfillment_status}</dd>
+                <dd>
+                  {selected.fulfillment_status}
+                  {selected.source_fulfillment_status !== selected.fulfillment_status
+                    ? ` · source ${selected.source_fulfillment_status}`
+                    : ""}
+                </dd>
               </div>
               <div>
                 <dt>shipment_status</dt>
@@ -190,30 +318,32 @@ export function ShippingRuntimeWorkbench() {
               <div>
                 <dt>carrier / tracking_ref</dt>
                 <dd>
-                  {selected.carrier} · {selected.tracking_ref || "—"}
+                  {selected.carrier_known ? selected.carrier : "not_connected"} ·{" "}
+                  {selected.tracking_known ? selected.tracking_ref : "—"}
                 </dd>
               </div>
               <div>
                 <dt>warehouse_ref</dt>
-                <dd>{selected.warehouse_ref}</dd>
+                <dd>{selected.warehouse_known ? selected.warehouse_ref : "unknown · warehouse Provider not_connected"}</dd>
               </div>
               <div>
                 <dt>handoff_status</dt>
-                <dd>{selected.handoff_status}</dd>
+                <dd>{selected.handoff_known ? selected.handoff_status : "unknown"}</dd>
               </div>
               <div>
                 <dt>exception_status</dt>
-                <dd>{selected.exception_status}</dd>
+                <dd>{selected.exception_known ? selected.exception_status : "unknown"}</dd>
               </div>
             </dl>
           ) : panel === "tracking" ? (
             <div>
               <h3>Tracking entry · 物流轨迹入口</h3>
               <p className="oa-skeleton-meta">
-                Skeleton only. Carrier API not connected. Opens Logistics shell for projection.
+                Carrier tracking Provider not_connected. Opens Logistics shell for projection. No tracking write.
               </p>
               <p>
-                {selected.carrier} / {selected.tracking_ref || "no tracking yet"}
+                {selected.carrier_known ? selected.carrier : "not_connected"} /{" "}
+                {selected.tracking_known ? selected.tracking_ref : "no tracking field"}
               </p>
               <Link className="oa-btn secondary" href="/admin/oa/logistics">
                 Open Logistics shell · 物流壳
@@ -223,7 +353,8 @@ export function ShippingRuntimeWorkbench() {
             <div>
               <h3>Return logistics · 退货物流入口</h3>
               <p className="oa-skeleton-meta">
-                Skeleton only. Exception={selected.exception_status}. No reverse-label write.
+                Reverse logistics Provider not_connected. Exception=
+                {selected.exception_known ? selected.exception_status : "unknown"}. No reverse-label write.
               </p>
               <div className="oa-skeleton-actions">
                 <Link className="oa-btn secondary" href="/admin/oa/cs-center">

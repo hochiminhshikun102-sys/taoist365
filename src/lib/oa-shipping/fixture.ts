@@ -7,13 +7,24 @@ export const SHIPPING_CORE_META = {
   real_write: false,
 } as const;
 
+const DEMO_KNOWN = {
+  shipment_known: true,
+  tracking_known: true,
+  carrier_known: true,
+  warehouse_known: true,
+  handoff_known: true,
+  exception_known: true,
+} as const;
+
 export const SHIPPING_FIXTURE: OaShipmentRecord[] = [
   {
+    row_key: "shp_pending_01",
     order_id: "ord_demo_r43_001",
     order_number: "DH-ORD-R43-1001",
     line_id: "line_001a",
     shipment_id: "shp_pending_01",
     fulfillment_status: "not_started",
+    source_fulfillment_status: "not_started",
     shipment_status: "label_pending",
     fulfillment_source: "Local Warehouse",
     carrier: "DEMO_CARRIER",
@@ -23,13 +34,17 @@ export const SHIPPING_FIXTURE: OaShipmentRecord[] = [
     exception_status: "none",
     updated_at: "2026-10-13T09:02:00+08:00",
     queue_tags: ["ready_to_ship", "handoff"],
+    ...DEMO_KNOWN,
+    tracking_known: false,
   },
   {
+    row_key: "shp_demo_21",
     order_id: "ord_demo_r43_002",
     order_number: "DH-ORD-R43-1002",
     line_id: "line_002a",
     shipment_id: "shp_demo_21",
     fulfillment_status: "shipped",
+    source_fulfillment_status: "shipped",
     shipment_status: "in_transit",
     fulfillment_source: "Local Warehouse",
     carrier: "DEMO_CARRIER",
@@ -39,13 +54,16 @@ export const SHIPPING_FIXTURE: OaShipmentRecord[] = [
     exception_status: "none",
     updated_at: "2026-10-13T07:20:00+08:00",
     queue_tags: ["in_transit"],
+    ...DEMO_KNOWN,
   },
   {
+    row_key: "shp_demo_33",
     order_id: "ord_demo_r43_003",
     order_number: "DH-ORD-R43-1003",
     line_id: "line_003a",
     shipment_id: "shp_demo_33",
     fulfillment_status: "delivered",
+    source_fulfillment_status: "delivered",
     shipment_status: "delivered",
     fulfillment_source: "China Direct",
     carrier: "DEMO_INTL",
@@ -55,13 +73,16 @@ export const SHIPPING_FIXTURE: OaShipmentRecord[] = [
     exception_status: "damage_claim_open",
     updated_at: "2026-10-12T16:44:00+08:00",
     queue_tags: ["exception", "return_logistics"],
+    ...DEMO_KNOWN,
   },
   {
+    row_key: "shp_demo_55",
     order_id: "ord_demo_r43_005",
     order_number: "DH-ORD-R43-1005",
     line_id: "line_005a",
     shipment_id: "shp_demo_55",
     fulfillment_status: "delivered",
+    source_fulfillment_status: "delivered",
     shipment_status: "delivered",
     fulfillment_source: "Local Warehouse",
     carrier: "DEMO_CARRIER",
@@ -71,13 +92,14 @@ export const SHIPPING_FIXTURE: OaShipmentRecord[] = [
     exception_status: "none",
     updated_at: "2026-10-11T12:11:00+08:00",
     queue_tags: [],
+    ...DEMO_KNOWN,
   },
 ];
 
 export const SHIPPING_ORDER_FIELD_MAP = [
-  { shipping_field: "order_id / order_number / line_id", orders_source: "Orders Core identity + lines" },
-  { shipping_field: "fulfillment_status", orders_source: "Orders.fulfillment_status (independent dim)" },
-  { shipping_field: "shipment_id / carrier / tracking_ref", orders_source: "Orders.packages[] projection" },
-  { shipping_field: "warehouse_ref / handoff_status", orders_source: "Supply Chain + Logistics handoff" },
-  { shipping_field: "exception_status", orders_source: "Logistics exception + CS aftersales bridge" },
+  { shipping_field: "order_id / order_number / line_id", orders_source: "GET /api/admin/orders identity + first line_id if present" },
+  { shipping_field: "fulfillment_status", orders_source: "Orders.fulfillment_status (independent of payment_status)" },
+  { shipping_field: "shipment_id / carrier / tracking_ref", orders_source: "packages[] or tracking field only · never invented" },
+  { shipping_field: "warehouse_ref / handoff_status", orders_source: "source fields only · Supply/Logistics Provider not_connected" },
+  { shipping_field: "exception_status", orders_source: "source exception or fulfillment=exception · no reverse-label write" },
 ] as const;
