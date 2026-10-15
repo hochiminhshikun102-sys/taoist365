@@ -19,9 +19,18 @@ function asString(value: unknown): string {
   return String(value ?? "").trim();
 }
 
-function asFiniteInt(value: unknown): number | null {
-  if (typeof value === "number" && Number.isFinite(value)) return Math.trunc(value);
-  if (typeof value === "string" && /^-?\d+$/.test(value.trim())) return Number.parseInt(value.trim(), 10);
+/** Reject decimals, non-finite values, and integers outside MAX/MIN_SAFE_INTEGER. */
+export function asFiniteInt(value: unknown): number | null {
+  if (typeof value === "number") {
+    if (!Number.isInteger(value) || !Number.isSafeInteger(value)) return null;
+    return value;
+  }
+  if (typeof value === "string") {
+    const text = value.trim();
+    if (!/^-?\d+$/.test(text)) return null;
+    if (!Number.isSafeInteger(Number(text))) return null;
+    return Number.parseInt(text, 10);
+  }
   return null;
 }
 

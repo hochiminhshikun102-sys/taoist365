@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { mapCommercePayment, mapCommercePaymentRows } from "../src/lib/oa-payments/trustedReadAdapter.ts";
+import { asFiniteInt, mapCommercePayment, mapCommercePaymentRows } from "../src/lib/oa-payments/trustedReadAdapter.ts";
 import {
   hasExplicitShipReadyGrant,
   mapCommerceShipmentRows,
@@ -72,6 +72,13 @@ record(
     payIntent.queue_tags.includes("risk_hold"),
 );
 
+record("asFiniteInt_accepts_safe_int", asFiniteInt(5200) === 5200 && asFiniteInt("200") === 200 && asFiniteInt(-3) === -3);
+record("asFiniteInt_rejects_decimal", asFiniteInt(12.5) === null && asFiniteInt("12.5") === null);
+record("asFiniteInt_rejects_non_finite", asFiniteInt(Number.NaN) === null && asFiniteInt(Number.POSITIVE_INFINITY) === null);
+record("asFiniteInt_rejects_unsafe_int", asFiniteInt(Number.MAX_SAFE_INTEGER + 1) === null && asFiniteInt("9007199254740992") === null);
+const payDecimal = mapCommercePayment({ ...cartOrder, total_cents: 12.9, refund_cents: "9.1" });
+record("pay_abnormal_amount_unknown", payDecimal.amount_known === false && payDecimal.refund_amount_known === false);
+
 record("pay_html_json_not_rows", mapCommercePaymentRows({ rows: [] }).length === 0);
 record("pay_empty_array", mapCommercePaymentRows([]).length === 0);
 
@@ -126,6 +133,18 @@ const explicitReady = mapCommerceShipmentRowsFromOrder({
   ready_to_ship: true,
 });
 record("explicit_grant_tags_ready_to_ship", explicitReady[0].queue_tags.includes("ready_to_ship") && explicitReady[0].ship_eligibility === "eligible");
+record(
+  "reverse_false_string_not_return_queue",
+  !mapCommerceShipmentRowsFromOrder({ order_id: "r1", reverse_shipment: "false" })[0].queue_tags.includes("return_logistics"),
+);
+record(
+  "reverse_empty_object_not_return_queue",
+  !mapCommerceShipmentRowsFromOrder({ order_id: "r2", reverse_shipment: {} })[0].queue_tags.includes("return_logistics"),
+);
+record(
+  "reverse_true_tags_return_queue",
+  mapCommerceShipmentRowsFromOrder({ order_id: "r3", reverse_shipment: true })[0].queue_tags.includes("return_logistics"),
+);
 
 record("ship_rows_flat", mapCommerceShipmentRows([cartOrder, { order_id: "b", packages: [{ shipment_id: "s1" }, { shipment_id: "s2" }] }]).length === 3);
 

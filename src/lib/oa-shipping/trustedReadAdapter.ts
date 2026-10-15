@@ -61,10 +61,10 @@ export function mapCommerceShipmentRowsFromOrder(source: Record<string, unknown>
     const shipmentStatus = asString(pkg.shipment_status) || asString(source.shipment_status);
     const fulfillmentSource = asString(pkg.fulfillment_source) || asString(source.fulfillment_source);
     const returnFlag =
-      asString(source.return_logistics) === "true" ||
-      asString(pkg.return_logistics) === "true" ||
-      Boolean(source.reverse_shipment) ||
-      Boolean(pkg.reverse_shipment);
+      isTruthyFlag(source.return_logistics) ||
+      isTruthyFlag(pkg.return_logistics) ||
+      isTruthyFlag(source.reverse_shipment) ||
+      isTruthyFlag(pkg.reverse_shipment);
 
     const explicitReady = hasExplicitShipReadyGrant(source, pkg);
     const ship_eligibility: OaShipmentRecord["ship_eligibility"] = explicitReady
