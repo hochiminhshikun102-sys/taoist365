@@ -31,6 +31,8 @@ export type OaShipmentRecord = {
   warehouse_ref: string;
   handoff_status: string;
   exception_status: string;
+  /** Live: eligible only with explicit source grant. not_started is pending/unknown, never ready_to_ship. */
+  ship_eligibility: "eligible" | "pending" | "unknown";
   updated_at: string;
   queue_tags: ShippingWorkbenchStatus[];
   shipment_known: boolean;

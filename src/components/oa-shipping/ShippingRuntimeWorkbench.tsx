@@ -25,6 +25,12 @@ const QUEUES: Array<{ key: QueueKey; en: string; zh: string }> = [
   { key: "handoff", en: "Handoff", zh: "交接" },
 ];
 
+function eligibilityLabel(value: OaShipmentRecord["ship_eligibility"]): string {
+  if (value === "eligible") return "eligible · 可发货";
+  if (value === "pending") return "pending · 待处理 · 资格未知";
+  return "unknown · 资格未知";
+}
+
 function liveStateMessage(state: ShippingWorkbenchViewState): string | null {
   if (state === "loading") return "Loading Preview read source… · 加载中";
   if (state === "auth_required") return "auth_required · Sign in required. Retry is safe GET only.";
@@ -119,8 +125,9 @@ export function ShippingRuntimeWorkbench() {
         <div>
           <h1 className="oa-page-title">Shipping Runtime · 发货管理</h1>
           <p className="oa-skeleton-lead">
-            Trusted GET /api/admin/orders only. Paid does not mean shipped. Missing packages / tracking / warehouse stay
-            unknown. No label, ship, or tracking writes.
+            Trusted GET /api/admin/orders only. Paid does not mean shipped. Fulfillment not_started is pending /
+            eligibility unknown — not ready_to_ship. Missing packages / tracking / warehouse stay unknown. No label,
+            ship, or tracking writes.
           </p>
         </div>
         <div className="oa-orders-header-actions">
@@ -241,6 +248,7 @@ export function ShippingRuntimeWorkbench() {
                       <td>{row.shipment_known ? row.shipment_id : "—"}</td>
                       <td>
                         {statusLabel(row.fulfillment_status)}
+                        <div className="oa-skeleton-meta">{eligibilityLabel(row.ship_eligibility)}</div>
                         {row.source_fulfillment_status !== row.fulfillment_status ? (
                           <div className="oa-skeleton-meta">source {row.source_fulfillment_status}</div>
                         ) : null}
@@ -306,6 +314,10 @@ export function ShippingRuntimeWorkbench() {
                     ? ` · source ${selected.source_fulfillment_status}`
                     : ""}
                 </dd>
+              </div>
+              <div>
+                <dt>ship_eligibility</dt>
+                <dd>{eligibilityLabel(selected.ship_eligibility)}</dd>
               </div>
               <div>
                 <dt>shipment_status</dt>

@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { mapCommercePayment, mapCommercePaymentRows } from "../src/lib/oa-payments/trustedReadAdapter.ts";
 import {
+  hasExplicitShipReadyGrant,
   mapCommerceShipmentRows,
   mapCommerceShipmentRowsFromOrder,
   paidDoesNotImplyShipped,
@@ -76,7 +77,8 @@ record("pay_empty_array", mapCommercePaymentRows([]).length === 0);
 
 const shipCart = mapCommerceShipmentRowsFromOrder(cartOrder);
 record("ship_one_row_no_fake_package", shipCart.length === 1 && shipCart[0].shipment_known === false && shipCart[0].shipment_id === "");
-record("ship_ready_not_in_transit", shipCart[0].queue_tags.includes("ready_to_ship") && !shipCart[0].queue_tags.includes("in_transit"));
+record("ship_not_started_not_ready_to_ship", !shipCart[0].queue_tags.includes("ready_to_ship") && !shipCart[0].queue_tags.includes("in_transit"));
+record("ship_not_started_eligibility_pending", shipCart[0].ship_eligibility === "pending");
 record("ship_no_carrier_warehouse", shipCart[0].carrier_known === false && shipCart[0].warehouse_known === false);
 record("ship_frontstage_not_fulfillment_source", shipCart[0].fulfillment_source === "unknown");
 record("ship_tracking_unknown", shipCart[0].tracking_known === false);
@@ -88,7 +90,7 @@ const paidUnshipped = {
 };
 record("paid_does_not_imply_shipped", paidDoesNotImplyShipped(paidUnshipped) === true);
 const paidShip = mapCommerceShipmentRowsFromOrder(paidUnshipped);
-record("paid_stays_ready_to_ship", paidShip[0].queue_tags.includes("ready_to_ship") && !paidShip[0].queue_tags.includes("in_transit"));
+record("paid_not_started_not_ready_to_ship", !paidShip[0].queue_tags.includes("ready_to_ship") && paidShip[0].ship_eligibility === "pending");
 record("paid_shipment_status_unknown", paidShip[0].shipment_status === "unknown");
 
 const withPkg = mapCommerceShipmentRowsFromOrder({
@@ -112,6 +114,18 @@ const trackingOnly = mapCommerceShipmentRowsFromOrder({
   tracking: "TRK-SOURCE",
 });
 record("tracking_field_without_invented_shipment", trackingOnly[0].tracking_ref === "TRK-SOURCE" && trackingOnly[0].shipment_known === false);
+record(
+  "explicit_ship_ready_only",
+  hasExplicitShipReadyGrant({ ready_to_ship: true }) === true &&
+    hasExplicitShipReadyGrant({ fulfillment_status: "not_started" }) === false &&
+    hasExplicitShipReadyGrant({ payment_status: "paid", fulfillment_status: "not_started" }) === false,
+);
+const explicitReady = mapCommerceShipmentRowsFromOrder({
+  order_id: "order_ready",
+  fulfillment_status: "not_started",
+  ready_to_ship: true,
+});
+record("explicit_grant_tags_ready_to_ship", explicitReady[0].queue_tags.includes("ready_to_ship") && explicitReady[0].ship_eligibility === "eligible");
 
 record("ship_rows_flat", mapCommerceShipmentRows([cartOrder, { order_id: "b", packages: [{ shipment_id: "s1" }, { shipment_id: "s2" }] }]).length === 3);
 
@@ -129,6 +143,7 @@ record("pay_demo_not_mixed", payUi.includes("DEMO_LIVE_MIX=FALSE") && payUi.incl
 record("ship_demo_not_mixed", shipUi.includes("DEMO_LIVE_MIX=FALSE"));
 record("pay_layout_kept", payUi.includes("oa-ps-page") && payUi.includes("Payment ledger skeleton") && payUi.includes("/admin/oa/finance"));
 record("ship_layout_kept", shipUi.includes("oa-ps-page") && shipUi.includes("Package list skeleton") && shipUi.includes("/admin/oa/logistics"));
+record("ship_ui_shows_eligibility_unknown", shipUi.includes("资格未知") && shipUi.includes("not_started is pending"));
 record("no_stripe_session_status", !payUi.includes("/api/session-status") && !payUi.includes("create-checkout-session"));
 record("client_path_union_unchanged", read("src/lib/oa-auth/oaPrivateReadClient.ts").includes('path: "/api/admin/orders" | "/api/admin/objects" | "/api/admin/assets"'));
 record("r90_public_objects_untouched", !read("functions/api/public/objects.js").includes("mapCommercePayment"));

@@ -26,6 +26,18 @@ function packageRows(source: Record<string, unknown>): Record<string, unknown>[]
   return rows.length ? rows : [{}];
 }
 
+function isTruthyFlag(value: unknown): boolean {
+  return value === true || value === "true";
+}
+
+/** Confirmed ship-ready only from an explicit source grant — never from fulfillment not_started or paid. */
+export function hasExplicitShipReadyGrant(source: Record<string, unknown>, pkg: Record<string, unknown> = {}): boolean {
+  if (isTruthyFlag(pkg.ready_to_ship) || isTruthyFlag(source.ready_to_ship)) return true;
+  if (isTruthyFlag(pkg.ship_eligible) || isTruthyFlag(source.ship_eligible)) return true;
+  const shipmentStatus = asString(pkg.shipment_status) || asString(source.shipment_status);
+  return shipmentStatus === "ready_to_ship";
+}
+
 /** One row per source package, or one order row when no package exists. Paid ≠ shipped. */
 export function mapCommerceShipmentRowsFromOrder(source: Record<string, unknown>): OaShipmentRecord[] {
   const orderId = asString(source.order_id) || asString(source.id) || "unknown";
@@ -54,8 +66,15 @@ export function mapCommerceShipmentRowsFromOrder(source: Record<string, unknown>
       Boolean(source.reverse_shipment) ||
       Boolean(pkg.reverse_shipment);
 
+    const explicitReady = hasExplicitShipReadyGrant(source, pkg);
+    const ship_eligibility: OaShipmentRecord["ship_eligibility"] = explicitReady
+      ? "eligible"
+      : sourceFulfillment === "not_started"
+        ? "pending"
+        : "unknown";
+
     const queue_tags: ShippingWorkbenchStatus[] = [];
-    if (sourceFulfillment === "not_started") queue_tags.push("ready_to_ship");
+    if (explicitReady) queue_tags.push("ready_to_ship");
     if (sourceFulfillment === "shipped" || shipmentStatus === "in_transit") queue_tags.push("in_transit");
     if (sourceFulfillment === "exception" || (exceptionRaw && exceptionRaw !== "none")) queue_tags.push("exception");
     if (returnFlag) queue_tags.push("return_logistics");
@@ -77,6 +96,7 @@ export function mapCommerceShipmentRowsFromOrder(source: Record<string, unknown>
       warehouse_ref: warehouse || "unknown",
       handoff_status: handoff || "unknown",
       exception_status: exceptionRaw || (sourceFulfillment === "exception" ? "exception" : "unknown"),
+      ship_eligibility,
       updated_at: updated,
       queue_tags,
       shipment_known: Boolean(shipmentId),
