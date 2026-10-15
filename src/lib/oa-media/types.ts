@@ -34,4 +34,8 @@ export type OaMediaRecord = {
   preview_href_blocked?: boolean;
   source_scope?: string;
   source_status?: string;
+  mime_type?: string;
+  media_slot?: string;
+  preview_path?: string;
+  preview_kind?: "image" | "video" | "unknown";
 };

@@ -13,10 +13,27 @@ export type AdminAssetSource = {
   public_url?: unknown;
   file_url?: unknown;
   data_url?: unknown;
+  mime_type?: unknown;
   tags?: unknown;
   updated_at?: unknown;
   created_at?: unknown;
 };
+
+const PRODUCT_SLOTS = new Set(["main", "detail", "scene", "pc", "mobile", "social", "motion", "original", "rights"]);
+
+export function isTrustedMediaBytePath(path: string): boolean {
+  return /^\/api\/(?:assets|object-media)\/[A-Za-z0-9._-]+$/.test(path);
+}
+
+/** Response Content-Type must be a real image/video. HTML/JSON/unknown are never a preview success. */
+export function classifyPreviewContentType(contentType: string): "image" | "video" | null {
+  const raw = String(contentType || "").split(";")[0].trim().toLowerCase();
+  if (raw === "image/png" || raw === "image/jpeg" || raw === "image/jpg" || raw === "image/gif" || raw === "image/webp" || raw === "image/avif") {
+    return "image";
+  }
+  if (raw === "video/mp4" || raw === "video/webm" || raw === "video/quicktime") return "video";
+  return null;
+}
 
 function asString(value: unknown): string {
   return String(value ?? "").trim();
@@ -31,6 +48,27 @@ function assetKindFrom(source: AdminAssetSource): AssetKind {
   return "original_asset";
 }
 
+function mediaSlotFrom(source: AdminAssetSource): string {
+  const usage = asString(source.usage).toLowerCase();
+  if (PRODUCT_SLOTS.has(usage)) return usage;
+  const tags = Array.isArray(source.tags) ? source.tags.map((tag) => String(tag).toLowerCase()) : [];
+  const hit = tags.find((tag) => PRODUCT_SLOTS.has(tag));
+  return hit || "unknown";
+}
+
+function previewKindFrom(mime: string, slot: string): "image" | "video" | "unknown" {
+  if (mime.startsWith("video/") || slot === "motion") return "video";
+  if (mime.startsWith("image/")) return "image";
+  return "unknown";
+}
+
+function previewPathFrom(source: AdminAssetSource, mediaId: string): string {
+  const fileUrl = asString(source.file_url);
+  if (isTrustedMediaBytePath(fileUrl)) return fileUrl;
+  if (mediaId && mediaId !== "unknown") return `/api/assets/${mediaId}`;
+  return "";
+}
+
 export function mapAdminAsset(source: AdminAssetSource, retrievedAt: string): OaMediaRecord {
   const mediaId = asString(source.id) || "unknown";
   const kind = assetKindFrom(source);
@@ -38,10 +76,13 @@ export function mapAdminAsset(source: AdminAssetSource, retrievedAt: string): Oa
   const rightsStatus: RightsStatus = "unknown";
   const reviewStatus: ReviewStatus = "unknown";
   const mediaSource: MediaSource = "owner_upload";
-  const isOriginal = kind === "original_asset";
+  const slot = mediaSlotFrom(source);
+  const mime = asString(source.mime_type);
+  const previewPath = previewPathFrom(source, mediaId);
+  const isOriginal = kind === "original_asset" || slot === "original";
   const isPublicAsset = false;
   const isAi = kind === "ai_derivative";
-  const hasRights = kind === "rights_evidence";
+  const hasRights = kind === "rights_evidence" || slot === "rights";
 
   const queue_tags: MediaQueueTag[] = [];
   if (!objectId) queue_tags.push("orphaned");
@@ -63,12 +104,16 @@ export function mapAdminAsset(source: AdminAssetSource, retrievedAt: string): Oa
     is_ai_derivative: isAi,
     has_rights_evidence: hasRights,
     intake_ref: asString(source.intake_id) || "—",
-    compliance_note: "rights/review unknown · byte URL not used as img src",
+    compliance_note: "rights/review unknown · preview via Bearer blob only",
     updated_at: asString(source.updated_at) || asString(source.created_at) || retrievedAt,
     queue_tags,
     preview_href_blocked: true,
     source_scope: asString(source.scope) || "unknown",
     source_status: asString(source.status) || "unknown",
+    mime_type: mime || "unknown",
+    media_slot: slot,
+    preview_path: previewPath,
+    preview_kind: previewKindFrom(mime, slot),
   };
 }
 

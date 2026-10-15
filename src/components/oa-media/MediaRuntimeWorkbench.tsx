@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { capabilityLabel } from "@/components/oa-skeleton/capabilityGate";
 import {
   createCoReadController,
+  oaPrivateGetBlob,
   oaPrivateGetJson,
   subscribeOaAuthEpoch,
   type CoReadErrorCode,
@@ -20,6 +21,21 @@ import { mapAdminAssetRows } from "@/lib/oa-media/trustedReadAdapter";
 import type { MediaQueueTag, OaMediaRecord } from "@/lib/oa-media/types";
 
 type QueueKey = MediaQueueTag;
+type PreviewState =
+  | { status: "idle" | "loading" | "demo" }
+  | { status: "ready"; url: string; kind: "image" | "video"; contentType: string }
+  | { status: "auth_required" | "permission_denied" | "not_found" | "provider_unavailable" | "restricted" };
+
+function previewStatusMessage(status: Exclude<PreviewState["status"], "ready">): string {
+  if (status === "loading") return "Loading authorized preview… · 授权预览加载中";
+  if (status === "demo") return "TEST_ONLY DEMO · live blob preview not used.";
+  if (status === "auth_required") return "auth_required · Sign in required for preview.";
+  if (status === "permission_denied") return "permission_denied · Viewer cannot read private bytes.";
+  if (status === "not_found") return "not_found · Media bytes missing.";
+  if (status === "provider_unavailable") return "provider_unavailable · Preview byte read failed.";
+  if (status === "restricted") return "restricted · Unsupported or untrusted media type.";
+  return "Select a row · 选择一行";
+}
 
 const QUEUES: Array<{ key: QueueKey; en: string; zh: string }> = [
   { key: "all", en: "All", zh: "全部" },
@@ -38,11 +54,30 @@ export function MediaRuntimeWorkbench() {
   const [liveRows, setLiveRows] = useState<OaMediaRecord[]>([]);
   const [queue, setQueue] = useState<QueueKey>("all");
   const [selectedId, setSelectedId] = useState("");
+  const [preview, setPreview] = useState<PreviewState>({ status: "idle" });
   const controllerRef = useRef(createCoReadController());
+  const previewAbortRef = useRef<AbortController | null>(null);
+  const previewUrlsRef = useRef(new Set<string>());
+  const previewGenerationRef = useRef(0);
+
+  function revokePreviewUrls() {
+    for (const url of previewUrlsRef.current) {
+      try {
+        URL.revokeObjectURL(url);
+      } catch {
+        /* ignore */
+      }
+    }
+    previewUrlsRef.current.clear();
+  }
 
   const loadLive = useCallback(async () => {
     const ctl = controllerRef.current;
     const { generation, signal } = ctl.next();
+    previewGenerationRef.current += 1;
+    previewAbortRef.current?.abort();
+    setPreview({ status: "idle" });
+    revokePreviewUrls();
     setLiveRows([]);
     setSelectedId("");
     setErrorCode(null);
@@ -68,6 +103,8 @@ export function MediaRuntimeWorkbench() {
       void loadLive();
     });
     return () => {
+      previewAbortRef.current?.abort();
+      revokePreviewUrls();
       ctl.clear();
       stop();
     };
@@ -93,6 +130,58 @@ export function MediaRuntimeWorkbench() {
     rows.find((row) => row.media_id === selectedId) ?? rows[0] ?? null;
   const dataSource = demoMode ? MEDIA_CORE_META.data_source : "VERIFIED_LOCAL_READ_SOURCE";
 
+  useEffect(() => {
+    const generation = ++previewGenerationRef.current;
+    previewAbortRef.current?.abort();
+    if (demoMode) {
+      setPreview({ status: "demo" });
+      revokePreviewUrls();
+      return;
+    }
+    if (liveBlocked || !selected) {
+      setPreview({ status: "idle" });
+      revokePreviewUrls();
+      return;
+    }
+    const path = selected.preview_path || "";
+    if (!path) {
+      setPreview({ status: "restricted" });
+      revokePreviewUrls();
+      return;
+    }
+    setPreview({ status: "loading" });
+    revokePreviewUrls();
+    const abort = new AbortController();
+    previewAbortRef.current = abort;
+    void oaPrivateGetBlob(path, abort.signal).then((result) => {
+      if (generation !== previewGenerationRef.current || abort.signal.aborted) return;
+      if (!result.ok) {
+        let code: Exclude<PreviewState["status"], "ready"> = "provider_unavailable";
+        if (result.code === "restricted") code = "restricted";
+        else if (result.code === "not_found") code = "not_found";
+        else if (result.code === "auth_required") code = "auth_required";
+        else if (result.code === "permission_denied") code = "permission_denied";
+        setPreview({ status: code });
+        return;
+      }
+      const url = URL.createObjectURL(result.blob);
+      if (generation !== previewGenerationRef.current || abort.signal.aborted) {
+        URL.revokeObjectURL(url);
+        return;
+      }
+      previewUrlsRef.current.add(url);
+      controllerRef.current.trackBlob(url);
+      setPreview({ status: "ready", url, kind: result.kind, contentType: result.contentType });
+    });
+    return () => {
+      abort.abort();
+      if (generation === previewGenerationRef.current) {
+        setPreview({ status: "idle" });
+        revokePreviewUrls();
+      }
+    };
+  }, [demoMode, liveBlocked, selected?.media_id, selected?.preview_path]);
+
   return (
     <section className="oa-page oa-media-page" data-oa-media-core="r47">
       <div className="oa-fixture-banner">
@@ -114,7 +203,7 @@ export function MediaRuntimeWorkbench() {
           <h1 className="oa-page-title">Product Media · 商品素材</h1>
           <p className="oa-skeleton-lead">
             Read-only Preview GET. original_asset ≠ public_asset; rights_evidence ≠ product_image;
-            ai_derivative ≠ approved_public_asset. No bare /api/assets img src.
+            ai_derivative ≠ approved_public_asset. Authorized preview uses Bearer bytes then a temporary blob URL.
           </p>
         </div>
         <div className="oa-orders-header-actions">
@@ -171,7 +260,7 @@ export function MediaRuntimeWorkbench() {
             </li>
           ))}
           <li>
-            <code>asset byte GET /api/assets/[id] = OWNER_CONTRACT_PENDING</code>
+            <code>preview = Bearer GET + blob URL · no token in src · no anonymous byte reopen</code>
           </li>
         </ul>
       </article>
@@ -214,6 +303,7 @@ export function MediaRuntimeWorkbench() {
                     <th>Title</th>
                     <th>source</th>
                     <th>kind</th>
+                    <th>slot</th>
                     <th>rights</th>
                     <th>review</th>
                     <th>SKU</th>
@@ -234,6 +324,7 @@ export function MediaRuntimeWorkbench() {
                       <td>{row.title}</td>
                       <td>{statusLabel(row.source)}</td>
                       <td>{statusLabel(row.asset_kind)}</td>
+                      <td>{statusLabel(row.media_slot || "unknown")}</td>
                       <td>{statusLabel(row.rights_status)}</td>
                       <td>{statusLabel(row.review_status)}</td>
                       <td>{row.object_sku}</td>
@@ -254,7 +345,22 @@ export function MediaRuntimeWorkbench() {
               <p className="oa-orders-summary-id">
                 {selected.media_id} · {selected.bundle_ref}
               </p>
+              <div className="oa-media-preview" data-oa-media-preview={preview.status}>
+                {preview.status === "ready" && preview.kind === "video" ? (
+                  <video src={preview.url} controls playsInline preload="metadata" />
+                ) : null}
+                {preview.status === "ready" && preview.kind !== "video" ? (
+                  <img src={preview.url} alt={selected.title} />
+                ) : null}
+                {preview.status !== "ready" ? (
+                  <p className="oa-media-preview-msg">{previewStatusMessage(preview.status)}</p>
+                ) : null}
+              </div>
               <dl className="oa-orders-dl">
+                <div>
+                  <dt>media_slot</dt>
+                  <dd>{selected.media_slot || "unknown"}</dd>
+                </div>
                 <div>
                   <dt>source</dt>
                   <dd>{selected.source}</dd>
@@ -297,7 +403,7 @@ export function MediaRuntimeWorkbench() {
                 </div>
                 <div>
                   <dt>preview_href</dt>
-                  <dd>blocked</dd>
+                  <dd>blocked · blob only</dd>
                 </div>
               </dl>
               <p className="oa-skeleton-meta">{selected.compliance_note}</p>

@@ -2,6 +2,7 @@
 
 import { privateFetch } from "@/lib/auth/private-api";
 import { fetchTrustedOaSession, getOaSupabaseBrowserClient } from "@/lib/oa-auth/supabaseClient";
+import { classifyPreviewContentType } from "@/lib/oa-media/trustedReadAdapter";
 import { readAccessToken } from "@/lib/supabase/client";
 
 export const OA_PRIVATE_READ_ROLES = ["oa_admin", "oa_operator"] as const;
@@ -93,6 +94,49 @@ export async function resolvePrivateReadAccess(signal?: AbortSignal): Promise<Co
     return { allow: false, code: "permission_denied" };
   } catch {
     return { allow: false, code: "provider_unavailable" };
+  }
+}
+
+export type CoBlobGetResult =
+  | { ok: true; blob: Blob; contentType: string; kind: "image" | "video" }
+  | { ok: false; status: number | null; code: CoReadErrorCode | "not_found" | "restricted" };
+
+export function isTrustedPrivateBytePath(path: string): boolean {
+  return /^\/api\/(?:assets|object-media)\/[A-Za-z0-9._-]+$/.test(path);
+}
+
+export async function oaPrivateGetBlob(path: string, signal: AbortSignal): Promise<CoBlobGetResult> {
+  if (!isTrustedPrivateBytePath(path)) {
+    return { ok: false, status: null, code: "provider_unavailable" };
+  }
+  const access = await resolvePrivateReadAccess(signal);
+  if (signal.aborted) return { ok: false, status: null, code: "provider_unavailable" };
+  if (!access.allow) return { ok: false, status: null, code: access.code };
+
+  const timeout = AbortSignal.timeout(OA_PRIVATE_GET_TIMEOUT_MS);
+  const combined =
+    typeof AbortSignal.any === "function" ? AbortSignal.any([signal, timeout]) : signal;
+
+  try {
+    const response = await privateFetch(path, {
+      method: "GET",
+      signal: combined,
+      headers: { accept: "image/*,video/*,application/octet-stream" },
+    });
+    if (response.status === 401) return { ok: false, status: 401, code: "auth_required" };
+    if (response.status === 403) return { ok: false, status: 403, code: "permission_denied" };
+    if (response.status === 404) return { ok: false, status: 404, code: "not_found" };
+    if (response.status !== 200) return { ok: false, status: response.status, code: "provider_unavailable" };
+    const blob = await response.blob();
+    const contentType = response.headers.get("content-type") || blob.type || "";
+    const kind = classifyPreviewContentType(contentType);
+    if (!kind) return { ok: false, status: response.status, code: "restricted" };
+    return { ok: true, blob, contentType, kind };
+  } catch (error) {
+    if (signal.aborted || (error instanceof DOMException && error.name === "AbortError")) {
+      return { ok: false, status: null, code: "provider_unavailable" };
+    }
+    return { ok: false, status: null, code: "provider_unavailable" };
   }
 }
 

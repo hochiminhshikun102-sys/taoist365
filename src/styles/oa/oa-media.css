@@ -20,6 +20,34 @@
   font-size: 12px;
 }
 
+.oa-media-preview {
+  margin: 12px 0;
+  min-height: 132px;
+  border: 1px solid var(--metal-gray);
+  border-radius: var(--card-radius);
+  background: var(--base-white);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.oa-media-preview img,
+.oa-media-preview video {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  background: var(--base-white);
+}
+
+.oa-media-preview-msg {
+  margin: 0;
+  padding: 16px;
+  font-size: 12px;
+  color: var(--water-blue);
+  text-align: center;
+}
+
 @media (max-width: 1100px) {
   .oa-media-queues {
     grid-template-columns: 1fr;
