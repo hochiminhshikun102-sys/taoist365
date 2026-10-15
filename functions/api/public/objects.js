@@ -9,13 +9,14 @@ function safePublicUrl(value) {
   if (typeof value !== "string") return false;
   const url = value.trim();
   if (!url || url.includes("\\") || /[\r\n]/.test(url)) return false;
+  // No inline bytes, no query/fragment signed links, no off-origin hosts.
+  // Approved public media remains same-origin /api/object-media|assets/{id}
+  // (byte GET is independently gated by R89) or legacy site-static paths.
+  if (/^(?:data:|blob:|javascript:)/i.test(url)) return false;
+  if (/[?#]/.test(url)) return false;
+  if (/^(?:https?:)?\/\//i.test(url)) return false;
   if (/^\/api\/(?:object-media|assets)\/[A-Za-z0-9._-]+$/.test(url)) return true;
-  // Legacy public static assets, but never private/admin API routes.
   if (url.startsWith("/") && !url.startsWith("//") && !url.startsWith("/api/") && !url.includes("..")) return true;
-  // When an isolated Preview has no R2, legitimate published image/video media
-  // can be inlined. Original/rights types are excluded before this check.
-  if (/^data:(?:image|video)\/[A-Za-z0-9.+-]+;base64,[A-Za-z0-9+/=]+$/i.test(url)) return true;
-  if (/^https:\/\//i.test(url)) return true;
   return false;
 }
 
@@ -101,8 +102,9 @@ export function projectPublicObject(source) {
     media,
     detail_modules: detailModules,
   };
-  // Retain optional public-only fields consumed by the legacy published list.
-  if (typeof object.source === "string") projected.source = object.source;
+  // category_ui / sku / stock are storefront listing fields already consumed
+  // by published object cards. Provenance (`source`, buyer, intake, rights)
+  // stays off the public DTO until Frontstage/CO Owner names them public.
   if (typeof object.category_ui === "string") projected.category_ui = object.category_ui;
   if (typeof object.sku === "string") projected.sku = object.sku;
   if (Number.isFinite(Number(object.stock))) projected.stock = Number(object.stock);

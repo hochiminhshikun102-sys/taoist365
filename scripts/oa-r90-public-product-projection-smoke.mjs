@@ -89,5 +89,63 @@ check("list does not expose private bytes", !JSON.stringify(listPayload).include
 const missing = await onRequestGet({ request: new Request("http://localhost/api/public/objects?object_id=not-found"), env });
 check("unknown object remains 404", missing.status === 404);
 check("zero writes", writes === 0 && reads >= 3);
+
+const inlineMain = projectPublicObject({
+  object_id: "DH-OBJ-INLINE",
+  status: "published",
+  price: "$1.00",
+  inventory: 1,
+  primary_media_url: IMG,
+  primary_image_url: IMG,
+  media: [{ id: "inline-main", type: "main", url: IMG, mime_type: "image/png" }],
+});
+const inlineJson = JSON.stringify(inlineMain);
+check(
+  "neg: public-typed base64 bytes never serialized",
+  !inlineJson.includes("data:") &&
+    !inlineJson.includes("base64") &&
+    inlineMain.media.length === 0 &&
+    inlineMain.primary_image_url === "/homepage-hero/windkeep-lantern-sea.png",
+);
+
+const remoteSigned = projectPublicObject({
+  object_id: "DH-OBJ-REMOTE",
+  status: "published",
+  price: "$1.00",
+  inventory: 1,
+  media: [
+    { id: "https-main", type: "main", url: "https://evil.example/private.jpg?X-Amz-Signature=abc", mime_type: "image/jpeg" },
+    { id: "signed-path", type: "detail", url: "/api/object-media/main-1?token=signed", mime_type: "image/png" },
+    { id: "protocol-relative", type: "scene", url: "//cdn.unapproved.example/x.png", mime_type: "image/png" },
+    { id: "ok-main", type: "main", url: "/api/object-media/ok-main", mime_type: "image/png" },
+  ],
+});
+const remoteJson = JSON.stringify(remoteSigned);
+check(
+  "neg: unauthorized https and signed media urls rejected",
+  remoteSigned.media.length === 1 &&
+    remoteSigned.media[0].url === "/api/object-media/ok-main" &&
+    !remoteJson.includes("evil.example") &&
+    !remoteJson.includes("X-Amz-Signature") &&
+    !remoteJson.includes("token=signed") &&
+    !remoteJson.includes("cdn.unapproved"),
+);
+
+const sourced = projectPublicObject({
+  ...published,
+  source: "buyer_intake",
+  source_type: "external_url",
+  identity_scope: "buyer",
+});
+const sourcedJson = JSON.stringify(sourced);
+check(
+  "neg: provenance source fields stay off public DTO",
+  !Object.prototype.hasOwnProperty.call(sourced, "source") &&
+    !sourcedJson.includes("buyer_intake") &&
+    !sourcedJson.includes("external_url") &&
+    sourced.object_id === "DH-OBJ-10" &&
+    sourced.primary_image_url === "/api/object-media/main-1",
+);
+
 console.log(JSON.stringify({ batch: "R90_PUBLIC_PRODUCT_PROJECTION", passed, total, failed: total-passed },null,2));
 if (passed !== total) process.exit(1);
